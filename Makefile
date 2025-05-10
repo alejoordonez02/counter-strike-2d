@@ -6,7 +6,7 @@ compile-debug:
 	cmake --build  build/ $(EXTRA_COMPILE)
 
 run-tests: compile-debug
-	./build/taller_tests
+	./build/tests
 
 all: clean run-tests
 

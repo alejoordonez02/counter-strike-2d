@@ -1,4 +1,4 @@
-target_sources(taller_tests
+target_sources(tests
     PRIVATE
     # .cpp files
     PUBLIC

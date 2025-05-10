@@ -1,4 +1,4 @@
-target_sources(taller_server
+target_sources(server
     PRIVATE
     # .cpp files
     PUBLIC

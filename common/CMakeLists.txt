@@ -1,4 +1,4 @@
-target_sources(taller_common
+target_sources(common
     PRIVATE
     # .cpp files
     PUBLIC

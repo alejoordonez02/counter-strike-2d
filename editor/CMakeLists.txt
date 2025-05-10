@@ -1,4 +1,4 @@
-target_sources(taller_editor
+target_sources(editor
     PRIVATE
     # .cpp files
     PUBLIC
