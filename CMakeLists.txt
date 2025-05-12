@@ -10,23 +10,23 @@ endif()
 
 set(CMAKE_CXX_EXTENSIONS ON)
 
-project(counter-strike-2d
+project(cs2d
     VERSION 1.0
     HOMEPAGE_URL "https://github.com/alejoordonez02/counter-strike-2d"
     LANGUAGES CXX
     )
 
-option(TESTS "Enable / disable tests." ON)
-option(CLIENT "Enable / disable client program." ON)
-option(SERVER "Enable / disable server program." ON)
-option(EDITOR "Enable / disable editor program." ON)
-option(MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
+option(CS2D_TESTS "Enable / disable tests." ON)
+option(CS2D_CLIENT "Enable / disable client program." ON)
+option(CS2D_SERVER "Enable / disable server program." ON)
+option(CS2D_EDITOR "Enable / disable editor program." ON)
+option(CS2D_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
 
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
 # Define target: lib common between client, server and editor programs
 # HEY TODO XXX: change the name to something that you like
-add_library(common STATIC)
+add_library(cs2d_common STATIC)
 
 # add the source files that make the lib
 # HEY!! TODO XXX: add more subfolders here
@@ -35,12 +35,12 @@ add_subdirectory(common/)
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
-set_project_warnings(common ${MAKE_WARNINGS_AS_ERRORS} FALSE)
+set_project_warnings(cs2d_common ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
 # Say where the headers will be found required by library target
 # Make this PUBLIC so any dependant linking lib will inherit this
 # location (so our dependants will not have to explicitly request this)
-target_include_directories(common PUBLIC .)
+target_include_directories(cs2d_common PUBLIC .)
 
 # HEY!! TODO XXX: you need to install some runtime and dev libraries *before*
 # compiling the client/editor code.
@@ -52,7 +52,7 @@ target_include_directories(common PUBLIC .)
 
 # Install libSDL2 and libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
-if(CLIENT OR EDITOR)
+if(CS2D_CLIENT OR CS2D_EDITOR)
     include(FetchContent)
     FetchContent_Declare(
         SDL2
@@ -101,68 +101,68 @@ endif()
 
 # Program section
 # ---------------
-if(CLIENT)
+if(CS2D_CLIENT)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(client)
+    add_executable(cs2d_client)
 
-    # Make them depend on common lib
-    add_dependencies(client common SDL2pp::SDL2pp)
+    # Make them depend on cs2d_common lib
+    add_dependencies(cs2d_client cs2d_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(client)
 
-    set_project_warnings(client ${MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(cs2d_client ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
-    target_include_directories(client PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(cs2d_client PRIVATE ${libSDL2pp_SOURCE_DIR})
 
-    # Link the common lib target
-    target_link_libraries(client common SDL2pp::SDL2pp)
+    # Link the cs2d_common lib target
+    target_link_libraries(cs2d_client cs2d_common SDL2pp::SDL2pp)
 endif()
 
-if(SERVER)
+if(CS2D_SERVER)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(server)
+    add_executable(cs2d_server)
 
-    # Make them depend on common lib
-    add_dependencies(server common)
+    # Make them depend on cs2d_common lib
+    add_dependencies(cs2d_server cs2d_common)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
 
-    set_project_warnings(server ${MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(cs2d_server ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
-    # Link the common lib target
-    target_link_libraries(server common)
+    # Link the cs2d_common lib target
+    target_link_libraries(cs2d_server cs2d_common)
 endif()
 
-if(EDITOR)
+if(CS2D_EDITOR)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(editor)
+    add_executable(cs2d_editor)
 
-    # Make them depend on common lib
-    add_dependencies(editor common SDL2pp::SDL2pp)
+    # Make them depend on cs2d_common lib
+    add_dependencies(cs2d_editor cs2d_common SDL2pp::SDL2pp)
 
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(editor)
 
-    set_project_warnings(editor ${MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_project_warnings(cs2d_editor ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # add libSDL2pp's headers
-    target_include_directories(editor PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(cs2d_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
-    # Link the common lib target
-    target_link_libraries(editor common SDL2pp::SDL2pp)
+    # Link the cs2d_common lib target
+    target_link_libraries(cs2d_editor cs2d_common SDL2pp::SDL2pp)
 endif()
 
 
 # Testing section
 # ---------------
 
-if(TESTS)
+if(CS2D_TESTS)
     # Let's use google test
     include(FetchContent)
     FetchContent_Declare(
@@ -178,34 +178,34 @@ if(TESTS)
 
     # target for testing
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(tests)
+    add_executable(cs2d_tests)
 
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in common
+    # HEY!! TODO XXX: I'm assuming that the code under testing is in cs2d_common
     # Change this if you have to.
-    add_dependencies(tests common)
+    add_dependencies(cs2d_tests cs2d_common)
 
     # Say where to find the xoz headers
     # HEY!! TODO XXX: add more subfolders here
-    target_include_directories(tests PUBLIC .)
+    target_include_directories(cs2d_tests PUBLIC .)
 
-    # Add the source files to the tests target
+    # Add the source files to the cs2d_tests target
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(tests/)
 
     # Set the compiler warnings to the tests target (but be a little lesser strict)
-    set_project_warnings(tests ${MAKE_WARNINGS_AS_ERRORS} TRUE)
+    set_project_warnings(cs2d_tests ${CS2D_MAKE_WARNINGS_AS_ERRORS} TRUE)
 
     # Say where googletest headers can be found
-    target_include_directories(tests
+    target_include_directories(cs2d_tests
         PUBLIC
         ${gtest_SOURCE_DIR}/include
         ${gmock_SOURCE_DIR}/include
         )
 
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in common
+    # HEY!! TODO XXX: I'm assuming that the code under testing is in cs2d_common
     # Change this if you have to.
-    target_link_libraries(tests
-        common
+    target_link_libraries(cs2d_tests
+        cs2d_common
         GTest::gtest_main
     )
 endif()
