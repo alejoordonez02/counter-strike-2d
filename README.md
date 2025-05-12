@@ -43,3 +43,11 @@ ni scripts adicionales (como correr valgrind).
 
 **Eso esta a cargo de los estudiantes,** tal como fue mostrado
 en los tps individuales, recaps y hands-on.
+
+## Origen del código
+El componente `socket` fue tomado de [hands-on-sockets-in-cpp](https://github.com/eldipa/hands-on-sockets-in-cpp), y los componentes `queue` y `thread` de [hands-on-thread](https://github.com/eldipa/hands-on-threads). Todos se encuentran bajo la licencia GPL v2.
+Este repositorio respeta la misma licencia para cumplir con los términos de distribución.
+
+## Licencia:
+GPL v2
+
