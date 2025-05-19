@@ -14,6 +14,7 @@
 #include <mutex>
 #include <queue>
 #include <stdexcept>
+#include <utility>
 
 struct ClosedQueue: public std::runtime_error {
     ClosedQueue(): std::runtime_error("The queue is closed") {}
@@ -36,7 +37,8 @@ public:
     explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
 
 
-    bool try_push(T const& val) {
+    template <typename U>
+    bool try_push(U&& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
         if (closed) {
@@ -51,7 +53,7 @@ public:
             is_not_empty.notify_all();
         }
 
-        q.push(val);
+        q.push(std::forward<U>(val));
         return true;
     }
 
@@ -74,7 +76,8 @@ public:
         return true;
     }
 
-    void push(T const& val) {
+    template <typename U>
+    void push(U&& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
         if (closed) {
@@ -89,9 +92,8 @@ public:
             is_not_empty.notify_all();
         }
 
-        q.push(val);
+        q.push(std::forward<U>(val));
     }
-
 
     T pop() {
         std::unique_lock<std::mutex> lck(mtx);
@@ -201,7 +203,6 @@ public:
         q.push(val);
     }
 
-
     void* pop() {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -252,10 +253,9 @@ public:
 
     bool try_push(T* const& val) override { return Queue<void*>::try_push(val); }
 
-    bool try_pop(T*& val) override { return Queue<void*>::try_pop(reinterpret_cast<void*&>(val)); }
+    bool try_pop(T*& val) override { return Queue<void*>::try_pop((void*&)val); } // cppcheck-suppress cstyleCast
 
     void push(T* const& val) override { return Queue<void*>::push(val); }
-
 
     T* pop() override { return static_cast<T*>(Queue<void*>::pop()); }
 
