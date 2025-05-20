@@ -6,12 +6,8 @@
 
 #include <arpa/inet.h>
 
-#include "command.h"
+#include "player_commands.h"
 
-enum class MessageType : uint8_t {
-    CMD_PLAYER_MOVE = 0x01,
-    CMD_PLAYER_ATTACK = 0x01,
-};
 
 std::vector<uint8_t> Serializer::serialize_number(const float& n) {
     uint32_t tmp_n = std::bit_cast<uint32_t>(n);
@@ -21,7 +17,7 @@ std::vector<uint8_t> Serializer::serialize_number(const float& n) {
     return srlzd_n;
 }
 
-std::vector<uint8_t> Serializer::serialize_move_cmd(const Move& move) {
+std::vector<uint8_t> Serializer::serialize(const Move& move) {
     std::vector<uint8_t> srlzd_move;
     std::vector<uint8_t> srlzd_direction = serialize_number(move.get_dir().t);
     srlzd_move.push_back(static_cast<uint8_t>(MessageType::CMD_PLAYER_MOVE));
@@ -29,7 +25,7 @@ std::vector<uint8_t> Serializer::serialize_move_cmd(const Move& move) {
     return srlzd_move;
 }
 
-std::vector<uint8_t> Serializer::serialize_attack_cmd(const Attack& attack) {
+std::vector<uint8_t> Serializer::serialize(const Attack& attack) {
     std::vector<uint8_t> srlzd_attack;
     auto pos = attack.get_pos();
     std::vector<uint8_t> srlzd_x = serialize_number(pos.x);
