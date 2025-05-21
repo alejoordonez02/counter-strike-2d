@@ -23,6 +23,10 @@ public:
 
     void run() override {}
 
+    bool try_pop(std::unique_ptr<Command>& u_p) { // en GameLoop: std::unique_ptr<Command> p; receiver.try_pop(p);
+        return q.try_pop(u_p); // habria que ver si la linea 74 de queue.h hace un move assignment por ser un unique_ptr
+    }
+
     ~Receiver() = default;
 };
 
@@ -38,6 +42,10 @@ public:
 //     Receiver(Connection& c): con(c) {}
 
 //     void run() override {}
+
+//     bool try_pop(GameState& gs) { // en cliente: pasar el GameState a actualizar
+//         return q.try_pop(gs);
+//     }
 
 //     ~Receiver() = default;
 // };
