@@ -3,51 +3,17 @@
 
 #include <memory>
 
-#include "../player_commands.h"
+#include "../player_commands/attack.h"
+#include "../player_commands/command.h"
+#include "../player_commands/move.h"
 
-template <typename ReturnT>
-class Deserializer;
-
-
-template<>
-class Deserializer<std::unique_ptr<Command>> {
-public:
-    Deserializer() = default;
-
-    std::unique_ptr<Command> deserialize(const std::string& data); // switch
-
+class Deserializer {
 private:
-    std::unique_ptr<Command> deserialize_move() {}
-
-    std::unique_ptr<Command> deserialize_attack() {}
-
-    // ...
+    static std::unique_ptr<Move> deserialize_move_command(const std::string& srzld_cmd);
+    static std::unique_ptr<Attack> deserialize_attack_command(const std::string& srzld_cmd);
 
 public:
-    Deserializer(const Deserializer&) = delete;
-    Deserializer& operator=(const Deserializer&) = delete;
-
-    Deserializer(Deserializer&&) = default;
-    Deserializer& operator=(Deserializer&&) = default;
-
-    ~Deserializer() = default;
+    static std::unique_ptr<Command> deserialize_command(const std::string& srzld_cmd);
 };
-
-
-// template<>
-// class Deserializer<GameState> {
-// public:
-//     Deserializer() = default;
-
-//     GameState deserialize(const std::string& data);
-
-//     Deserializer(const Deserializer&) = delete;
-//     Deserializer& operator=(const Deserializer&) = delete;
-
-//     Deserializer(Deserializer&&) = default;
-//     Deserializer& operator=(Deserializer&&) = default;
-
-//     ~Deserializer() = default;
-// };
 
 #endif
