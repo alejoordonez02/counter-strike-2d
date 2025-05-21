@@ -3,12 +3,10 @@
 #include <cstdint>
 #include <sstream>
 #include <utility>
+
 #include <arpa/inet.h>
 
-namespace {
-    constexpr int MsgLenBytes = 2; // vamos a mandar algo mas grande que 255 bytes?
-    constexpr int MaxMsgLen = 256;
-}
+#include "protocol.h"
 
 /*
  * For accepting
@@ -26,7 +24,7 @@ Connection::Connection(Socket&& s): skt(std::move(s)) {}
 Connection::Connection(const std::string& hostname, const std::string& servname):
         skt(hostname.c_str(), servname.c_str()) {}
 
-        
+
 void Connection::send_msg(const std::string& msg) {
     std::string buf = prepend_length(msg);
 
@@ -35,14 +33,14 @@ void Connection::send_msg(const std::string& msg) {
 }
 
 std::string Connection::receive_msg() {
-    uint8_t size_buf[MsgLenBytes];
-    if (not skt.recvall(size_buf, MsgLenBytes))
+    uint8_t size_buf[Message::LenBytes];
+    if (not skt.recvall(size_buf, Message::LenBytes))
         throw std::runtime_error("Socket receive error: disconnected");
 
     uint16_t size = ntohs(*(uint16_t*)size_buf);
 
-    char data_buf[MaxMsgLen] = {0};
-    if (not skt.recvall(data_buf, size)) // asegurar size <= MaxMsgLen - 1
+    char data_buf[Message::MaxLen] = {0};
+    if (not skt.recvall(data_buf, size))  // asegurar size <= MaxMsgLen - 1
         throw std::runtime_error("Socket receive error: disconnected");
 
     return std::string(data_buf);
