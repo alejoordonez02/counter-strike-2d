@@ -57,7 +57,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     FetchContent_Declare(
         SDL2
         GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-        GIT_TAG release-2.30.8
+        GIT_TAG release-3.2.14
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         OVERRIDE_FIND_PACKAGE
@@ -66,7 +66,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     FetchContent_Declare(
         SDL2_image
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-        GIT_TAG release-2.8.2
+        GIT_TAG release-3.2.4
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         OVERRIDE_FIND_PACKAGE
@@ -75,7 +75,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     FetchContent_Declare(
         SDL2_mixer
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
-        GIT_TAG release-2.8.0
+        GIT_TAG release-2.8.1
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         OVERRIDE_FIND_PACKAGE
@@ -84,7 +84,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     FetchContent_Declare(
         SDL2_ttf
         GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-        GIT_TAG release-2.22.0
+        GIT_TAG release-3.2.2
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         OVERRIDE_FIND_PACKAGE
@@ -98,6 +98,9 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
 
     FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_mixer SDL2_ttf libSDL2pp)
 endif()
+
+# Find SDL2 package
+find_package(SDL2 REQUIRED)
 
 # Program section
 # ---------------
@@ -154,8 +157,14 @@ if(CS2D_EDITOR)
     # add libSDL2pp's headers
     target_include_directories(cs2d_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
+    # Include SDL2 headers
+    include_directories(${SDL2_INCLUDE_DIRS})
+
     # Link the cs2d_common lib target
     target_link_libraries(cs2d_editor cs2d_common SDL2pp::SDL2pp)
+
+    # Link SDL2 library
+    target_link_libraries(cs2d_editor PRIVATE SDL2::SDL2)
 endif()
 
 
