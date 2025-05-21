@@ -1,6 +1,11 @@
-target_sources(client
+target_sources(cs2d_client
     PRIVATE
-    # .cpp files
-    PUBLIC
-    # .h files
-    )
+        client_main.cpp
+)
+
+# target_sources(client
+#     PRIVATE
+#     # .cpp files
+#     PUBLIC
+#     # .h files
+#     )

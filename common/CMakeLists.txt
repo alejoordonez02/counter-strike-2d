@@ -1,6 +1,14 @@
-target_sources(common
+target_sources(cs2d_common
     PRIVATE
-    # .cpp files
-    PUBLIC
-    # .h files
-    )
+        dummy.cpp
+)
+
+
+
+
+# target_sources(common
+#     PRIVATE
+#     # .cpp files
+#     PUBLIC
+#     # .h files
+#     )
