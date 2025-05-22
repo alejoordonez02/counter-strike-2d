@@ -59,7 +59,8 @@ Este script instalará las dependencias necesarias para compilar el proyecto.
 ## Development
 Si solo queres ejecutar una parte del proyecto, por ejemplo el cliente, podés correr el siguiente comando:
 ```bash
-cmake -S . -B build -DCS2D_CLIENT=ON -DCS2D_SERVER=OFF -DCS2D_EDITOR=OFF -DCS2D_TESTS=OFF
+cmake -S . -B build -DCS2D_CLIENT=ON -DCS2D_SERVER=OFF -DCS2D_EDITOR=OFF -DCS2D_TESTS=OFF -DCS2D_MAKE_WARNINGS_AS_ERRORS=OFF
+
 cmake --build build
 # o bien "cd build && make"
 ```

@@ -1,6 +1,8 @@
 target_sources(cs2d_client
     PRIVATE
         client_main.cpp
+        graphics_engine.h
+        graphics_engine.cpp
 )
 
 # target_sources(client

@@ -1,11 +1,20 @@
 #include <iostream>
+#include "./graphics_engine.h"
 
 int main(int argc, char** argv) {
-    std::cout << "Hello World!" << std::endl;
-    
-    for (int i = 0; i < argc; ++i) {
-        std::cout << "Arg " << i << ": " << argv[i] << std::endl;
-    }
+    /**
+    Inicializar:
+        - socket
+        - cliente
+        - motor grafico
+        - motor de audio
+        - ...
+    */
+
+    GraphicsEngine motor_grafico;
+    motor_grafico.run();
+
+    // tiene el bucle de renderizado, ahi mismo se hace un update y un input handler del cliente
 
     return 0;
 }
