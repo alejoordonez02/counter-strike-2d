@@ -2,6 +2,7 @@
 #define GRAPHICS_ENGINE_H
 
 #include <SDL2pp/SDL2pp.hh>
+#include "texture_provider.h"
 
 
 class GraphicsEngine {
@@ -9,7 +10,11 @@ class GraphicsEngine {
         SDL2pp::SDL sdl;
         SDL2pp::Window window;
         SDL2pp::Renderer renderer;
+        TextureProvider texture_provider;
+        
         bool is_running = true;
+
+        
 
 
 public:
