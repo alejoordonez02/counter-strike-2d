@@ -24,7 +24,11 @@ public:
 
     void render();
 
+    void update();
+
     void handleEvents();
+
+    void sleep_or_catch_up(uint32_t& t1);
 
     void closeWindow();
 };

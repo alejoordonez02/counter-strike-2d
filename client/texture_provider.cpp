@@ -4,13 +4,31 @@
 
 #include "texture_provider.h"
 
-TextureProvider::TextureProvider(SDL2pp::Renderer & caca): 
-    renderer(caca), 
-    mira(renderer, DATA_PATH "/assets/gfx/pointer.bmp"){
+TextureProvider::TextureProvider(SDL2pp::Renderer & renderizador): 
+    renderer(renderizador),
+    pointer(renderer, DATA_PATH "/assets/gfx/pointer.bmp"),
+    counter_terrorist_1(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp"),
+    terrorist_1(renderer, DATA_PATH "/assets/gfx/player/t1.bmp")
+    {}
 
-        
+void TextureProvider::load_textures() {
+    // cargar texturas
+    
+    // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
+    // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp");
+    // terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
 }
 
-SDL2pp::Texture* TextureProvider::get_texture(){
-    return &mira;
+SDL2pp::Texture* TextureProvider::get_texture_pointer(){
+    return &pointer;
 }
+
+
+SDL2pp::Texture* TextureProvider::get_texture_terrorist(){
+    return &counter_terrorist_1;
+}
+
+
+// SDL2pp::Texture* TextureProvider::get_texture(const std::string& texture_name){
+    
+// }
