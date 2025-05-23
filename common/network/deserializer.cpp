@@ -1,5 +1,6 @@
 #include "deserializer.h"
 
+#include <bit>
 #include <cstdint>
 #include <map>
 #include <stdexcept>
@@ -10,6 +11,7 @@
 #include "../player_commands/attack.h"
 #include "../player_commands/command.h"
 #include "../player_commands/move.h"
+#include "../position.h"
 
 #include "protocol.h"
 
@@ -26,9 +28,10 @@ std::unique_ptr<Move> Deserializer::deserialize_move_command(const std::string& 
 }
 
 std::unique_ptr<Attack> Deserializer::deserialize_attack_command(const std::string& srlzd_cmd) {
-    uint32_t angle = static_cast<uint32_t>(srlzd_cmd[1]);
-    angle = ntohl(angle);
-    return std::make_unique<Attack>(angle);
+    uint32_t srlzd_angle = ntohl(srlzd_cmd[1]);
+    float angle = std::bit_cast<float>(srlzd_angle);
+    Position pos(angle, 2);
+    return std::make_unique<Attack>(pos);
 }
 
 std::unique_ptr<Command> Deserializer::deserialize_command(const std::string& srlzd_cmd) {

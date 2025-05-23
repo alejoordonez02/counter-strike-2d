@@ -13,7 +13,7 @@ private:
     static std::unique_ptr<Attack> deserialize_attack_command(const std::string& srzld_cmd);
 
 public:
-    static std::unique_ptr<Command> deserialize_command(const std::string& srzld_cmd);
+    static std::unique_ptr<Command> deserialize_command(const std::string& srlzd_cmd);
 };
 
 #endif
