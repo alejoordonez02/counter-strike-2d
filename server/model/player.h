@@ -14,6 +14,7 @@
 
 #include "collidable.h"
 #include "map.h"
+#include "trajectory.h"
 #include "weapon.h"
 
 
@@ -25,6 +26,9 @@ private:
     Weapon primary;
     Weapon secondary;
     Weapon& current_weapon;
+    int shield; /* entre 0 y 1 */
+    int health;
+    bool alive;
 
 public:
     Player(const Position& pos, Map& map);
@@ -41,7 +45,11 @@ public:
             }
         }
     }
-    virtual void get_attacked(const int& damage) override;
+    virtual void get_attacked(const int& damage) override {
+        health -= (1 - shield) * damage;
+        if (health <= 0)
+            alive = false;
+    }
     virtual ~Player() = default;
 };
 
