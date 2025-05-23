@@ -5,6 +5,10 @@ target_sources(cs2d_client
         graphics_engine.cpp
         texture_provider.h
         texture_provider.cpp
+        player.h
+        player.cpp
+        animation.h
+        animation.cpp
 )
 
 # target_sources(client

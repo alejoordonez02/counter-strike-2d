@@ -3,6 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include "texture_provider.h"
+#include "player.h"
 
 
 class GraphicsEngine {
@@ -22,11 +23,11 @@ public:
 
     void run();
 
-    void render();
+    void render(Player &player);
 
-    void update();
+    void update(Player &player, float delta_time);
 
-    void handleEvents();
+    bool handleEvents(Player &player);
 
     void sleep_or_catch_up(uint32_t& t1);
 
