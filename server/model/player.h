@@ -33,8 +33,8 @@ private:
 public:
     Player(const Position& pos, Map& map);
     virtual void move(const Direction& dir);
-    void attack(const int& angle) {
-        Trajectory t(pos, angle);
+    void attack(const Position& destination) {
+        Trajectory t(pos, destination);
         std::vector<Collidable> collidable = map.get_collidable();
         auto sorted_idx = sort_by_distance_idx(collidable);
         for (size_t i: sorted_idx) {
