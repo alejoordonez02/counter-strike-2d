@@ -4,4 +4,5 @@ target_sources(cs2d_server
     main.cpp
     PUBLIC
     # .h files
+    model/player.h
     )
