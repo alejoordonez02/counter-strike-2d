@@ -17,27 +17,27 @@ GraphicsEngine::GraphicsEngine():
                           SDL_WINDOW_SHOWN),
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
     texture_provider(renderer){
-        // poner color de fondo rojo
-        renderer.SetDrawColor(255, 0, 0, 255);
+        // poner color de fondo negro
+        renderer.SetDrawColor(0, 0, 0, 0);
         
 }
 
 
 void GraphicsEngine::run(){
-    SDL2pp::Texture* pointer = texture_provider.get_texture_pointer();
+    SDL2pp::Texture* pointer_texture = texture_provider.get_texture_pointer();
     SDL2pp::Texture* terrorista_texture = texture_provider.get_texture_terrorist();
     
     Player player(*terrorista_texture);
-    Pointer pointer(*pointer);
+    Pointer pointer(*pointer_texture);
     
     while (is_running) {
         uint32_t t1 = SDL_GetTicks();
 
         is_running = handleEvents(player);
         
-        update(player, RATE);
+        update(player, pointer, RATE);
         
-        render(player);
+        render(player, pointer);
 
         // sleep_or_catch_up(t1);
         usleep(FRAME_RATE);
@@ -47,21 +47,23 @@ void GraphicsEngine::run(){
 
 
 
-void GraphicsEngine::render(Player &player){
+void GraphicsEngine::render(Player &player, Pointer &pointer){
     // renderer.SetDrawColor(0x80, 0x80, 0x80);
 
     // limpiar la ventana
     renderer.Clear();
 
     player.render(renderer);
+    pointer.render(renderer);
 
     // mostrar la ventana
     renderer.Present();
 }
 
 
-void GraphicsEngine::update(Player &player, float delta_time){
+void GraphicsEngine::update(Player &player, Pointer &pointer, float delta_time){
     player.update(delta_time);
+    pointer.update();
 }
 
 void GraphicsEngine::closeWindow() {
@@ -122,9 +124,9 @@ bool GraphicsEngine::handleEvents(Player &player) {
                     } 
                 }// Fin KEY_UP
                 break;
-            case SDL_MOUSEMOTION:
-                std::cout << "Oh! Mouse" << std::endl;
-                break;
+            // case SDL_MOUSEMOTION:
+                // std::cout << "Oh! Mouse" << std::endl;
+                // break;
             case SDL_QUIT:
                 std::cout << "Cerrando ventana..." << std::endl;
                 return false;

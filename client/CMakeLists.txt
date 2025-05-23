@@ -9,6 +9,8 @@ target_sources(cs2d_client
         player.cpp
         animation.h
         animation.cpp
+        pointer.h
+        pointer.cpp
 )
 
 # target_sources(client

@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "texture_provider.h"
 #include "player.h"
+#include "pointer.h"
 
 
 class GraphicsEngine {
@@ -23,9 +24,9 @@ public:
 
     void run();
 
-    void render(Player &player);
+    void render(Player &player, Pointer &pointer);
 
-    void update(Player &player, float delta_time);
+    void update(Player &player, Pointer &pointer, float delta_time);
 
     bool handleEvents(Player &player);
 

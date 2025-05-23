@@ -6,10 +6,17 @@
 
 TextureProvider::TextureProvider(SDL2pp::Renderer & renderizador): 
     renderer(renderizador),
-    pointer(renderer, DATA_PATH "/assets/gfx/pointer.bmp"),
+    // pointer(renderer, DATA_PATH "/assets/gfx/pointer.bmp"),
+    pointer(
+            renderer,
+            SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
+                .SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0, 255)) // Magenta
+        ),
     counter_terrorist_1(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp"),
     terrorist_1(renderer, DATA_PATH "/assets/gfx/player/t1.bmp")
     {}
+
+    
 
 void TextureProvider::load_textures() {
     // cargar texturas
