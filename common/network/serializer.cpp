@@ -1,62 +1,55 @@
 #include "serializer.h"
 
+#include <bit>
 #include <cstdint>
 #include <cstring>
-#include <sstream>
+#include <map>
+#include <vector>
 
 #include <arpa/inet.h>
 
-#include "player_commands.h"
+#include "../direction.h"
+#include "../player_commands/attack.h"
+#include "../player_commands/move.h"
+
 #include "protocol.h"
 
+namespace {
+inline const std::map<Direction, uint8_t> dir_to_srl = {
+        {Direction::N, DirectionSerial::N}, {Direction::NE, DirectionSerial::NE},
+        {Direction::E, DirectionSerial::E}, {Direction::SE, DirectionSerial::SE},
+        {Direction::S, DirectionSerial::S}, {Direction::SW, DirectionSerial::SW},
+        {Direction::W, DirectionSerial::W}, {Direction::NW, DirectionSerial::NW}};
+};
 
-// std::vector<uint8_t> Serializer::serialize_number(const float& n) {
-//     uint32_t tmp_n = std::bit_cast<uint32_t>(n);
-//     tmp_n = htonl(tmp_n);
-//     std::vector<uint8_t> srlzd_n(sizeof(tmp_n));
-//     std::memcpy(srlzd_n.data(), &tmp_n, sizeof(tmp_n));
-//     return srlzd_n;
-// }
-
-void Serializer::write_number(std::ostringstream oss, uint16_t n) {
-    uint16_t s = htons(n);
-    oss.write((const char*)&s, sizeof(s));
+/*
+ * Serialize float
+ * */
+std::vector<uint8_t> Serializer::serialize(const float& n) {
+    auto srlzd_n = std::bit_cast<uint32_t>(n);
+    srlzd_n = htonl(srlzd_n);
+    std::vector<uint8_t> bytes(sizeof(srlzd_n));
+    std::memcpy(bytes.data(), &srlzd_n, sizeof(srlzd_n));
+    return bytes;
 }
 
-std::string Serializer::serialize(const Move& move) {
-    std::ostringstream oss;
-
-    oss.put(PlayerCommandSerial::MOVE);
-    oss.put(move.get_player_id());
-
-    switch (move.get_dir()) {
-        case N:
-            oss.put(DirectionSerial::N);
-            break;
-        case NE:
-            oss.put(DirectionSerial::NE);
-            break;
-        case E:
-            oss.put(DirectionSerial::E);
-            break;
-        case SE:
-            oss.put(DirectionSerial::SE);
-            break;
-        case S:
-            oss.put(DirectionSerial::S);
-            break;
-        case SW:
-            oss.put(DirectionSerial::SW);
-            break;
-        case W:
-            oss.put(DirectionSerial::W);
-            break;
-        case NW:
-            oss.put(DirectionSerial::NW);
-            break;
-    }
-
-    return oss.str();
+/*
+ * Serialize player commands
+ * */
+std::vector<uint8_t> Serializer::serialize(const Move& move) {
+    return {PlayerCommandSerial::MOVE, dir_to_srl.at(move.get_dir())};
 }
 
-std::string Serializer::serialize(const Attack& attack) {}
+std::vector<uint8_t> Serializer::serialize(const Attack& attack) {
+    std::vector<uint8_t> srlzd_attack;
+
+    auto pos = attack.get_position();
+    auto srlzd_x = serialize(pos.x);
+    auto srlzd_y = serialize(pos.y);
+
+    srlzd_attack.push_back(PlayerCommandSerial::ATTACK);
+    srlzd_attack.insert(srlzd_attack.end(), srlzd_x.begin(), srlzd_x.end());
+    srlzd_attack.insert(srlzd_attack.end(), srlzd_y.begin(), srlzd_y.end());
+
+    return srlzd_attack;
+}
