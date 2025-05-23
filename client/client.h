@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "common/command.h"
+#include "common/player_commands.h"
 #include "common/event.h"
 #include "common/queue.h"
 #include "common/receiver.h"
