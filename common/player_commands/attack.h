@@ -1,8 +1,8 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-#include "../../server/player.h"
-#include "../serializer.h"
+#include "../../server/model/player.h"
+#include "../position.h"
 
 #include "command.h"
 
@@ -11,13 +11,12 @@
  * */
 class Attack: public Command {
 private:
-    float angle;
+    Position pos;
 
 public:
-    Attack(const float angle): angle(angle) {}
-
+    Attack(const Position& pos);
     void execute(Player& p) const override;
-    std::string serialize() const override { return Serializer::serialize_attack(angle); }
+    Position get_position() const;
 };
 
 #endif

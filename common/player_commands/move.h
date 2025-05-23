@@ -1,9 +1,8 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-#include "../../server/player.h"
+#include "../../server/model/player.h"
 #include "../direction.h"
-#include "../serializer.h"
 
 #include "command.h"
 
@@ -17,10 +16,8 @@ private:
     Direction dir;
 
 public:
-    Move(Direction d): dir(d) {}
-
+    Move(Direction d);
     void execute(Player& p) const override;
-    std::string serialize() const override { return Serializer::serialize_move(dir); }
     Direction get_dir() const;
 };
 

@@ -4,13 +4,11 @@
 #include <cstdint>
 #include <vector>
 
-#include "../../server/player.h"
+#include "../../server/model/player.h"
 #include "../serializable.h"
 
-/*
- * Base class
- * */
-class Command: public Serializable {
+// class Command: public Serializable {
+class Command {
 protected:
     Command() = default;
 
