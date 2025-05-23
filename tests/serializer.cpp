@@ -13,55 +13,55 @@ using ::testing::NotNull;
 using ::testing::ThrowsMessage;
 
 namespace {
-TEST(DeserializerTest, SerializeMoveCommandNorth) {
+TEST(SerializerTest, SerializeMoveCommandNorth) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::N));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::N};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandNorthEast) {
+TEST(SerializerTest, SerializeMoveCommandNorthEast) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::NE));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::NE};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandEast) {
+TEST(SerializerTest, SerializeMoveCommandEast) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::E));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::E};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandSouthEast) {
+TEST(SerializerTest, SerializeMoveCommandSouthEast) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::SE));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::SE};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandSouth) {
+TEST(SerializerTest, SerializeMoveCommandSouth) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::S));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::S};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandSouthWest) {
+TEST(SerializerTest, SerializeMoveCommandSouthWest) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::SW));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::SW};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandWest) {
+TEST(SerializerTest, SerializeMoveCommandWest) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::W));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::W};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeMoveCommandNorthWest) {
+TEST(SerializerTest, SerializeMoveCommandNorthWest) {
     std::vector<uint8_t> srl = Serializer::serialize(Move(Direction::NW));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::MOVE, DirectionSerial::NW};
     EXPECT_EQ(srl, expected_srl);
 }
 
-TEST(DeserializerTest, SerializeAttackCommandWithPositionXPiYPi) {
+TEST(SerializerTest, SerializeAttackCommandWithPositionXPiYPi) {
     std::vector<uint8_t> srl = Serializer::serialize(Attack(Position(3.14159265, 3.14159265)));
     std::vector<uint8_t> expected_srl = {PlayerCommandSerial::ATTACK,
                                          0x40,
