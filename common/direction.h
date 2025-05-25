@@ -34,6 +34,8 @@ struct Direction: public Tuple<int> {
     bool operator==(const Direction& other) const { return card == other.card; }
 
     bool operator<(const Direction& other) const { return card < other.card; }
+
+    Direction operator*(const float& n) const { return Direction(x * n, y * n); }
 };
 
 #endif
