@@ -1,22 +1,7 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include <random>
-
 #include "collidable.h"
-
-/*
- * Claramente estos los vamos a tener que generar más rápido, esto
- * es sólo un proto
- * */
-namespace Random {
-float get(const float& n, const float& m) {
-    std::random_device rd;
-    std::mt19937_64 gen(rd());
-    std::uniform_real_distribution<float> dist(n, m);
-    return dist(gen);
-}
-}  // namespace Random
 
 class Weapon {
 private:
@@ -24,17 +9,15 @@ private:
     int ammo;
     float accuracy; /* entre 0 y 1, es una proba */
 public:
+    Weapon();
+    Weapon(const int& damage, const int& ammo, const float& accuracy);
     int get_damage();
-    /*
-     * attack() lo vamos a tener que sobrecargar según el arma, además
-     * por el modo en el que esté la misma... patrón Strategy va como piña
-     * */
-    void attack(Collidable& coll) {
-        if (Random::get(0, 1) < accuracy) {
-            coll.get_attacked(damage);
-            ammo--;
-        }
-    }
+    void attack(Collidable& coll);
+};
+
+class Awp: public Weapon {
+public:
+    Awp();
 };
 
 #endif
