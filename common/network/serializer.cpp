@@ -16,10 +16,10 @@
 
 namespace {
 inline const std::map<Direction, uint8_t> dir_to_srl = {
-        {Direction::N, DirectionSerial::N}, {Direction::NE, DirectionSerial::NE},
-        {Direction::E, DirectionSerial::E}, {Direction::SE, DirectionSerial::SE},
-        {Direction::S, DirectionSerial::S}, {Direction::SW, DirectionSerial::SW},
-        {Direction::W, DirectionSerial::W}, {Direction::NW, DirectionSerial::NW}};
+        {Cardinal::N, CardinalSerial::N}, {Cardinal::NE, CardinalSerial::NE},
+        {Cardinal::E, CardinalSerial::E}, {Cardinal::SE, CardinalSerial::SE},
+        {Cardinal::S, CardinalSerial::S}, {Cardinal::SW, CardinalSerial::SW},
+        {Cardinal::W, CardinalSerial::W}, {Cardinal::NW, CardinalSerial::NW}};
 };
 
 /*
@@ -37,7 +37,7 @@ std::vector<uint8_t> Serializer::serialize(const float& n) {
  * Serialize player commands
  * */
 std::vector<uint8_t> Serializer::serialize(const Move& move) {
-    return {PlayerCommandSerial::MOVE, dir_to_srl.at(move.get_dir())};
+    return {PlayerCommandSerial::MOVE, dir_to_srl.at(move.get_dir().card)};
 }
 
 std::vector<uint8_t> Serializer::serialize(const Attack& attack) {

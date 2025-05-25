@@ -18,10 +18,10 @@
 
 namespace {
 inline const std::map<uint8_t, Direction> srl_to_dir = {
-        {DirectionSerial::N, Direction::N}, {DirectionSerial::NE, Direction::NE},
-        {DirectionSerial::E, Direction::E}, {DirectionSerial::SE, Direction::SE},
-        {DirectionSerial::S, Direction::S}, {DirectionSerial::SW, Direction::SW},
-        {DirectionSerial::W, Direction::W}, {DirectionSerial::NW, Direction::NW}};
+        {CardinalSerial::N, Cardinal::N}, {CardinalSerial::NE, Cardinal::NE},
+        {CardinalSerial::E, Cardinal::E}, {CardinalSerial::SE, Cardinal::SE},
+        {CardinalSerial::S, Cardinal::S}, {CardinalSerial::SW, Cardinal::SW},
+        {CardinalSerial::W, Cardinal::W}, {CardinalSerial::NW, Cardinal::NW}};
 };
 
 /*

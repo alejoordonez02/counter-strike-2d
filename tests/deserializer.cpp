@@ -22,8 +22,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandNorth) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::N);
-    EXPECT_CALL(p, move(Direction::N));
+    EXPECT_CALL(p, move(Direction(Cardinal::N)));
     move_cmd->execute(p);
 }
 
@@ -32,8 +31,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandNorthEast) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::NE);
-    EXPECT_CALL(p, move(Direction::NE));
+    EXPECT_CALL(p, move(Direction(Cardinal::NE)));
     move_cmd->execute(p);
 }
 
@@ -42,8 +40,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandEast) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::E);
-    EXPECT_CALL(p, move(Direction::E));
+    EXPECT_CALL(p, move(Direction(Cardinal::E)));
     move_cmd->execute(p);
 }
 
@@ -52,8 +49,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouthEast) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::SE);
-    EXPECT_CALL(p, move(Direction::SE));
+    EXPECT_CALL(p, move(Direction(Cardinal::SE)));
     move_cmd->execute(p);
 }
 
@@ -62,8 +58,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouth) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::S);
-    EXPECT_CALL(p, move(Direction::S));
+    EXPECT_CALL(p, move(Direction(Cardinal::S)));
     move_cmd->execute(p);
 }
 
@@ -72,8 +67,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouthWest) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::SW);
-    EXPECT_CALL(p, move(Direction::SW));
+    EXPECT_CALL(p, move(Direction(Cardinal::SW)));
     move_cmd->execute(p);
 }
 
@@ -82,8 +76,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandWest) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::W);
-    EXPECT_CALL(p, move(Direction::W));
+    EXPECT_CALL(p, move(Direction(Cardinal::W)));
     move_cmd->execute(p);
 }
 
@@ -92,8 +85,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandNorthWest) {
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
-    EXPECT_EQ(move_cmd->get_dir(), Direction::NW);
-    EXPECT_CALL(p, move(Direction::NW));
+    EXPECT_CALL(p, move(Direction(Cardinal::NW)));
     move_cmd->execute(p);
 }
 
