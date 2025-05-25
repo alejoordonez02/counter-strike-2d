@@ -3,7 +3,9 @@ target_sources(cs2d_tests
     # .cpp files
     deserializer.cpp
     serializer.cpp
+    model.cpp
+    mock_player.cpp
     PUBLIC
     # .h files
     mock_player.h
-    )
+)
