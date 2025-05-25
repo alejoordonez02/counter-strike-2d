@@ -22,6 +22,7 @@ private:
     int shield; /* entre 0 y 1 */
     int health;
     bool alive;
+    float velocity;
 
 public:
     Player(const Position& pos, Map& map);

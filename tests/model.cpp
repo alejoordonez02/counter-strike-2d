@@ -1,4 +1,5 @@
 #include "../common/player_commands/attack.h"
+#include "../common/player_commands/move.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -44,5 +45,16 @@ TEST(ModelTest, PlayerDoesNotGetAttackedWhenAttackerMissesShoot) {
     EXPECT_CALL(*mock_ptr, get_attacked(::testing::_)).Times(0);
     attack.execute(p);
 }
+
+namespace {
+TEST(PlayerTest, PlayerMoveNorthFromX0Y0WithVelocity1) {
+    Map map;
+    Player p(Position(0, 0), map);
+    Direction dir(Cardinal::N);
+    Move move(dir);
+    move.execute(p);
+    EXPECT_EQ(p.get_pos(), Position(0, 1));
+}
+}  // namespace
 
 }  // namespace

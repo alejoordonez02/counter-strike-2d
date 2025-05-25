@@ -21,9 +21,11 @@ Player::Player(const Position& pos, Map& map):
         current_weapon(primary),
         shield(0),
         health(100),
-        alive(true) {}
+        alive(true),
+        velocity(1) {}
 
-void Player::move(const Direction& dir) { return (void)dir; }  // dummy
+void Player::move(const Direction& dir) { pos += dir * velocity; }
+
 void Player::attack(const Position& destination) {
     Trajectory t(pos, destination);
     auto& collidable = map.get_collidable();
