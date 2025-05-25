@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <numeric>
 #include <vector>
 
@@ -12,19 +13,23 @@
  * Player va a implementar Collidable
  * */
 class Collidable {
-private:
+protected:
     Position pos;
 
 public:
+    Collidable(const Position& pos): pos(pos) {}
+
     Position get_pos() const { return pos; }
+
     virtual void get_attacked(const int& damage) = 0;
 
-    std::vector<size_t> sort_by_distance_idx(const std::vector<Collidable>& coll) const {
+    std::vector<size_t> sort_by_distance_idx(
+            const std::vector<std::unique_ptr<Collidable>>& coll) const {
         std::vector<size_t> idx(coll.size());
         std::iota(idx.begin(), idx.end(), 0);
 
         std::sort(idx.begin(), idx.end(), [&coll, this](size_t i, size_t j) {
-            return get_distance(coll[i]) < get_distance(coll[j]);
+            return get_distance(*coll[i]) < get_distance(*coll[j]);
         });
         return idx;
     }
@@ -35,7 +40,7 @@ public:
         return std::sqrt(dx * dx + dy * dy);
     }
 
-    virtual ~Collidable();
+    virtual ~Collidable() = default;
 };
 
 #endif
