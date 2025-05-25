@@ -9,6 +9,8 @@ if (NOT DEFINED CMAKE_CXX_STANDARD)
 endif()
 
 set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(cs2d
     VERSION 1.0
@@ -107,11 +109,12 @@ if(CS2D_SERVER)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
+    add_subdirectory(server/model)
 
     set_project_warnings(cs2d_server ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the cs2d_common lib target
-    target_link_libraries(cs2d_server cs2d_common)
+    target_link_libraries(cs2d_server PRIVATE cs2d_common cs2d_server_model)
 endif()
 
 if(CS2D_EDITOR)
@@ -181,6 +184,7 @@ if(CS2D_TESTS)
     target_link_libraries(cs2d_tests
         PRIVATE # Use PRIVATE if these libs are only for the tests, PUBLIC if cs2d_tests was a library itself
         cs2d_common
+        cs2d_server_model
         GTest::gmock_main # This includes gmock and gtest and provides a main function
         # If you have your own main() in tests, you would use:
         # GTest::gmock

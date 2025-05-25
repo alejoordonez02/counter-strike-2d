@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../common/direction.h"
+#include "../common/network/protocol.h"
 #include "../common/player_commands/attack.h"
 #include "../common/player_commands/move.h"
 #include "gmock/gmock.h"
@@ -17,7 +18,7 @@ using ::testing::ThrowsMessage;
 
 namespace {
 TEST(DeserializerTest, DeserializeValidMoveCommandNorth) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x00 /* north */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x00 /* north */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -27,7 +28,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandNorth) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandNorthEast) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x01 /* north east */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x01 /* north east */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -37,7 +38,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandNorthEast) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandEast) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x02 /* east */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x02 /* east */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -47,7 +48,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandEast) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandSouthEast) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x03 /* south east */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x03 /* south east */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -57,7 +58,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouthEast) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandSouth) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x04 /* south */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x04 /* south */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -67,7 +68,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouth) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandSouthWest) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x05 /* south west */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x05 /* south west */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -77,7 +78,7 @@ TEST(DeserializerTest, DeserializeValidMoveCommandSouthWest) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandWest) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x06 /* west */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x06 /* west */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
@@ -87,13 +88,30 @@ TEST(DeserializerTest, DeserializeValidMoveCommandWest) {
 }
 
 TEST(DeserializerTest, DeserializeValidMoveCommandNorthWest) {
-    std::string srlzd_cmd = {0x6d /* move */, 0x07 /* north west */};
+    std::vector<uint8_t> srlzd_cmd = {0x6d /* move */, 0x07 /* north west */};
     std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
     Move* move_cmd = dynamic_cast<Move*>(cmd.get());
     MockPlayer p;
     EXPECT_EQ(move_cmd->get_dir(), Direction::NW);
     EXPECT_CALL(p, move(Direction::NW));
     move_cmd->execute(p);
+}
+
+TEST(DeserializerTest, DeserializeValidAttackCommandWithPositionXPiYPi) {
+    std::vector<uint8_t> srlzd_cmd = {PlayerCommandSerial::ATTACK,
+                                      0x40,
+                                      0x49,
+                                      0x0f,
+                                      0xdb /* ~pi */,
+                                      0x40,
+                                      0x49,
+                                      0x0f,
+                                      0xdb /* ~pi */};
+    std::unique_ptr<Command> cmd = Deserializer::deserialize_command(srlzd_cmd);
+    Attack* attack_cmd = dynamic_cast<Attack*>(cmd.get());
+    MockPlayer p;
+    EXPECT_CALL(p, attack(Position(3.14159265, 3.14159265)));
+    attack_cmd->execute(p);
 }
 
 }  // namespace
