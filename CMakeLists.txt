@@ -62,8 +62,8 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     # Use system SDL2 packages
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
-    find_package(SDL2_mixer REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
+    # find_package(SDL2_mixer REQUIRED)
+    # find_package(SDL2_ttf REQUIRED)
 
     # Include FetchContent module
     include(FetchContent)
@@ -90,23 +90,23 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
         OVERRIDE_FIND_PACKAGE
     )
 
-    FetchContent_Declare(
-        SDL2_mixer
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
-        GIT_TAG release-2.8.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
-        OVERRIDE_FIND_PACKAGE
-    )
+    # FetchContent_Declare(
+    #     SDL2_mixer
+    #     GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
+    #     GIT_TAG release-2.8.0
+    #     GIT_SHALLOW TRUE
+    #     GIT_PROGRESS TRUE
+    #     OVERRIDE_FIND_PACKAGE
+    # )
 
-    FetchContent_Declare(
-        SDL2_ttf
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-        GIT_TAG release-2.22.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
-        OVERRIDE_FIND_PACKAGE
-    )
+    # FetchContent_Declare(
+    #     SDL2_ttf
+    #     GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
+    #     GIT_TAG release-2.22.0
+    #     GIT_SHALLOW TRUE
+    #     GIT_PROGRESS TRUE
+    #     OVERRIDE_FIND_PACKAGE
+    # )
 
     FetchContent_Declare(
         libSDL2pp
