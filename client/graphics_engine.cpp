@@ -1,0 +1,153 @@
+#include <SDL2/SDL.h>
+#include <SDL2pp/SDL2pp.hh>
+
+#include "graphics_engine.h"
+#include <unistd.h>
+#include "pointer.h"
+
+
+const static int RATE = 1000/60;
+
+
+GraphicsEngine::GraphicsEngine(): 
+    sdl(SDL_INIT_VIDEO),
+    window("Counter Strike 2D",
+                          SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                          640, 480,
+                          SDL_WINDOW_SHOWN),
+    renderer(window, -1, SDL_RENDERER_ACCELERATED),
+    texture_provider(renderer){
+        // poner color de fondo negro
+        renderer.SetDrawColor(0, 0, 0, 0);
+        
+}
+
+
+void GraphicsEngine::run(){
+    SDL2pp::Texture* pointer_texture = texture_provider.get_texture_pointer();
+    SDL2pp::Texture* terrorista_texture = texture_provider.get_texture_terrorist();
+    
+    Player player(*terrorista_texture);
+    Pointer pointer(*pointer_texture);
+    
+    while (is_running) {
+        uint32_t t1 = SDL_GetTicks();
+
+        is_running = handleEvents(player);
+        
+        update(player, pointer, RATE);
+        
+        render(player, pointer);
+
+        // sleep_or_catch_up(t1);
+        usleep(FRAME_RATE);
+    }
+}
+
+
+
+
+void GraphicsEngine::render(Player &player, Pointer &pointer){
+    // renderer.SetDrawColor(0x80, 0x80, 0x80);
+
+    // limpiar la ventana
+    renderer.Clear();
+
+    player.render(renderer);
+    pointer.render(renderer);
+
+    // mostrar la ventana
+    renderer.Present();
+}
+
+
+void GraphicsEngine::update(Player &player, Pointer &pointer, float delta_time){
+    player.update(delta_time);
+    pointer.update();
+}
+
+void GraphicsEngine::closeWindow() {
+    this->window.~Window(); 
+    this->renderer.~Renderer();
+    this->sdl.~SDL();
+}
+
+
+
+
+
+
+bool GraphicsEngine::handleEvents(Player &player) {
+    SDL_Event event;
+    while(SDL_PollEvent(&event)){
+        switch(event.type) {
+            case SDL_KEYDOWN: {
+                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+                switch (keyEvent.keysym.sym) {
+                    case SDLK_LEFT:
+                        player.moveLeft();
+                        break;
+                    case SDLK_RIGHT:
+                        player.moveRigth();
+                        break;
+                    case SDLK_UP:
+                        player.moveUp();
+                        break;
+                    case SDLK_DOWN:
+                        player.moveDown();
+                        break;
+                    }
+                } // Fin KEY_DOWN
+                break;
+            case SDL_KEYUP: {
+                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+                switch (keyEvent.keysym.sym) {
+                    case SDLK_LEFT:
+                        player.stopMoving();
+                        break;
+                    case SDLK_RIGHT:
+                        player.stopMoving();
+                        break;
+                    case SDLK_UP:
+                        player.stopMoving();
+                        break;
+                    case SDLK_DOWN:
+                        player.stopMoving();
+                        break;
+                    } 
+                }// Fin KEY_UP
+                break;
+            // case SDL_MOUSEMOTION:
+                // std::cout << "Oh! Mouse" << std::endl;
+                // break;
+            case SDL_QUIT:
+                std::cout << "Cerrando ventana..." << std::endl;
+                return false;
+        } // fin switch(event)
+    } // fin while(SDL_PollEvents)
+    return true;
+}
+
+
+
+void GraphicsEngine::sleep_or_catch_up(uint32_t& t1) {
+    uint32_t t2 = SDL_GetTicks();
+
+    int rest = RATE - (t2 - t1);
+    if (rest < 0) {
+        int behind = -rest;
+        int lost = behind - behind % RATE;
+
+        // recuperamos los frames perdidos
+        uint8_t frames_to_skip = int(lost / RATE);
+
+        // TODO: skipear frames
+
+
+        t1 += lost;
+    } else {
+        SDL_Delay(rest);
+    }
+
+    t1 = SDL_GetTicks();
+}
