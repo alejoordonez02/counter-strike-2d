@@ -1,0 +1,10 @@
+background_map_png: "map_png"
+colissionable_map:
+- tile_id: 0
+  position:
+    x: 1
+    y: 1
+- tile_id: 1
+  position:
+    x: 2
+    y: 1
