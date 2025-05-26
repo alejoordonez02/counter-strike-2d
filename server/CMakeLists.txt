@@ -1,6 +1,4 @@
-# target_sources(server
-#     PRIVATE
-#     # .cpp files
-#     PUBLIC
-#     # .h files
-#     )
+target_sources(cs2d_server
+    PRIVATE
+    main.cpp
+)

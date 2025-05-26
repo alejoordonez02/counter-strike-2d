@@ -16,6 +16,7 @@ target_sources(cs2d_client
 # target_sources(client
 #     PRIVATE
 #     # .cpp files
-#     PUBLIC
+#     main.cpp
+    # PUBLIC
 #     # .h files
 #     )

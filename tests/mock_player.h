@@ -1,0 +1,23 @@
+#ifndef MOCK_PLAYER_H
+#define MOCK_PLAYER_H
+
+#include "../common/direction.h"
+#include "../common/position.h"
+#include "../server/model/player.h"
+#include "gmock/gmock.h"
+
+class MockPlayer: public Player {
+private:
+    static Position dummy_pos;
+    static Map dummy_map;
+
+public:
+    MockPlayer(): Player(dummy_pos, dummy_map) {}
+    MockPlayer(const Position& pos): Player(pos, dummy_map) {}
+    MOCK_METHOD(void, move, (const Direction&), (override));
+    MOCK_METHOD(void, attack, (const Position&), (override));
+    MOCK_METHOD(void, get_attacked, (const int&), (override));
+    virtual ~MockPlayer() = default;
+};
+
+#endif

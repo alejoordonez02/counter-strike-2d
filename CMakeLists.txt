@@ -9,6 +9,8 @@ if (NOT DEFINED CMAKE_CXX_STANDARD)
 endif()
 
 set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(cs2d
     VERSION 1.0
@@ -57,6 +59,13 @@ add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client")
 # Install libSDL2 and libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
 if(CS2D_CLIENT OR CS2D_EDITOR)
+    # Use system SDL2 packages
+    find_package(SDL2 REQUIRED)
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
+
+    # Include FetchContent module
     include(FetchContent)
 
     set(SDL2PP_WITH_IMAGE YES)
@@ -104,9 +113,12 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
         OVERRIDE_FIND_PACKAGE
         URL https://github.com/libSDL2pp/libSDL2pp/archive/cc198c9a5657048bee67ece82de620b2d5661084.zip
     )
-
-    FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_mixer SDL2_ttf libSDL2pp)
+    
+    FetchContent_MakeAvailable(libSDL2pp)
 endif()
+
+# Find SDL2 package
+find_package(SDL2 REQUIRED)
 
 # Program section
 # ---------------
@@ -140,11 +152,12 @@ if(CS2D_SERVER)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
+    add_subdirectory(server/model)
 
     set_project_warnings(cs2d_server ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
     # Link the cs2d_common lib target
-    target_link_libraries(cs2d_server cs2d_common)
+    target_link_libraries(cs2d_server PRIVATE cs2d_common cs2d_server_model)
 endif()
 
 if(CS2D_EDITOR)
@@ -163,8 +176,14 @@ if(CS2D_EDITOR)
     # add libSDL2pp's headers
     target_include_directories(cs2d_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
 
+    # Include SDL2 headers
+    include_directories(${SDL2_INCLUDE_DIRS})
+
     # Link the cs2d_common lib target
-    target_link_libraries(cs2d_editor cs2d_common SDL2pp::SDL2pp)
+    target_link_libraries(cs2d_editor PRIVATE cs2d_common SDL2pp::SDL2pp)
+
+    # Link SDL2 library
+    target_link_libraries(cs2d_editor PRIVATE SDL2::SDL2)
 endif()
 
 
@@ -204,17 +223,14 @@ if(CS2D_TESTS)
     # Set the compiler warnings to the tests target (but be a little lesser strict)
     set_project_warnings(cs2d_tests ${CS2D_MAKE_WARNINGS_AS_ERRORS} TRUE)
 
-    # Say where googletest headers can be found
-    target_include_directories(cs2d_tests
-        PUBLIC
-        ${gtest_SOURCE_DIR}/include
-        ${gmock_SOURCE_DIR}/include
-        )
-
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in cs2d_common
-    # Change this if you have to.
+    # Link the cs2d_tests lib target
     target_link_libraries(cs2d_tests
+        PRIVATE # Use PRIVATE if these libs are only for the tests, PUBLIC if cs2d_tests was a library itself
         cs2d_common
-        GTest::gtest_main
+        cs2d_server_model
+        GTest::gmock_main # This includes gmock and gtest and provides a main function
+        # If you have your own main() in tests, you would use:
+        # GTest::gmock
+        # GTest::gtest
     )
 endif()
