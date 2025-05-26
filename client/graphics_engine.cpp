@@ -11,7 +11,7 @@ const static int RATE = 1000/60;
 
 GraphicsEngine::GraphicsEngine(): 
     sdl(SDL_INIT_VIDEO),
-    window("Mi ventana SDL2pp",
+    window("Counter Strike 2D",
                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                           640, 480,
                           SDL_WINDOW_SHOWN),
@@ -77,18 +77,11 @@ void GraphicsEngine::closeWindow() {
 
 
 
-/**
- * Va a tomar un evento de teclado, y actualizará el modelo en función de los eventos que lleguen.
- * En un juego real no se tomará de a un evento por vuelta del gameloop, sino que se deberán tomar TODOS
- * o N eventos por vuelta
- */
 bool GraphicsEngine::handleEvents(Player &player) {
     SDL_Event event;
-    // Para el alumno: Buscar diferencia entre waitEvent y pollEvent
     while(SDL_PollEvent(&event)){
         switch(event.type) {
             case SDL_KEYDOWN: {
-                // ¿Qué pasa si mantengo presionada la tecla?    
                 SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
                 switch (keyEvent.keysym.sym) {
                     case SDLK_LEFT:
