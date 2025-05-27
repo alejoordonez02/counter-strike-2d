@@ -288,4 +288,57 @@
     <file>icons/zoom-in.svg</file>
     <file>icons/zoom-out.svg</file>
   </qresource>
+  <qresource prefix="backgrounds">
+    <file>assets/gfx/backgrounds/aztec.png</file>
+    <file>assets/gfx/backgrounds/blood.jpg</file>
+    <file>assets/gfx/backgrounds/dust.png</file>
+    <file>assets/gfx/backgrounds/gras1.jpg</file>
+    <file>assets/gfx/backgrounds/inferno.png</file>
+    <file>assets/gfx/backgrounds/lava.jpg</file>
+    <file>assets/gfx/backgrounds/mars.png</file>
+    <file>assets/gfx/backgrounds/nuke.png</file>
+    <file>assets/gfx/backgrounds/office.png</file>
+    <file>assets/gfx/backgrounds/sand1.jpg</file>
+    <file>assets/gfx/backgrounds/sand1-night.jpg</file>
+    <file>assets/gfx/backgrounds/snow.jpg</file>
+    <file>assets/gfx/backgrounds/space.jpg</file>
+    <file>assets/gfx/backgrounds/stone1.jpg</file>
+    <file>assets/gfx/backgrounds/toxic.jpg</file>
+    <file>assets/gfx/backgrounds/water1.jpg</file>
+    <file>assets/gfx/backgrounds/water2.jpg</file>
+    <file>assets/gfx/backgrounds/water3.jpg</file>
+    <file>assets/gfx/backgrounds/water4.jpg</file>
+  </qresource>
+  <qresource prefix="tiles">
+    <file>assets/gfx/tiles/aztec.bmp</file>
+    <file>assets/gfx/tiles/aztec.inf</file>
+    <file>assets/gfx/tiles/blank_tileset_max_size.bmp</file>
+    <file>assets/gfx/tiles/cs2dnorm.bmp</file>
+    <file>assets/gfx/tiles/cs2dnorm.inf</file>
+    <file>assets/gfx/tiles/cs_assault.bmp</file>
+    <file>assets/gfx/tiles/cs_assault.inf</file>
+    <file>assets/gfx/tiles/cs_italy_tiles.png</file>
+    <file>assets/gfx/tiles/ctf_acid.bmp</file>
+    <file>assets/gfx/tiles/ctf_acid.inf</file>
+    <file>assets/gfx/tiles/de_cbble_max.bmp</file>
+    <file>assets/gfx/tiles/default_aztec.png</file>
+    <file>assets/gfx/tiles/default_dust.inf</file>
+    <file>assets/gfx/tiles/default_dust.png</file>
+    <file>assets/gfx/tiles/default_inferno.inf</file>
+    <file>assets/gfx/tiles/default_inferno.png</file>
+    <file>assets/gfx/tiles/de_vantage.bmp</file>
+    <file>assets/gfx/tiles/de_vantage.inf</file>
+    <file>assets/gfx/tiles/dust.bmp</file>
+    <file>assets/gfx/tiles/dust.inf</file>
+    <file>assets/gfx/tiles/dust_klin.bmp</file>
+    <file>assets/gfx/tiles/eldorado.bmp</file>
+    <file>assets/gfx/tiles/eldorado.inf</file>
+    <file>assets/gfx/tiles/embrador.bmp</file>
+    <file>assets/gfx/tiles/embrador.inf</file>
+    <file>assets/gfx/tiles/hal copy.bmp</file>
+    <file>assets/gfx/tiles/mars.bmp</file>
+    <file>assets/gfx/tiles/office.bmp</file>
+    <file>assets/gfx/tiles/office.inf</file>
+    <file>assets/gfx/tiles/sow_guerilla.bmp</file>
+  </qresource>
 </RCC>
