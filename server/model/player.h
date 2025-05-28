@@ -8,11 +8,11 @@
 #include "../../common/direction.h"
 #include "../../common/position.h"
 
-#include "collidable.h"
+#include "circle.h"
 #include "map.h"
 #include "weapon.h"
 
-class Player: public Collidable {
+class Player: public Circle {
 private:
     Map& map;
     int kills;
