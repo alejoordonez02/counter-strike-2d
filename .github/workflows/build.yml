@@ -11,34 +11,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install CMake & GoogleTest dependencies
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ libgtest-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            libopus-dev \
+            libopusfile-dev \
+            libxmp-dev \
+            libfluidsynth-dev \
+            fluidsynth \
+            libwavpack1 \
+            libwavpack-dev \
+            libfreetype-dev \
+            wavpack \
+            libsdl2-dev \
+            libsdl2-image-dev
 
-    - name: Install project dependecies
-      run: sudo apt-get install -y \
-           build-essential \
-           libopus-dev \
-           libopusfile-dev \
-           libxmp-dev \
-           libfluidsynth-dev \
-           fluidsynth \
-           libwavpack1 \
-           libwavpack-dev \
-           libfreetype-dev \
-           wavpack \
-           libsdl2-dev \
-           libsdl2-image-dev
+      - name: Build project
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Debug
+          make -j$(nproc)
 
-    - name: Build project
-      run: |
-        make
-
-    - name: Run tests
-      run: |
-        make run-tests
-        cd build
-        ctest --output-on-failure
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
 
