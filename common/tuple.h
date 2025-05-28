@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-template <typename T>
+template <typename Derived, typename T>
 struct Tuple {
     T x;
     T y;
@@ -12,17 +12,23 @@ struct Tuple {
 
     float get_length() const { return std::sqrt(x * x + y * y); }
 
-    Tuple<T> operator+(const Tuple<T>& other) const { return Tuple<T>(x + other.x, y + other.y); }
+    float dot(const Derived& other) const { return x * other.x + y * other.y; }
 
-    Tuple<T>& operator+=(const Tuple<T>& other) {
+    Derived operator+(const Derived& other) const { return Derived(x + other.x, y + other.y); }
+
+    Derived operator-(const Derived& other) const { return Derived(x - other.x, y - other.y); }
+
+    Derived& operator+=(const Derived& other) {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    bool operator==(const Tuple<T>& other) const { return x == other.x and y == other.y; }
+    Derived operator*(const float& n) const { return Derived(x * n, y * n); }
 
-    bool operator<(const Tuple<T>& other) const { return get_length() < other.get_length(); }
+    bool operator==(const Derived& other) const { return x == other.x and y == other.y; }
+
+    bool operator<(const Derived& other) const { return get_length() < other.get_length(); }
 };
 
 #endif
