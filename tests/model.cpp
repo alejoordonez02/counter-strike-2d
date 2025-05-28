@@ -59,10 +59,12 @@ TEST(PlayerTest, PlayerMoveNorthFromX0Y0WithVelocity1) {
 TEST(PlayerTest, PlayerCanNotWalkThroughAnObstacle) {
     Map map;
     Player p(Position(0, 0), map);
+    auto mock = std::make_unique<MockPlayer>(Position(0, 0.5));
+    map.add_collidable(std::move(mock));
     Direction dir(0, 1);
     Move move(dir);
     move.execute(p);
-    EXPECT_EQ(p.get_position(), Position(0, 1));
+    EXPECT_EQ(p.get_position(), Position(0, 0.5));
 }
 }  // namespace
 

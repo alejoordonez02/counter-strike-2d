@@ -9,6 +9,7 @@
 
 #include "circle.h"
 #include "map.h"
+#include "trajectory.h"
 #include "weapon.h"
 
 #define PLAYER_RADIUS 1
@@ -25,7 +26,21 @@ Player::Player(const Position& pos, Map& map):
         alive(true),
         velocity(1) {}
 
-void Player::move(const Direction& dir) { pos += dir * velocity; }
+void Player::move(const Direction& dir) {
+    Trajectory t(pos, pos + dir * velocity);
+    auto& collidable = map.get_collidable();
+    auto sorted_idx = sort_by_distance_idx(collidable);
+    for (size_t i: sorted_idx) {
+        auto& c = collidable[i];
+        if (c.get() == this)
+            continue;  // skip self
+        if (c->intersects(t)) {
+            pos = c->get_position();
+            return;
+        }
+    }
+    pos = t.destination;
+}
 
 void Player::attack(const Position& destination) {
     auto& collidable = map.get_collidable();
