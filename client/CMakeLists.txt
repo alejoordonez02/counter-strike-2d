@@ -1,7 +1,15 @@
 target_sources(cs2d_client
     PRIVATE
-    # .cpp files
-    main.cpp
+        client_main.cpp
+        graphics_engine.cpp
+        texture_provider.cpp
+        player.cpp
+        animation.cpp
+        pointer.cpp
     PUBLIC
-    # .h files
-    )
+        graphics_engine.h
+        texture_provider.h
+        player.h
+        animation.h
+        pointer.h
+)
