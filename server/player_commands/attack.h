@@ -1,8 +1,8 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-#include "../../server/model/player.h"
-#include "../position.h"
+#include "../model/player.h"
+#include "../../common/position.h"
 
 #include "command.h"
 

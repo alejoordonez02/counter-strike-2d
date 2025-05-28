@@ -1,8 +1,8 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-#include "../../server/model/player.h"
-#include "../direction.h"
+#include "../model/player.h"
+#include "../../common/direction.h"
 
 #include "command.h"
 

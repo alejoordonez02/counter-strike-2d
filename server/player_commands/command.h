@@ -4,8 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "../../server/model/player.h"
-#include "../serializable.h"
+#include "../model/player.h"
 
 // class Command: public Serializable {
 class Command {

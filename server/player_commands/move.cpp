@@ -1,7 +1,5 @@
 #include "move.h"
 
-#include "../network/serializer.h"
-
 Move::Move(Direction d): dir(d) {}
 
 void Move::execute(Player& p) const { p.move(dir); }
