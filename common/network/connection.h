@@ -2,13 +2,16 @@
 #define CONNECTION_H
 
 #include <string>
+#include <vector>
+#include <cstdint>
 
 #include "socket/socket.h"
-#include "serializer.h"
 
 class Connection {
 private:
     Socket skt;
+
+    void send_length(const std::vector<uint8_t>& msg);
 
 public:
     /*
@@ -26,11 +29,10 @@ public:
      * */
     Connection(const std::string& hostname, const std::string& servname);
 
-    void send_msg(const std::string& msg);
-    std::string receive_msg();
+    
+    void send_msg(const std::vector<uint8_t>& msg);
+    std::vector<uint8_t> receive_msg();
 
-private:
-    std::string prepend_length(const std::string& msg);
 
     Connection(const Connection&) = delete;
     Connection& operator=(const Connection&) = delete;
