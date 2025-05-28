@@ -5,7 +5,6 @@ target_sources(cs2d_common
     network/serializer.cpp
     player_commands/attack.cpp
     player_commands/move.cpp
-    
     PUBLIC
     # .h files
     player_commands/attack.h
