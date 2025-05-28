@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cmake g++ libgtest-dev
 
     - name: Install project dependecies
-      run: ../../installer.sh
+      run: sudo apt-get install -y build-essential cmake libopus-dev libopusfile-dev libxmp-dev libfluidsynth-dev fluidsynth libwavpack1 libwavpack-dev libfreetype-dev wavpack
 
     - name: Build project
       run: |
