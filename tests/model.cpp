@@ -12,7 +12,7 @@ namespace {
 TEST(ModelTest, PlayerGetsAttackedWhenShoot) {
     Map map;
     Player p(Position(0, 0), map);
-    auto mock = std::make_unique<MockPlayer>(Position(1, 1));
+    auto mock = std::make_unique<MockPlayer>(Position(5, 5));
     MockPlayer* mock_ptr = mock.get();
     map.add_collidable(std::move(mock));
     Attack attack(Position(1, 1));
@@ -38,7 +38,7 @@ TEST(ModelTest, PlayerDoesNotGetAttackedWhenShootIfCovered) {
 TEST(ModelTest, PlayerDoesNotGetAttackedWhenAttackerMissesShoot) {
     Map map;
     Player p(Position(0, 0), map);
-    auto mock = std::make_unique<MockPlayer>(Position(2, 3));
+    auto mock = std::make_unique<MockPlayer>(Position(20, 30));
     MockPlayer* mock_ptr = mock.get();
     map.add_collidable(std::move(mock));
     Attack attack(Position(1, 1));
@@ -50,10 +50,19 @@ namespace {
 TEST(PlayerTest, PlayerMoveNorthFromX0Y0WithVelocity1) {
     Map map;
     Player p(Position(0, 0), map);
-    Direction dir(Cardinal::N);
+    Direction dir(0, 1);
     Move move(dir);
     move.execute(p);
-    EXPECT_EQ(p.get_pos(), Position(0, 1));
+    EXPECT_EQ(p.get_position(), Position(0, 1));
+}
+
+TEST(PlayerTest, PlayerCanNotWalkThroughAnObstacle) {
+    Map map;
+    Player p(Position(0, 0), map);
+    Direction dir(0, 1);
+    Move move(dir);
+    move.execute(p);
+    EXPECT_EQ(p.get_position(), Position(0, 1));
 }
 }  // namespace
 
