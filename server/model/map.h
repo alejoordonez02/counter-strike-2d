@@ -4,22 +4,24 @@
 #include <memory>
 #include <vector>
 
-#include "collidable.h"
+#include "hitbox.h"
 
 /*
  * El mapa contiene tanto los objetos estáticos, como los dinámicos.
  * Existen objetos colisionables, y en particular, todos los dinámicos
  * son colisionables y viceversa, así que los llamamos con un sólo
- * nombre: collidable
+ * nombre: collidables
  * */
 class Map {
 private:
-    std::vector<std::unique_ptr<Collidable>> collidable;
+    std::vector<std::unique_ptr<Hitbox>> collidables;
 
 public:
-    Map(): collidable() {}
-    void add_collidable(std::unique_ptr<Collidable>&& cll) { collidable.push_back(std::move(cll)); }
-    std::vector<std::unique_ptr<Collidable>>& get_collidable() { return collidable; }
+    Map(): collidables() {}
+
+    void add_collidable(std::unique_ptr<Hitbox>&& cll) { collidables.push_back(std::move(cll)); }
+
+    std::vector<std::unique_ptr<Hitbox>>& get_collidable() { return collidables; }
 };
 
 #endif

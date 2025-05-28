@@ -9,26 +9,20 @@
  * de la misma
  * */
 class Trajectory {
-private:
-    float m;  // pendiente
-    float b;  // desplazamiento
-
-    float eval(const float& x) const { return m * x + b; }
-
 public:
-    Trajectory(const Position& origin, const Position& destination):
-            m((destination.y - origin.y) / (destination.x - origin.x)),
-            b(origin.y - m * origin.x) {}
+    const Position origin;
+    const Position destination;
 
-    bool intersects(const Position& pos) const {
-        /*
-         * Por ahora no estoy considerando ningún tipo de hitbox,
-         * pero intersects pordría recibir un float hitbox que sea
-         * el tamaño del rango a checkear para intersecar (>,<)
-         * */
-        if (pos.y == eval(pos.x))
-            return true;
-        return false;
+    Trajectory(const Position& origin, const Position& destination):
+            origin(origin), destination(destination) {}
+
+    Position eval(const float& t) const { return origin + (destination - origin) * t; }
+
+    float get_length() const { return origin.get_distance(destination); }
+
+    Direction get_direction() const {
+        auto dir = destination - origin;
+        return Direction(dir.x, dir.y);
     }
 };
 

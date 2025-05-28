@@ -3,18 +3,24 @@
 
 #include <random>
 
-/*
- * Claramente estos los vamos a tener que generar más rápido, esto
- * es sólo un proto
- * */
 class Random {
+private:
+    static std::mt19937_64 gen;
+    static std::uniform_real_distribution<float> dist;
+
 public:
-    static float get(const float& n, const float& m) {
+    static void initialize() {
         std::random_device rd;
-        std::mt19937_64 gen(rd());
-        std::uniform_real_distribution<float> dist(n, m);
-        return dist(gen);
+        gen.seed(rd());
+        dist = std::uniform_real_distribution<float>(0.0f, 1.0f);
+    }
+
+    static float get(const float& n = 0.0f, const float& m = 1.0f) {
+        return std::uniform_real_distribution<float>(n, m)(gen);
     }
 };
+
+std::mt19937_64 Random::gen;
+std::uniform_real_distribution<float> Random::dist(0.0f, 1.0f);
 
 #endif
