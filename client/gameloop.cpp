@@ -4,12 +4,14 @@
 #include "gameloop.h"
 #include <unistd.h>
 #include "pointer.h"
+#include "../common/player_commands/command.h"
 
+#include "mock_server.h"
 
 const static int RATE = 1000/60;
 
 
-GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos): 
+GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<Command>& comandos): 
     sdl(SDL_INIT_VIDEO),
     window("Counter Strike 2D",
                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -18,7 +20,7 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
     texture_provider(renderer),
     snapshots_queue(snapshots),
-    comandos_queue(comandos)
+    input_handler(comandos)
     {
         // poner color de fondo negro
         renderer.SetDrawColor(0, 0, 0, 0);
@@ -34,17 +36,22 @@ void GameLoop::run(){
     Pointer pointer(*pointer_texture);
 
     Snapshot last_snapshot;
+
+    mock_server(snapshots_queue);
     
     while (is_running) {
         uint32_t t1 = SDL_GetTicks();
 
-        while (snapshots_queue.try_pop(last_snapshot)) {}
+        // TODO: asegurarse de obtener el último evento (vaciar la queue entera?)
+        snapshots_queue.try_pop(last_snapshot);
+        
+        if(!last_snapshot.players.empty()){   
+            // imprimir posicion jugador obtenido del vector de jugadores
+            PlayerDTO jugador = last_snapshot.players.at(0);
+            std::cout << jugador.x << std::endl;
+        }
 
-        // imprimir posicion jugador obtenido del vector de jugadores
-        PlayerDTO jugador = last_snapshot.players.at(0);
-        std::cout << jugador.x << std::endl;
-
-        is_running = handleEvents(player);
+        is_running = input_handler.handle_events(player);
         
         update(player, pointer, RATE);
         
@@ -85,59 +92,6 @@ void GameLoop::closeWindow() {
 
 
 
-
-
-
-bool GameLoop::handleEvents(Jugador &player) {
-    SDL_Event event;
-    while(SDL_PollEvent(&event)){
-        switch(event.type) {
-            case SDL_KEYDOWN: {
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                switch (keyEvent.keysym.sym) {
-                    case SDLK_LEFT:
-                        player.moveLeft();
-                        break;
-                    case SDLK_RIGHT:
-                        player.moveRigth();
-                        break;
-                    case SDLK_UP:
-                        player.moveUp();
-                        break;
-                    case SDLK_DOWN:
-                        player.moveDown();
-                        break;
-                    }
-                } // Fin KEY_DOWN
-                break;
-            case SDL_KEYUP: {
-                SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-                switch (keyEvent.keysym.sym) {
-                    case SDLK_LEFT:
-                        player.stopMoving();
-                        break;
-                    case SDLK_RIGHT:
-                        player.stopMoving();
-                        break;
-                    case SDLK_UP:
-                        player.stopMoving();
-                        break;
-                    case SDLK_DOWN:
-                        player.stopMoving();
-                        break;
-                    } 
-                }// Fin KEY_UP
-                break;
-            // case SDL_MOUSEMOTION:
-                // std::cout << "Oh! Mouse" << std::endl;
-                // break;
-            case SDL_QUIT:
-                std::cout << "Cerrando ventana..." << std::endl;
-                return false;
-        } // fin switch(event)
-    } // fin while(SDL_PollEvents)
-    return true;
-}
 
 
 

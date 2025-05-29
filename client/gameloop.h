@@ -2,9 +2,11 @@
 #define GAMELOOP_H
 
 #include <SDL2pp/SDL2pp.hh>
+
 #include "texture_provider.h"
 #include "jugador.h"
 #include "pointer.h"
+#include "input_handler.h"
 
 #include "../common/queue.h"
 #include "../common/snapshot.h"
@@ -21,13 +23,15 @@ class GameLoop {
         bool is_running = true;
 
         Queue<Snapshot>& snapshots_queue;
-        Queue<PlayerDTO>& comandos_queue;
+        // Queue<Command>& comandos_queue;
+
+        InputHandler input_handler;
 
         
 
 
 public:
-    GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos);
+    GameLoop(Queue<Snapshot>& snapshots, Queue<Command>& comandos);
 
     void run();
 
