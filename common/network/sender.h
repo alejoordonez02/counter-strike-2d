@@ -26,7 +26,6 @@ public:
         } catch (const std::runtime_error& err) { // ClosedQueue or socket was closed
         } catch (const LibError& err) { // socket was closed during Socket::sendall()
         }
-
     }
 
     ~Sender() = default;
