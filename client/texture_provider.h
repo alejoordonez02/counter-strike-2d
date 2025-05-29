@@ -3,27 +3,24 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include <memory>
+#include <string>
+#include <unordered_map>
+
 class TextureProvider {
     private:
-        SDL2pp::Renderer& renderer;
-        
-        SDL2pp::Texture pointer;
-        SDL2pp::Texture counter_terrorist_1;
-        SDL2pp::Texture terrorist_1;
+        static std::unordered_map<std::string, std::shared_ptr<SDL2pp::Texture>> textures;
 
-        // static std::unordered_map<std::string, SDL2pp::Texture> textures;
-
-
+        TextureProvider();
     public:
-        TextureProvider(SDL2pp::Renderer & renderer);
         
-        void load_textures();
+        static std::shared_ptr<SDL2pp::Texture> get_texture(const std::string& texture_name);
 
-        // SDL2pp::Texture* get_texture(const std::string& texture_name);
+        static void load_textures(SDL2pp::Renderer& renderer);
 
-        SDL2pp::Texture* get_texture_pointer();
+        // SDL2pp::Texture* get_texture_pointer();
 
-        SDL2pp::Texture* get_texture_terrorist();
+        // SDL2pp::Texture* get_texture_terrorist();
 };
 
 #endif // TEXTURE_PROVIDER_H
