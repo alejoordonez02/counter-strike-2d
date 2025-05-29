@@ -1,14 +1,14 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL.h>
 
-#include "player.h"
+#include "jugador.h"
 
-Player::Player(SDL2pp::Texture &texture): an(texture), moving(false), x(300), y(300) {}
+Jugador::Jugador(SDL2pp::Texture &texture): an(texture), moving(false), x(300), y(300) {}
 
-Player::~Player() {}
+Jugador::~Jugador() {}
 
 
-void Player::update(float dt) {
+void Jugador::update(float dt) {
     if (moving) {
         an.update(dt);
         if (facingLeft){
@@ -24,7 +24,7 @@ void Player::update(float dt) {
 }
 
 
-void Player::render(SDL2pp::Renderer &renderer) {
+void Jugador::render(SDL2pp::Renderer &renderer) {
     // SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
     // an.render(renderer, SDL2pp::Rect(x, y, 32, 32), flip);
 
@@ -44,7 +44,7 @@ void Player::render(SDL2pp::Renderer &renderer) {
     an.render(renderer, SDL2pp::Rect(x, y, 32, 32), flip, angle);
 }
 
-void Player::moveRigth() {
+void Jugador::moveRigth() {
     moving = true;
     facingRight = true;
     facingLeft = false;
@@ -52,7 +52,7 @@ void Player::moveRigth() {
     facingDown = false;
 }
 
-void Player::moveLeft() {
+void Jugador::moveLeft() {
     moving = true;
     facingLeft = true;
     facingRight = false;
@@ -60,7 +60,7 @@ void Player::moveLeft() {
     facingDown = false;
 }
 
-void Player::moveUp() {
+void Jugador::moveUp() {
     moving = true;
     facingUp = true;
     facingDown = false;
@@ -68,7 +68,7 @@ void Player::moveUp() {
     facingRight = false;
 }
 
-void Player::moveDown() {
+void Jugador::moveDown() {
     moving = true;
     facingDown = true;
     facingUp = false;
@@ -76,6 +76,6 @@ void Player::moveDown() {
     facingRight = false;
 }
 
-void Player::stopMoving() {
+void Jugador::stopMoving() {
     moving = false;
 }

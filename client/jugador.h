@@ -1,13 +1,13 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __JUGADOR_H__
+#define __JUGADOR_H__
 
 #include <SDL2pp/SDL2pp.hh>
 #include "animation.h"
 
-class Player {
+class Jugador {
 public:
-    Player(SDL2pp::Texture &texture);
-    ~Player();
+    Jugador(SDL2pp::Texture &texture);
+    ~Jugador();
     void update(float dt);
     void render(SDL2pp::Renderer &renderer);
     void moveRigth();
@@ -27,4 +27,4 @@ private:
     int y;
 };
 
-#endif // __PLAYER_H__
+#endif // __JUGADOR_H__

@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL2pp.hh>
 
-#include "graphics_engine.h"
+#include "gameloop.h"
 #include <unistd.h>
 #include "pointer.h"
 
@@ -9,29 +9,40 @@
 const static int RATE = 1000/60;
 
 
-GraphicsEngine::GraphicsEngine(): 
+GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos): 
     sdl(SDL_INIT_VIDEO),
     window("Counter Strike 2D",
                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                           640, 480,
                           SDL_WINDOW_SHOWN),
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
-    texture_provider(renderer){
+    texture_provider(renderer),
+    snapshots_queue(snapshots),
+    comandos_queue(comandos)
+    {
         // poner color de fondo negro
         renderer.SetDrawColor(0, 0, 0, 0);
         
 }
 
 
-void GraphicsEngine::run(){
+void GameLoop::run(){
     SDL2pp::Texture* pointer_texture = texture_provider.get_texture_pointer();
     SDL2pp::Texture* terrorista_texture = texture_provider.get_texture_terrorist();
     
-    Player player(*terrorista_texture);
+    Jugador player(*terrorista_texture);
     Pointer pointer(*pointer_texture);
+
+    Snapshot last_snapshot;
     
     while (is_running) {
         uint32_t t1 = SDL_GetTicks();
+
+        while (snapshots_queue.try_pop(last_snapshot)) {}
+
+        // imprimir posicion jugador obtenido del vector de jugadores
+        PlayerDTO jugador = last_snapshot.players.at(0);
+        std::cout << jugador.x << std::endl;
 
         is_running = handleEvents(player);
         
@@ -47,7 +58,7 @@ void GraphicsEngine::run(){
 
 
 
-void GraphicsEngine::render(Player &player, Pointer &pointer){
+void GameLoop::render(Jugador &player, Pointer &pointer){
     // renderer.SetDrawColor(0x80, 0x80, 0x80);
 
     // limpiar la ventana
@@ -61,12 +72,12 @@ void GraphicsEngine::render(Player &player, Pointer &pointer){
 }
 
 
-void GraphicsEngine::update(Player &player, Pointer &pointer, float delta_time){
+void GameLoop::update(Jugador &player, Pointer &pointer, float delta_time){
     player.update(delta_time);
     pointer.update();
 }
 
-void GraphicsEngine::closeWindow() {
+void GameLoop::closeWindow() {
     this->window.~Window(); 
     this->renderer.~Renderer();
     this->sdl.~SDL();
@@ -77,7 +88,7 @@ void GraphicsEngine::closeWindow() {
 
 
 
-bool GraphicsEngine::handleEvents(Player &player) {
+bool GameLoop::handleEvents(Jugador &player) {
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         switch(event.type) {
@@ -130,7 +141,7 @@ bool GraphicsEngine::handleEvents(Player &player) {
 
 
 
-void GraphicsEngine::sleep_or_catch_up(uint32_t& t1) {
+void GameLoop::sleep_or_catch_up(uint32_t& t1) {
     uint32_t t2 = SDL_GetTicks();
 
     int rest = RATE - (t2 - t1);
