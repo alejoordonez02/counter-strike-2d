@@ -4,14 +4,15 @@
 #include <SDL2/SDL.h>
 #include "../common/queue.h"
 #include "../common/player_commands/command.h"
+#include "../common/snapshot.h"
 
 class InputHandler {
 private:
-    Queue<Command>& comandos;
+    Queue<PlayerDTO>& comandos;
 
 
 public:
-    InputHandler(Queue<Command>& comandos_queue);
+    InputHandler(Queue<PlayerDTO>& comandos_queue);
 
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);

@@ -14,7 +14,7 @@ class Client {
 private:
     // InputHandler input_handler;
     Queue<Snapshot> snapshots;
-    Queue<Command> comandos;
+    Queue<PlayerDTO> comandos;
 
     // Sender sender;
     // Receiver receiver;

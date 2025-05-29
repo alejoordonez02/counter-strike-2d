@@ -6,7 +6,7 @@
 #include <map>
 #include <iostream>
 
-InputHandler::InputHandler(Queue<Command>& comandos_queue): 
+InputHandler::InputHandler(Queue<PlayerDTO>& comandos_queue): 
     comandos(comandos_queue) {
 }
 
@@ -46,7 +46,14 @@ void InputHandler::send_direction(){
         dir.x += 1;
     }
 
-    comandos.push(Move(dir));
+    // comandos.try_push(Move(dir));
+    PlayerDTO player;
+    player.player_id = 14;
+    player.player_hp = 123;
+    player.x = dir.x;
+    player.y = dir.y;
+
+    comandos.try_push(player);
 }
 
 

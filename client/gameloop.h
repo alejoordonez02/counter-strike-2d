@@ -23,7 +23,7 @@ class GameLoop {
         bool is_running = true;
 
         Queue<Snapshot>& snapshots_queue;
-        Queue<Command>& comandos_queue;
+        Queue<PlayerDTO>& comandos_queue;
 
         InputHandler input_handler;
 
@@ -31,7 +31,7 @@ class GameLoop {
 
 
 public:
-    GameLoop(Queue<Snapshot>& snapshots, Queue<Command>& comandos);
+    GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos);
 
     void run();
 
