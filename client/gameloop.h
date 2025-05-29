@@ -23,7 +23,7 @@ class GameLoop {
         bool is_running = true;
 
         Queue<Snapshot>& snapshots_queue;
-        Queue<Command*>& comandos_queue;
+        Queue<Command>& comandos_queue;
 
         InputHandler input_handler;
 

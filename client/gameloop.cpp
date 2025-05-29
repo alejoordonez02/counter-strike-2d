@@ -39,7 +39,7 @@ void GameLoop::run(){
 
     Snapshot ultima_snapshot;
 
-    debug_simulacion_servidor(ultima_snapshot);
+    // debug_simulacion_servidor(ultima_snapshot);
     
     while (is_running) {
         uint32_t t1 = SDL_GetTicks();
@@ -67,29 +67,36 @@ void GameLoop::run(){
 }
 
 
-void GameLoop::debug_simulacion_servidor(Snapshot& snapshot){
-    // mock_server(snapshots_queue);
+// void GameLoop::debug_simulacion_servidor(Snapshot& snapshot){
+//     // mock_server(snapshots_queue);
 
+//     // toma aquello que esté en la queue de comandos (o sea Command) 
+//     // y lo convierte en un snapshot para que pusheado en la otra cola
 
-    // toma aquello que esté en la queue de comandos (o sea Command) 
-    // y lo convierte en un snapshot para que pusheado en la otra cola
+//     Command* command_ptr = nullptr;
+//     if(!comandos_queue.try_pop(command_ptr) || command_ptr == nullptr){
+//         return;
+//     }
 
-    Move move_command;
-    if(!comandos_queue.try_pop(move_command)){
-        return;
-    }
-    std::cout << "Se encontro un comando de movimiento" << std::endl;
-    Direction dir = move_command.get_direction();
-    
-    // Simular movimiento del jugador
-    PlayerDTO player;
-    player.player_id = 0;
-    player.x += dir.x;
-    player.y += dir.y;
-    
-    snapshot.players.push_back(player);
+//     // Check if the command is a Move command
+//     Move* move_command = dynamic_cast<Move*>(command_ptr);
+//     if (move_command) {
+//         std::cout << "Se encontro un comando de movimiento" << std::endl;
+//         Direction dir = move_command->get_direction();
 
-}
+//         // Simular movimiento del jugador
+//         PlayerDTO player;
+//         player.player_id = 0;
+//         player.x += dir.x;
+//         player.y += dir.y;
+
+//         snapshot.players.push_back(player);
+//     }
+
+//     // Clean up if necessary
+//     delete command_ptr;
+
+// }
 
 
 
