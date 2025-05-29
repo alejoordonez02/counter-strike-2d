@@ -44,6 +44,9 @@ set_project_warnings(cs2d_common ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 # location (so our dependants will not have to explicitly request this)
 target_include_directories(cs2d_common PUBLIC .)
 
+# variable DATA_PATH para path de archivos de datos (imágenes, sonidos, etc)
+add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client")
+
 # HEY!! TODO XXX: you need to install some runtime and dev libraries *before*
 # compiling the client/editor code.
 #
@@ -63,6 +66,10 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
 
     # Include FetchContent module
     include(FetchContent)
+    
+    set(SDL2PP_WITH_IMAGE YES)
+    # set(SDL2PP_WITH_MIXER YES)
+    # set(SDL2PP_WITH_TTF YES)
 
     # Continue with libSDL2pp
     FetchContent_Declare(
