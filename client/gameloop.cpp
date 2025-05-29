@@ -3,9 +3,9 @@
 
 #include "gameloop.h"
 #include <unistd.h>
-#include "pointer.h"
 #include "../common/player_commands/command.h"
 #include "../common/player_commands/move.h"
+#include "texture_provider.h"
 
 #include "mock_server.h"
 
@@ -19,31 +19,27 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
                           640, 480,
                           SDL_WINDOW_SHOWN),
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
-    texture_provider(renderer),
+    // texture_provider(renderer),
     snapshots_queue(snapshots),
     comandos_queue(comandos),
     input_handler(comandos)
     {
         // poner color de fondo negro
         renderer.SetDrawColor(0, 0, 0, 0);
-        
+
+        // cargar texturas
+        TextureProvider::load_textures(renderer);
 }
 
 
 void GameLoop::run(){
-    SDL2pp::Texture* pointer_texture = texture_provider.get_texture_pointer();
-    SDL2pp::Texture* terrorista_texture = texture_provider.get_texture_terrorist();
-    
-    Jugador player(*terrorista_texture);
-    Pointer pointer(*pointer_texture);
-
-    Snapshot ultima_snapshot;
 
     
     while (is_running) {
         // uint32_t t1 = SDL_GetTicks();
+        _debug_simulacion_servidor(ultima_snapshot);
         
-        debug_simulacion_servidor(ultima_snapshot);
+        is_running = input_handler.handle_events();
         
         // TODO: asegurarse de obtener el último evento (vaciar la queue entera?)
         snapshots_queue.try_pop(ultima_snapshot);
@@ -54,11 +50,10 @@ void GameLoop::run(){
             std::cout << jugador.x << std::endl;
         }
 
-        is_running = input_handler.handle_events();
+        update_renderables_from_snapshot();
+        // update(player, pointer, RATE);
         
-        update(player, pointer, RATE);
-        
-        render(player, pointer);
+        render_all();
 
        
 
@@ -67,8 +62,47 @@ void GameLoop::run(){
     }
 }
 
+void GameLoop::update_renderables_from_snapshot(){
+    // actualizar colisionables, jugadores, etc.
 
-void GameLoop::debug_simulacion_servidor(Snapshot& snapshot){
+    // iterar jugadores y graficarlos
+    for (auto& jugador: ultima_snapshot.players) {
+        // iterar cada uno y buscarlo por ID
+        auto it = players_renderables.find(jugador.player_id);
+        if (it != players_renderables.end()) {
+            // si existe, actualizarlo
+            it->second->update(jugador);
+        } else {
+            std::cout << "LOG: Creando jugador con ID: " << (int)jugador.player_id << std::endl;
+            // si no existe, crearlo
+            auto renderable_player = std::make_unique<RenderablePlayer>(jugador.player_id);
+            players_renderables[jugador.player_id] = std::move(renderable_player);
+        }
+    }
+}
+
+
+void GameLoop::render_all(){
+    // renderer.SetDrawColor(0x80, 0x80, 0x80);
+
+    // limpiar la ventana
+    renderer.Clear();
+
+    // iterar todos los jugadores
+    for (auto& [id, renderable_player]: players_renderables) {
+        // renderizar cada jugador
+        renderable_player->render(renderer);
+    }
+
+    // mostrar la ventana
+    renderer.Present();
+}
+
+
+/**
+ * Solo con fines de debug
+ */
+void GameLoop::_debug_simulacion_servidor(Snapshot& snapshot){
     // mock_server(snapshots_queue);
 
     // toma aquello que esté en la queue de comandos (o sea Command) 
@@ -88,27 +122,6 @@ void GameLoop::debug_simulacion_servidor(Snapshot& snapshot){
 
 }
 
-
-
-
-void GameLoop::render(Jugador &player, Pointer &pointer){
-    // renderer.SetDrawColor(0x80, 0x80, 0x80);
-
-    // limpiar la ventana
-    renderer.Clear();
-
-    player.render(renderer);
-    pointer.render(renderer);
-
-    // mostrar la ventana
-    renderer.Present();
-}
-
-
-void GameLoop::update(Jugador &player, Pointer &pointer, float delta_time){
-    player.update(delta_time);
-    pointer.update();
-}
 
 void GameLoop::closeWindow() {
     this->window.~Window(); 

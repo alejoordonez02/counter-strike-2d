@@ -55,10 +55,6 @@ struct PlayerDTO {
     // coordenadas del jugador
     int16_t x;
     int16_t y;
-
-    // coordenadas del disparo
-    int16_t shoot_x;
-    int16_t shoot_y;
 } __attribute__((packed));
 
 
