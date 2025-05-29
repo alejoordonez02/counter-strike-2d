@@ -7,12 +7,14 @@ target_sources(cs2d_client
         animation.cpp
         pointer.cpp
         client.cpp
-        mock_server.cpp
+        input_handler.cpp
     PUBLIC
+        mock_server.h
         gameloop.h
         texture_provider.h
         jugador.h
         animation.h
         pointer.h
         client.h
+        input_handler.h
 )

@@ -58,7 +58,7 @@ Este script instalará las dependencias necesarias para compilar el proyecto.
 ## Compilación
 Ejecutar
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCS2D_CLIENT=ON -DCS2D_SERVER=ON -DCS2D_EDITOR=ON -DCS2D_TESTS=ON
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCS2D_CLIENT=ON -DCS2D_SERVER=ON -DCS2D_EDITOR=ON -DCS2D_TESTS=ON -DCS2D_MAKE_WARNINGS_AS_ERRORS=OFF
 ```
 
 
