@@ -8,11 +8,11 @@
 #include "../../common/direction.h"
 #include "../../common/position.h"
 
-#include "collidable.h"
+#include "circle.h"
 #include "map.h"
 #include "weapon.h"
 
-class Player: public Collidable {
+class Player: public Circle {
 private:
     Map& map;
     int kills;
@@ -22,6 +22,7 @@ private:
     int shield; /* entre 0 y 1 */
     int health;
     bool alive;
+    float velocity;
 
 public:
     Player(const Position& pos, Map& map);

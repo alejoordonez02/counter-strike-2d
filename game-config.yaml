@@ -1,0 +1,59 @@
+window_width: 600
+window_height: 400
+window_mode: fullscreen   # windowed o fullscreen
+
+minimum_players: 2
+maximum_players: 16
+max_rounds: 10
+
+initial_phase_duration: 30
+round_duration: 120
+
+player:
+  field_of_view: 90   # en grados
+  speed: 5
+  initial_health: 100
+  initial_ammo: 30
+  initial_money: 800
+
+guns:
+  glock:
+    name: Glock
+    type: pistol      # necesario el type?
+    damage: 10
+    precision: 0.8
+    fire_rate: 0.5      # ej. solo puedo disparar cada 0.5 segundos
+    ammo_capacity: 15
+    price: 200
+  ak47:
+    name: AK-47
+    type: rifle
+    damage: 20
+    precision: 0.7
+    fire_rate: 0.4
+    ammo_capacity: 30
+    price: 2500
+  m3:
+    name: M3
+    type: shotgun
+    damage: 20
+    precision: 0.2
+    fire_rate: 1.0
+    ammo_capacity: 8
+    price: 1700
+  awp:
+    name: AWP
+    type: sniper
+    damage: 50
+    precision: 0.9
+    fire_rate: 1.5
+    ammo_capacity: 10
+    price: 4750
+  knife:
+    name: Knife
+    type: melee
+    damage: 30
+    precision: 1
+    fire_rate: 0.2
+    ammo_capacity: 1
+    price: 0

@@ -6,8 +6,6 @@
 
 #include "command.h"
 
-class Serializer;
-
 /*
  * Move
  * */
@@ -18,7 +16,7 @@ private:
 public:
     Move(Direction d);
     void execute(Player& p) const override;
-    Direction get_dir() const;
+    Direction get_direction() const;
 };
 
 #endif

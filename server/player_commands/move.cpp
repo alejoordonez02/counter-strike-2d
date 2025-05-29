@@ -3,4 +3,4 @@
 Move::Move(Direction d): dir(d) {}
 
 void Move::execute(Player& p) const { p.move(dir); }
-Direction Move::get_dir() const { return dir; }
+Direction Move::get_direction() const { return dir; }

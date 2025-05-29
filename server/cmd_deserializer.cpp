@@ -3,7 +3,6 @@
 #include <bit>
 #include <cstdint>
 #include <cstring>
-#include <map>
 #include <stdexcept>
 
 #include <arpa/inet.h>
@@ -16,14 +15,6 @@
 
 #include "protocol.h"
 
-namespace {
-constexpr std::map<uint8_t, Direction> srl_to_dir = {
-        {DirectionSerial::N, Direction::N}, {DirectionSerial::NE, Direction::NE},
-        {DirectionSerial::E, Direction::E}, {DirectionSerial::SE, Direction::SE},
-        {DirectionSerial::S, Direction::S}, {DirectionSerial::SW, Direction::SW},
-        {DirectionSerial::W, Direction::W}, {DirectionSerial::NW, Direction::NW}};
-};
-
 /*
  * Deserialize float
  * */
@@ -35,7 +26,7 @@ float CmdDeserializer::deserialize_float(const std::vector<uint8_t>& srlzd_n) {
 }
 
 /*
- * Deserialize position
+ * Deserialize tuples
  * */
 Position CmdDeserializer::deserialize_position(const std::vector<uint8_t>& srlzd_pos) {
     float x = deserialize_float(srlzd_pos);  // first bytes of pos are srlzd_x
@@ -44,12 +35,21 @@ Position CmdDeserializer::deserialize_position(const std::vector<uint8_t>& srlzd
     return Position(x, y);
 }
 
+Direction Deserializer::deserialize_direction(const std::vector<uint8_t>& srlzd_dir) {
+    float x = deserialize_float(srlzd_dir);  // first bytes of pos are srlzd_x
+    std::vector<uint8_t> srlzd_y = std::vector<uint8_t>(srlzd_dir.begin() + 4, srlzd_dir.end());
+    float y = deserialize_float(srlzd_y);
+    return Direction(x, y);
+}
+
 /*
  * Deserialize player commands
  * */
 std::unique_ptr<Move> CmdDeserializer::deserialize_move_command(
         const std::vector<uint8_t>& srlzd_cmd) {
-    return std::make_unique<Move>(srl_to_dir.at(srlzd_cmd[1]));
+    std::vector<uint8_t> srlzd_dir = std::vector<uint8_t>(srlzd_cmd.begin() + 1, srlzd_cmd.end());
+    auto dir = deserialize_direction(srlzd_dir);
+    return std::make_unique<Move>(dir);
 }
 
 std::unique_ptr<Attack> CmdDeserializer::deserialize_attack_command(

@@ -7,13 +7,15 @@
 #include "../../common/direction.h"
 #include "../../common/position.h"
 
-#include "collidable.h"
+#include "circle.h"
 #include "map.h"
 #include "trajectory.h"
 #include "weapon.h"
 
+#define PLAYER_RADIUS 1
+
 Player::Player(const Position& pos, Map& map):
-        Collidable(pos),
+        Circle(pos, PLAYER_RADIUS),
         map(map),
         kills(0),
         primary(Awp()),
@@ -21,24 +23,37 @@ Player::Player(const Position& pos, Map& map):
         current_weapon(primary),
         shield(0),
         health(100),
-        alive(true) {}
+        alive(true),
+        velocity(1) {}
 
-void Player::move(const Direction& dir) { return (void)dir; }  // dummy
-void Player::attack(const Position& destination) {
-    Trajectory t(pos, destination);
+void Player::move(const Direction& dir) {
+    Trajectory t(pos, pos + dir * velocity);
     auto& collidable = map.get_collidable();
     auto sorted_idx = sort_by_distance_idx(collidable);
     for (size_t i: sorted_idx) {
         auto& c = collidable[i];
         if (c.get() == this)
-            continue;  // skip self, probablemente sea mejor sacarlo de prepo en vez de checkear
-                       // siempre
-        if (t.intersects(c->get_pos())) {
-            current_weapon.attack(*c);
-            break;
+            continue;  // skip self
+        if (c->intersects(t)) {
+            pos = c->get_position();
+            return;
         }
     }
+    pos = t.destination;
 }
+
+void Player::attack(const Position& destination) {
+    auto& collidable = map.get_collidable();
+    auto sorted_idx = sort_by_distance_idx(collidable);
+    for (size_t i: sorted_idx) {
+        auto& c = collidable[i];
+        if (c.get() == this)
+            continue;  // skip self
+        current_weapon.attack(pos, destination, *c);
+        break;
+    }
+}
+
 void Player::get_attacked(const int& damage) {
     health -= (1 - shield) * damage;
     if (health <= 0)

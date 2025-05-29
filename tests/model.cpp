@@ -1,4 +1,5 @@
 #include "../common/player_commands/attack.h"
+#include "../common/player_commands/move.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -11,7 +12,7 @@ namespace {
 TEST(ModelTest, PlayerGetsAttackedWhenShoot) {
     Map map;
     Player p(Position(0, 0), map);
-    auto mock = std::make_unique<MockPlayer>(Position(1, 1));
+    auto mock = std::make_unique<MockPlayer>(Position(5, 5));
     MockPlayer* mock_ptr = mock.get();
     map.add_collidable(std::move(mock));
     Attack attack(Position(1, 1));
@@ -37,12 +38,34 @@ TEST(ModelTest, PlayerDoesNotGetAttackedWhenShootIfCovered) {
 TEST(ModelTest, PlayerDoesNotGetAttackedWhenAttackerMissesShoot) {
     Map map;
     Player p(Position(0, 0), map);
-    auto mock = std::make_unique<MockPlayer>(Position(2, 3));
+    auto mock = std::make_unique<MockPlayer>(Position(20, 30));
     MockPlayer* mock_ptr = mock.get();
     map.add_collidable(std::move(mock));
     Attack attack(Position(1, 1));
     EXPECT_CALL(*mock_ptr, get_attacked(::testing::_)).Times(0);
     attack.execute(p);
 }
+
+namespace {
+TEST(PlayerTest, PlayerMoveNorthFromX0Y0WithVelocity1) {
+    Map map;
+    Player p(Position(0, 0), map);
+    Direction dir(0, 1);
+    Move move(dir);
+    move.execute(p);
+    EXPECT_EQ(p.get_position(), Position(0, 1));
+}
+
+TEST(PlayerTest, PlayerCanNotWalkThroughAnObstacle) {
+    Map map;
+    Player p(Position(0, 0), map);
+    auto mock = std::make_unique<MockPlayer>(Position(0, 0.5));
+    map.add_collidable(std::move(mock));
+    Direction dir(0, 1);
+    Move move(dir);
+    move.execute(p);
+    EXPECT_EQ(p.get_position(), Position(0, 0.5));
+}
+}  // namespace
 
 }  // namespace
