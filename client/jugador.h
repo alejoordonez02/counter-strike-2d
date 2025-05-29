@@ -10,6 +10,10 @@ public:
     ~Jugador();
     void update(float dt);
     void render(SDL2pp::Renderer &renderer);
+    void moveUpRight();
+    void moveUpLeft();
+    void moveDownRight();
+    void moveDownLeft();
     void moveRigth();
     void moveLeft();
     void moveUp();

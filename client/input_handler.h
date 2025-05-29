@@ -16,6 +16,8 @@ public:
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);
 
+    void process_movement(Jugador& player);
+
     bool handle_events(Jugador& player);
 };
 
