@@ -41,7 +41,7 @@ void GameLoop::run(){
 
     
     while (is_running) {
-        uint32_t t1 = SDL_GetTicks();
+        // uint32_t t1 = SDL_GetTicks();
         
         debug_simulacion_servidor(ultima_snapshot);
         
@@ -121,24 +121,24 @@ void GameLoop::closeWindow() {
 
 
 
-void GameLoop::sleep_or_catch_up(uint32_t& t1) {
-    uint32_t t2 = SDL_GetTicks();
+// void GameLoop::sleep_or_catch_up(uint32_t& t1) {
+//     uint32_t t2 = SDL_GetTicks();
 
-    int rest = RATE - (t2 - t1);
-    if (rest < 0) {
-        int behind = -rest;
-        int lost = behind - behind % RATE;
+//     int rest = RATE - (t2 - t1);
+//     if (rest < 0) {
+//         int behind = -rest;
+//         int lost = behind - behind % RATE;
 
-        // recuperamos los frames perdidos
-        uint8_t frames_to_skip = int(lost / RATE);
+//         // recuperamos los frames perdidos
+//         uint8_t frames_to_skip = int(lost / RATE);
 
-        // TODO: skipear frames
+//         // TODO: skipear frames
 
 
-        t1 += lost;
-    } else {
-        SDL_Delay(rest);
-    }
+//         t1 += lost;
+//     } else {
+//         SDL_Delay(rest);
+//     }
 
-    t1 = SDL_GetTicks();
-}
+//     t1 = SDL_GetTicks();
+// }
