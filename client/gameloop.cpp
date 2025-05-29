@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "pointer.h"
 #include "../common/player_commands/command.h"
+#include "../common/player_commands/move.h"
 
 #include "mock_server.h"
 
@@ -20,6 +21,7 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<Command>& comandos):
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
     texture_provider(renderer),
     snapshots_queue(snapshots),
+    comandos_queue(comandos),
     input_handler(comandos)
     {
         // poner color de fondo negro
@@ -35,31 +37,58 @@ void GameLoop::run(){
     Jugador player(*terrorista_texture);
     Pointer pointer(*pointer_texture);
 
-    Snapshot last_snapshot;
+    Snapshot ultima_snapshot;
 
-    mock_server(snapshots_queue);
+    debug_simulacion_servidor(ultima_snapshot);
     
     while (is_running) {
         uint32_t t1 = SDL_GetTicks();
 
         // TODO: asegurarse de obtener el último evento (vaciar la queue entera?)
-        snapshots_queue.try_pop(last_snapshot);
+        snapshots_queue.try_pop(ultima_snapshot);
         
-        if(!last_snapshot.players.empty()){   
+        if(!ultima_snapshot.players.empty()){   
             // imprimir posicion jugador obtenido del vector de jugadores
-            PlayerDTO jugador = last_snapshot.players.at(0);
+            PlayerDTO jugador = ultima_snapshot.players.at(0);
             std::cout << jugador.x << std::endl;
         }
 
-        is_running = input_handler.handle_events(player);
+        is_running = input_handler.handle_events();
         
         update(player, pointer, RATE);
         
         render(player, pointer);
 
+       
+
         // sleep_or_catch_up(t1);
         usleep(FRAME_RATE);
     }
+}
+
+
+void GameLoop::debug_simulacion_servidor(Snapshot& snapshot){
+    // mock_server(snapshots_queue);
+
+
+    // toma aquello que esté en la queue de comandos (o sea Command) 
+    // y lo convierte en un snapshot para que pusheado en la otra cola
+
+    Move move_command;
+    if(!comandos_queue.try_pop(move_command)){
+        return;
+    }
+    std::cout << "Se encontro un comando de movimiento" << std::endl;
+    Direction dir = move_command.get_direction();
+    
+    // Simular movimiento del jugador
+    PlayerDTO player;
+    player.player_id = 0;
+    player.x += dir.x;
+    player.y += dir.y;
+    
+    snapshot.players.push_back(player);
+
 }
 
 

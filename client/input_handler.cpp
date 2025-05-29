@@ -1,15 +1,22 @@
 #include "input_handler.h"
+#include "../common/direction.h"
+#include "../common/player_commands/move.h"
+#include "../common/player_commands/command.h"
+
 #include <map>
+#include <iostream>
 
 InputHandler::InputHandler(Queue<Command>& comandos_queue): 
     comandos(comandos_queue) {
 }
 
-
-// Agrega esto en la clase InputHandler (en el header y aquí):
+/**
+ * @brief Mapa para almacenar el estado de las teclas.
+ * La clave es el código de la tecla (SDL_Keycode) y el valor es un booleano
+ * que indica si la tecla está presionada (true) o no (false)
+ */
 std::map<SDL_Keycode, bool> key_states;
 
-// Modifica handle_key_down y handle_key_up:
 void InputHandler::handle_key_down(const SDL_Event& event) {
     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
     key_states[keyEvent.keysym.sym] = true;
@@ -20,26 +27,38 @@ void InputHandler::handle_key_up(const SDL_Event& event) {
     key_states[keyEvent.keysym.sym] = false;
 }
 
-// Nueva función para procesar el movimiento:
-void InputHandler::process_movement(Jugador& player) {
-    bool up = key_states[SDLK_UP];
-    bool down = key_states[SDLK_DOWN];
-    bool left = key_states[SDLK_LEFT];
-    bool right = key_states[SDLK_RIGHT];
 
-    if (up && right) player.moveUpRight();
-    else if (up && left) player.moveUpLeft();
-    else if (down && right) player.moveDownRight();
-    else if (down && left) player.moveDownLeft();
-    else if (up) player.moveUp();
-    else if (down) player.moveDown();
-    else if (left) player.moveLeft();
-    else if (right) player.moveRigth();
-    else player.stopMoving();
+// en base a que teclas presiones envía un comando de movimiento
+// permite tambien movimientos en diagonal y el de quedarse quieto
+void InputHandler::send_direction(){
+    Direction dir(0, 0);
+
+    if (key_states[SDLK_UP]) {
+        dir.y -= 1;
+    }
+    if (key_states[SDLK_DOWN]) {
+        dir.y += 1;
+    }
+    if (key_states[SDLK_LEFT]) {
+        dir.x -= 1;
+    }
+    if (key_states[SDLK_RIGHT]) {
+        dir.x += 1;
+    }
+
+    comandos.push(Move(dir));
+}
+
+
+// Nueva función para procesar el movimiento:
+void InputHandler::process_movement() {
+    send_direction();
+    // send_attack();
+    // send_states();       
 }
 
 // Llama a process_movement en handle_events:
-bool InputHandler::handle_events(Jugador &player) {
+bool InputHandler::handle_events() {
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         switch(event.type) {
@@ -61,71 +80,8 @@ bool InputHandler::handle_events(Jugador &player) {
                 return false;
         }
     }
-    process_movement(player);
+    process_movement();
     return true;
 }
-
-
-// bool InputHandler::handle_events(Jugador &player) {
-//     SDL_Event event;
-//     while(SDL_PollEvent(&event)){
-//         switch(event.type) {
-//             case SDL_KEYDOWN:
-//                 handle_key_down(event);
-//                 break;
-//             case SDL_KEYUP:
-//                 handle_key_up(event);
-//                 break;
-//             
-//         }
-//     }
-    
-//     return true;
-// }
-
-// void InputHandler::handle_move_up(){
-//     Command* command = new MoveUpCommand();
-//     comandos.push(command);
-//     std::cout << "Move Up" << std::endl;
-// }
-
-
-// void InputHandler::handle_key_up(const SDL_Event& event){
-//     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-//     switch (keyEvent.keysym.sym) {
-//         case SDLK_LEFT:
-//             player.stopMoving();
-//             break;
-//         case SDLK_RIGHT:
-//             player.stopMoving();
-//             break;
-//         case SDLK_UP:
-//             player.stopMoving();
-//             break;
-//         case SDLK_DOWN:
-//             player.stopMoving();
-//             break;
-//         } 
-// }
-
-
-
-// void InputHandler::handle_key_down(const SDL_Event& event){
-//     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
-//     switch (keyEvent.keysym.sym) {
-//         case SDLK_LEFT:
-//             player.moveLeft();
-//             break;
-//         case SDLK_RIGHT:
-//             player.moveRigth();
-//             break;
-//         case SDLK_UP:
-//             player.moveUp();
-//             break;
-//         case SDLK_DOWN:
-//             player.moveDown();
-//             break;
-//         }
-// } 
 
 

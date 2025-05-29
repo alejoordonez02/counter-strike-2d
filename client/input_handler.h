@@ -1,7 +1,7 @@
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
-#include "jugador.h"
+#include <SDL2/SDL.h>
 #include "../common/queue.h"
 #include "../common/player_commands/command.h"
 
@@ -16,9 +16,11 @@ public:
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);
 
-    void process_movement(Jugador& player);
+    void send_direction();
 
-    bool handle_events(Jugador& player);
+    void process_movement();
+
+    bool handle_events();
 };
 
 #endif

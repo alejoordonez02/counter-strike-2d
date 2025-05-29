@@ -15,6 +15,7 @@ private:
 
 public:
     Move(Direction d);
+    Move();
     void execute(Player& p) const override;
     Direction get_direction() const;
 };

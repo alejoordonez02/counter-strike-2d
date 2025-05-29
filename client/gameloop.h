@@ -23,7 +23,7 @@ class GameLoop {
         bool is_running = true;
 
         Queue<Snapshot>& snapshots_queue;
-        // Queue<Command>& comandos_queue;
+        Queue<Command*>& comandos_queue;
 
         InputHandler input_handler;
 
@@ -39,9 +39,9 @@ public:
 
     void update(Jugador &player, Pointer &pointer, float delta_time);
 
-    bool handleEvents(Jugador &player);
-
     void sleep_or_catch_up(uint32_t& t1);
+
+    void debug_simulacion_servidor(Snapshot& snapshot);
 
     void closeWindow();
 };
