@@ -14,14 +14,11 @@
 
 #define PLAYER_RADIUS 1
 
-Player::Player(const Position& pos, Map& map):
+Player::Player(Position& pos, Map& map):
         Circle(pos, PLAYER_RADIUS),
         map(map),
         kills(0),
-        primary(Awp()),
-        secondary(),
-        current_weapon(primary),
-        shield(0),
+        current(*equipment.knife),
         health(100),
         alive(true),
         velocity(1) {}
@@ -49,13 +46,13 @@ void Player::attack(const Position& destination) {
         auto& c = collidable[i];
         if (c.get() == this)
             continue;  // skip self
-        current_weapon.attack(pos, destination, *c);
+        current.attack(pos, destination, *c);
         break;
     }
 }
 
 void Player::get_attacked(const int& damage) {
-    health -= (1 - shield) * damage;
+    health -= (1 - equipment.shield) * damage;
     if (health <= 0)
         alive = false;
 }
