@@ -3,29 +3,38 @@
 
 #include "../dto.h"
 #include "../protocol.h"
+#include "../../position.h"
 
-class AttackDTO: private DTO {
-public:
-    AttackDTO(/* args de Attack */): DTO(DTOtypeSerial::COMMAND) {
-        // data = serializacion de Attack
-    }
-
-    ~AttackDTO() = default;
-};
+class AttackDTO: public DTO {
+    private:
+        Position pos;
+    
+        friend class Attack;
+    
+        void deserialize() override {
+            int i = 1; // skip 1st byte (DTO type)
+            pos = deserialize_pos(i);
+        }
+    
+    public:
+        explicit AttackDTO(std::vector<uint8_t>&& bytes) {
+            payload = std::move(bytes);
+            deserialize();
+        }
+    
+        AttackDTO(const Position& p): DTO(DTOSerial::PlayerCommands::ATTACK), pos(p) {}
+    
+        const std::vector<uint8_t>& serialize() override {
+            if (_is_serialized)
+                return payload;
+    
+            serialize_pos(pos);
+            _is_serialized = true;
+    
+            return payload;
+        }
+    
+        ~AttackDTO() = default;
+    };
 
 #endif
-
-
-// std::vector<uint8_t> Serializer::serialize(const Attack& attack) {
-//     std::vector<uint8_t> srlzd_attack;
-
-//     auto pos = attack.get_position();
-//     auto srlzd_x = serialize(pos.x);
-//     auto srlzd_y = serialize(pos.y);
-
-//     srlzd_attack.push_back(PlayerCommandSerial::ATTACK);
-//     srlzd_attack.insert(srlzd_attack.end(), srlzd_x.begin(), srlzd_x.end());
-//     srlzd_attack.insert(srlzd_attack.end(), srlzd_y.begin(), srlzd_y.end());
-
-//     return srlzd_attack;
-// }
