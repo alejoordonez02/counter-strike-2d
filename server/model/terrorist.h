@@ -13,12 +13,6 @@ public:
 
     virtual void plant_bomb() override;
     virtual void stop_planting() override;
-
-    /*
-     * Do nothing
-     * */
-    virtual void defuse_bomb() override {}
-    virtual void stop_defusing() override {}
 };
 
 #endif
