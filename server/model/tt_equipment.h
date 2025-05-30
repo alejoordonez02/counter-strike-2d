@@ -5,7 +5,11 @@
 #include "equipment.h"
 
 class TTEquipment: public Equipment {
+private:
     Bomb bomb;
+
+public:
+    TTEquipment(): Equipment(), bomb() {}
 };
 
 #endif
