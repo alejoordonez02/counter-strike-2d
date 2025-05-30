@@ -1,28 +1,43 @@
 #ifndef MOVE_DTO_H
 #define MOVE_DTO_H
 
+#include <vector>
+#include <cstdint>
+
 #include "../dto.h"
 #include "../protocol.h"
+#include "../../direction.h"
 
-class MoveDTO: private DTO {
+class MoveDTO: public DTO {
+private:
+    Direction dir;
+
+    friend class Move;
+
+    void deserialize() override {
+        int i = 1; // skip 1st byte (DTO type)
+        dir = deserialize_dir(i);
+    }
+
 public:
-    MoveDTO(/* args de Move */): DTO(DTOtypeSerial::COMMAND) {
-        // data = serializacion de Move
+    explicit MoveDTO(std::vector<uint8_t>&& bytes) {
+        payload = std::move(bytes);
+        deserialize();
+    }
+
+    MoveDTO(const Direction& d): DTO(DTOSerial::PlayerCommands::MOVE), dir(d) {}
+
+    const std::vector<uint8_t>& serialize() override {
+        if (_is_serialized)
+            return payload;
+
+        serialize_dir(dir);
+        _is_serialized = true;
+
+        return payload;
     }
 
     ~MoveDTO() = default;
 };
 
 #endif
-
-// namespace {
-// constexpr std::unordered_map<Direction, uint8_t> dir_to_srl = {
-//         {Direction::N, DirectionSerial::N}, {Direction::NE, DirectionSerial::NE},
-//         {Direction::E, DirectionSerial::E}, {Direction::SE, DirectionSerial::SE},
-//         {Direction::S, DirectionSerial::S}, {Direction::SW, DirectionSerial::SW},
-//         {Direction::W, DirectionSerial::W}, {Direction::NW, DirectionSerial::NW}};
-// };
-
-// std::vector<uint8_t> Serializer::serialize(const Move& move) {
-//     return {PlayerCommandSerial::MOVE, dir_to_srl.at(move.get_dir())};
-// }
