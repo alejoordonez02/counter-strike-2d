@@ -1,10 +1,9 @@
 #ifndef MOVE_H
 #define MOVE_H
 
+#include "command.h"
 #include "../model/player.h"
 #include "../../common/direction.h"
-
-#include "command.h"
 
 /*
  * Move
@@ -14,9 +13,11 @@ private:
     Direction dir;
 
 public:
-    Move(Direction d);
-    void execute(Player& p) const override;
-    Direction get_direction() const;
+    Move(const Direction& d): dir(d) {}
+
+    void execute(Player& p) const override { p.move(dir); }
+
+    ~Move() = default;
 };
 
 #endif
