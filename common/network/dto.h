@@ -6,48 +6,23 @@
 
 #include <cstdint>
 #include <vector>
-#include <iterator>
 #include <bit>
 #include <arpa/inet.h>
 #include <cstring>
 
 class DTO {
 protected:
-    std::vector<uint8_t> bytes;
+    std::vector<uint8_t> payload;
+    bool _is_serialized;
 
-    DTO(const uint8_t type) { bytes.push_back(type); }
+    DTO(): _is_serialized(true) {}
+    explicit DTO(const uint8_t type): _is_serialized(false) { payload.push_back(type); }
 
-    std::vector<uint8_t> serialize_float(const float& n) {
-        auto srlzd_n = std::bit_cast<uint32_t>(n);
-        srlzd_n = htonl(srlzd_n);
-        std::vector<uint8_t> bytes(sizeof(srlzd_n));
-        std::memcpy(bytes.data(), &srlzd_n, sizeof(srlzd_n));
-        return bytes;
-    }
-
-    std::vector<uint8_t> serialize_tuple(const float& x, const float& y) {
-        std::vector<uint8_t> srlzd_tuple;
-        auto srlzd_x = serialize_float(x);
-        auto srlzd_y = serialize_float(y);
-        srlzd_tuple.insert(srlzd_tuple.end(), srlzd_x.begin(), srlzd_x.end());
-        srlzd_tuple.insert(srlzd_tuple.end(), srlzd_y.begin(), srlzd_y.end());
-        return srlzd_tuple;
-    }
-
-    std::vector<uint8_t> serialize_pos(const Position& pos) { return serialize_tuple(pos.x, pos.y); }
-
-    std::vector<uint8_t> serialize_dir(const Direction& dir) { return serialize_tuple(dir.x, dir.y); }
+    virtual void deserialize() = 0;
 
 public:
-    DTO(const std::vector<uint8_t>&& bytes): bytes(std::move(bytes)) {}
-
-
-    const std::vector<uint8_t>& serialize() const { return bytes; }
-
-    uint8_t get_type() const { return bytes[0]; }
-
-    const std::vector<uint8_t>& get_data() const { return bytes; }
-
+    uint8_t get_type() const { return payload[0]; }
+    virtual const std::vector<uint8_t>& serialize() = 0;
 
     DTO(const DTO&) = delete;
     DTO& operator=(const DTO&) = delete;
@@ -56,6 +31,20 @@ public:
     DTO& operator=(DTO&&) = default;
 
     virtual ~DTO() = default;
+
+protected:
+    // serialization
+
+    void serialize_float(const float& n);
+    void serialize_tuple(const float& x, const float& y);
+    void serialize_pos(const Position& pos);
+    void serialize_dir(const Direction& dir);
+
+    // deserialization
+
+    float deserialize_float(int& i);
+    Position deserialize_pos(int& i);
+    Direction deserialize_dir(int& i);
 };
 
 #endif
