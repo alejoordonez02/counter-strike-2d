@@ -1,6 +1,7 @@
 #ifndef SENDER_H
 #define SENDER_H
 
+#include <memory>
 #include <stdexcept>
 
 #include "connection.h"
@@ -12,16 +13,16 @@
 class Sender: public Thread {
 private:
     Connection& con;
-    Queue<DTO>& queue;
+    Queue<std::shared_ptr<DTO>>& queue;
 
 public:
-    Sender(Connection& c, Queue<DTO>& q): con(c), queue(q) {}
+    Sender(Connection& c, Queue<std::shared_ptr<DTO>>& q): con(c), queue(q) {}
 
     void run() override {
         try {
             while (true) {
-                DTO dto = queue.pop();
-                con.send_msg(dto.serialize());
+                std::shared_ptr<DTO> dto_p = queue.pop();
+                con.send_msg(dto_p->serialize());
             }
         } catch (const std::runtime_error& err) { // ClosedQueue or socket was closed
         } catch (const LibError& err) { // socket was closed during Socket::sendall()
