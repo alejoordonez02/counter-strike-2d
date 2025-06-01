@@ -29,30 +29,38 @@ protected:
     Equipment equipment;
     Weapon& current;
 
+    virtual bool pay(const int& cost);
+
 public:
-    Player(Position& pos, Map& map);
+    Player(const Position& pos, Equipment&& equipment, Map& map);
 
     /*
      * Both TT & CT commands
      * */
     virtual void move(const Direction& dir);
     virtual void attack(const Position& destination);
-    virtual void drop_current();
-    virtual void buy();
+    virtual void use_primary();
+    virtual void use_secondary();
+    virtual void use_knife();
+    // virtual void drop_current();
+    virtual void buy_primary(Weapon& weapon);
+    virtual void buy_secondary(Weapon& weapon);
+    virtual void buy_primary_ammo(const int& count);
+    virtual void buy_secondary_ammo(const int& count);
 
     virtual void get_attacked(const int& damage) override;
 
     /*
      * Terrorist
      * */
-    virtual void plant_bomb() {}
-    virtual void stop_planting() {}
+    virtual void plant_bomb();
+    virtual void stop_planting();
 
     /*
      * Counter terrorist
      * */
-    virtual void defuse_bomb() {}
-    virtual void stop_defusing() {}
+    virtual void defuse_bomb();
+    virtual void stop_defusing();
 
     ~Player() = default;
 };
