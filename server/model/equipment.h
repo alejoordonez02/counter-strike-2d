@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "weapons.h"
+#include "weapon.h"
 
 struct Equipment {
     std::unique_ptr<Weapon> primary;
@@ -11,11 +11,12 @@ struct Equipment {
     std::unique_ptr<Weapon> knife;
     int shield;
 
-    Equipment():
-            primary(std::make_unique<Fist>()),
-            secondary(std::make_unique<Glock>()),
-            knife(std::make_unique<Knife>()),
-            shield(0) {}
+    Equipment(std::unique_ptr<Weapon>&& primary, std::unique_ptr<Weapon>&& secondary,
+              std::unique_ptr<Weapon>&& knife, const int& shield):
+            primary(std::move(primary)),
+            secondary(std::move(secondary)),
+            knife(std::move(knife)),
+            shield(shield) {}
 };
 
 #endif
