@@ -22,7 +22,7 @@ class AttackDTO: public DTO {
             deserialize();
         }
     
-        AttackDTO(const Position& p): DTO(DTOSerial::PlayerCommands::ATTACK), pos(p) {}
+        explicit AttackDTO(const Position& p): DTO(DTOSerial::PlayerCommands::ATTACK), pos(p) {}
     
         const std::vector<uint8_t>& serialize() override {
             if (_is_serialized)

@@ -25,7 +25,7 @@ public:
         deserialize();
     }
 
-    MoveDTO(const Direction& d): DTO(DTOSerial::PlayerCommands::MOVE), dir(d) {}
+    explicit MoveDTO(const Direction& d): DTO(DTOSerial::PlayerCommands::MOVE), dir(d) {}
 
     const std::vector<uint8_t>& serialize() override {
         if (_is_serialized)

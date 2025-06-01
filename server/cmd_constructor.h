@@ -11,9 +11,7 @@
 #include "../common/network/protocol.h"
 
 #include "player_commands/move.h"
-#include "../common/network/dtos/move_dto.h"
 #include "player_commands/attack.h"
-#include "../common/network/dtos/attack_dto.h"
 
 using namespace DTOSerial::PlayerCommands;
 

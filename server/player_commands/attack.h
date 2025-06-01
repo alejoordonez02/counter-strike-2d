@@ -13,7 +13,7 @@ private:
     Position pos;
 
 public:
-    Attack(const Position& p): pos(p) {}
+    explicit Attack(const Position& p): pos(p) {}
 
     void execute(Player& p) const override { p.attack(pos); }
     

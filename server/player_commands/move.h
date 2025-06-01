@@ -13,7 +13,7 @@ private:
     Direction dir;
 
 public:
-    Move(const Direction& d): dir(d) {}
+    explicit Move(const Direction& d): dir(d) {}
 
     void execute(Player& p) const override { p.move(dir); }
 
