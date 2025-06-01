@@ -9,17 +9,24 @@ private:
     int ammo;
     float accuracy; /* entre 0 y 1, es una proba */
     float range;
+    int cost;
+    int ammo_cost;
 
 public:
     Weapon();
-    Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range);
-    int get_damage();
-    void attack(const Position& origin, const Position& destination, Hitbox& coll);
-};
 
-class Awp: public Weapon {
-public:
-    Awp();
+    Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range,
+           const int& cost, const int& ammo_cost);
+
+    virtual void attack(const Position& origin, const Position& destination, Hitbox& coll);
+
+    virtual void load_ammo(const int& count) { ammo += count; }
+
+    virtual int get_cost() const;
+
+    virtual int get_ammo_cost() const;
+
+    virtual ~Weapon() = default;
 };
 
 #endif

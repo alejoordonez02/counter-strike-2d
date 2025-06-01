@@ -1,6 +1,7 @@
 add_library(cs2d_server_model STATIC
     player.cpp
     weapon.cpp
+    random.cpp
     # ... add other .cpp files as needed
 )
 
