@@ -3,19 +3,12 @@
 
 #include <cstdint>
 #include <vector>
+
 #include <sys/types.h>
 
 #define MAX_PLAYER_NAME 32
 
-enum WeaponType {
-    None,
-    Bomb,
-    Knife,
-    Glock,
-    AK47,
-    M3,
-    AWP
-};
+enum class WeaponType { None, Bomb, Knife, Glock, AK47, M3, AWP };
 
 // armas en el suelo
 struct WeaponDTO {
@@ -37,14 +30,14 @@ struct PlayerDTO {
     // El cuchillo siempre lo tienen
     // WeaponType primaryGun;
     // WeaponType secondaryGun;
-    WeaponType current_weapon;      // Para poder ser visualizada por otros jugadores
+    WeaponType current_weapon;  // Para poder ser visualizada por otros jugadores
     bool has_bomb;
-    
+
     // estadisticas
     uint8_t rounds_won = 0;
     uint8_t total_kills = 0;
     uint8_t total_money = 0;
-    
+
     // animaciones y sonidos
     double facing_angle;        // hacia donde esta mirando el jugador, valor entre 0 y 360
     bool is_shooting;

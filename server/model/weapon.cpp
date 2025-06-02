@@ -4,15 +4,15 @@
 
 Weapon::Weapon() {}
 
-Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range):
-        damage(damage), ammo(ammo), accuracy(accuracy), range(range) {}
+Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range,
+               const int& cost, const int& ammo_cost):
+        damage(damage),
+        ammo(ammo),
+        accuracy(accuracy),
+        range(range),
+        cost(cost),
+        ammo_cost(ammo_cost) {}
 
-int Weapon::get_damage() { return damage; }
-
-/*
- * attack() lo vamos a tener que sobrecargar según el arma, además
- * por el modo en el que esté la misma... patrón Strategy va como piña
- * */
 void Weapon::attack(const Position& origin, const Position& destination, Hitbox& coll) {
     Trajectory t(origin, destination * range);
     if (coll.intersects(t) and Random::get() < accuracy) {
@@ -21,4 +21,6 @@ void Weapon::attack(const Position& origin, const Position& destination, Hitbox&
     }
 }
 
-Awp::Awp(): Weapon(100, 30, 1, 100) {}
+int Weapon::get_cost() const { return cost; }
+
+int Weapon::get_ammo_cost() const { return ammo_cost; }
