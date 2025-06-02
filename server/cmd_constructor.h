@@ -22,6 +22,7 @@ class CmdConstructor {
 private:
     std::unordered_map<uint8_t, CmdMaker> maker_map;
 
+public:
     CmdConstructor() {
         maker_map = {
             {MOVE, [](auto&& dto_p) { return std::make_unique<Move>(dto_p); }},

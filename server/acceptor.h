@@ -29,6 +29,7 @@ public:
                 clients.push_back(std::move(new_client));
 
                 clear_finished_clients();
+                // gm_ref.reap_dead_games();
             }
         } catch (const LibError& err) {  // cierre de server
             // handle_server_shutdown()
