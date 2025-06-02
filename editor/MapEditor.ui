@@ -111,6 +111,9 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">#SaveButton{
 	padding: 5px;
@@ -132,7 +135,7 @@
              <item>
               <widget class="QPushButton" name="LoadButton">
                <property name="cursor">
-                <cursorShape>ArrowCursor</cursorShape>
+                <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="autoFillBackground">
                 <bool>false</bool>
@@ -163,6 +166,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="SaveButton">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Save</string>
                </property>
@@ -180,6 +186,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="ExitButton">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Exit</string>
                </property>
@@ -200,14 +209,17 @@
           </item>
           <item>
            <widget class="QScrollArea" name="scrollArea_2">
+            <property name="cursor" stdset="0">
+             <cursorShape>OpenHandCursor</cursorShape>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
             <widget class="QWidget" name="scrollAreaWidgetContents_2">
              <property name="geometry">
               <rect>
-               <x>0</x>
-               <y>-69</y>
+               <x>-165</x>
+               <y>0</y>
                <width>274</width>
                <height>402</height>
               </rect>
@@ -268,6 +280,15 @@
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QScrollArea" name="scrollArea">
+         <property name="cursor" stdset="0">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -286,8 +307,14 @@
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
             <widget class="QWidget" name="mapContainer" native="true">
+             <property name="cursor">
+              <cursorShape>ArrowCursor</cursorShape>
+             </property>
              <property name="acceptDrops">
               <bool>true</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(255, 255, 255);</string>
              </property>
             </widget>
            </item>

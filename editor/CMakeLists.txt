@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
 
+find_package(yaml-cpp REQUIRED)
+
 qt5_wrap_ui(UI_HEADERS MapEditor.ui)
 
 qt5_add_resources(RESOURCES resources/resources.qrc)
@@ -16,6 +18,7 @@ set(SOURCE_FILES
     mainwindow.cpp
     tilesheeteditor.cpp
     mapeditor.cpp
+    maploader.cpp
     ${UI_HEADERS}
 )
 
@@ -27,8 +30,11 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets 
     Qt5::Gui
     Qt5::Core
+    yaml-cpp::yaml-cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${yaml-cpp_INCLUDE_DIRS}
 )

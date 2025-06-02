@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
         delete mapContainer;
     }
     
-    m_tilesheetEditor->loadTilesheet(":/tiles/assets/gfx/tiles/embrador.bmp");
+    m_tilesheetEditor->loadTilesheet("embrador.bmp");
     m_tilesheetEditor->setTileSize(32, 32);
     m_mapEditor->setTileSize(32, 32);
 }
@@ -43,18 +43,22 @@ void MainWindow::on_LoadButton_clicked()
 {
     QString filePath = QFileDialog::getOpenFileName(
         this, 
-        "Cargar Mapa Base", 
+        "Cargar Mapa", 
         "", 
-        "Images (*.png *.jpg *.bmp)"
+        "Archivos YAML (*.yaml *.yml)"
     );
-    
+
     if (!filePath.isEmpty()) {
-        m_mapEditor->loadMap(filePath);
-        
-        if (!m_mapEditor->getMapImage().isNull()) {
-            QSize imgSize = m_mapEditor->getMapImage().size();
-            m_mapEditor->setMinimumSize(imgSize);
-            ui->scrollArea->setMinimumSize(imgSize);
+        try {
+            MapData data = m_mapLoader->loadMapData(filePath);
+            m_mapEditor->loadMapFromData(data);
+            
+            // Configurar UI basada en los datos
+            //ui->bombButton->setEnabled(data.canPlantBombs);
+            
+        } catch (const std::exception& e) {
+            QMessageBox::critical(this, "Error", 
+                QString("Error al cargar el mapa:\n%1").arg(e.what()));
         }
     }
 }
@@ -91,5 +95,21 @@ void MainWindow::on_SaveButton_clicked()
 
 void MainWindow::on_ExitButton_clicked()
 {
+    // Obtener todos los bloques colocados
+    QVector<QPair<QPixmap, QPoint>> placedTiles = m_mapEditor->getPlacedTiles();
+    
+    // Imprimir información por consola
+    qDebug() << "Bloques colocados en el mapa:";
+    qDebug() << "Total de bloques:" << placedTiles.size();
+    
+    // Recorrer todos los bloques
+    for (const auto &tile : placedTiles) {
+        QPixmap pixmap = tile.first;
+        QPoint position = tile.second;
+        
+        qDebug() << "Bloque en posición (" << position.x() << "," << position.y() << ") -"
+                 << "Tamaño:" << pixmap.size();
+    }
+    
     close();
 }

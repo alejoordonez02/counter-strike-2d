@@ -25,6 +25,7 @@ private:
     Ui::MapEditor *ui;
     TileSheetEditor *m_tilesheetEditor;
     MapEditor *m_mapEditor;
+    MapLoader *m_mapLoader;
     QPixmap m_currentBrush;
 };
 
