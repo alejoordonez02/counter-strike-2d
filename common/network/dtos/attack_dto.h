@@ -1,6 +1,9 @@
 #ifndef ATTACK_DTO_H
 #define ATTACK_DTO_H
 
+#include <vector>
+#include <cstdint>
+
 #include "../dto.h"
 #include "../protocol.h"
 #include "../../position.h"
