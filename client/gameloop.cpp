@@ -34,20 +34,22 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
 
 void GameLoop::run(){
 
-    
+    mock_server(snapshots_queue);
+
     while (is_running) {
         // uint32_t t1 = SDL_GetTicks();
-        _debug_simulacion_servidor(ultima_snapshot);
-        
+
+        input_handler.update_player_values(ultima_snapshot);
         is_running = input_handler.handle_events();
         
+        _debug_simulacion_servidor(ultima_snapshot);
+
         // TODO: asegurarse de obtener el último evento (vaciar la queue entera?)
         snapshots_queue.try_pop(ultima_snapshot);
         
-        if(!ultima_snapshot.players.empty()){   
-            // imprimir posicion jugador obtenido del vector de jugadores
-            PlayerDTO jugador = ultima_snapshot.players.at(0);
-            std::cout << jugador.x << std::endl;
+        if(ultima_snapshot.players.empty()){   
+            // std::cout << "LOG: No hay jugadores en la snapshot, continuando..." << std::endl;
+            // continue; // si no hay jugadores, no hay nada que renderizar
         }
 
         update_renderables_from_snapshot();
@@ -55,10 +57,9 @@ void GameLoop::run(){
         
         render_all();
 
-       
-
         // sleep_or_catch_up(t1);
         usleep(FRAME_RATE);
+        
     }
 }
 
@@ -71,6 +72,7 @@ void GameLoop::update_renderables_from_snapshot(){
         auto it = players_renderables.find(jugador.player_id);
         if (it != players_renderables.end()) {
             // si existe, actualizarlo
+            
             it->second->update(jugador);
         } else {
             std::cout << "LOG: Creando jugador con ID: " << (int)jugador.player_id << std::endl;
@@ -112,7 +114,13 @@ void GameLoop::_debug_simulacion_servidor(Snapshot& snapshot){
     if(!comandos_queue.try_pop(player)){
         return;
     }
-    std::cout << "popeo elemento player.x: " << player.x << std::endl;
+    // muestro valores de player
+    std::cout << player.x << ", " 
+              << player.y << ", "
+              << (int)player.player_id << ", "
+              << (int)player.team_id << ", "
+              << (int) player.facing_angle << ", "
+              << std::endl;
     
     snapshot.players.push_back(player);
 

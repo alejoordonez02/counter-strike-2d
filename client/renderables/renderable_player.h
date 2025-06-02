@@ -9,13 +9,13 @@
 class RenderablePlayer
 {
 private:
-    uint8_t player_id;
+    uint16_t player_id;
 
     // Coordenadas del jugador
     int16_t x;
     int16_t y;
 
-    float facing_angle;
+    double facing_angle;
 
     // Estado del jugador (para animaciones y sonidos)
     bool is_shooting;
@@ -28,7 +28,7 @@ private:
     Animation animation;
 
 public:
-    RenderablePlayer(uint8_t player_id);
+    RenderablePlayer(uint16_t player_id);
     
     void update(PlayerDTO& player);
     void render(SDL2pp::Renderer &renderer);

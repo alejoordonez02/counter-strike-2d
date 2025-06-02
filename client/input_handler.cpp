@@ -28,6 +28,16 @@ void InputHandler::handle_key_up(const SDL_Event& event) {
 }
 
 
+void InputHandler::update_player_values(Snapshot& snapshot) {
+    // obtiene el id del jugador actual y reemplaza el puntero para actualizar los valores
+    auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
+                           [this](const PlayerDTO& found_player) { return found_player.player_id == player.player_id; });
+    if (it == snapshot.players.end())
+        return;
+
+    player = *it;
+}
+
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
 void InputHandler::send_direction(){
@@ -47,13 +57,27 @@ void InputHandler::send_direction(){
     }
 
     // comandos.try_push(Move(dir));
-    PlayerDTO player;
-    player.player_id = 14;
-    player.player_hp = 123;
-    player.x = dir.x;
-    player.y = dir.y;
+    player.player_hp = 444;
+    player.x += dir.x * 10;
+    player.y += dir.y * 10;
+    
+    std::cout << "LOG: Enviando dirección: (" << player.x << ", " << player.y << ")" << std::endl;
+
+    player.facing_angle = calculate_facing_angle(player.x, player.y);
 
     comandos.try_push(player);
+}
+
+double InputHandler::calculate_facing_angle(int16_t x, int16_t y) {
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    int dx = mouse_x - x;
+    int dy = mouse_y - y;
+
+    double angle = std::atan2(dy, dx); // en radianes
+
+    return angle * 180.0 / M_PI;    // en grados
 }
 
 
@@ -77,13 +101,13 @@ bool InputHandler::handle_events() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.button == SDL_BUTTON_LEFT) {
-                    std::cout << "Botón izquierdo del ratón presionado." << std::endl;
+                    std::cout << "LOG: Botón izquierdo del ratón presionado." << std::endl;
                 } else if (event.button.button == SDL_BUTTON_RIGHT) {
-                    std::cout << "Botón derecho del ratón presionado." << std::endl;
+                    std::cout << "LOG: Botón derecho del ratón presionado." << std::endl;
                 }
                 break;
             case SDL_QUIT:
-                std::cout << "Cerrando ventana..." << std::endl;
+                std::cout << "LOG: Cerrando ventana..." << std::endl;
                 return false;
         }
     }

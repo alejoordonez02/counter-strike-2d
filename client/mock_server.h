@@ -14,6 +14,7 @@ void mock_server(Queue<Snapshot>& queue) {
         player.x = 100 + tick * 2;
         player.y = 100 + tick * 2;
         player.facing_angle = (tick * 10) % 360;
+        
         snap.players.push_back(player);
 
         queue.push(snap);

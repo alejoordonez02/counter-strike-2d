@@ -3,11 +3,11 @@
 #include "../texture_provider.h"
 
 
-RenderablePlayer::RenderablePlayer(uint8_t player_id): 
+RenderablePlayer::RenderablePlayer(uint16_t player_id): 
     player_id(player_id),    
     x(0), 
     y(0), 
-    facing_angle(0.0f), 
+    facing_angle(0), 
     is_shooting(false), 
     was_hurt(false), 
     is_walking(false), 

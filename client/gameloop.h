@@ -28,7 +28,7 @@ class GameLoop {
         Snapshot ultima_snapshot;
         
         // encapsular luego en una clase renderables?
-        std::unordered_map<uint32_t, std::unique_ptr<RenderablePlayer>> players_renderables;
+        std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>> players_renderables;
 
 
 
