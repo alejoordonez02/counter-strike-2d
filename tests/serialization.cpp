@@ -77,10 +77,9 @@ TEST(SerializationTest, SerializeMoveCommandNorthWest) {
 }
 
 TEST(SerializationTest, SerializeAttackCommandWithPositionXPiYPi) {
-    std::vector<uint8_t> expected_srl = {PlayerCommandSerial::ATTACK,
+    std::vector<uint8_t> expected_srl = {DTOSerial::PlayerCommands::MOVE,
                                          0x40, 0x49, 0x0f, 0xdb, // ~pi
                                          0x40, 0x49, 0x0f, 0xdb}; // ~pi
-    
     std::vector<uint8_t> dto = AttackDTO(Position(3.14159265, 3.14159265));
     EXPECT_EQ(dto.serialize(), expected_srl);
 }
