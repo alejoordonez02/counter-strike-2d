@@ -4,8 +4,8 @@
 #include "gameloop.h"
 #include <unistd.h>
 #include "pointer.h"
-#include "../common/player_commands/command.h"
-#include "../common/player_commands/move.h"
+#include "../server/player_commands/command.h"
+#include "../server/player_commands/move.h"
 
 #include "mock_server.h"
 

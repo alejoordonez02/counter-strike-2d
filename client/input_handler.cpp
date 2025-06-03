@@ -1,7 +1,7 @@
 #include "input_handler.h"
 #include "../common/direction.h"
-#include "../common/player_commands/move.h"
-#include "../common/player_commands/command.h"
+#include "../server/player_commands/move.h"
+#include "../server/player_commands/command.h"
 
 #include <map>
 #include <iostream>

@@ -1,7 +1,7 @@
 
 #include "../common/queue.h"
 #include "../common/snapshot.h"
-#include "../common/player_commands/command.h"
+#include "../server/player_commands/command.h"
 
 void mock_server(Queue<Snapshot>& queue) {
     int tick = 0;
