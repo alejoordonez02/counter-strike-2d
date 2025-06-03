@@ -23,15 +23,15 @@ private:
 
     GameMonitor& game_monitor;
     CmdConstructor cmd_ctr;
-    Player& player; // default constructor PROBLEMA
+    // Player& player; // default constructor PROBLEMA
     bool _is_finished;
 
 public:
     ClientSession(Socket&& s, GameMonitor& gm): 
             con(std::move(s)), sndr(con, send_q), rcvr(con, recv_q), game_monitor(gm), _is_finished(false) {
-        ClientSetup setup(con, game_monitor, player);
-        setup.start();
-        setup.join();
+        // ClientSetup setup(con, game_monitor, player);
+        // setup.start();
+        // setup.join();
         sndr.start();
         rcvr.start();
     }
@@ -42,7 +42,7 @@ public:
         std::unique_ptr<DTO> dto_p;
         if (recv_q.try_pop(dto_p)) {
             std::unique_ptr<Command> cmd_p = cmd_ctr.construct(std::move(dto_p));
-            cmd_p->execute(player);
+            // cmd_p->execute(player);
             return true;
         }
         return false;
