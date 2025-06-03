@@ -25,8 +25,8 @@ private:
 public:
     CmdConstructor() {
         maker_map = {
-            {MOVE, [](auto&& dto_p) { return std::make_unique<Move>(dto_p); }},
-            {ATTACK, [](auto&& dto_p) { return std::make_unique<Attack>(dto_p); }},
+            {MOVE, [](auto&& dto_p) { return std::make_unique<Move>(std::move(dto_p)); }},
+            {ATTACK, [](auto&& dto_p) { return std::make_unique<Attack>(std::move(dto_p)); }},
             // ...
         };
     }

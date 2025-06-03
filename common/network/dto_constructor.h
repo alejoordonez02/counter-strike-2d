@@ -24,8 +24,8 @@ private:
 public:
     DTOConstructor() {
         maker_map = {
-            {MOVE, [](auto&& bytes) { return std::make_unique<MoveDTO>(bytes); }},
-            {ATTACK, [](auto&& bytes) { return std::make_unique<AttackDTO>(bytes); }},
+            {MOVE, [](auto&& bytes) { return std::make_unique<MoveDTO>(std::move(bytes)); }},
+            {ATTACK, [](auto&& bytes) { return std::make_unique<AttackDTO>(std::move(bytes)); }},
             // ...
         };
     }
