@@ -10,7 +10,7 @@
 
 #include "../common/queue.h"
 #include "../common/snapshot.h"
-#include "../common/player_commands/command.h"
+#include "../server/player_commands/command.h"
 
 
 class GameLoop {

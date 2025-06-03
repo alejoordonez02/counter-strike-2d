@@ -5,6 +5,8 @@
 #include "tuple.h"
 
 struct Position: public Tuple<Position, float> {
+    Position(): Tuple(0, 0) {}
+
     Position(const float& x, const float& y): Tuple(x, y) {}
 
     float get_distance(const Position& pos) const { return (*this - pos).get_length(); }

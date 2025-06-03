@@ -1,33 +1,35 @@
 #ifndef SENDER_H
 #define SENDER_H
 
+#include <memory>
+#include <stdexcept>
+
 #include "connection.h"
 #include "../queue.h"
 #include "../thread.h"
-#include "serializer.h"
+#include "dto.h"
+#include "socket/liberror.h"
 
 class Sender: public Thread {
 private:
-    Queue<std::unique_ptr<Serializable>> q; // hace falta up-cast
     Connection& con;
-    Serializer szr;
+    Queue<std::shared_ptr<DTO>>& queue;
 
 public:
-    Sender(Connection& c): con(c) {}
+    Sender(Connection& c, Queue<std::shared_ptr<DTO>>& q): con(c), queue(q) {}
 
-    void run() override {}
-
-    bool try_push(std::unique_ptr<Serializable>&& u_p) { // ***
-        return q.try_push(u_p); // puede que haga falta std::move(u_p) aca
+    void run() override {
+        try {
+            while (true) {
+                std::shared_ptr<DTO> dto_p = queue.pop();
+                con.send_msg(dto_p->serialize());
+            }
+        } catch (const std::runtime_error& err) { // ClosedQueue or socket was closed
+        } catch (const LibError& err) { // socket was closed during Socket::sendall()
+        }
     }
 
     ~Sender() = default;
 };
 
 #endif
-
-
-// *** en EventHandler:
-// std::unique_ptr<Serializable> cmd_p = std::make_unique<Attack>(args de Attack); // up-cast con move constructor de unique_ptr
-// sender.try_push(cmd_p); // puede que haga falta std::move(cmd_p) aca
-

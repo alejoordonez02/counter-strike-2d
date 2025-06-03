@@ -1,53 +1,40 @@
 #ifndef RECEIVER_H
 #define RECEIVER_H
 
+#include <stdexcept>
+#include <memory>
+#include <vector>
+#include <cstdint>
+
 #include "connection.h"
 #include "../queue.h"
 #include "../thread.h"
-#include "deserializer.h"
-#include "../player_commands.h"
+#include "dto.h"
+#include "dto_constructor.h"
+#include "socket/liberror.h"
 
-template <typename ReturnT>
-class Receiver;
-
-
-template <>
-class Receiver<std::unique_ptr<Command>>: public Thread {
+class Receiver: public Thread {
 private:
-    Queue<std::unique_ptr<Command>> q;
     Connection& con;
-    Deserializer<std::unique_ptr<Command>> deszr;
+    Queue<std::unique_ptr<DTO>>& queue;
+    DTOConstructor dto_ctr;
 
 public:
-    Receiver(Connection& c): con(c) {}
+    Receiver(Connection& c, Queue<std::unique_ptr<DTO>>& q): con(c), queue(q) {}
 
-    void run() override {}
-
-    bool try_pop(std::unique_ptr<Command>& u_p) { // en GameLoop: std::unique_ptr<Command> p; receiver.try_pop(p);
-        return q.try_pop(u_p); // habria que ver si la linea 74 de queue.h hace un move assignment por ser un unique_ptr
+    void run() override {
+        try {
+            while (true) {
+                std::vector<uint8_t> msg = con.receive_msg();
+                std::unique_ptr<DTO> dto_p = dto_ctr.construct(std::move(msg));
+                queue.push(std::move(dto_p));
+            }
+        } catch (const std::runtime_error& err) { // ClosedQueue or socket was closed
+        } catch (const LibError& err) { // socket was closed during Socket::recvall()
+        }
     }
 
     ~Receiver() = default;
 };
-
-
-// template <>
-// class Receiver<GameState>: public Thread {
-// private:
-//     Queue<GameState> q;
-//     Connection& con;
-//     Deserializer<GameState> deszr;
-
-// public:
-//     Receiver(Connection& c): con(c) {}
-
-//     void run() override {}
-
-//     bool try_pop(GameState& gs) { // en cliente: pasar el GameState a actualizar
-//         return q.try_pop(gs);
-//     }
-
-//     ~Receiver() = default;
-// };
 
 #endif

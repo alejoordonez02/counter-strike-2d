@@ -1,13 +1,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include <cstdint>
-#include <vector>
+#include "../model/player.h"
 
-#include "../../server/model/player.h"
-#include "../serializable.h"
-
-// class Command: public Serializable {
 class Command {
 protected:
     Command() = default;

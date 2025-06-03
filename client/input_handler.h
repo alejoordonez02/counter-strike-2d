@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "../common/queue.h"
-#include "../common/player_commands/command.h"
+#include "../server/player_commands/command.h"
 #include "../common/snapshot.h"
 
 class InputHandler {
