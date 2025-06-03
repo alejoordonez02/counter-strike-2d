@@ -38,14 +38,14 @@ void GameLoop::run(){
 
     while (is_running) {
         // uint32_t t1 = SDL_GetTicks();
+        _debug_simulacion_servidor(ultima_snapshot);
 
+        while(snapshots_queue.try_pop(ultima_snapshot)){}
+        
         input_handler.update_player_values(ultima_snapshot);
         is_running = input_handler.handle_events();
         
-        _debug_simulacion_servidor(ultima_snapshot);
 
-        // TODO: asegurarse de obtener el último evento (vaciar la queue entera?)
-        snapshots_queue.try_pop(ultima_snapshot);
         
         if(ultima_snapshot.players.empty()){   
             // std::cout << "LOG: No hay jugadores en la snapshot, continuando..." << std::endl;
@@ -107,26 +107,28 @@ void GameLoop::render_all(){
 void GameLoop::_debug_simulacion_servidor(Snapshot& snapshot){
     // mock_server(snapshots_queue);
 
-    // toma aquello que esté en la queue de comandos (o sea Command) 
-    // y lo convierte en un snapshot para que pusheado en la otra cola
-
+    // ===== server popea jugadores
     PlayerDTO player;
     if(!comandos_queue.try_pop(player)){
         return;
     }
     // muestro valores de player
-    std::cout << player.x << ", " 
-              << player.y << ", "
-              << (int)player.player_id << ", "
-              << (int)player.team_id << ", "
-              << (int) player.facing_angle << ", "
+    std::cout << "Server: " 
+              << player.x << "x, " 
+              << player.y << "y, "
+              << (int)player.player_id << "id, "
+              << (int)player.team_id << "teamId, "
+              << (int) player.facing_angle << "angle, "
               << std::endl;
     
-    snapshot.players.push_back(player);
-
-    if(!snapshots_queue.try_push(snapshot)){
+    // server luego de calcular cosas crea una snapshot y pushea
+    Snapshot new_snapshot;
+    new_snapshot.round_number = 33;
+    new_snapshot.players.push_back(player);
+    if(!snapshots_queue.try_push(new_snapshot)){
         return;
     }
+    /// ===== fin server 
 
 }
 

@@ -8,7 +8,10 @@
 
 InputHandler::InputHandler(Queue<PlayerDTO>& comandos_queue): 
     comandos(comandos_queue) {
-}
+        // TODO: Hardcodeado, cambiar para obtener el ID durante la 
+        // inicializacion, ya sea lobby o conexion al server
+        player.player_id = 1;
+    }
 
 /**
  * @brief Mapa para almacenar el estado de las teclas.
@@ -88,7 +91,7 @@ void InputHandler::process_movement() {
     // send_states();       
 }
 
-// Llama a process_movement en handle_events:
+
 bool InputHandler::handle_events() {
     SDL_Event event;
     while(SDL_PollEvent(&event)){
