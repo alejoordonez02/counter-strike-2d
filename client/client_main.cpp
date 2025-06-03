@@ -1,20 +1,29 @@
 #include <iostream>
-#include "./graphics_engine.h"
 
-int main(int argc, char** argv) {
-    /**
-    Inicializar:
-        - socket
-        - cliente
-        - motor grafico
-        - motor de audio
-        - ...
-    */
+#include "../common/network/socket/socket.h"
+#include "client.h"
 
-    GraphicsEngine motor_grafico;
-    motor_grafico.run();
+int main(){ //int argc, char** argv) {
+    // if (argc < 2) {
+    //     std::cerr << "Bad call. Usage: " << argv[0] << ". No args expected" << std::endl;
+    //     return EXIT_FAILURE;
+    // }
 
-    // tiene el bucle de renderizado, ahi mismo se hace un update y un input handler del cliente
+    try {
+        // TODO: Ejecutar el lobby de QT
+        // TODO: Logica de lobby, de aca obtiene socker (puerto, ip), nombre jugador, partida, etc.
+        // Socket socket = lobby->getSocket()
+        // int player_id = lobby->getPlayerID()
+        // ...
 
+        Client cliente;
+        cliente.run();
+
+    } catch (const std::exception& e) {
+        std::cerr << "Something went wrong: " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Something went wrong" << std::endl;
+        return EXIT_FAILURE;
+    }
     return 0;
 }

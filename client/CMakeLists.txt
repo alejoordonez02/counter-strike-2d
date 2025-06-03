@@ -1,7 +1,20 @@
 target_sources(cs2d_client
     PRIVATE
-    # .cpp files
-    main.cpp
+        client_main.cpp
+        gameloop.cpp
+        texture_provider.cpp
+        jugador.cpp
+        animation.cpp
+        pointer.cpp
+        client.cpp
+        input_handler.cpp
     PUBLIC
-    # .h files
-    )
+        mock_server.h
+        gameloop.h
+        texture_provider.h
+        jugador.h
+        animation.h
+        pointer.h
+        client.h
+        input_handler.h
+)
