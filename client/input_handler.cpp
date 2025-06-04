@@ -64,7 +64,7 @@ void InputHandler::send_direction(){
     player.x += dir.x * 10;
     player.y += dir.y * 10;
     
-    std::cout << "LOG: Enviando dirección: (" << player.x << ", " << player.y << ")" << std::endl;
+    // std::cout << "LOG: Enviando dirección: (" << player.x << ", " << player.y << ")" << std::endl;
 
     player.facing_angle = calculate_facing_angle(player.x, player.y);
 
@@ -79,8 +79,8 @@ double InputHandler::calculate_facing_angle(int16_t x, int16_t y) {
     int dy = mouse_y - y;
 
     double angle = std::atan2(dy, dx); // en radianes
-
-    return angle * 180.0 / M_PI;    // en grados
+    angle = angle * 180.0 / M_PI; // en grados
+    return angle + 90.0;      // para alinear la textura
 }
 
 

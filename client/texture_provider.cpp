@@ -35,5 +35,8 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
 // }
 
 std::shared_ptr<SDL2pp::Texture> TextureProvider::get_texture(const std::string& texture_name) {
+    if (textures.find(texture_name) == textures.end()) {
+        throw std::runtime_error("Texture not found: " + texture_name);
+    }
     return textures[texture_name];
 }

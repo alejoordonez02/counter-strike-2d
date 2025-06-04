@@ -10,10 +10,10 @@ class RenderablePlayer
 {
 private:
     uint16_t player_id;
-
-    // Coordenadas del jugador
-    int16_t x;
-    int16_t y;
+    bool is_terrorist;
+    
+    // Coordenadas del jugador: x,y
+    SDL2pp::Point position;
 
     double facing_angle;
 
@@ -25,7 +25,9 @@ private:
 
     WeaponType current_weapon;
 
-    Animation animation;
+    Animation* current_animation;
+    std::unordered_map<std::string, Animation*> animations;
+
 
 public:
     RenderablePlayer(uint16_t player_id);
@@ -33,6 +35,7 @@ public:
     void update(PlayerDTO& player);
     void render(SDL2pp::Renderer &renderer);
 
+    void load_animation(const std::string& animation_name);
     ~RenderablePlayer();
 };
 
