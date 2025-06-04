@@ -1,32 +1,59 @@
 #include "renderable_player.h"
 #include "../../common/snapshot.h"
 #include "../texture_provider.h"
+#include "../animation_provider.h"
 
 
 RenderablePlayer::RenderablePlayer(uint16_t player_id): 
     player_id(player_id),    
-    x(0), 
-    y(0), 
+    position(0, 0),
     facing_angle(0), 
     is_shooting(false), 
     was_hurt(false), 
     is_walking(false), 
     is_dead(false), 
-    current_weapon(WeaponType::None),
-    animation(*TextureProvider::get_texture("terrorist_1"))
+    is_terrorist(true),
+    current_weapon(WeaponType::None)
 {
-    // obtener de texture provider el nombre de "terrorista". 
-    // ella misma se encarga de fijarse las animaciones y demás
+    // load_animation("walking");
+    // load_animation("shooting");
+    load_animation("idle");
+    current_animation = animations["idle"];
 }
 
+
+void RenderablePlayer::load_animation(const std::string& animation_name) {
+    std::string sufix_name = "counter_terrorist_";
+    if(is_terrorist){
+        sufix_name = "terrorist_";
+    }
+    animations[animation_name] = new Animation(
+        *TextureProvider::get_texture(sufix_name + "1"),      // obtiene toda la imagen
+        AnimationProvider::get_animation_data(sufix_name + animation_name)    // se encarga de dividir al imagen en frames
+    );
+}
 
 
 void RenderablePlayer::update(PlayerDTO& player)
 {
     this->facing_angle = player.facing_angle;
     
-    this->x = player.x;
-    this->y = player.y;
+    position.x = player.x;
+    position.y = player.y;
+
+    // resto de las animaciones
+    if(player.is_walking){
+        // le pide a renderable_legs que se muevan y se animen
+        // update_legs();
+        // current_animation = animations["terrorist_walking"];
+    } else {
+        current_animation = animations["terrorist_idle"];
+    }
+    // } else if (player.is_shooting){
+    //     current_animation = animations["terrorist_shooting"];
+    // }
+    
+    current_animation->update();
 }
 
 
@@ -34,10 +61,9 @@ void RenderablePlayer::update(PlayerDTO& player)
 
 void RenderablePlayer::render(SDL2pp::Renderer &renderer){
     double angle = this->facing_angle;
-
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-    animation.render(renderer, SDL2pp::Rect(this->x, this->y, 32, 32), flip, angle);
+    current_animation->render(renderer, position, flip, angle);
 }
 
 

@@ -1,42 +1,52 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2/SDL.h>
 
-#include <algorithm>
-#include <cassert>
 #include <iostream>
 #include <string>
 
 #include "animation.h"
 
-Animation::Animation(SDL2pp::Texture &texture) : texture(texture), currentFrame(0),
-                                                  numFrames(this->texture.GetWidth() / this->texture.GetHeight()),
-                                                  size(this->texture.GetHeight()/3), elapsed(0.0f) {
-    // assert(this->numFrames > 0);
-    // assert(this->size > 0);
+Animation::Animation(SDL2pp::Texture &texture, const AnimationData &data):
+        texture(texture), 
+        current_frame(0),
+        frame_width(this->texture.GetWidth()),
+        frame_height(this->texture.GetHeight()),
+        num_frames(data.frames),
+        columns(data.columns),
+        is_animated(data.is_animated),
+        size(frame_width / columns),        // siempre texturas con tamaño cuadrado
+        elapsed(0.0f) 
+    {
 }
 
 Animation::~Animation() {}
 
-void Animation::update(float dt) {
-    this->elapsed += dt;
-    /* checks if the frame should be updated based on the time elapsed since the last update */
-    while (this->elapsed > FRAME_RATE) {
+void Animation::update() {
+    if(this->is_animated){
         this->advanceFrame();
-        this->elapsed -= FRAME_RATE;
+        return;
     }
+    // toma solo 1 frame y no permite avanzar al siguiente
+    this->current_frame = this->num_frames;
 }
 
-/**
- * @brief Renders the animation in the given coordinates.
- *
- * @param renderer Renderer.
- * @param x X coordinate.
- * @param y Y corrdinate.
- */
-void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, double rotation_angle) {
+void Animation::advanceFrame() {
+    this->current_frame += 1;
+    // Se reinicia solo. EJ: si hay 4 frames, entonces 1%4=0, 2%4=1, 3%4=2, 4%4=3, 5%4=0, ...
+    this->current_frame = this->current_frame % this->num_frames;
+}
+
+void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Point position, SDL_RendererFlip &flipType, double rotation_angle) {
+    int frameX = (this->current_frame % columns) * frame_width;
+    int frameY = (this->current_frame / columns) * frame_height;
+
+    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, frame_width, frame_height);
+
+    SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
+
     renderer.Copy(
             texture,
-            SDL2pp::Rect(1 + (1 + this->size) * this->currentFrame, 0, this->size, this->size),
+            src,
             dst,
             rotation_angle,
             SDL2pp::NullOpt,    // rotation center - not needed
@@ -44,7 +54,3 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
         );
 }
 
-void Animation::advanceFrame() {
-    this->currentFrame += 1;
-    this->currentFrame = this->currentFrame % this->numFrames; 
-}

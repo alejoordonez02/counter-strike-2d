@@ -23,7 +23,8 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
     //             .SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0, 255)) // Magenta
     //     ),
-    textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp");
+    textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
+    textures["legs"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/legs.bmp");
     
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
     // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp");
