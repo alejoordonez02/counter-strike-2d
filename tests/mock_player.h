@@ -12,16 +12,17 @@
 class MockPlayer: public Player {
 private:
     static Position dummy_pos;
+    static Direction dummy_dir;
     static Map dummy_map;
 
 public:
     MockPlayer():
-            Player(dummy_pos,
+            Player(dummy_pos, dummy_dir,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
     MockPlayer(const Position& pos):
-            Player(pos,
+            Player(pos, dummy_dir,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}

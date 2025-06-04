@@ -7,41 +7,23 @@
 #include "../../common/direction.h"
 #include "../../common/position.h"
 
-#include "circle.h"
 #include "map.h"
-#include "trajectory.h"
+#include "player_physics.h"
 #include "weapon.h"
 
-#define PLAYER_RADIUS 1
 #define PLAYER_VELOCITY 1
+#define PLAYER_ACCELERATION 1
+#define PLAYER_RADIUS 1
 #define PLAYER_MONEY 500
 
-Player::Player(const Position& pos, Equipment&& equipment, Map& map):
-        Circle(pos, PLAYER_RADIUS),
+Player::Player(const Position& pos, const Direction& dir, Equipment&& equipment, Map& map):
+        PlayerPhysics(pos, dir, PLAYER_VELOCITY, PLAYER_ACCELERATION, PLAYER_RADIUS, map),
         equipment(std::move(equipment)),
-        map(map),
-        velocity(PLAYER_VELOCITY),
         kills(0),
         money(PLAYER_MONEY),
         health(100),
         alive(true),
         current(*this->equipment.knife) {}
-
-void Player::move(const Direction& dir) {
-    Trajectory t(pos, pos + dir * velocity);
-    auto& collidable = map.get_collidable();
-    auto sorted_idx = sort_by_distance_idx(collidable);
-    for (size_t i: sorted_idx) {
-        auto& c = collidable[i];
-        if (c.get() == this)
-            continue;  // skip self
-        if (c->intersects(t)) {
-            pos = c->get_position();
-            return;
-        }
-    }
-    pos = t.destination;
-}
 
 void Player::attack(const Position& destination) {
     auto& collidable = map.get_collidable();
