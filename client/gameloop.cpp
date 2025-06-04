@@ -6,10 +6,11 @@
 #include "../common/player_commands/command.h"
 #include "../common/player_commands/move.h"
 #include "texture_provider.h"
+#include "animation_provider.h"
 
 #include "mock_server.h"
 
-const static int RATE = 1000/60;
+const static int FRAME_RATE = 1000/60;
 
 
 GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos): 
@@ -25,10 +26,12 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
     input_handler(comandos)
     {
         // poner color de fondo negro
-        renderer.SetDrawColor(0, 0, 0, 0);
+        renderer.SetDrawColor(0, 255, 0, 0);
 
         // cargar texturas
         TextureProvider::load_textures(renderer);
+        AnimationProvider::load_animations();
+
 }
 
 
@@ -40,20 +43,13 @@ void GameLoop::run(){
         // uint32_t t1 = SDL_GetTicks();
         _debug_simulacion_servidor(ultima_snapshot);
 
+        // se asegura que la cola tenga el ultimo estado
         while(snapshots_queue.try_pop(ultima_snapshot)){}
         
         input_handler.update_player_values(ultima_snapshot);
         is_running = input_handler.handle_events();
-        
-
-        
-        if(ultima_snapshot.players.empty()){   
-            // std::cout << "LOG: No hay jugadores en la snapshot, continuando..." << std::endl;
-            // continue; // si no hay jugadores, no hay nada que renderizar
-        }
 
         update_renderables_from_snapshot();
-        // update(player, pointer, RATE);
         
         render_all();
 
@@ -70,9 +66,8 @@ void GameLoop::update_renderables_from_snapshot(){
     for (auto& jugador: ultima_snapshot.players) {
         // iterar cada uno y buscarlo por ID
         auto it = players_renderables.find(jugador.player_id);
-        if (it != players_renderables.end()) {
+        if (it != players_renderables.end()) {            
             // si existe, actualizarlo
-            
             it->second->update(jugador);
         } else {
             std::cout << "LOG: Creando jugador con ID: " << (int)jugador.player_id << std::endl;
@@ -113,17 +108,18 @@ void GameLoop::_debug_simulacion_servidor(Snapshot& snapshot){
         return;
     }
     // muestro valores de player
-    std::cout << "Server: " 
-              << player.x << "x, " 
-              << player.y << "y, "
-              << (int)player.player_id << "id, "
-              << (int)player.team_id << "teamId, "
-              << (int) player.facing_angle << "angle, "
-              << std::endl;
+    // std::cout << "Server: " 
+    //           << player.x << "x, " 
+    //           << player.y << "y, "
+    //           << (int)player.player_id << "id, "
+    //           << (int)player.team_id << "teamId, "
+    //           << (int) player.facing_angle << "angle, "
+    //           << std::endl;
     
     // server luego de calcular cosas crea una snapshot y pushea
     Snapshot new_snapshot;
-    new_snapshot.round_number = 33;
+    new_snapshot = snapshot;
+    new_snapshot.players.clear();
     new_snapshot.players.push_back(player);
     if(!snapshots_queue.try_push(new_snapshot)){
         return;

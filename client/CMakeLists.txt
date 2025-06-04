@@ -4,6 +4,7 @@ target_sources(cs2d_client
         client.cpp
         gameloop.cpp
         texture_provider.cpp
+        animation_provider.cpp
         input_handler.cpp
         renderables/animation.cpp
         renderables/animation.cpp
@@ -13,6 +14,7 @@ target_sources(cs2d_client
         client.h
         gameloop.h
         texture_provider.h
+        animation_provider.h
         input_handler.h
         renderables/animation.h
         renderables/animation.h
