@@ -9,15 +9,15 @@
 
 #include <exception>
 
-class ResolverError : public std::exception {
+class ResolverError: public std::exception {
 private:
-  int gai_errno;
+    int gai_errno;
 
 public:
-  explicit ResolverError(int gai_errno);
+    explicit ResolverError(int gai_errno);
 
-  virtual const char *what() const noexcept;
+    virtual const char* what() const noexcept override;
 
-  virtual ~ResolverError();
+    virtual ~ResolverError();
 };
 #endif

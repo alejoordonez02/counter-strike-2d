@@ -10,15 +10,15 @@
 
 #include <exception>
 
-class LibError : public std::exception {
-  char msg_error[256];
+class LibError: public std::exception {
+    char msg_error[256];
 
 public:
-  LibError(int error_code, const char *fmt, ...) noexcept;
+    LibError(int error_code, const char* fmt, ...) noexcept;
 
-  virtual const char *what() const noexcept;
+    virtual const char* what() const noexcept override;
 
-  virtual ~LibError();
+    virtual ~LibError();
 };
 
 #endif

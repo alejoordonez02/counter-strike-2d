@@ -3,8 +3,6 @@
 
 #include "gameloop.h"
 #include <unistd.h>
-#include "../common/player_commands/command.h"
-#include "../common/player_commands/move.h"
 #include "texture_provider.h"
 #include "animation_provider.h"
 
