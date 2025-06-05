@@ -39,5 +39,10 @@ std::shared_ptr<SDL2pp::Texture> TextureProvider::get_texture(const std::string&
     if (textures.find(texture_name) == textures.end()) {
         throw std::runtime_error("Texture not found: " + texture_name);
     }
-    return textures[texture_name];
+    // verificar que tenga un alto y largo validos
+    std::shared_ptr<SDL2pp::Texture> texture = textures[texture_name];
+    if (texture->GetWidth() == 0 || texture->GetHeight() == 0) {
+        std::cerr << "Error: textura no cargada correctamente" << std::endl;
+    }
+    return texture;
 }

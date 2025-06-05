@@ -37,10 +37,10 @@ void Animation::advanceFrame() {
 }
 
 void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Point position, SDL_RendererFlip &flipType, double rotation_angle) {
-    int frameX = (this->current_frame % columns) * frame_width;
-    int frameY = (this->current_frame / columns) * frame_height;
+    int frameX = (this->current_frame % columns) * size;
+    int frameY = (this->current_frame / columns) * size;
 
-    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, frame_width, frame_height);
+    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
 
     SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
 

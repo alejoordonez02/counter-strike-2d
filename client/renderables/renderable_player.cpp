@@ -6,13 +6,13 @@
 
 RenderablePlayer::RenderablePlayer(uint16_t player_id): 
     player_id(player_id),    
+    is_terrorist(true),
     position(0, 0),
     facing_angle(0), 
     is_shooting(false), 
     was_hurt(false), 
     is_walking(false), 
     is_dead(false), 
-    is_terrorist(true),
     current_weapon(WeaponType::None)
 {
     // load_animation("walking");

@@ -27,19 +27,21 @@ class Animation {
     SDL2pp::Texture &texture;
     /** Current animation frame. */
     int current_frame;
+
+    int frame_width;
+    int frame_height;
+
     /** Total number of frames in the sprite or specific frame */
     int num_frames;
+    int columns;
+    bool is_animated;
     
     /** Size of the sprite (height and width). */
     int size;
-    int columns;
 
     /** Time elapsed since last update. */
     float elapsed;
 
-    int frame_width;
-    int frame_height;
-    bool is_animated;
 };
 
 #endif  //__ANIMATION_H__
