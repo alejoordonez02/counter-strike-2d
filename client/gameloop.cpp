@@ -10,7 +10,7 @@
 
 #include "mock_server.h"
 
-const static int FRAME_RATE = 1000/60;
+#define FRAME_RATE 1000000.0f/25.0f
 
 
 GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos): 
