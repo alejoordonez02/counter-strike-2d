@@ -6,8 +6,9 @@
 
 
 #include "../../common/snapshot.h"
-#include "animation.h"
 #include "../animation_provider.h"
+#include "animation.h"
+#include "renderable_legs.h"
 
 class RenderablePlayer
 {
@@ -27,6 +28,7 @@ private:
     bool is_dead;
 
     WeaponType current_weapon;
+    RenderableLegs legs;
 
     Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;

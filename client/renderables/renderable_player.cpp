@@ -14,6 +14,7 @@ RenderablePlayer::RenderablePlayer(uint16_t player_id, std::shared_ptr<Animation
     is_walking(false), 
     is_dead(false), 
     current_weapon(WeaponType::None),
+    legs(animation_provider),
     animation_provider(animation_provider)
 {
     // load_animation("walking");
@@ -41,6 +42,7 @@ void RenderablePlayer::update(PlayerDTO& player)
     if(player.is_walking){
         // le pide a renderable_legs que se muevan y se animen. No hace nada con la textura original
         // update_legs();
+        legs.update(position, facing_angle);
         current_animation = animations["shooting"].get();
     } else {   
         current_animation = animations["idle"].get();
@@ -73,6 +75,7 @@ void RenderablePlayer::render(SDL2pp::Renderer &renderer){
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     current_animation->render(renderer, position, flip, angle);
+    legs.render(renderer);
 }
 
 

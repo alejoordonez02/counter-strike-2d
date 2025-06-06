@@ -9,6 +9,7 @@ target_sources(cs2d_client
         renderables/animation.cpp
         renderables/animation.cpp
         renderables/renderable_player.cpp
+        renderables/renderable_legs.cpp
     PUBLIC
         mock_server.h
         client.h
@@ -19,4 +20,5 @@ target_sources(cs2d_client
         renderables/animation.h
         renderables/animation.h
         renderables/renderable_player.h
+        renderables/renderable_legs.h
 )
