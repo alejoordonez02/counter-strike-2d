@@ -1,0 +1,411 @@
+tilesheet: "../resources/embrador.bmp"
+rows: 12
+cols: 8
+blocks:
+  # Fila 0 (y=0)
+  - x: 0
+    y: 0
+    texture: "../resources/tiles/purple.png"
+    type: "Common"
+  - x: 1
+    y: 0
+    texture: "../resources/tiles/solid1.png"
+    type: "Solid"
+  - x: 2
+    y: 0
+    texture: "../resources/tiles/solid2.png"
+    type: "Solid"
+  - x: 3
+    y: 0
+    texture: "../resources/tiles/solid3.png"
+    type: "Solid"
+  - x: 4
+    y: 0
+    texture: "../resources/tiles/solid4.png"
+    type: "Solid"
+  - x: 5
+    y: 0
+    texture: "../resources/tiles/solid5.png"
+    type: "Solid"
+  - x: 6
+    y: 0
+    texture: "../resources/tiles/solid6.png"
+    type: "Solid"
+  - x: 7
+    y: 0
+    texture: "../resources/tiles/solid7.png"
+    type: "Solid"
+
+  # Fila 1 (y=1)
+  - x: 0
+    y: 1
+    texture: "../resources/tiles/tile_8.png"
+    type: "Common"
+  - x: 1
+    y: 1
+    texture: "../resources/tiles/tile_9.png"
+    type: "Common"
+  - x: 2
+    y: 1
+    texture: "../resources/tiles/tile_10.png"
+    type: "Common"
+  - x: 3
+    y: 1
+    texture: "../resources/tiles/tile_11.png"
+    type: "Common"
+  - x: 4
+    y: 1
+    texture: "../resources/tiles/tile_12.png"
+    type: "Common"
+  - x: 5
+    y: 1
+    texture: "../resources/tiles/tile_13.png"
+    type: "Common"
+  - x: 6
+    y: 1
+    texture: "../resources/tiles/tile_14.png"
+    type: "Common"
+  - x: 7
+    y: 1
+    texture: "../resources/tiles/tile_15.png"
+    type: "Common"
+
+  # Fila 2 (y=2)
+  - x: 0
+    y: 2
+    texture: "../resources/tiles/tile_16.png"
+    type: "Common"
+  - x: 1
+    y: 2
+    texture: "../resources/tiles/tile_17.png"
+    type: "Common"
+  - x: 2
+    y: 2
+    texture: "../resources/tiles/tile_18.png"
+    type: "Common"
+  - x: 3
+    y: 2
+    texture: "../resources/tiles/grass1.png"
+    type: "Common"
+  - x: 4
+    y: 2
+    texture: "../resources/tiles/woodenbox1.png"
+    type: "Solid"
+  - x: 5
+    y: 2
+    texture: "../resources/tiles/solid8.png"
+    type: "Solid"
+  - x: 6
+    y: 2
+    texture: "../resources/tiles/grass2.png"
+    type: "Common"
+  - x: 7
+    y: 2
+    texture: "../resources/tiles/grass3.png"
+    type: "Common"
+
+  # Fila 3 (y=3)
+  - x: 0
+    y: 3
+    texture: "../resources/tiles/tile_24.png"
+    type: "Common"
+  - x: 1
+    y: 3
+    texture: "../resources/tiles/tile_25.png"
+    type: "Common"
+  - x: 2
+    y: 3
+    texture: "../resources/tiles/tile_26.png"
+    type: "Common"
+  - x: 3
+    y: 3
+    texture: "../resources/tiles/tile_27.png"
+    type: "Common"
+  - x: 4
+    y: 3
+    texture: "../resources/tiles/tile_28.png"
+    type: "Common"
+  - x: 5
+    y: 3
+    texture: "../resources/tiles/tile_29.png"
+    type: "Common"
+  - x: 6
+    y: 3
+    texture: "../resources/tiles/tile_30.png"
+    type: "Common"
+  - x: 7
+    y: 3
+    texture: "../resources/tiles/tile_31.png"
+    type: "Common"
+
+  # Fila 4 (y=4)
+  - x: 0
+    y: 4
+    texture: "../resources/tiles/tile_32.png"
+    type: "Common"
+  - x: 1
+    y: 4
+    texture: "../resources/tiles/tile_33.png"
+    type: "Common"
+  - x: 2
+    y: 4
+    texture: "../resources/tiles/tile_34.png"
+    type: "Common"
+  - x: 3
+    y: 4
+    texture: "../resources/tiles/tile_35.png"
+    type: "Common"
+  - x: 4
+    y: 4
+    texture: "../resources/tiles/tile_36.png"
+    type: "Common"
+  - x: 5
+    y: 4
+    texture: "../resources/tiles/tile_37.png"
+    type: "Common"
+  - x: 6
+    y: 4
+    texture: "../resources/tiles/tile_38.png"
+    type: "Common"
+  - x: 7
+    y: 4
+    texture: "../resources/tiles/grass4.png"
+    type: "Common"
+
+  # Fila 5 (y=5)
+  - x: 0
+    y: 5
+    texture: "../resources/tiles/tile_40.png"
+    type: "Common"
+  - x: 1
+    y: 5
+    texture: "../resources/tiles/tile_41.png"
+    type: "Common"
+  - x: 2
+    y: 5
+    texture: "../resources/tiles/tile_42.png"
+    type: "Common"
+  - x: 3
+    y: 5
+    texture: "../resources/tiles/tile_43.png"
+    type: "Common"
+  - x: 4
+    y: 5
+    texture: "../resources/tiles/tile_44.png"
+    type: "Common"
+  - x: 5
+    y: 5
+    texture: "../resources/tiles/tile_45.png"
+    type: "Common"
+  - x: 6
+    y: 5
+    texture: "../resources/tiles/tile_46.png"
+    type: "Common"
+  - x: 7
+    y: 5
+    texture: "../resources/tiles/tile_47.png"
+    type: "Common"
+
+  # Fila 6 (y=6)
+  - x: 0
+    y: 6
+    texture: "../resources/tiles/grass5.png"
+    type: "Common"
+  - x: 1
+    y: 6
+    texture: "../resources/tiles/grass6.png"
+    type: "Common"
+  - x: 2
+    y: 6
+    texture: "../resources/tiles/grass7.png"
+    type: "Common"
+  - x: 3
+    y: 6
+    texture: "../resources/tiles/grass8.png"
+    type: "Common"
+  - x: 4
+    y: 6
+    texture: "../resources/tiles/grass9.png"
+    type: "Common"
+  - x: 5
+    y: 6
+    texture: "../resources/tiles/grass10.png"
+    type: "Common"
+  - x: 6
+    y: 6
+    texture: "../resources/tiles/grass11.png"
+    type: "Common"
+  - x: 7
+    y: 6
+    texture: "../resources/tiles/solid9.png"
+    type: "Solid"
+
+  # Fila 7 (y=7)
+  - x: 0
+    y: 7
+    texture: "../resources/tiles/tile_56.png"
+    type: "Common"
+  - x: 1
+    y: 7
+    texture: "../resources/tiles/grass12.png"
+    type: "Common"
+  - x: 2
+    y: 7
+    texture: "../resources/tiles/woodenbox2.png"
+    type: "Solid"
+  - x: 3
+    y: 7
+    texture: "../resources/tiles/woodenbox3.png"
+    type: "Solid"
+  - x: 4
+    y: 7
+    texture: "../resources/tiles/grass13.png"
+    type: "Common"
+  - x: 5
+    y: 7
+    texture: "../resources/tiles/grass14.png"
+    type: "Common"
+  - x: 6
+    y: 7
+    texture: "../resources/tiles/tile_62.png"
+    type: "Common"
+  - x: 7
+    y: 7
+    texture: "../resources/tiles/tile_63.png"
+    type: "Common"
+
+  # Fila 8 (y=8)
+  - x: 0
+    y: 8
+    texture: "../resources/tiles/woodenbox4.png"
+    type: "Solid"
+  - x: 1
+    y: 8
+    texture: "../resources/tiles/woodenbox5.png"
+    type: "Solid"
+  - x: 2
+    y: 8
+    texture: "../resources/tiles/woodenbox6.png"
+    type: "Solid"
+  - x: 3
+    y: 8
+    texture: "../resources/tiles/tile_67.png"
+    type: "Common"
+  - x: 4
+    y: 8
+    texture: "../resources/tiles/tile_68.png"
+    type: "Common"
+  - x: 5
+    y: 8
+    texture: "../resources/tiles/tile_69.png"
+    type: "Common"
+  - x: 6
+    y: 8
+    texture: "../resources/tiles/ASite.png"
+    type: "Plantable"
+  - x: 7
+    y: 8
+    texture: "../resources/tiles/BSite.png"
+    type: "Plantable"
+
+  # Fila 9 (y=9)
+  - x: 0
+    y: 9
+    texture: "../resources/tiles/tile_72.png"
+    type: "Common"
+  - x: 1
+    y: 9
+    texture: "../resources/tiles/tile_73.png"
+    type: "Common"
+  - x: 2
+    y: 9
+    texture: "../resources/tiles/tile_74.png"
+    type: "Common"
+  - x: 3
+    y: 9
+    texture: "../resources/tiles/tile_75.png"
+    type: "Common"
+  - x: 4
+    y: 9
+    texture: "../resources/tiles/tile_76.png"
+    type: "Common"
+  - x: 5
+    y: 9
+    texture: "../resources/tiles/tile_77.png"
+    type: "Common"
+  - x: 6
+    y: 9
+    texture: "../resources/tiles/tile_78.png"
+    type: "Common"
+  - x: 7
+    y: 9
+    texture: "../resources/tiles/tile_79.png"
+    type: "Common"
+
+  # Fila 10 (y=10)
+  - x: 0
+    y: 10
+    texture: "../resources/tiles/tile_80.png"
+    type: "Common"
+  - x: 1
+    y: 10
+    texture: "../resources/tiles/tile_81.png"
+    type: "Common"
+  - x: 2
+    y: 10
+    texture: "../resources/tiles/tile_82.png"
+    type: "Common"
+  - x: 3
+    y: 10
+    texture: "../resources/tiles/tile_83.png"
+    type: "Common"
+  - x: 4
+    y: 10
+    texture: "../resources/tiles/tile_84.png"
+    type: "Common"
+  - x: 5
+    y: 10
+    texture: "../resources/tiles/tile_85.png"
+    type: "Common"
+  - x: 6
+    y: 10
+    texture: "../resources/tiles/tile_86.png"
+    type: "Common"
+  - x: 7
+    y: 10
+    texture: "../resources/tiles/tile_87.png"
+    type: "Common"
+
+  # Fila 11 (y=11)
+  - x: 0
+    y: 11
+    texture: "../resources/tiles/tile_88.png"
+    type: "Common"
+  - x: 1
+    y: 11
+    texture: "../resources/tiles/tile_89.png"
+    type: "Common"
+  - x: 2
+    y: 11
+    texture: "../resources/tiles/tile_90.png"
+    type: "Common"
+  - x: 3
+    y: 11
+    texture: "../resources/tiles/tile_91.png"
+    type: "Common"
+  - x: 4
+    y: 11
+    texture: "../resources/tiles/tile_92.png"
+    type: "Common"
+  - x: 5
+    y: 11
+    texture: "../resources/tiles/tile_93.png"
+    type: "Common"
+  - x: 6
+    y: 11
+    texture: "../resources/tiles/tile_94.png"
+    type: "Common"
+  - x: 7
+    y: 11
+    texture: "../resources/tiles/tile_95.png"
+    type: "Common"

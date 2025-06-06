@@ -14,11 +14,13 @@ qt5_add_resources(RESOURCES resources/resources.qrc)
 
 # Archivos fuente
 set(SOURCE_FILES
-    main.cpp
-    mainwindow.cpp
-    tilesheeteditor.cpp
-    mapeditor.cpp
-    maploader.cpp
+    src/main.cpp
+    src/mainwindow.cpp
+    src/tilesheetdata.cpp
+    src/tilesheeteditor.cpp
+    src/mapeditor.cpp
+    src/maploader.cpp
+    src/block.cpp
     ${UI_HEADERS}
 )
 

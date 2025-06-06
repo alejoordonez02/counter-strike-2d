@@ -1,0 +1,57 @@
+background: "../resources/backgrounds/blood.jpg"
+planting_spots: 1
+blocks:
+  - x: 32
+    y: 64
+    texture: "../resources/tiles/tile_12.png"
+    type: "Common"
+    
+  - x: 96
+    y: 128
+    texture: "../resources/tiles/tile_26.png"
+    type: "Solid"
+    
+  - x: 160
+    y: 192
+    texture: "../resources/tiles/tile_44.png"
+    type: "Plantable"
+    
+  - x: 128
+    y: 384
+    texture: "../resources/tiles/tile_36.png"
+    type: "Solid"
+    
+  - x: 96
+    y: 416
+    texture: "../resources/tiles/tile_63.png"
+    type: "Solid"
+    
+  - x: 96
+    y: 448
+    texture: "../resources/tiles/tile_62.png"
+    type: "Solid"
+    
+  - x: 96
+    y: 288
+    texture: "../resources/tiles/tile_71.png"
+    type: "Solid"
+    
+  - x: 32
+    y: 352
+    texture: "../resources/tiles/tile_70.png"
+    type: "Solid"
+    
+  - x: 64
+    y: 384
+    texture: "../resources/tiles/tile_71.png"
+    type: "Solid"
+    
+  - x: 128
+    y: 352
+    texture: "../resources/tiles/tile_69.png"
+    type: "Solid"
+    
+  - x: 224
+    y: 288
+    texture: "../resources/tiles/tile_62.png"
+    type: "Solid"
