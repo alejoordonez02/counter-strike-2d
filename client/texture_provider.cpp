@@ -24,6 +24,9 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     //             .SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0, 255)) // Magenta
     //     ),
     textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
+    textures["terrorist_2"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t2.bmp");
+    textures["terrorist_3"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t3.bmp");
+    textures["terrorist_4"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t4.bmp");
     textures["legs"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/legs.bmp");
     
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");

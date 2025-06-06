@@ -21,14 +21,15 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
     // texture_provider(renderer),
     snapshots_queue(snapshots),
     comandos_queue(comandos),
-    input_handler(comandos)
+    input_handler(comandos),
+    animation_provider(std::make_shared<AnimationProvider>())
     {
         // poner color de fondo negro
         renderer.SetDrawColor(0, 255, 0, 0);
 
         // cargar texturas
         TextureProvider::load_textures(renderer);
-        AnimationProvider::load_animations();
+        animation_provider->load_animations();
 
 }
 
@@ -70,7 +71,7 @@ void GameLoop::update_renderables_from_snapshot(){
         } else {
             std::cout << "LOG: Creando jugador con ID: " << (int)jugador.player_id << std::endl;
             // si no existe, crearlo
-            auto renderable_player = std::make_unique<RenderablePlayer>(jugador.player_id);
+            auto renderable_player = std::make_unique<RenderablePlayer>(jugador.player_id, animation_provider);
             players_renderables[jugador.player_id] = std::move(renderable_player);
         }
     }

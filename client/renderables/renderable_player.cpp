@@ -4,7 +4,7 @@
 #include "../animation_provider.h"
 
 
-RenderablePlayer::RenderablePlayer(uint16_t player_id): 
+RenderablePlayer::RenderablePlayer(uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider) :
     player_id(player_id),    
     is_terrorist(true),
     position(0, 0),
@@ -13,24 +13,21 @@ RenderablePlayer::RenderablePlayer(uint16_t player_id):
     was_hurt(false), 
     is_walking(false), 
     is_dead(false), 
-    current_weapon(WeaponType::None)
+    current_weapon(WeaponType::None),
+    animation_provider(animation_provider)
 {
     // load_animation("walking");
     // load_animation("shooting");
     load_animation("idle");
-    current_animation = animations["idle"];
+    current_animation = animations["idle"].get();
 }
 
 
 void RenderablePlayer::load_animation(const std::string& animation_name) {
-    std::string sufix_name = "counter_terrorist_";
-    if(is_terrorist){
-        sufix_name = "terrorist_";
-    }
-    animations[animation_name] = new Animation(
-        *TextureProvider::get_texture(sufix_name + "1"),      // obtiene toda la imagen
-        AnimationProvider::get_animation_data(sufix_name + animation_name)    // se encarga de dividir al imagen en frames
-    );
+    std::string sufix_name = is_terrorist ? "terrorist_" : "counter_terrorist_";
+    std::string skin_id = "1_";
+    std::string full_name = sufix_name + skin_id + animation_name;
+    animations[animation_name] = std::move(animation_provider->make_animation(full_name));
 }
 
 
@@ -41,16 +38,25 @@ void RenderablePlayer::update(PlayerDTO& player)
     position.x = player.x;
     position.y = player.y;
 
-    // resto de las animaciones
     if(player.is_walking){
-        // le pide a renderable_legs que se muevan y se animen
+        // le pide a renderable_legs que se muevan y se animen. No hace nada con la textura original
         // update_legs();
-        // current_animation = animations["terrorist_walking"];
-    } else {
-        current_animation = animations["terrorist_idle"];
     }
+    
+    // adicionalmente se fija que tipo de arma tenes y en base a eso escoje la textura
+    // if (player.weapon_type != knife){
+    //     current_animation = animations["terrorist_standing_shoot"];
+    // } else if (player.weapon_type == knife){
+    //     current_animation = animations["terrorist_standing_knife"];
+    // }
     // } else if (player.is_shooting){
-    //     current_animation = animations["terrorist_shooting"];
+            // para disparar necesita un arma y cambiar su textura
+            // RenderableGun a su vez tiene un shooting, que le dice si poner el fuego en el arma o no
+            // update_gun(x, y, gun_type, is_shooting)
+            // current_animation = animations["terrorist_shooting"];
+    // } else if (player.is_placing_bomb){
+            // solo necesita cambiar su textura
+            // current_animation = animations["terrorist_extending_arms"];
     // }
     
     current_animation->update();

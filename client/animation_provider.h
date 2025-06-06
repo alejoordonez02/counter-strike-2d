@@ -3,23 +3,26 @@
 
 #include <string>
 #include <unordered_map>
+#include <memory>
+#include <vector>
 
 #include "client/renderables/animation.h"
 
 
-
+struct AnimationPrototype {
+    SDL2pp::Texture* texture;
+    AnimationData data;
+};
 
 class AnimationProvider {
 private:
-    static std::unordered_map<std::string, AnimationData> frames_data;
-
-    AnimationProvider() {}
-
-
+    std::unordered_map<std::string, AnimationPrototype> animation_prototypes;
+    
 public:
-    static const AnimationData& get_animation_data(const std::string& name);
+    AnimationProvider() {}
+    std::unique_ptr<Animation> make_animation(const std::string& animation_name);
 
-    static void load_animations();
+    void load_animations();
 };
 
 #endif

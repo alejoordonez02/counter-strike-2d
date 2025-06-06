@@ -1,15 +1,12 @@
-#ifndef RENDERABLE_PLAYER_H
-#define RENDERABLE_PLAYER_H
+#ifndef RENDERABLE_LEGS_H
+#define RENDERABLE_LEGS_H
 
 #include "SDL2pp/SDL2pp.hh"
-#include <memory>
-
 
 #include "../../common/snapshot.h"
 #include "animation.h"
-#include "../animation_provider.h"
 
-class RenderablePlayer
+class RenderableLegs
 {
 private:
     uint16_t player_id;
@@ -29,19 +26,17 @@ private:
     WeaponType current_weapon;
 
     Animation* current_animation;
-    std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
-
-    std::shared_ptr<AnimationProvider> animation_provider;
+    std::unordered_map<std::string, Animation*> animations;
 
 
 public:
-    RenderablePlayer(uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider);
+    RenderableLegs(uint16_t player_id);
     
     void update(PlayerDTO& player);
     void render(SDL2pp::Renderer &renderer);
 
     void load_animation(const std::string& animation_name);
-    ~RenderablePlayer();
+    ~RenderableLegs();
 };
 
 #endif

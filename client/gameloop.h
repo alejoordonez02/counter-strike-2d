@@ -2,8 +2,10 @@
 #define GAMELOOP_H
 
 #include <SDL2pp/SDL2pp.hh>
+#include <memory>
 
 #include "texture_provider.h"
+#include "animation_provider.h"
 #include "input_handler.h"
 
 #include "../common/queue.h"
@@ -30,6 +32,7 @@ class GameLoop {
         // encapsular luego en una clase renderables?
         std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>> players_renderables;
 
+        std::shared_ptr<AnimationProvider> animation_provider;
 
 
 public:

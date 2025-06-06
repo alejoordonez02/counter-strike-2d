@@ -1,24 +1,22 @@
 #include "animation_provider.h"
-
-#include <vector>
-
+#include "texture_provider.h"
 #include "client/renderables/animation.h"
 #include "common/snapshot.h"
 
-#define FPS_BASE 60
-
-std::unordered_map<std::string, AnimationData> AnimationProvider::frames_data;
 
 void AnimationProvider::load_animations() {
-    frames_data["terrorist_idle"] = AnimationData{2, 1, false};
-    frames_data["terrorist_running"] = AnimationData{4, 8, true};
-
+    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
+    animation_prototypes["terrorist_2_idle"] = {TextureProvider::get_texture("terrorist_2").get(), AnimationData{2, 1, false}};
+    animation_prototypes["terrorist_3_idle"] = {TextureProvider::get_texture("terrorist_3").get(), AnimationData{2, 1, false}};
+    animation_prototypes["terrorist_4_idle"] = {TextureProvider::get_texture("terrorist_4").get(), AnimationData{2, 1, false}};
+    animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(), AnimationData{4, 8, true}};
 }
 
-const AnimationData& AnimationProvider::get_animation_data(const std::string& name) {
-    if (frames_data.find(name) == frames_data.end()) {
-        throw std::runtime_error("Animation data not found: " + name);
+// devuelve un nuevo puntero a la animacion
+std::unique_ptr<Animation> AnimationProvider::make_animation(const std::string& animation_name) {
+    auto it = animation_prototypes.find(animation_name);
+    if (it == animation_prototypes.end()) {
+        throw std::runtime_error("Animation not found: " + animation_name);
     }
-    return frames_data[name];
+    return std::make_unique<Animation>(*(it->second.texture), it->second.data);
 }
-
