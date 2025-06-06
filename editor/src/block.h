@@ -12,7 +12,8 @@ public:
         Solid,      
         Plantable, 
         TSpawn,   
-        CtSpawn     
+        CtSpawn,
+        Unknown     
     };
 
     Block();

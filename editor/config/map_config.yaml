@@ -3,55 +3,69 @@ planting_spots: 1
 blocks:
   - x: 32
     y: 64
-    texture: "../resources/tiles/tile_12.png"
-    type: "Common"
-    
+    type: Common
+    texture: "../resources/tiles/grass1.png"
   - x: 96
     y: 128
-    texture: "../resources/tiles/tile_26.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 160
     y: 192
-    texture: "../resources/tiles/tile_44.png"
-    type: "Plantable"
-    
+    type: Plantable
+    texture: "../resources/tiles/plantspot.png"
   - x: 128
     y: 384
-    texture: "../resources/tiles/tile_36.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 96
     y: 416
-    texture: "../resources/tiles/tile_63.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 96
     y: 448
-    texture: "../resources/tiles/tile_62.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 96
     y: 288
-    texture: "../resources/tiles/tile_71.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 32
     y: 352
-    texture: "../resources/tiles/tile_70.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 64
     y: 384
-    texture: "../resources/tiles/tile_71.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 128
     y: 352
-    texture: "../resources/tiles/tile_69.png"
-    type: "Solid"
-    
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
   - x: 224
     y: 288
-    texture: "../resources/tiles/tile_62.png"
-    type: "Solid"
+    type: Solid
+    texture: "../resources/tiles/solid1.png"
+  - x: 96
+    y: 256
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 128
+    y: 256
+    type: Common
+    texture: "../resources/tiles/grass2.png"
+  - x: 160
+    y: 256
+    type: Solid
+    texture: "../resources/tiles/woodenbox1.png"
+  - x: 128
+    y: 288
+    type: Solid
+    texture: "../resources/tiles/woodenbox1.png"
+  - x: 160
+    y: 288
+    type: Solid
+    texture: "../resources/tiles/woodenbox1.png"
+  - x: 128
+    y: 320
+    type: Solid
+    texture: "../resources/tiles/woodenbox1.png"

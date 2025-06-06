@@ -95,8 +95,14 @@
                  <strikeout>false</strikeout>
                 </font>
                </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Map Editor</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -155,6 +161,12 @@
                  <width>24</width>
                  <height>24</height>
                 </size>
+               </property>
+               <property name="checkable">
+                <bool>false</bool>
+               </property>
+               <property name="autoRepeatInterval">
+                <number>100</number>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>
@@ -218,10 +230,10 @@
             <widget class="QWidget" name="scrollAreaWidgetContents_2">
              <property name="geometry">
               <rect>
-               <x>-165</x>
+               <x>0</x>
                <y>0</y>
-               <width>274</width>
-               <height>402</height>
+               <width>123</width>
+               <height>347</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -246,7 +258,7 @@
                  <string/>
                 </property>
                 <property name="pixmap">
-                 <pixmap resource="resources/resources.qrc">:/tiles/assets/gfx/tiles/embrador.bmp</pixmap>
+                 <pixmap>:/tiles/assets/gfx/tiles/embrador.bmp</pixmap>
                 </property>
                 <property name="scaledContents">
                  <bool>false</bool>
@@ -330,7 +342,7 @@
  </widget>
  <resources>
   <include location="resources/resources.qrc"/>
-  <include location="../../../../.designer/backup/resources/resources.qrc"/>
+  <include location="resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
