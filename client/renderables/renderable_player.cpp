@@ -17,7 +17,7 @@ RenderablePlayer::RenderablePlayer(uint16_t player_id, std::shared_ptr<Animation
     animation_provider(animation_provider)
 {
     // load_animation("walking");
-    // load_animation("shooting");
+    load_animation("shooting");
     load_animation("idle");
     current_animation = animations["idle"].get();
 }
@@ -41,6 +41,9 @@ void RenderablePlayer::update(PlayerDTO& player)
     if(player.is_walking){
         // le pide a renderable_legs que se muevan y se animen. No hace nada con la textura original
         // update_legs();
+        current_animation = animations["shooting"].get();
+    } else {   
+        current_animation = animations["idle"].get();
     }
     
     // adicionalmente se fija que tipo de arma tenes y en base a eso escoje la textura

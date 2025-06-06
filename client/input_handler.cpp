@@ -63,6 +63,7 @@ void InputHandler::send_direction(){
     player.player_hp = 444;
     player.x += dir.x * 10;
     player.y += dir.y * 10;
+    player.is_walking = (dir.x != 0 || dir.y != 0);
     
     // std::cout << "LOG: Enviando dirección: (" << player.x << ", " << player.y << ")" << std::endl;
 
