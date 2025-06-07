@@ -10,11 +10,6 @@
 #include "protocol.h"
 
 /*
- * For accepting
- * */
-Connection::Connection(const std::string& servname): skt(servname.c_str()) {}
-
-/*
  * Server connection
  * */
 Connection::Connection(Socket&& s): skt(std::move(s)) {}
@@ -51,12 +46,8 @@ std::vector<uint8_t> Connection::receive_msg() {
 }
 
 void Connection::send_length(const std::vector<uint8_t>& msg) {
-    uint16_t size = htons(msg.size());
-    std::vector<uint8_t> buf;
-    
-    buf.push_back(static_cast<uint8_t>(size >> 8));
-    buf.push_back(static_cast<uint8_t>(size & 0xFF));
+    uint16_t sz_be = htons(msg.size());
 
-    if (not skt.sendall(buf.data(), buf.size()))
+    if (not skt.sendall(&sz_be, sizeof(sz_be)))
         throw std::runtime_error("Socket send error: disconnected");
 }

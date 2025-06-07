@@ -15,11 +15,6 @@ private:
 
 public:
     /*
-     * For accepting
-     * */
-    Connection(const std::string& servname);
-
-    /*
      * Server connection
      * */
     Connection(Socket&& s);
