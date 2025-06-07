@@ -41,8 +41,7 @@ void RenderablePlayer::update(PlayerDTO& player)
 
     if(player.is_walking){
         // le pide a renderable_legs que se muevan y se animen. No hace nada con la textura original
-        // update_legs();
-        legs.update(position, facing_angle);
+        legs.update(position, this->facing_angle);
         current_animation = animations["shooting"].get();
     } else {   
         current_animation = animations["idle"].get();
@@ -74,8 +73,8 @@ void RenderablePlayer::render(SDL2pp::Renderer &renderer){
     double angle = this->facing_angle;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-    current_animation->render(renderer, position, flip, angle);
     legs.render(renderer);
+    current_animation->render(renderer, position, flip, angle);
 }
 
 

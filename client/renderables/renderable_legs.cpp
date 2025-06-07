@@ -22,8 +22,13 @@ void RenderableLegs::load_animation(const std::string& animation_name) {
 
 void RenderableLegs::update(const SDL2pp::Point& position, double facing_angle)
 {
-    this->position = position;
     this->facing_angle = facing_angle;
+
+    double radians = facing_angle * M_PI / 180.0;
+
+    double offset = -3;
+    this->position.x = position.x + std::cos(radians) * offset;
+    this->position.y = position.y + std::sin(radians) * offset;
 
     current_animation->update();
 }

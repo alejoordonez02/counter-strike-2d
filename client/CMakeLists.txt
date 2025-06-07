@@ -11,7 +11,6 @@ target_sources(cs2d_client
         renderables/renderable_player.cpp
         renderables/renderable_legs.cpp
     PUBLIC
-        mock_server.h
         client.h
         gameloop.h
         texture_provider.h

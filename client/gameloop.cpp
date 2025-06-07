@@ -6,7 +6,7 @@
 #include "texture_provider.h"
 #include "animation_provider.h"
 
-#include "mock_server.h"
+#include "../tests/mock_server.h"
 
 #define FRAME_RATE 1000000.0f/25.0f
 
