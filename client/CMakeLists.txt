@@ -1,20 +1,23 @@
 target_sources(cs2d_client
     PRIVATE
         client_main.cpp
+        client.cpp
         gameloop.cpp
         texture_provider.cpp
-        jugador.cpp
-        animation.cpp
-        pointer.cpp
-        client.cpp
+        animation_provider.cpp
         input_handler.cpp
+        renderables/animation.cpp
+        renderables/animation.cpp
+        renderables/renderable_player.cpp
+        renderables/renderable_legs.cpp
     PUBLIC
-        mock_server.h
+        client.h
         gameloop.h
         texture_provider.h
-        jugador.h
-        animation.h
-        pointer.h
-        client.h
+        animation_provider.h
         input_handler.h
+        renderables/animation.h
+        renderables/animation.h
+        renderables/renderable_player.h
+        renderables/renderable_legs.h
 )

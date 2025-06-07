@@ -5,6 +5,7 @@ target_sources(cs2d_tests
     main.cpp
     serialization.cpp
     cmd_deserialization.cpp
+    mock_server.h
 )
 
 target_include_directories(cs2d_tests PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -17,15 +17,15 @@ struct WeaponDTO {
     WeaponType type;
     int16_t x;
     int16_t y;
-} __attribute__((packed));
+};
 
 
 struct PlayerDTO {
-    uint8_t player_id;
+    uint16_t player_id;
     char player_name[MAX_PLAYER_NAME];
     uint8_t team_id;  // 0 para terroristas, 1 para counter
-    uint8_t player_hp;
-
+    uint16_t player_hp;
+    
     // Armas
     // El cuchillo siempre lo tienen
     // WeaponType primaryGun;
@@ -39,7 +39,7 @@ struct PlayerDTO {
     uint8_t total_money = 0;
 
     // animaciones y sonidos
-    float facing_angle;  // hacia donde esta mirando el jugador, valor entre 0 y 360
+    double facing_angle;        // hacia donde esta mirando el jugador, valor entre 0 y 360
     bool is_shooting;
     bool was_hurt;
     bool is_walking;
@@ -48,11 +48,7 @@ struct PlayerDTO {
     // coordenadas del jugador
     int16_t x;
     int16_t y;
-
-    // coordenadas del disparo
-    int16_t shoot_x;
-    int16_t shoot_y;
-} __attribute__((packed));
+};
 
 
 struct Snapshot {

@@ -1,0 +1,85 @@
+#include "renderable_player.h"
+#include "../../common/snapshot.h"
+#include "../texture_provider.h"
+#include "../animation_provider.h"
+
+
+RenderablePlayer::RenderablePlayer(uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider) :
+    player_id(player_id),    
+    is_terrorist(true),
+    position(0, 0),
+    facing_angle(0), 
+    is_shooting(false), 
+    was_hurt(false), 
+    is_walking(false), 
+    is_dead(false), 
+    current_weapon(WeaponType::None),
+    legs(animation_provider),
+    animation_provider(animation_provider)
+{
+    // load_animation("walking");
+    load_animation("shooting");
+    load_animation("idle");
+    current_animation = animations["idle"].get();
+}
+
+
+void RenderablePlayer::load_animation(const std::string& animation_name) {
+    std::string sufix_name = is_terrorist ? "terrorist_" : "counter_terrorist_";
+    std::string skin_id = "1_";
+    std::string full_name = sufix_name + skin_id + animation_name;
+    animations[animation_name] = std::move(animation_provider->make_animation(full_name));
+}
+
+
+void RenderablePlayer::update(PlayerDTO& player)
+{
+    this->facing_angle = player.facing_angle;
+    
+    position.x = player.x;
+    position.y = player.y;
+
+    if(player.is_walking){
+        // le pide a renderable_legs que se muevan y se animen. No hace nada con la textura original
+        legs.update(position, this->facing_angle);
+        current_animation = animations["shooting"].get();
+    } else {   
+        current_animation = animations["idle"].get();
+    }
+    
+    // adicionalmente se fija que tipo de arma tenes y en base a eso escoje la textura
+    // if (player.weapon_type != knife){
+    //     current_animation = animations["terrorist_standing_shoot"];
+    // } else if (player.weapon_type == knife){
+    //     current_animation = animations["terrorist_standing_knife"];
+    // }
+    // } else if (player.is_shooting){
+            // para disparar necesita un arma y cambiar su textura
+            // RenderableGun a su vez tiene un shooting, que le dice si poner el fuego en el arma o no
+            // update_gun(x, y, gun_type, is_shooting)
+            // current_animation = animations["terrorist_shooting"];
+    // } else if (player.is_placing_bomb){
+            // solo necesita cambiar su textura
+            // current_animation = animations["terrorist_extending_arms"];
+    // }
+    
+    current_animation->update();
+}
+
+
+
+
+void RenderablePlayer::render(SDL2pp::Renderer &renderer){
+    double angle = this->facing_angle;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+
+    legs.render(renderer);
+    current_animation->render(renderer, position, flip, angle);
+}
+
+
+
+RenderablePlayer::~RenderablePlayer()
+{
+
+}
