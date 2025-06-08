@@ -2,8 +2,8 @@
 #include <cstdint>
 
 #include "../common/network/protocol.h"
-#include "../common/network/dtos/move_dto.h"
-#include "../common/network/dtos/attack_dto.h"
+#include "../common/network/dtos/start_moving_dto.h"
+#include "../common/network/dtos/start_attacking_dto.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 

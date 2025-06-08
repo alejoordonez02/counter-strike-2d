@@ -1,6 +1,6 @@
 #include "input_handler.h"
 #include "../common/direction.h"
-#include "../server/player_commands/move.h"
+#include "../server/player_commands/start_moving.h"
 #include "../server/player_commands/command.h"
 
 #include <map>

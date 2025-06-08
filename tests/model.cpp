@@ -1,5 +1,5 @@
-#include "../server/player_commands/attack.h"
-#include "../server/player_commands/move.h"
+#include "../server/player_commands/start_attacking.h"
+#include "../server/player_commands/start_moving.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
