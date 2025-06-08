@@ -1,9 +1,23 @@
 #ifndef DIRECTION_H
 #define DIRECTION_H
 
-struct Direction {
-    int t;  // t (theta) es el ángulo de la dirección con respecto al eje x
-    Direction(const float& t);
+#include <cmath>
+
+#include "tuple.h"
+
+/*
+ * Las direcciones son vectores unitarios (length = 1)
+ * */
+struct Direction: public Tuple<Direction, float> {
+    Direction(): Tuple<Direction, float>(0, 0) {}
+
+    Direction(const float& x, const float& y): Tuple<Direction, float>(0, 0) {
+        float length = std::sqrt(x * x + y * y);
+        if (length != 0) {
+            this->x = x / length;
+            this->y = y / length;
+        }
+    }
 };
 
 #endif

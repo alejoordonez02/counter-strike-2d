@@ -1,6 +1,4 @@
-target_sources(server
+target_sources(cs2d_server
     PRIVATE
-    # .cpp files
-    PUBLIC
-    # .h files
-    )
+    main.cpp
+)

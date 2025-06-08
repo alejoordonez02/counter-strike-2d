@@ -1,6 +1,23 @@
-target_sources(client
+target_sources(cs2d_client
     PRIVATE
-    # .cpp files
+        client_main.cpp
+        client.cpp
+        gameloop.cpp
+        texture_provider.cpp
+        animation_provider.cpp
+        input_handler.cpp
+        renderables/animation.cpp
+        renderables/animation.cpp
+        renderables/renderable_player.cpp
+        renderables/renderable_legs.cpp
     PUBLIC
-    # .h files
-    )
+        client.h
+        gameloop.h
+        texture_provider.h
+        animation_provider.h
+        input_handler.h
+        renderables/animation.h
+        renderables/animation.h
+        renderables/renderable_player.h
+        renderables/renderable_legs.h
+)
