@@ -2,14 +2,20 @@
 #include "client.h"
 
 
-// Client::Client(){}
+Client::Client(const std::string& hostname, const std::string& servname):
+    con(hostname, servname),
+    snapshots(),
+    commands(),
+    sender(con, commands),
+    receiver(con, snapshots)
+{}
 
 void Client::run(){
 
-    // receiver.start();
-    // sender.start();    
+    sender.start();
+    receiver.start(); 
 
-    GameLoop gameloop(snapshots, comandos);
+    GameLoop gameloop(snapshots, commands);
     gameloop.run();
 
 }

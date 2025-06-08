@@ -3,8 +3,8 @@
 
 // #include "common/player_commands.h"
 // #include "common/event.h"
-// #include "common/receiver.h"
-// #include "common/sender.h"
+#include "../common/network/receiver.h"
+#include "../common/network/sender.h"
 #include "../common/queue.h"
 #include "../common/snapshot.h"
 #include "../server/player_commands/command.h"
@@ -12,14 +12,17 @@
 
 class Client {
 private:
+    Connection con;
+    
+    Queue<std::shared_ptr<DTO>> commands;
+    Queue<std::unique_ptr<DTO>> snapshots;
+    
+    Sender sender;
+    Receiver receiver;
     // InputHandler input_handler;
-    Queue<Snapshot> snapshots;
-    Queue<PlayerDTO> comandos;
-
-    // Sender sender;
-    // Receiver receiver;
 
 public:
+    Client(const std::string& hostname, const std::string& servname);
     void run();
 };
 
