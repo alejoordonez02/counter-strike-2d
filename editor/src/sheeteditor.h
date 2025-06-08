@@ -14,9 +14,11 @@ public:
     void loadsheet(const QString &configPath);
     void setTileSize(int width, int height);
     QPixmap getSelectedTile() const;
+    QString getCurrentTexturePath() const;
+    QString getCurrentType() const;
 
 signals:
-    void tileSelected(const QPixmap &tile);
+    void tileSelected(const QString& texturePath, const QString& type);
     
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -24,6 +26,7 @@ protected:
 private:
     QPixmap m_tilesheet;
     QPoint m_selectedTilePos;
+    bool m_isDragging;
     int m_tileWidth;
     int m_tileHeight;
     SheetData sheetdata;

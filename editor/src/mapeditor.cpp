@@ -200,15 +200,33 @@ void MapEditor::dragLeaveEvent(QDragLeaveEvent *event) {
     Q_UNUSED(event);
 }
 
+void MapEditor::setCurrentTile(const QString& texturePath, const QString& typeString) {
+    m_selectedTile.texturePath = texturePath;
+    m_selectedTile.typeString = typeString;
+    m_selectedTile.isValid = true;
+}
+
+void MapEditor::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton && !m_selectedTile.texturePath.isEmpty()) {
+        QPoint dropPos(
+            (event->pos().x() / m_tileWidth) * m_tileWidth,
+            (event->pos().y() / m_tileHeight) * m_tileHeight
+        );
+        
+        placeTile(dropPos, m_selectedTile.texturePath, m_selectedTile.typeString);
+    }
+    QWidget::mousePressEvent(event);
+}
+
 void MapEditor::dropEvent(QDropEvent* event) {   
      if (event->mimeData()->hasFormat("application/x-tiledata")) {
         QByteArray itemData = event->mimeData()->data("application/x-tiledata");
         QDataStream stream(&itemData, QIODevice::ReadOnly);
-        QPoint tilePos;
         QString texturePath;
         QString typeString;
-        stream >> tilePos >> texturePath >> typeString;
-        
+        stream >> texturePath >> typeString;
+        m_selectedTile.texturePath = texturePath;
+        m_selectedTile.typeString = typeString;
         QPoint dropPos(
             (event->pos().x() / m_tileWidth) * m_tileWidth,
             (event->pos().y() / m_tileHeight) * m_tileHeight

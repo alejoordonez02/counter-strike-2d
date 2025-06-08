@@ -46,18 +46,21 @@ QPixmap SheetEditor::getSelectedTile() const
 
 void SheetEditor::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
         int tileX = event->pos().x() / m_tileWidth;
         int tileY = event->pos().y() / m_tileHeight;
 
         if (tileX >= 0 && tileY >= 0) {
             auto tileInfo = sheetdata.getTileInfo(tileX, tileY);
+            m_selectedTilePos = QPoint(tileX, tileY);
+    
+            // Emitir señal con la información del tile (para point & click)
+            emit tileSelected(tileInfo.texturePath, tileInfo.type);
             
+            // Preparar datos para drag & drop
             QByteArray itemData;
             QDataStream stream(&itemData, QIODevice::WriteOnly);
-            stream << tileX << tileY << tileInfo.texturePath << tileInfo.type;
+            stream << tileInfo.texturePath << tileInfo.type;
 
-            m_selectedTilePos = QPoint(tileX, tileY);
             QMimeData* mimeData = new QMimeData;
             mimeData->setData("application/x-tiledata", itemData);
             mimeData->setImageData(getSelectedTile().toImage());
@@ -65,10 +68,16 @@ void SheetEditor::mousePressEvent(QMouseEvent* event) {
             QDrag* drag = new QDrag(this);
             drag->setMimeData(mimeData);
             drag->setPixmap(getSelectedTile());
+            
+            m_isDragging = true;
+            QApplication::setOverrideCursor(Qt::ClosedHandCursor);
             drag->exec(Qt::CopyAction);
+            m_isDragging = false;
+            
+            QApplication::restoreOverrideCursor();
+            
         }
     }
-    QApplication::restoreOverrideCursor();
 }
 
 void SheetEditor::paintEvent(QPaintEvent *event)
@@ -79,4 +88,5 @@ void SheetEditor::paintEvent(QPaintEvent *event)
     if (!m_tilesheet.isNull()) {
         painter.drawPixmap(0, 0, m_tilesheet);
     }
+
 }

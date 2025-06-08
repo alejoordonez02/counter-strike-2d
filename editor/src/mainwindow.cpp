@@ -31,6 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     QString WeaponsheetconfigPath = "../config/weaponsheet_config.yaml";
     m_weaponsheetEditor->loadsheet(WeaponsheetconfigPath);
+    connect(m_weaponsheetEditor, &SheetEditor::tileSelected,
+        m_mapEditor, &MapEditor::setCurrentTile);
+
     QWidget *mapContainer = ui->scrollArea->findChild<QWidget*>("mapContainer");
     if (mapContainer) {
         QLayout *layout = mapContainer->parentWidget()->layout();
@@ -39,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     QString TilesheetconfigPath = "../config/tilesheet_config.yaml";
     m_tilesheetEditor->loadsheet(TilesheetconfigPath);
+
+    connect(m_tilesheetEditor, &SheetEditor::tileSelected,
+        m_mapEditor, &MapEditor::setCurrentTile);
 }
 
 MainWindow::~MainWindow()

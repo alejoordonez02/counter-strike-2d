@@ -23,8 +23,12 @@ public:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void mousePressEvent(QMouseEvent* event) override;
     void dropEvent(QDropEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+
+    public slots:
+    void setCurrentTile(const QString& texturePath, const QString& typeString);
 
 private:
     QPoint m_dragStartPos;
@@ -33,6 +37,11 @@ private:
     int m_tileWidth;
     int m_tileHeight;
     MapData mapdata;
+    struct {
+        QString texturePath;
+        QString typeString;
+        bool isValid = false;
+    } m_selectedTile;
     
 };
 

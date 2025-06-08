@@ -41,7 +41,9 @@
       <property name="styleSheet">
        <string notr="true">#leftMenu{
 	background-color: rgb(98, 160, 234);
-}</string>
+	border-radius: 10px;
+}
+</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="topMargin">
@@ -54,6 +56,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#leftFrame{
+	background-color: rgb(222, 221, 218);
+	border-radius: 10px;
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -97,6 +105,9 @@
                </property>
                <property name="text">
                 <string>Map Editor</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::MarkdownText</enum>
                </property>
               </widget>
              </item>
@@ -218,6 +229,9 @@
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border-image: url(:/prefijoNuevo/hud_slot.bmp);</string>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
@@ -226,7 +240,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>241</width>
+               <width>243</width>
                <height>68</height>
               </rect>
              </property>
@@ -247,6 +261,9 @@
             <property name="cursor" stdset="0">
              <cursorShape>OpenHandCursor</cursorShape>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border-image: url(:/prefijoNuevo/gui_c.bmp);</string>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
@@ -255,13 +272,19 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>241</width>
-               <height>355</height>
+               <width>243</width>
+               <height>361</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
                <widget class="QLabel" name="tylesheet">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>104</height>
+                 </size>
+                </property>
                 <property name="cursor">
                  <cursorShape>ArrowCursor</cursorShape>
                 </property>
@@ -276,6 +299,9 @@
                 </property>
                 <property name="autoFillBackground">
                  <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
                 </property>
                 <property name="text">
                  <string/>
@@ -308,7 +334,7 @@
      <widget class="QWidget" name="mainBody" native="true">
       <property name="styleSheet">
        <string notr="true">#mainBody{
-	
+	border-radius: 10px;
 	background-color: rgb(205, 171, 143);
 }</string>
       </property>
@@ -335,7 +361,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>475</width>
+            <width>477</width>
             <height>562</height>
            </rect>
           </property>
@@ -365,7 +391,6 @@
  </widget>
  <resources>
   <include location="resources/resources.qrc"/>
-  <include location="../../../../.designer/backup/resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
