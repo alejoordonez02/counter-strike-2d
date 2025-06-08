@@ -15,24 +15,25 @@ MainWindow::MainWindow(QWidget *parent) :
     m_mapEditor(new MapEditor(this))
 {
     ui->setupUi(this);
-    
+    setupUI();
+    loadConfigurations();
+    connectSignals();
+}
+
+void MainWindow::setupUI() {
     QLabel *tilesheetLabel = ui->scrollArea_2->findChild<QLabel*>("tylesheet");
     if (tilesheetLabel) {
         QLayout *layout = tilesheetLabel->parentWidget()->layout();
         layout->replaceWidget(tilesheetLabel, m_tilesheetEditor);
         delete tilesheetLabel;
     }
-    
-    QLabel *wepeaponsheetLabel = ui->scrollArea_3->findChild<QLabel*>("weaponsheet");
-    if (wepeaponsheetLabel) {
-        QLayout *layout = wepeaponsheetLabel->parentWidget()->layout();
-        layout->replaceWidget(wepeaponsheetLabel, m_weaponsheetEditor);
-        delete wepeaponsheetLabel;
+
+    QLabel *weaponsheetLabel = ui->scrollArea_3->findChild<QLabel*>("weaponsheet");
+    if (weaponsheetLabel) {
+        QLayout *layout = weaponsheetLabel->parentWidget()->layout();
+        layout->replaceWidget(weaponsheetLabel, m_weaponsheetEditor);
+        delete weaponsheetLabel;
     }
-    QString WeaponsheetconfigPath = "../config/weaponsheet_config.yaml";
-    m_weaponsheetEditor->loadsheet(WeaponsheetconfigPath);
-    connect(m_weaponsheetEditor, &SheetEditor::tileSelected,
-        m_mapEditor, &MapEditor::setCurrentTile);
 
     QWidget *mapContainer = ui->scrollArea->findChild<QWidget*>("mapContainer");
     if (mapContainer) {
@@ -40,15 +41,26 @@ MainWindow::MainWindow(QWidget *parent) :
         layout->replaceWidget(mapContainer, m_mapEditor);
         delete mapContainer;
     }
-    QString TilesheetconfigPath = "../config/tilesheet_config.yaml";
-    m_tilesheetEditor->loadsheet(TilesheetconfigPath);
-
-    connect(m_tilesheetEditor, &SheetEditor::tileSelected,
-        m_mapEditor, &MapEditor::setCurrentTile);
 }
 
-MainWindow::~MainWindow()
-{
+void MainWindow::loadConfigurations() {
+    QString weaponsheetConfigPath = "../config/weaponsheet_config.yaml";
+    m_weaponsheetEditor->loadsheet(weaponsheetConfigPath);
+
+    QString tilesheetConfigPath = "../config/tilesheet_config.yaml";
+    m_tilesheetEditor->loadsheet(tilesheetConfigPath);
+}
+
+void MainWindow::connectSignals() {
+    connect(m_weaponsheetEditor, &SheetEditor::tileSelected,
+            m_mapEditor, &MapEditor::setCurrentTile);
+
+    connect(m_tilesheetEditor, &SheetEditor::tileSelected,
+            m_mapEditor, &MapEditor::setCurrentTile);
+
+}
+
+MainWindow::~MainWindow() {
     delete ui;
 }
 
@@ -70,6 +82,27 @@ void MainWindow::on_LoadButton_clicked()
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", 
                 QString("Error loading map:\n%1").arg(e.what()));
+        }
+    }
+}
+
+void MainWindow::on_LoadBackgroundButton_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(
+        this, 
+        "Load Background", 
+        "", 
+        "PNG Files (*.png)"
+    );
+
+    if (!filePath.isEmpty()) {
+        try {
+            m_mapEditor->loadBackground(filePath);
+            
+            
+        } catch (const std::exception& e) {
+            QMessageBox::critical(this, "Error", 
+                QString("Error loading background:\n%1").arg(e.what()));
         }
     }
 }
@@ -102,9 +135,4 @@ void MainWindow::on_SaveButton_clicked()
                                     .arg(errorMessage));
         }
     }
-}
-
-void MainWindow::on_ExitButton_clicked()
-{   
-    close();
 }

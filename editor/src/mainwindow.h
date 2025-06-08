@@ -19,10 +19,17 @@ public:
 
 private slots:
     void on_LoadButton_clicked();
+    void on_LoadBackgroundButton_clicked();
     void on_SaveButton_clicked();
-    void on_ExitButton_clicked();
 
 private:
+    void setupUI();
+    void setupTilesheetEditor();
+    void setupWeaponsheetEditor();
+    void setupMapEditor();
+    void loadConfigurations();
+    void connectSignals();
+
     Ui::MapEditor *ui;
     SheetEditor *m_tilesheetEditor;
     SheetEditor *m_weaponsheetEditor;

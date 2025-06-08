@@ -8,6 +8,8 @@
 #include <QFileInfo>
 #include <algorithm>
 #include <fstream>
+#include <QDir>
+#include <QCoreApplication>
 
 MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
     m_tileWidth(32), m_tileHeight(32)
@@ -89,6 +91,10 @@ void MapEditor::saveMapData(const QString& filePath) {
 }
 
 void MapEditor::loadBackground(const QString &imagePath) {
+    QDir resourcesDir(QCoreApplication::applicationDirPath() + "/../editor");
+    QString relativePath = resourcesDir.relativeFilePath(imagePath);
+    
+    mapdata.backgroundPath = relativePath;
     if (m_background.load(imagePath) && !m_background.isNull()) {
         QSize imageSize = m_background.size();
         

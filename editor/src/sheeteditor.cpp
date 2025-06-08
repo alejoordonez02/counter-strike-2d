@@ -53,10 +53,8 @@ void SheetEditor::mousePressEvent(QMouseEvent* event) {
             auto tileInfo = sheetdata.getTileInfo(tileX, tileY);
             m_selectedTilePos = QPoint(tileX, tileY);
     
-            // Emitir señal con la información del tile (para point & click)
             emit tileSelected(tileInfo.texturePath, tileInfo.type);
             
-            // Preparar datos para drag & drop
             QByteArray itemData;
             QDataStream stream(&itemData, QIODevice::WriteOnly);
             stream << tileInfo.texturePath << tileInfo.type;
@@ -89,4 +87,14 @@ void SheetEditor::paintEvent(QPaintEvent *event)
         painter.drawPixmap(0, 0, m_tilesheet);
     }
 
+    if (m_selectedTilePos.x() >= 0 && m_selectedTilePos.y() >= 0) {
+        QPen pen(Qt::red, 2, Qt::SolidLine); 
+        painter.setPen(pen);
+        
+        int x = m_selectedTilePos.x() * m_tileWidth;
+        int y = m_selectedTilePos.y() * m_tileHeight;
+        QRect selectionRect(x, y, m_tileWidth, m_tileHeight);
+        
+        painter.drawRect(selectionRect);
+    }
 }

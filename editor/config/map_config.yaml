@@ -1,5 +1,5 @@
-background: "../resources/backgrounds/blood.jpg"
-planting_spots: 1
+background: "../resources/backgrounds/inferno.png"
+planting_spots: 3
 blocks:
   - x: 32
     y: 64
@@ -69,3 +69,43 @@ blocks:
     y: 320
     type: Solid
     texture: "../resources/tiles/woodenbox1.png"
+  - x: 256
+    y: 416
+    type: TSpawn
+    texture: "../resources/tiles/tspawn.png"
+  - x: 224
+    y: 384
+    type: CtSpawn
+    texture: "../resources/tiles/ctspawn.png"
+  - x: 288
+    y: 320
+    type: Plantable
+    texture: "../resources/tiles/sitea.png"
+  - x: 256
+    y: 288
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 352
+    y: 288
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 448
+    y: 320
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 512
+    y: 416
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 544
+    y: 448
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 544
+    y: 512
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
+  - x: 544
+    y: 544
+    type: Solid
+    texture: "../resources/tiles/solid8.png"
