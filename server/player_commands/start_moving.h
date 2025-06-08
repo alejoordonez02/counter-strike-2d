@@ -4,23 +4,24 @@
 #include <memory>
 #include <stdexcept>
 
-#include "command.h"
-#include "../model/player.h"
 #include "../../common/direction.h"
 #include "../../common/network/dto.h"
 #include "../../common/network/dtos/move_dto.h"
+#include "../model/player.h"
+
+#include "command.h"
 
 /*
- * Move
+ * Start moving
  * */
-class Move: public Command {
+class StartMoving: public Command {
 private:
     Direction dir;
 
 public:
-    explicit Move(const Direction& d): dir(d) {}
+    explicit StartMoving(const Direction& d): dir(d) {}
 
-    explicit Move(std::unique_ptr<DTO>&& dto_p) {
+    explicit StartMoving(std::unique_ptr<DTO>&& dto_p) {
         if (MoveDTO* mov_dto = dynamic_cast<MoveDTO*>(dto_p.get())) {
             this->dir = std::move(mov_dto->dir);
         } else {
@@ -28,9 +29,9 @@ public:
         }
     }
 
-    void execute(Player& p) const override { p.move(dir); }
+    void execute(Player& p) const override { p.start_moving(dir); }
 
-    ~Move() = default;
+    ~StartMoving() = default;
 };
 
 #endif

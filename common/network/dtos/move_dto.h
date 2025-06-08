@@ -1,21 +1,21 @@
 #ifndef MOVE_DTO_H
 #define MOVE_DTO_H
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
+#include "../../direction.h"
 #include "../dto.h"
 #include "../protocol.h"
-#include "../../direction.h"
 
 class MoveDTO: public DTO {
 private:
     Direction dir;
 
-    friend class Move;
+    friend class StartMoving;
 
     void deserialize() override {
-        int i = 1; // skip 1st byte (DTO type)
+        int i = 1;  // skip 1st byte (DTO type)
         dir = deserialize_dir(i);
     }
 
