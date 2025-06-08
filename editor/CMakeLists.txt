@@ -5,7 +5,7 @@ project(counter_strike_2d_editor)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
+find_package(Qt5 5.15 REQUIRED COMPONENTS Widgets Core Gui)
 
 find_package(yaml-cpp REQUIRED)
 
