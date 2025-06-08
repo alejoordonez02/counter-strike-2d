@@ -128,7 +128,7 @@ if(CS2D_EDITOR)
     add_executable(cs2d_editor)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(cs2d_editor)
+    add_subdirectory(editor)
 endif()
 
 
