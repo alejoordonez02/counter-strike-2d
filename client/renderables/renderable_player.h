@@ -43,6 +43,8 @@ public:
     void render(SDL2pp::Renderer &renderer);
 
     void load_animation(const std::string& animation_name);
+
+    double calculate_facing_angle(int16_t x, int16_t y);
     ~RenderablePlayer();
 };
 

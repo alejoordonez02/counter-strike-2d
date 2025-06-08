@@ -34,7 +34,7 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
 
 void RenderablePlayer::update(PlayerDTO& player)
 {
-    this->facing_angle = player.facing_angle;
+    this->facing_angle = calculate_facing_angle(player.aim_x, player.aim_y);
     
     position.x = player.x;
     position.y = player.y;
@@ -77,6 +77,19 @@ void RenderablePlayer::render(SDL2pp::Renderer &renderer){
     current_animation->render(renderer, position, flip, angle);
 }
 
+
+
+double RenderablePlayer::calculate_facing_angle(int16_t x, int16_t y) {
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    int dx = mouse_x - x;
+    int dy = mouse_y - y;
+
+    double angle = std::atan2(dy, dx); // en radianes
+    angle = angle * 180.0 / M_PI; // en grados
+    return angle + 90.0;      // para alinear la textura
+}
 
 
 RenderablePlayer::~RenderablePlayer()

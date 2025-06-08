@@ -5,13 +5,13 @@
 #include <unistd.h>
 #include "texture_provider.h"
 #include "animation_provider.h"
+#include "../server/player_commands/command.h"
 
-#include "../tests/mock_server.h"
 
 #define FRAME_RATE 1000000.0f/25.0f
 
 
-GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos): 
+GameLoop::GameLoop(Queue<DTO>& snapshots, Queue<DTO>& comands): 
     sdl(SDL_INIT_VIDEO),
     window("Counter Strike 2D",
                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -20,8 +20,8 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
     // texture_provider(renderer),
     snapshots_queue(snapshots),
-    comandos_queue(comandos),
-    input_handler(comandos),
+    comands_queue(comands),
+    input_handler(comands),
     animation_provider(std::make_shared<AnimationProvider>())
     {
         // poner color de fondo negro
@@ -35,13 +35,7 @@ GameLoop::GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos):
 
 
 void GameLoop::run(){
-
-    mock_server(snapshots_queue);
-
     while (is_running) {
-        // uint32_t t1 = SDL_GetTicks();
-        _debug_simulacion_servidor(ultima_snapshot);
-
         // se asegura que la cola tenga el ultimo estado
         while(snapshots_queue.try_pop(ultima_snapshot)){}
         
@@ -52,7 +46,6 @@ void GameLoop::run(){
         
         render_all();
 
-        // sleep_or_catch_up(t1);
         usleep(FRAME_RATE);
         
     }
@@ -79,8 +72,6 @@ void GameLoop::update_renderables_from_snapshot(){
 
 
 void GameLoop::render_all(){
-    // renderer.SetDrawColor(0x80, 0x80, 0x80);
-
     // limpiar la ventana
     renderer.Clear();
 
@@ -95,68 +86,8 @@ void GameLoop::render_all(){
 }
 
 
-/**
- * Solo con fines de debug
- */
-void GameLoop::_debug_simulacion_servidor(Snapshot& snapshot){
-    // mock_server(snapshots_queue);
-
-    // ===== server popea jugadores
-    PlayerDTO player;
-    if(!comandos_queue.try_pop(player)){
-        return;
-    }
-    // muestro valores de player
-    // std::cout << "Server: " 
-    //           << player.x << "x, " 
-    //           << player.y << "y, "
-    //           << (int)player.player_id << "id, "
-    //           << (int)player.team_id << "teamId, "
-    //           << (int) player.facing_angle << "angle, "
-    //           << std::endl;
-    
-    // server luego de calcular cosas crea una snapshot y pushea
-    Snapshot new_snapshot;
-    new_snapshot = snapshot;
-    new_snapshot.players.clear();
-    new_snapshot.players.push_back(player);
-    if(!snapshots_queue.try_push(new_snapshot)){
-        return;
-    }
-    /// ===== fin server 
-
-}
-
-
 void GameLoop::closeWindow() {
     this->window.~Window(); 
     this->renderer.~Renderer();
     this->sdl.~SDL();
 }
-
-
-
-
-
-
-// void GameLoop::sleep_or_catch_up(uint32_t& t1) {
-//     uint32_t t2 = SDL_GetTicks();
-
-//     int rest = RATE - (t2 - t1);
-//     if (rest < 0) {
-//         int behind = -rest;
-//         int lost = behind - behind % RATE;
-
-//         // recuperamos los frames perdidos
-//         uint8_t frames_to_skip = int(lost / RATE);
-
-//         // TODO: skipear frames
-
-
-//         t1 += lost;
-//     } else {
-//         SDL_Delay(rest);
-//     }
-
-//     t1 = SDL_GetTicks();
-// }

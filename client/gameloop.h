@@ -24,7 +24,7 @@ class GameLoop {
         bool is_running = true;
 
         Queue<Snapshot>& snapshots_queue;
-        Queue<PlayerDTO>& comandos_queue;
+        Queue<PlayerDTO>& comands_queue;
 
         InputHandler input_handler;
         Snapshot ultima_snapshot;
@@ -43,11 +43,6 @@ public:
     void update_renderables_from_snapshot();
 
     void render_all();
-
-
-    void sleep_or_catch_up(uint32_t& t1);
-
-    void _debug_simulacion_servidor(Snapshot& snapshot);
 
     void closeWindow();
 };
