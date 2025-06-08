@@ -8,7 +8,7 @@
 #include "../common/queue.h"
 #include "../common/snapshot.h"
 #include "../server/player_commands/command.h"
-// #include "input_handler.h"
+#include "input_handler.h"
 
 class Client {
 private:
@@ -19,7 +19,7 @@ private:
     
     Sender sender;
     Receiver receiver;
-    // InputHandler input_handler;
+    InputHandler input_handler;
 
 public:
     Client(const std::string& hostname, const std::string& servname);

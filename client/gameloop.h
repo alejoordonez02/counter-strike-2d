@@ -21,15 +21,15 @@ class GameLoop {
         
         bool is_running = true;
 
-        Queue<Snapshot>& snapshots_queue;
-        Queue<PlayerDTO>& comands_queue;
+        Queue<DTO>& snapshots_queue;
+        Queue<DTO>& comands_queue;
 
         InputHandler input_handler;
         Snapshot ultima_snapshot;
         
 
 public:
-    GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos);
+    GameLoop(Queue<DTO>& snapshots, Queue<DTO>& comandos);
 
     void run();
 

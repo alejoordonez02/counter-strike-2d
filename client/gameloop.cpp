@@ -3,13 +3,9 @@
 
 #include "gameloop.h"
 #include <unistd.h>
-#include "texture_provider.h"
-#include "animation_provider.h"
 #include "../server/player_commands/command.h"
 
-
 #define FRAME_RATE 1000000.0f/25.0f
-
 
 GameLoop::GameLoop(Queue<DTO>& snapshots, Queue<DTO>& comands): 
     snapshots_queue(snapshots),

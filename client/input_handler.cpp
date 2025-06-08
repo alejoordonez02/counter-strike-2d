@@ -30,7 +30,6 @@ void InputHandler::handle_key_up(const SDL_Event& event) {
     key_states[keyEvent.keysym.sym] = false;
 }
 
-
 void InputHandler::update_player_values(Snapshot& snapshot) {
     // obtiene el id del jugador actual y reemplaza el puntero para actualizar los valores
     auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),

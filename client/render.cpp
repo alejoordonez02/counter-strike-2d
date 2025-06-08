@@ -16,7 +16,7 @@ Render::Render():
     renderer(window, -1, SDL_RENDERER_ACCELERATED),
     animation_provider(std::make_shared<AnimationProvider>())
     {
-        // poner color de fondo negro
+        // poner color de fondo rosa
         renderer.SetDrawColor(0, 255, 0, 0);
 
         // cargar texturas
@@ -57,6 +57,10 @@ void Render::render_all(){
         // renderizar cada jugador
         renderable_player->render(renderer);
     }
+
+    // TODO: renderizar dropeables
+
+    // TODO: renderizar mapa
 
     // mostrar la ventana
     renderer.Present();
