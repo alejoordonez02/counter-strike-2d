@@ -32,7 +32,7 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
 }
 
 
-void RenderablePlayer::update(PlayerDTO& player)
+void RenderablePlayer::update(PlayerData& player)
 {
     this->facing_angle = calculate_facing_angle(player.aim_x, player.aim_y);
     

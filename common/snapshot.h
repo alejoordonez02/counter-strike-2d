@@ -20,7 +20,7 @@ struct WeaponDTO {
 };
 
 
-struct PlayerDTO {
+struct PlayerData {
     uint16_t player_id;
     char player_name[MAX_PLAYER_NAME];
     uint8_t team_id;  // 0 para terroristas, 1 para counter
@@ -64,7 +64,7 @@ struct Snapshot {
     uint8_t terrorists_score = 0;
     uint8_t counter_terrorists_score = 0;
 
-    std::vector<PlayerDTO> players;
+    std::vector<PlayerData> players;
     std::vector<WeaponDTO> weapons_on_floor;
 };
 
