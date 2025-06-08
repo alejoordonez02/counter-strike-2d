@@ -37,8 +37,8 @@ public:
     /*
      * Both TT & CT commands
      * */
-    void start_moving(const Direction& dir) {dir + dir;}
-    void start_attacking() {}
+    virtual void start_moving(const Direction& dir) {dir + dir;}
+    virtual void start_attacking() {}
 
     virtual void move(const Direction& dir);
     virtual void attack(const Position& destination);

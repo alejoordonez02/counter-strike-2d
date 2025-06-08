@@ -25,7 +25,7 @@ public:
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
     MOCK_METHOD(void, start_moving, (const Direction&), (override));
-    MOCK_METHOD(void, start_attacking, (override));
+    MOCK_METHOD(void, start_attacking, (), (override));
     MOCK_METHOD(void, get_attacked, (const int&), (override));
     virtual ~MockPlayer() = default;
 };
