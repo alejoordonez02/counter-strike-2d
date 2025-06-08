@@ -1,12 +1,13 @@
 #include "input_handler.h"
 #include "../common/direction.h"
 #include "../common/network/dto.h"
+#include "../common/network/dtos/start_moving_dto.h"
 
 #include <map>
 #include <iostream>
 
-InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue): 
-    commands(commands_queue) {
+InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue): 
+    commands_queue(commands_queue) {
     }
 
 /**
@@ -24,16 +25,6 @@ void InputHandler::handle_key_down(const SDL_Event& event) {
 void InputHandler::handle_key_up(const SDL_Event& event) {
     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
     key_states[keyEvent.keysym.sym] = false;
-}
-
-void InputHandler::update_player_values(Snapshot& snapshot) {
-    // obtiene el id del jugador actual y reemplaza el puntero para actualizar los valores
-    auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
-                           [this](const PlayerDTO& found_player) { return found_player.player_id == player.player_id; });
-    if (it == snapshot.players.end())
-        return;
-
-    player = *it;
 }
 
 // en base a que teclas presiones envía un comando de movimiento
@@ -54,8 +45,9 @@ void InputHandler::send_direction(){
         dir.x += 1;
     }
 
+    // envía solo si hay un movimiento
     if(dir.x != 0 || dir.y != 0){
-        commands.try_push(std::make_unique<MoveDTO>(dir));
+        commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
     }
 }
 

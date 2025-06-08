@@ -6,18 +6,17 @@ target_sources(cs2d_client
         texture_provider.cpp
         animation_provider.cpp
         input_handler.cpp
-        renderables/animation.cpp
-        renderables/animation.cpp
-        renderables/renderable_player.cpp
-        renderables/renderable_legs.cpp
+        render.cpp
     PUBLIC
         client.h
         gameloop.h
         texture_provider.h
         animation_provider.h
         input_handler.h
-        renderables/animation.h
-        renderables/animation.h
-        renderables/renderable_player.h
-        renderables/renderable_legs.h
+        render.h
 )
+
+
+add_subdirectory(renderables)
+
+target_include_directories(cs2d_client PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

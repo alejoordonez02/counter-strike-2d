@@ -4,8 +4,8 @@
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname),
-    snapshots(),
     commands(),
+    snapshots(),
     sender(con, commands),
     receiver(con, snapshots),
     input_handler(commands)

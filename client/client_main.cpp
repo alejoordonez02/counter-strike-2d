@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
         std::string hostname = argv[1];
         std::string servname = argv[2];
 
-        Client cliente;
+        Client cliente(hostname, servname);
         cliente.run();
 
     } catch (const std::exception& e) {
