@@ -8,8 +8,8 @@
 
 #include "dto.h"
 #include "protocol.h"
-#include "dtos/move_dto.h"
-#include "dtos/attack_dto.h"
+#include "dtos/start_moving_dto.h"
+#include "dtos/start_attacking_dto.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;
@@ -24,8 +24,8 @@ private:
 public:
     DTOConstructor() {
         maker_map = {
-            {MOVE, [](auto&& bytes) { return std::make_unique<MoveDTO>(std::move(bytes)); }},
-            {ATTACK, [](auto&& bytes) { return std::make_unique<AttackDTO>(std::move(bytes)); }},
+            {MOVE, [](auto&& bytes) { return std::make_unique<StartMovingDTO>(std::move(bytes)); }},
+            {ATTACK, [](auto&& bytes) { return std::make_unique<StartAttackingDTO>(std::move(bytes)); }},
             // ...
         };
     }
