@@ -1,7 +1,6 @@
 #ifndef GAMELOOP_H
 #define GAMELOOP_H
 
-#include <SDL2pp/SDL2pp.hh>
 #include <memory>
 
 #include "texture_provider.h"

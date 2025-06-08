@@ -1,8 +1,6 @@
-#include <SDL2/SDL.h>
-#include <SDL2pp/SDL2pp.hh>
+#include <unistd.h>
 
 #include "gameloop.h"
-#include <unistd.h>
 #include "../common/network/dtos/snapshot_dto.h"
 
 #define FRAME_RATE 1000000.0f/25.0f

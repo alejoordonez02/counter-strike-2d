@@ -1,13 +1,15 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include <SDL2pp/SDL2pp.hh>
+#include <SDL2pp/SDL.hh>
+#include <SDL2pp/Window.hh>
+#include <SDL2pp/Renderer.hh>
+
 #include <memory>
 
 #include "texture_provider.h"
 #include "animation_provider.h"
 #include "input_handler.h"
-
 #include "../common/queue.h"
 #include "../common/snapshot.h"
 #include "../server/player_commands/command.h"

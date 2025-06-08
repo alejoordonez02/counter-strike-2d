@@ -1,6 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2pp/SDL2pp.hh>
-
 #include "texture_provider.h"
 #include "animation_provider.h"
 #include "render.h"
