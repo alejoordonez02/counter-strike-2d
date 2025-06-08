@@ -4,25 +4,29 @@
 #include "common/direction.h"
 #include "common/position.h"
 
+#include "action_strategy.h"
+#include "attack.h"
 #include "equipment.h"
+#include "idle.h"
 #include "map.h"
 #include "player_physics.h"
 #include "weapon.h"
 
-enum class MovementState { IDLE, MOVING };
-enum class ActionState { NONE, ATTACKING, RELOADING, PLANTING, DEFUSING };
-
 class Player {
 private:
     Position pos;
+    Direction dir;
     int health;
     bool alive;
     PlayerPhysics physics;
+    std::unique_ptr<ActionStrategy> action;
 
     int kills;
     int money;
 
     bool pay(const int& cost);
+
+    void stop_action() { action = std::make_unique<Idle>(); }
 
 protected:
     Map& map;
@@ -37,7 +41,7 @@ public:
      * */
     void update(float dt) {
         physics.update(dt);
-        // action.update(dt); // action strategy...
+        action->update(dt);
     }
 
     /*
@@ -49,8 +53,8 @@ public:
     /*
      * Attack
      * */
-    virtual void start_attacking() {}
-    void stop_attacking() {}
+    virtual void start_attacking() { action = std::make_unique<Attack>(dir, current); }
+    void stop_attacking() { stop_action(); }
 
     /*
      * Set current weapon

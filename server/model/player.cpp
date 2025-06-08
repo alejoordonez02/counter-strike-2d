@@ -18,12 +18,14 @@
 
 Player::Player(Position pos, Equipment&& equipment, Map& map):
         pos(pos),
+        dir(Direction()),
         health(100),
         alive(true),
         map(map),
         equipment(std::move(equipment)),
         physics(pos, health, this->equipment.shield, alive, PLAYER_VELOCITY, PLAYER_ACCELERATION,
                 PLAYER_RADIUS, map),
+        action(std::make_unique<Idle>()),
         kills(0),
         money(PLAYER_MONEY),
         current(*this->equipment.knife) {}
