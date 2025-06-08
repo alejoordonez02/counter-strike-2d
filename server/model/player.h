@@ -35,7 +35,10 @@ public:
     /*
      * Update
      * */
-    void update(float dt);
+    void update(float dt) {
+        physics.update(dt);
+        // action.update(dt); // action strategy...
+    }
 
     /*
      * Move
