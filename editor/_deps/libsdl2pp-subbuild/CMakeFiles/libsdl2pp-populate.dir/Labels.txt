@@ -1,0 +1,14 @@
+# Target labels
+ libsdl2pp-populate
+# Source files and their labels
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/libsdl2pp-populate
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/libsdl2pp-populate.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/libsdl2pp-populate-complete.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-build.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-configure.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-download.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-install.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-mkdir.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-patch.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-test.rule
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/libsdl2pp-populate-prefix/src/libsdl2pp-populate-stamp/libsdl2pp-populate-update.rule
