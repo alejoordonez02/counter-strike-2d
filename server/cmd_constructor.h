@@ -1,17 +1,16 @@
 #ifndef CMD_CONSTRUCTOR_H
 #define CMD_CONSTRUCTOR_H
 
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <unordered_map>
-#include <cstdint>
 
-#include "player_commands/command.h"
 #include "../common/network/dto.h"
 #include "../common/network/protocol.h"
-
-#include "player_commands/move.h"
-#include "player_commands/attack.h"
+#include "player_commands/command.h"
+#include "player_commands/start_attacking.h"
+#include "player_commands/start_moving.h"
 
 using namespace DTOSerial::PlayerCommands;
 
@@ -25,9 +24,11 @@ private:
 public:
     CmdConstructor() {
         maker_map = {
-            {MOVE, [](auto&& dto_p) { return std::make_unique<Move>(std::move(dto_p)); }},
-            {ATTACK, [](auto&& dto_p) { return std::make_unique<Attack>(std::move(dto_p)); }},
-            // ...
+                {MOVE,
+                 [](auto&& dto_p) { return std::make_unique<StartMoving>(std::move(dto_p)); }},
+                {ATTACK,
+                 [](auto&& dto_p) { return std::make_unique<StartAttacking>(std::move(dto_p)); }},
+                // ...
         };
     }
 
@@ -38,7 +39,7 @@ public:
             throw std::runtime_error("CmdConstructor error: unknown Command type");
 
         CmdMaker f = maker_map.at(cmd_type);
-        
+
         return f(std::move(dto_p));
     }
 
@@ -49,7 +50,6 @@ public:
     CmdConstructor& operator=(CmdConstructor&&) = default;
 
     ~CmdConstructor() = default;
-
 };
 
 #endif
