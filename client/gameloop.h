@@ -25,7 +25,7 @@ class GameLoop {
         Queue<DTO>& comands_queue;
 
         InputHandler input_handler;
-        Snapshot ultima_snapshot;
+        Snapshot last_snapshot;
         
 
 public:

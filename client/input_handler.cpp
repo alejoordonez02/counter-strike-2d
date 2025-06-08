@@ -1,16 +1,12 @@
 #include "input_handler.h"
 #include "../common/direction.h"
-#include "../server/player_commands/start_moving.h"
-#include "../server/player_commands/command.h"
+#include "../common/network/dto.h"
 
 #include <map>
 #include <iostream>
 
-InputHandler::InputHandler(Queue<PlayerDTO>& comandos_queue): 
-    comandos(comandos_queue) {
-        // TODO: Hardcodeado, cambiar para obtener el ID durante la 
-        // inicializacion, ya sea lobby o conexion al server
-        player.player_id = 1;
+InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue): 
+    commands(commands_queue) {
     }
 
 /**
@@ -58,8 +54,9 @@ void InputHandler::send_direction(){
         dir.x += 1;
     }
 
-    // player.is_walking = (dir.x != 0 || dir.y != 0);
-    comandos.try_push(Move(dir));
+    if(dir.x != 0 || dir.y != 0){
+        commands.try_push(std::make_unique<MoveDTO>(dir));
+    }
 }
 
 

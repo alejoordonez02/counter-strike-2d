@@ -6,14 +6,13 @@
 #include "../server/player_commands/command.h"
 #include "../common/snapshot.h"
 
-class InputHandler {
+class InputHandler:  {
 private:
-    Queue<PlayerDTO>& comandos;
-    PlayerDTO player;
-
+    Queue<std::unique_ptr<DTO>>& commands;
+    std::unique_ptr<DTO> player;
 
 public:
-    InputHandler(Queue<PlayerDTO>& comandos_queue);
+    InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue);
 
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);

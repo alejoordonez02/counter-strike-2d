@@ -1,8 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-// #include "common/player_commands.h"
-// #include "common/event.h"
 #include "../common/network/receiver.h"
 #include "../common/network/sender.h"
 #include "../common/queue.h"

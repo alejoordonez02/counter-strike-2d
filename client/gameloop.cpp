@@ -18,14 +18,14 @@ GameLoop::GameLoop(Queue<DTO>& snapshots, Queue<DTO>& comands):
 void GameLoop::run(){
     while (is_running) {
         // se asegura que la cola tenga el ultimo estado
-        while(snapshots_queue.try_pop(ultima_snapshot)){}
+        while(snapshots_queue.try_pop(last_snapshot)){}
         
-        input_handler.update_player_values(ultima_snapshot);
+        input_handler.update_player_values(last_snapshot);
         is_running = input_handler.handle_events();
 
-        render.update(ultima_snapshot);
+        render.update(last_snapshot);
         
-        render.render_all();
+        render.render();
 
         usleep(FRAME_RATE);
         

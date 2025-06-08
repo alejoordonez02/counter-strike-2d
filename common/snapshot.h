@@ -54,6 +54,7 @@ struct PlayerDTO {
 };
 
 
+
 struct Snapshot {
     bool round_finished = false;
     bool game_finished = false;
