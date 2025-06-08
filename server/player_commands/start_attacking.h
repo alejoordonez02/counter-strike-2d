@@ -19,8 +19,8 @@ public:
     explicit StartAttacking() {}
 
     explicit StartAttacking(std::unique_ptr<DTO>&& dto_p) {
-        if (StartAttackingDTO* att_dto = dynamic_cast<StartAttackingDTO*>(dto_p.get())) {
-        } else {
+        StartAttackingDTO* att_dto = dynamic_cast<StartAttackingDTO*>(dto_p.get());
+        if (not att_dto) {
             throw std::runtime_error("DTO is not of type StartAttackingDTO");
         }
     }
