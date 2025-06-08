@@ -1,31 +1,26 @@
-#ifndef ATTACK_H
-#define ATTACK_H
+#ifndef START_ATTACKING_H
+#define START_ATTACKING_H
 
 #include <memory>
 #include <stdexcept>
 
-#include "../../common/network/dto.h"
-#include "../../common/network/dtos/attack_dto.h"
-#include "../../common/position.h"
 #include "../model/player.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/start_attacking_dto.h"
 
 #include "command.h"
 
 /*
- * Attack
+ * Start attacking
  * */
 class StartAttacking: public Command {
-private:
-    Position pos;
-
 public:
-    explicit StartAttacking(const Position& p): pos(p) {}
+    explicit StartAttacking() {}
 
     explicit StartAttacking(std::unique_ptr<DTO>&& dto_p) {
-        if (AttackDTO* att_dto = dynamic_cast<AttackDTO*>(dto_p.get())) {
-            this->pos = std::move(att_dto->pos);
-        } else {
-            throw std::runtime_error("DTO is not of type AttackDTO");
+        StartAttackingDTO* att_dto = dynamic_cast<StartAttackingDTO*>(dto_p.get());
+        if (not att_dto) {
+            throw std::runtime_error("DTO is not of type StartAttackingDTO");
         }
     }
 

@@ -1,10 +1,9 @@
 #ifndef MOCK_PLAYER_H
 #define MOCK_PLAYER_H
 
-#include "../common/direction.h"
-#include "../common/position.h"
-#include "../server/model/player.h"
+#include "common/direction.h"
 #include "gmock/gmock.h"
+#include "server/model/player.h"
 
 #include "equipment.h"
 #include "weapons.h"
@@ -25,9 +24,8 @@ public:
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
-    MOCK_METHOD(void, start_moving, (const Direction&), ());
-    MOCK_METHOD(void, start_attacking, (), ());
-    MOCK_METHOD(void, get_attacked, (int), ());
+    MOCK_METHOD(void, start_moving, (Direction dir), (override));
+    MOCK_METHOD(void, start_attacking, (), (override));
     virtual ~MockPlayer() = default;
 };
 

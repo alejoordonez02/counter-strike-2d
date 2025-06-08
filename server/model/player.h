@@ -40,13 +40,13 @@ public:
     /*
      * Move
      * */
-    void start_moving(Direction dir) { physics.start_moving(dir); }
+    virtual void start_moving(Direction dir) { physics.start_moving(dir); }
     void stop_moving() { physics.stop_moving(); }
 
     /*
      * Attack
      * */
-    void start_attacking() {}
+    virtual void start_attacking() {}
     void stop_attacking() {}
 
     /*
@@ -67,14 +67,14 @@ public:
     /*
      * Terrorist
      * */
-    virtual void plant_bomb() {}
-    virtual void stop_planting() {}
+    void plant_bomb() {}
+    void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    virtual void defuse_bomb() {}
-    virtual void stop_defusing() {}
+    void defuse_bomb() {}
+    void stop_defusing() {}
 
     /*
      * Destructor

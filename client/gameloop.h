@@ -2,15 +2,16 @@
 #define GAMELOOP_H
 
 #include <SDL2pp/SDL2pp.hh>
+#include <memory>
 
 #include "texture_provider.h"
-#include "jugador.h"
-#include "pointer.h"
+#include "animation_provider.h"
 #include "input_handler.h"
 
 #include "../common/queue.h"
 #include "../common/snapshot.h"
 #include "../server/player_commands/command.h"
+#include "renderables/renderable_player.h"
 
 
 class GameLoop {
@@ -18,7 +19,7 @@ class GameLoop {
         SDL2pp::SDL sdl;
         SDL2pp::Window window;
         SDL2pp::Renderer renderer;
-        TextureProvider texture_provider;
+        // TextureProvider texture_provider;
         
         bool is_running = true;
 
@@ -26,8 +27,12 @@ class GameLoop {
         Queue<PlayerDTO>& comandos_queue;
 
         InputHandler input_handler;
-
+        Snapshot ultima_snapshot;
         
+        // encapsular luego en una clase renderables?
+        std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>> players_renderables;
+
+        std::shared_ptr<AnimationProvider> animation_provider;
 
 
 public:
@@ -35,13 +40,14 @@ public:
 
     void run();
 
-    void render(Jugador &player, Pointer &pointer);
+    void update_renderables_from_snapshot();
 
-    void update(Jugador &player, Pointer &pointer, float delta_time);
+    void render_all();
+
 
     void sleep_or_catch_up(uint32_t& t1);
 
-    void debug_simulacion_servidor(Snapshot& snapshot);
+    void _debug_simulacion_servidor(Snapshot& snapshot);
 
     void closeWindow();
 };

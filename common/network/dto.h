@@ -12,17 +12,19 @@
 
 class DTO {
 protected:
+    uint8_t type;
     std::vector<uint8_t> payload;
     bool _is_serialized;
 
-    DTO(): _is_serialized(true) {}
-    explicit DTO(const uint8_t type): _is_serialized(false) { payload.push_back(type); }
+    explicit DTO(std::vector<uint8_t>&& bytes): type(bytes[0]), payload(std::move(bytes)), _is_serialized(true) {}
+    explicit DTO(const uint8_t type): type(type), _is_serialized(false) {}
 
     virtual void deserialize() = 0;
 
 public:
-    uint8_t get_type() const { return payload[0]; }
-    virtual const std::vector<uint8_t>& serialize() = 0;
+    uint8_t get_type() const { return type; }
+    const std::vector<uint8_t>& serialize();
+    virtual void serialize_into(std::vector<uint8_t>& out) = 0;
 
     DTO(const DTO&) = delete;
     DTO& operator=(const DTO&) = delete;
@@ -35,10 +37,10 @@ public:
 protected:
     // serialization
 
-    void serialize_float(const float& n);
-    void serialize_tuple(const float& x, const float& y);
-    void serialize_pos(const Position& pos);
-    void serialize_dir(const Direction& dir);
+    void serialize_float_into(std::vector<uint8_t>& out, const float& n);
+    void serialize_tuple_into(std::vector<uint8_t>& out, const float& x, const float& y);
+    void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
+    void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
 
     // deserialization
 

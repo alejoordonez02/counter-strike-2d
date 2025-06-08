@@ -1,6 +1,5 @@
 target_sources(cs2d_tests
     PRIVATE
-    model.cpp
     mock_player.cpp
     main.cpp
     serialization.cpp
