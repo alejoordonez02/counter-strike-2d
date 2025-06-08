@@ -12,7 +12,6 @@ class MapEditor : public QWidget
 public:
     explicit MapEditor(QWidget *parent = nullptr);
     
-    void loadMap(const QString &imagePath);
     void loadBackground(const QString &imagePath);
     void setTileSize(int width, int height);
     void placeTile(const QPoint& position, const QString& texturePath, const QString& type);

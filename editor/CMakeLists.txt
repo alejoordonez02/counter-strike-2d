@@ -16,8 +16,8 @@ qt5_add_resources(RESOURCES resources/resources.qrc)
 set(SOURCE_FILES
     src/main.cpp
     src/mainwindow.cpp
-    src/tilesheetdata.cpp
-    src/tilesheeteditor.cpp
+    src/sheetdata.cpp
+    src/sheeteditor.cpp
     src/mapeditor.cpp
     src/maploader.cpp
     src/block.cpp

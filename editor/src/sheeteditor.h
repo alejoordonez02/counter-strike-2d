@@ -1,17 +1,17 @@
-#ifndef TILESHEETEDITOR_H
-#define TILESHEETEDITOR_H
-#include "tilesheetdata.h"
+#ifndef SHEETEDITOR_H
+#define SHEETEDITOR_H
+#include "sheetdata.h"
 #include <QWidget>
 #include <QPixmap>
 #include <QApplication>
 
-class TileSheetEditor : public QWidget
+class SheetEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TileSheetEditor(QWidget *parent = nullptr);
+    explicit SheetEditor(QWidget *parent = nullptr);
     
-    void loadTilesheet(const QString &configPath);
+    void loadsheet(const QString &configPath);
     void setTileSize(int width, int height);
     QPixmap getSelectedTile() const;
 
@@ -21,13 +21,12 @@ signals:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
-    QString getTypeStringForTile(int tileX, int tileY);
 private:
     QPixmap m_tilesheet;
     QPoint m_selectedTilePos;
     int m_tileWidth;
     int m_tileHeight;
-    TileSheetData tilesheetdata;
+    SheetData sheetdata;
 };
 
-#endif // TILESHEETEDITOR_H
+#endif // SHEETEDITOR_H

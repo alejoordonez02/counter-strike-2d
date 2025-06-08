@@ -10,18 +10,27 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MapEditor),
-    m_tilesheetEditor(new TileSheetEditor(this)),
+    m_tilesheetEditor(new SheetEditor(this)),
+    m_weaponsheetEditor(new SheetEditor(this)),
     m_mapEditor(new MapEditor(this))
 {
     ui->setupUi(this);
     
-    QLabel *tilesheetLabel = ui->scrollArea_2->findChild<QLabel*>("label_2");
+    QLabel *tilesheetLabel = ui->scrollArea_2->findChild<QLabel*>("tylesheet");
     if (tilesheetLabel) {
         QLayout *layout = tilesheetLabel->parentWidget()->layout();
         layout->replaceWidget(tilesheetLabel, m_tilesheetEditor);
         delete tilesheetLabel;
     }
     
+    QLabel *wepeaponsheetLabel = ui->scrollArea_3->findChild<QLabel*>("weaponsheet");
+    if (wepeaponsheetLabel) {
+        QLayout *layout = wepeaponsheetLabel->parentWidget()->layout();
+        layout->replaceWidget(wepeaponsheetLabel, m_weaponsheetEditor);
+        delete wepeaponsheetLabel;
+    }
+    QString WeaponsheetconfigPath = "../config/weaponsheet_config.yaml";
+    m_weaponsheetEditor->loadsheet(WeaponsheetconfigPath);
     QWidget *mapContainer = ui->scrollArea->findChild<QWidget*>("mapContainer");
     if (mapContainer) {
         QLayout *layout = mapContainer->parentWidget()->layout();
@@ -29,9 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
         delete mapContainer;
     }
     QString TilesheetconfigPath = "../config/tilesheet_config.yaml";
-    m_tilesheetEditor->loadTilesheet(TilesheetconfigPath);
-    m_tilesheetEditor->setTileSize(32, 32);
-    m_mapEditor->setTileSize(32, 32);
+    m_tilesheetEditor->loadsheet(TilesheetconfigPath);
 }
 
 MainWindow::~MainWindow()
@@ -79,21 +86,19 @@ void MainWindow::on_SaveButton_clicked()
         try {
             m_mapEditor->saveMapData(filePath);
         } catch (const std::exception& e) {
-            QMessageBox::critical(this, "Error", 
-                QString("Error saving map:\n%1").arg(e.what()));
+            QString errorMessage = QString::fromStdString(e.what())
+                                .replace("•", "•")
+                                .replace("\n", "<br>"); 
+            
+            QMessageBox::critical(this, 
+                                "Error al guardar el mapa",
+                                QString("<html><b>No se pudo guardar el mapa:</b><br><br>%1</html>")
+                                    .arg(errorMessage));
         }
     }
 }
 
 void MainWindow::on_ExitButton_clicked()
-{
-    qDebug() << "===DEBUG Lista de Bloques al cerrar ===";
-    
-    for (const Block &block : m_mapEditor->getMapData().blocks) {
-        qDebug() << "Posición:" << block.getPosition();  
-        qDebug() << "Textura:" << block.getTexturePath();
-        qDebug() << "--------------------------";
-    }
-    
+{   
     close();
 }

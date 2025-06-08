@@ -1,11 +1,11 @@
-#ifndef TILESHEETDATA_H
-#define TILESHEETDATA_H
+#ifndef SHEETDATA_H
+#define SHEETDATA_H
 
 #include <QString>
 #include <QMap>
 #include <QPoint>
 
-class TileSheetData {
+class SheetData {
 public:
     struct TileInfo {
         QString texturePath;
@@ -23,4 +23,4 @@ private:
     QMap<QPoint, TileInfo> tileData;
 };
 
-#endif // TILESHEETDATA_H
+#endif // SHEETDATA_H

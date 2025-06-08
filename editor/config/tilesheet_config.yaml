@@ -271,8 +271,8 @@ blocks:
     type: "Common"
   - x: 7
     y: 7
-    texture: "../resources/tiles/sand14.png"
-    type: "Common"
+    texture: "../resources/tiles/plantspot2.png"
+    type: "Plantable"
 
   # Fila 8 (y=8)
   - x: 0
@@ -297,7 +297,7 @@ blocks:
     type: "TSpawn"
   - x: 5
     y: 8
-    texture: "../resources/tiles/plantspot.png"
+    texture: "../resources/tiles/plantspot1.png"
     type: "Plantable"
   - x: 6
     y: 8

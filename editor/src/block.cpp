@@ -26,7 +26,11 @@ QString Block::getTypeString() const {
         case Plantable: return "Plantable";
         case TSpawn:    return "TSpawn";
         case CtSpawn:   return "CtSpawn";
-        default:        return "Unknown";
+        case DropedGlock:   return "DropedGlock";
+        case DropedM4:   return "DropedM4";
+        case DropedAk47:   return "DropedAk47";
+        case DropedAwp:   return "DropedAwp";
+        default:        return "Common";
     }
 }
 
@@ -50,6 +54,10 @@ Block::Type Block::stringToType(const QString& typeString) {
     if (lower == "plantable") return Plantable;
     if (lower == "tspawn")    return TSpawn;
     if (lower == "ctspawn")   return CtSpawn;
+    if (lower == "dropedglock")   return DropedGlock;
+    if (lower == "dropedak47")   return DropedAk47;
+    if (lower == "dropedm4")   return DropedM4;
+    if (lower == "dropedawp")   return DropedAwp;
     
     return Common;
 }

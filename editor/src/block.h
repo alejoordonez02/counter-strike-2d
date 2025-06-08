@@ -13,7 +13,10 @@ public:
         Plantable, 
         TSpawn,   
         CtSpawn,
-        Unknown     
+        DropedGlock,
+        DropedAk47,
+        DropedM4,
+        DropedAwp 
     };
 
     Block();

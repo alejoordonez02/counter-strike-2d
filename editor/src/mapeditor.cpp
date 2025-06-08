@@ -2,6 +2,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QPainter>
+#include <QBitmap>
 #include <QApplication>
 #include <QMimeData>
 #include <QFileInfo>
@@ -14,9 +15,6 @@ MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
     setAcceptDrops(true);
     setMouseTracking(true);
 }
-void MapEditor::loadMap(const QString &imagePath) {
-    loadBackground(imagePath);
-}
 
 void MapEditor::loadMapFromData(const MapData& data) {
     mapdata= data;
@@ -26,6 +24,26 @@ void MapEditor::loadMapFromData(const MapData& data) {
 }
 
 void MapEditor::saveMapData(const QString& filePath) {
+    bool hasCtSpawn = false;
+    bool hasTSpawn = false;
+    int PlantingSpots = 0;
+
+    for (const Block& block : mapdata.blocks) {
+        QString type = block.getTypeString();
+        if (type == "CtSpawn") hasCtSpawn = true;
+        if (type == "TSpawn") hasTSpawn = true;
+        if (type == "Plantable") PlantingSpots++;
+    }
+
+    if (!hasCtSpawn || !hasTSpawn || PlantingSpots <= 1) {
+        QString errorMsg;
+        if (!hasCtSpawn) errorMsg += "• There should be atleast one CT spawn\n";
+        if (!hasTSpawn) errorMsg += "• There should be atleast one T spawn\n";
+        if (PlantingSpots <= 1) errorMsg += "• There should be atleast one planting spot\n";
+        
+        throw std::runtime_error(errorMsg.toStdString());
+    }
+
     YAML::Emitter out;
     out << YAML::BeginMap;
         
@@ -40,7 +58,7 @@ void MapEditor::saveMapData(const QString& filePath) {
         }
     }
         
-    out << YAML::Key << "planting_spots" << YAML::Value << mapdata.plantingSpots;
+    out << YAML::Key << "planting_spots" << YAML::Value << PlantingSpots;
         
     out << YAML::Key << "blocks" << YAML::Value << YAML::BeginSeq;
     for (const Block& block : mapdata.blocks) {
@@ -103,10 +121,44 @@ void MapEditor::setTileSize(int width, int height)
 }
 
 void MapEditor::placeTile(const QPoint& position, const QString& texturePath, const QString& type) {
+    Block::Type blockType = Block::stringToType(type);
+    
+    static const QVector<Block::Type> weaponTypes = {
+        Block::DropedGlock, 
+        Block::DropedAk47, 
+        Block::DropedM4, 
+        Block::DropedAwp
+    };
+
+    bool isWeapon = weaponTypes.contains(blockType);
+
     auto it = std::find_if(mapdata.blocks.begin(), mapdata.blocks.end(),
         [&position](const Block& block) {
             return block.getPosition() == position;
         });
+
+    if (isWeapon) {
+        bool hasNonSolidBlock = false;
+        
+        for (const Block& block : mapdata.blocks) {
+            if (block.getPosition() == position && block.getType() != Block::Solid) {
+                hasNonSolidBlock = true;
+                break;
+            }
+        }
+
+        if (!hasNonSolidBlock) {
+            return;
+        }else{
+            Block block;
+            block.setPosition(position);
+            block.setTexture(texturePath);
+            block.setType(type);
+            mapdata.addBlock(block);  
+            update();
+            return;
+        }
+    }
 
     if (it != mapdata.blocks.end()) {
         it->setTexture(texturePath);
@@ -177,19 +229,22 @@ void MapEditor::paintEvent(QPaintEvent *event)
     }
 
     QHash<QString, QPixmap> textureCache; 
+    const QColor white(255, 255, 255);
 
     for (const Block &block : mapdata.blocks) {
     
-    if (!textureCache.contains(block.getTexturePath())) {
-        QPixmap tile(m_tileWidth, m_tileHeight);
-        tile.load(block.getTexturePath());
-        if (!tile.isNull()) {
-            textureCache[block.getTexturePath()] = tile;
+        if (!textureCache.contains(block.getTexturePath())) {
+            QPixmap tile;
+            if (tile.load(block.getTexturePath())) {
+                QBitmap mask = tile.createMaskFromColor(white, Qt::MaskInColor);
+                tile.setMask(mask);
+                
+                textureCache[block.getTexturePath()] = tile;
+            }
+        }
+
+        if (textureCache.contains(block.getTexturePath())) {
+            painter.drawPixmap(block.getPosition(), textureCache[block.getTexturePath()]);
         }
     }
-
-    if (textureCache.contains(block.getTexturePath())) {
-        painter.drawPixmap(block.getPosition(), textureCache[block.getTexturePath()]);
-    }
-}
 }

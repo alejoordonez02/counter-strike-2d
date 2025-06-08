@@ -83,7 +83,7 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item alignment="Qt::AlignTop">
+             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
               <widget class="QLabel" name="name">
                <property name="font">
                 <font>
@@ -95,14 +95,8 @@
                  <strikeout>false</strikeout>
                 </font>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="text">
                 <string>Map Editor</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -119,6 +113,9 @@
             </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
             </property>
             <property name="styleSheet">
              <string notr="true">#SaveButton{
@@ -137,42 +134,24 @@
             <property name="frameShadow">
              <enum>QFrame::Raised</enum>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QPushButton" name="LoadButton">
+              <widget class="QPushButton" name="ExitButton">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="text">
-                <string>Load</string>
+                <string>Exit</string>
                </property>
                <property name="icon">
                 <iconset resource="resources/resources.qrc">
-                 <normaloff>:/icons/icons/upload.svg</normaloff>:/icons/icons/upload.svg</iconset>
+                 <normaloff>:/icons/icons/x-circle.svg</normaloff>:/icons/icons/x-circle.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>
                  <width>24</width>
                  <height>24</height>
                 </size>
-               </property>
-               <property name="checkable">
-                <bool>false</bool>
-               </property>
-               <property name="autoRepeatInterval">
-                <number>100</number>
-               </property>
-               <property name="autoDefault">
-                <bool>false</bool>
-               </property>
-               <property name="default">
-                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -197,16 +176,22 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="ExitButton">
+              <widget class="QPushButton" name="LoadButton">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
-                <string>Exit</string>
+                <string>Load</string>
                </property>
                <property name="icon">
                 <iconset resource="resources/resources.qrc">
-                 <normaloff>:/icons/icons/x-circle.svg</normaloff>:/icons/icons/x-circle.svg</iconset>
+                 <normaloff>:/icons/icons/upload.svg</normaloff>:/icons/icons/upload.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -214,9 +199,47 @@
                  <height>24</height>
                 </size>
                </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
             </layout>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignTop">
+           <widget class="QScrollArea" name="scrollArea_3">
+            <property name="cursor" stdset="0">
+             <cursorShape>OpenHandCursor</cursorShape>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>241</width>
+               <height>68</height>
+              </rect>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="weaponsheet">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
           <item>
@@ -232,13 +255,13 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>123</width>
-               <height>347</height>
+               <width>241</width>
+               <height>355</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="QLabel" name="label_2">
+               <widget class="QLabel" name="tylesheet">
                 <property name="cursor">
                  <cursorShape>ArrowCursor</cursorShape>
                 </property>
@@ -293,7 +316,7 @@
        <item>
         <widget class="QScrollArea" name="scrollArea">
          <property name="cursor" stdset="0">
-          <cursorShape>OpenHandCursor</cursorShape>
+          <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -312,7 +335,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>593</width>
+            <width>475</width>
             <height>562</height>
            </rect>
           </property>
@@ -342,7 +365,7 @@
  </widget>
  <resources>
   <include location="resources/resources.qrc"/>
-  <include location="resources/resources.qrc"/>
+  <include location="../../../../.designer/backup/resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

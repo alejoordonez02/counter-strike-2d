@@ -1,37 +1,37 @@
-#include "tilesheeteditor.h"
+#include "sheeteditor.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QDrag>
 #include <QMimeData>
 #include <QFileInfo>
 
-TileSheetEditor::TileSheetEditor(QWidget *parent) : QWidget(parent),
+SheetEditor::SheetEditor(QWidget *parent) : QWidget(parent),
     m_tileWidth(32), m_tileHeight(32)
 {
     setMouseTracking(true);
 }
 
-void TileSheetEditor::loadTilesheet(const QString &configPath)
+void SheetEditor::loadsheet(const QString &configPath)
 {
     if (!QFileInfo::exists(configPath)) {
         throw std::runtime_error("File does not exist: " + configPath.toStdString());
     }
-    tilesheetdata.loadFromYAML(configPath);
-    m_tilesheet.load(tilesheetdata.getTilesheetPath());
+    sheetdata.loadFromYAML(configPath);
+    m_tilesheet.load(sheetdata.getTilesheetPath());
     if (!m_tilesheet.isNull()) {
         setFixedSize(m_tilesheet.size());
         update();
     }
 }
 
-void TileSheetEditor::setTileSize(int width, int height)
+void SheetEditor::setTileSize(int width, int height)
 {
     m_tileWidth = width;
     m_tileHeight = height;
     update();
 }
 
-QPixmap TileSheetEditor::getSelectedTile() const
+QPixmap SheetEditor::getSelectedTile() const
 {
     if (m_selectedTilePos.x() < 0 || m_selectedTilePos.y() < 0)
         return QPixmap();
@@ -44,14 +44,14 @@ QPixmap TileSheetEditor::getSelectedTile() const
     );
 }
 
-void TileSheetEditor::mousePressEvent(QMouseEvent* event) {
+void SheetEditor::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         QApplication::setOverrideCursor(Qt::ClosedHandCursor);
         int tileX = event->pos().x() / m_tileWidth;
         int tileY = event->pos().y() / m_tileHeight;
 
         if (tileX >= 0 && tileY >= 0) {
-            auto tileInfo = tilesheetdata.getTileInfo(tileX, tileY);
+            auto tileInfo = sheetdata.getTileInfo(tileX, tileY);
             
             QByteArray itemData;
             QDataStream stream(&itemData, QIODevice::WriteOnly);
@@ -71,31 +71,12 @@ void TileSheetEditor::mousePressEvent(QMouseEvent* event) {
     QApplication::restoreOverrideCursor();
 }
 
-QString TileSheetEditor::getTypeStringForTile(int tileX, int tileY) {
-    switch(tileY) {
-        case 0: return "Solid";
-        case 1: return "Plantable";
-        case 2: return "TSpawn";
-        case 3: return "CtSpawn";
-        default: return "Common";
-    }
-}
-
-void TileSheetEditor::paintEvent(QPaintEvent *event)
+void SheetEditor::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QPainter painter(this);
     
     if (!m_tilesheet.isNull()) {
         painter.drawPixmap(0, 0, m_tilesheet);
-    }
-    
-    if (m_selectedTilePos.x() >= 0 && m_selectedTilePos.y() >= 0) {
-        painter.setPen(QPen(Qt::red, 2));
-        painter.drawRect(
-            m_selectedTilePos.x() * m_tileWidth,
-            m_selectedTilePos.y() * m_tileHeight,
-            m_tileWidth, m_tileHeight
-        );
     }
 }

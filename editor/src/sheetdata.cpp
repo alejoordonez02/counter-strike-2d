@@ -1,4 +1,4 @@
-#include "tilesheetdata.h"
+#include "sheetdata.h"
 #include <QFile>
 #include <yaml-cpp/yaml.h>
 #include <QDebug>
@@ -7,7 +7,7 @@ inline bool operator<(const QPoint& p1, const QPoint& p2) {
     return (p1.y() < p2.y()) || (p1.y() == p2.y() && p1.x() < p2.x());
 }
 
-bool TileSheetData::loadFromYAML(const QString& filePath) {
+bool SheetData::loadFromYAML(const QString& filePath) {
     
     YAML::Node config = YAML::LoadFile(filePath.toStdString());
     
@@ -24,7 +24,7 @@ bool TileSheetData::loadFromYAML(const QString& filePath) {
     return true;
 }
 
-TileSheetData::TileInfo TileSheetData::getTileInfo(int x, int y) const {
+SheetData::TileInfo SheetData::getTileInfo(int x, int y) const {
     QPoint pos(x, y);
     if (tileData.contains(pos)) {
         return tileData.value(pos);
@@ -32,6 +32,6 @@ TileSheetData::TileInfo TileSheetData::getTileInfo(int x, int y) const {
     return {"", "Common"};
 }
 
-QString TileSheetData::getTilesheetPath() const {
+QString SheetData::getTilesheetPath() const {
     return tilesheetPath;
 }

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "tilesheeteditor.h"
+#include "sheeteditor.h"
 #include "mapeditor.h"
 #include "maploader.h"
 
@@ -24,7 +24,8 @@ private slots:
 
 private:
     Ui::MapEditor *ui;
-    TileSheetEditor *m_tilesheetEditor;
+    SheetEditor *m_tilesheetEditor;
+    SheetEditor *m_weaponsheetEditor;
     MapEditor *m_mapEditor;
     MapLoader *m_mapLoader;
     QPixmap m_currentBrush;
