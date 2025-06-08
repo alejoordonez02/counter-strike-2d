@@ -1,71 +1,88 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../../common/direction.h"  //
-#include "../../common/position.h"   // mover a model
-                                     /* */
+#include "common/direction.h"
+#include "common/position.h"
 
-#include "../../common/direction.h"
-#include "../../common/position.h"
-
-#include "circle.h"
 #include "equipment.h"
 #include "map.h"
+#include "player_physics.h"
 #include "weapon.h"
 
-class Player: public Circle {
+enum class MovementState { IDLE, MOVING };
+enum class ActionState { NONE, ATTACKING, RELOADING, PLANTING, DEFUSING };
+
+class Player {
 private:
-    float velocity;
+    Position pos;
+    int health;
+    bool alive;
+    PlayerPhysics physics;
 
     int kills;
     int money;
 
-    int health;
-    bool alive;
+    bool pay(const int& cost);
 
 protected:
     Map& map;
-
     Equipment equipment;
     Weapon& current;
 
-    virtual bool pay(const int& cost);
-
 public:
-    Player(const Position& pos, Equipment&& equipment, Map& map);
+    Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
-     * Both TT & CT commands
+     * Update
      * */
-    virtual void start_moving(const Direction& dir) {dir + dir;}
+    void update(float dt) {
+        physics.update(dt);
+        // action.update(dt); // action strategy...
+    }
+
+    /*
+     * Move
+     * */
+    virtual void start_moving(Direction dir) { physics.start_moving(dir); }
+    void stop_moving() { physics.stop_moving(); }
+
+    /*
+     * Attack
+     * */
     virtual void start_attacking() {}
+    void stop_attacking() {}
 
-    virtual void move(const Direction& dir);
-    virtual void attack(const Position& destination);
-    virtual void use_primary();
-    virtual void use_secondary();
-    virtual void use_knife();
-    // virtual void drop_current();
-    virtual void buy_primary(Weapon& weapon);
-    virtual void buy_secondary(Weapon& weapon);
-    virtual void buy_primary_ammo(const int& count);
-    virtual void buy_secondary_ammo(const int& count);
+    /*
+     * Set current weapon
+     * */
+    void use_primary();
+    void use_secondary();
+    void use_knife();
 
-    virtual void get_attacked(const int& damage) override;
+    /*
+     * Buy
+     * */
+    void buy_primary(Weapon& weapon);
+    void buy_secondary(Weapon& weapon);
+    void buy_primary_ammo(const int& count);
+    void buy_secondary_ammo(const int& count);
 
     /*
      * Terrorist
      * */
-    virtual void plant_bomb();
-    virtual void stop_planting();
+    void plant_bomb() {}
+    void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    virtual void defuse_bomb();
-    virtual void stop_defusing();
+    void defuse_bomb() {}
+    void stop_defusing() {}
 
-    ~Player() = default;
+    /*
+     * Destructor
+     * */
+    virtual ~Player() = default;
 };
 
 #endif

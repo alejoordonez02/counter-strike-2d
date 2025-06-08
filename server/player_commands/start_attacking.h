@@ -4,10 +4,9 @@
 #include <memory>
 #include <stdexcept>
 
-#include "../../common/network/dto.h"
-#include "../../common/network/dtos/start_attacking_dto.h"
-#include "../../common/position.h"
 #include "../model/player.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/start_attacking_dto.h"
 
 #include "command.h"
 

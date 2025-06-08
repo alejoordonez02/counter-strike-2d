@@ -2,13 +2,13 @@
 #include <memory>
 #include <vector>
 
-#include "../common/network/dtos/start_attacking_dto.h"
-#include "../common/network/dtos/start_moving_dto.h"
-#include "../common/network/protocol.h"
-#include "../server/cmd_constructor.h"
-#include "../server/player_commands/command.h"
+#include "common/network/dtos/start_attacking_dto.h"
+#include "common/network/dtos/start_moving_dto.h"
+#include "common/network/protocol.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "server/cmd_constructor.h"
+#include "server/player_commands/command.h"
 
 #include "mock_player.h"
 

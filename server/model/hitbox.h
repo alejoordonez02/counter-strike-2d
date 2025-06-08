@@ -4,24 +4,17 @@
 #include <algorithm>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <vector>
 
 #include "trajectory.h"
 
 class Hitbox {
+private:
+    float get_distance(const Hitbox& hitbox) const { return pos.get_distance(hitbox.pos); }
+
 protected:
-    Position pos;
-
-public:
-    Hitbox(const Position& pos): pos(pos) {}
-
-    virtual const Position& get_position() const { return pos; }
-
-    virtual float get_distance(const Hitbox& hitbox) const { return pos.get_distance(hitbox.pos); }
-
-    virtual bool intersects(const Trajectory& t) = 0;
-
-    virtual void get_attacked(const int& damage) = 0;
+    Position& pos;
 
     std::vector<size_t> sort_by_distance_idx(
             const std::vector<std::unique_ptr<Hitbox>>& coll) const {
@@ -33,6 +26,13 @@ public:
         });
         return idx;
     }
+
+public:
+    Hitbox(Position& pos): pos(pos) {}
+
+    virtual std::optional<Position> intersect(const Trajectory& t) = 0;
+
+    virtual void get_attacked(int damage) = 0;
 
     virtual ~Hitbox() = default;
 };

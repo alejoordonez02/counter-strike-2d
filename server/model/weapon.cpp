@@ -15,7 +15,7 @@ Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy, const 
 
 void Weapon::attack(const Position& origin, const Position& destination, Hitbox& coll) {
     Trajectory t(origin, destination * range);
-    if (coll.intersects(t) and Random::get() < accuracy) {
+    if (coll.intersect(t) and Random::get() < accuracy) {
         coll.get_attacked(damage);
         ammo--;
     }

@@ -4,10 +4,10 @@
 #include <memory>
 #include <stdexcept>
 
-#include "../../common/direction.h"
-#include "../../common/network/dto.h"
-#include "../../common/network/dtos/start_moving_dto.h"
 #include "../model/player.h"
+#include "common/direction.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/start_moving_dto.h"
 
 #include "command.h"
 
