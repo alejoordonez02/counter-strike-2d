@@ -34,7 +34,13 @@ jobs:
           libsdl2-dev \
           libsdl2-image-dev \
           libsdl2-mixer-dev \
-          libsdl2-ttf-dev
+          libsdl2-ttf-dev \
+          qtbase5-dev \
+          qt5-qmake \
+          qt5-qmake-bin \
+          qtchooser \
+          qttools5-dev-tools \
+          libyaml-cpp-dev
 
 
       - name: Build project
