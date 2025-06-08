@@ -4,8 +4,6 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSize>
-#include <QPainter> 
-#include <QPen>  
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
