@@ -10,8 +10,7 @@
 
 #include "../common/queue.h"
 #include "../common/snapshot.h"
-#include "../server/player_commands/command.h"
-#include "renderables/renderable_player.h"
+#include "../common/network/dto.h"
 #include "render.h"
 
 
@@ -21,23 +20,19 @@ class GameLoop {
         
         bool is_running = true;
 
-        Queue<DTO>& snapshots_queue;
-        Queue<DTO>& comands_queue;
+        Queue<std::unique_ptr<DTO>>& snapshots_queue;
+        Queue<std::shared_ptr<DTO>>& commands_queue;
 
         InputHandler input_handler;
-        Snapshot last_snapshot;
-        
 
-public:
-    GameLoop(Queue<DTO>& snapshots, Queue<DTO>& comandos);
+    public:
+        GameLoop(Queue<std::unique_ptr<DTO>>& snapshots, Queue<std::shared_ptr<DTO>>& commands);
 
-    void run();
+        void run();
 
-    void update_renderables_from_snapshot();
+        Snapshot get_snapshot_from_queue();
 
-    void render_all();
-
-    void closeWindow();
+        void closeWindow();
 };
 
 #endif // GAMELOOP_H

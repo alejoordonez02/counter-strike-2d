@@ -14,7 +14,7 @@ Client::Client(const std::string& hostname, const std::string& servname):
 void Client::run(){
 
     sender.start();
-    receiver.start(); 
+    receiver.start();
 
     // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y final se encontrará en el GameLoop
     GameLoop gameloop(snapshots, commands);

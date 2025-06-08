@@ -48,7 +48,7 @@ void Render::update(Snapshot snapshot){
 }
 
 
-void Render::render_all(){
+void Render::render(){
     // limpiar la ventana
     renderer.Clear();
 

@@ -33,7 +33,7 @@ public:
 
     void update(Snapshot snapshot);
 
-    void render_all();
+    void render();
 
     void closeWindow();
 };

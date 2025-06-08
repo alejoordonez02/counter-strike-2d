@@ -8,11 +8,11 @@
 
 class InputHandler:  {
 private:
-    Queue<std::unique_ptr<DTO>>& commands;
+    Queue<std::shared_ptr<DTO>>& commands_queue;
     std::unique_ptr<DTO> player;
 
 public:
-    InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue);
+    InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
 
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);

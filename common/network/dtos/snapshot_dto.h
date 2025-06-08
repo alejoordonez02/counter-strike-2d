@@ -3,24 +3,30 @@
 
 #include "../../snapshot.h"
 #include "../dto.h"
+#include "../protocol.h"
 
 class SnapshotDTO : public DTO {
 public:
     Snapshot snapshot;
 
-    explicit SnapshotDTO(std::vector<uint8_t>&& bytes) : DTO(std::move(bytes)) {
+    explicit SnapshotDTO(std::vector<uint8_t>&& bytes)
+        : DTO(std::move(bytes)) {
         deserialize();
     }
 
-    explicit SnapshotDTO(const Snapshot& snap) : DTO(/*tipo de DTO para Snapshot*/), snapshot(snap) {}
-
-    void deserialize() override {
-        // Deserializar los datos de payload y llenar snapshot
-    }
+    explicit SnapshotDTO(const Snapshot& snap)
+        : DTO(DTOSerial::GameState::SNAPSHOT), snapshot(snap) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
-        // Serializar los datos de snapshot en out
+        out.push_back(type);
+        // TODO: Serializar campos snapshot
     }
+
+    void deserialize() override {
+        // TODO: Deserializar campos snapshot
+    }
+
+    ~SnapshotDTO() = default;
 };
 
 #endif
