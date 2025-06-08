@@ -1,26 +1,10 @@
 #include "gtest/gtest.h"
-#define private public
-#define protected public
+#define private public   /* ésto sólo en tests para no tener que agregar */
+#define protected public /* getters innecesarios en el modelo */
 #include "server/model/player_physics.h"
 #undef private
 #undef public
 
-#include "mock_player.h"
-
-
-/* PlayerPhysics(Position& pos, int& health, const float& shield, bool& alive, float max_velocity,
-              float acceleration, float radius, Map& map):
-        Hitbox(pos),
-        dir(),
-        max_v(max_velocity),
-        v(0),
-        a(acceleration),
-        radius(radius),
-        health(health),
-        shield(shield),
-        alive(alive),
-        moving(false),
-        map(map) {} */
 namespace {
 TEST(PlayerPhysics, PlayerCanWalkFreelyIfThereAreNotAnyObstaclesInTheMap) {
     float player_radius = 1;
@@ -96,8 +80,8 @@ TEST(PlayerPhysics, PlayerCanNotDirectlyWalkThroughAnotherPlayer) {
     Position expected(0, 0.5);
     Direction move_dir(0, 1);
 
-    p1->start_moving(move_dir);
-    p1->update(1);
+    p1_ptr->start_moving(move_dir);
+    p1_ptr->update(1);
     EXPECT_EQ(p1_ptr->pos, expected);
 }
 
@@ -140,8 +124,8 @@ TEST(PlayerPhysics, PlayerCanNotSideWalkThroughAnotherPlayer) {
     Position intersection = p2_pos + p2_pos.get_direction(intended_destination) * player_radius;
     Position expected = intersection - move_dir * player_radius;
 
-    p1->start_moving(move_dir);
-    p1->update(1);
+    p1_ptr->start_moving(move_dir);
+    p1_ptr->update(1);
     EXPECT_EQ(p1_ptr->pos, expected);
 }
 
