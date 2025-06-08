@@ -125,29 +125,10 @@ if(CS2D_SERVER)
 endif()
 
 if(CS2D_EDITOR)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(cs2d_editor)
-
-    # Make them depend on cs2d_common lib
-    add_dependencies(cs2d_editor cs2d_common SDL2pp::SDL2pp)
-
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(editor)
-
-    set_project_warnings(cs2d_editor ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
-
-    # add libSDL2pp's headers
-    target_include_directories(cs2d_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
-
-    # Include SDL2 headers
-    include_directories(${SDL2_INCLUDE_DIRS})
-
-    # Link the cs2d_common lib target
-    target_link_libraries(cs2d_editor PRIVATE cs2d_common SDL2pp::SDL2pp)
-
-    # Link SDL2 library
-    target_link_libraries(cs2d_editor PRIVATE SDL2::SDL2)
+    add_subdirectory(cs2d_editor)
 endif()
 
 
