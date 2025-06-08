@@ -59,29 +59,8 @@ void InputHandler::send_direction(){
         dir.x += 1;
     }
 
-    // comandos.try_push(Move(dir));
-    player.player_hp = 444;
-    player.x += dir.x * 10;
-    player.y += dir.y * 10;
-    player.is_walking = (dir.x != 0 || dir.y != 0);
-    
-    // std::cout << "LOG: Enviando dirección: (" << player.x << ", " << player.y << ")" << std::endl;
-
-    player.facing_angle = calculate_facing_angle(player.x, player.y);
-
-    comandos.try_push(player);
-}
-
-double InputHandler::calculate_facing_angle(int16_t x, int16_t y) {
-    int mouse_x, mouse_y;
-    SDL_GetMouseState(&mouse_x, &mouse_y);
-
-    int dx = mouse_x - x;
-    int dy = mouse_y - y;
-
-    double angle = std::atan2(dy, dx); // en radianes
-    angle = angle * 180.0 / M_PI; // en grados
-    return angle + 90.0;      // para alinear la textura
+    // player.is_walking = (dir.x != 0 || dir.y != 0);
+    comandos.try_push(Move(dir));
 }
 
 

@@ -12,14 +12,12 @@
 #include "../common/snapshot.h"
 #include "../server/player_commands/command.h"
 #include "renderables/renderable_player.h"
+#include "render.h"
 
 
 class GameLoop {
     private:
-        SDL2pp::SDL sdl;
-        SDL2pp::Window window;
-        SDL2pp::Renderer renderer;
-        // TextureProvider texture_provider;
+        Render render;
         
         bool is_running = true;
 
@@ -29,11 +27,6 @@ class GameLoop {
         InputHandler input_handler;
         Snapshot ultima_snapshot;
         
-        // encapsular luego en una clase renderables?
-        std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>> players_renderables;
-
-        std::shared_ptr<AnimationProvider> animation_provider;
-
 
 public:
     GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos);
