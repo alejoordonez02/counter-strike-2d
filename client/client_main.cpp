@@ -2,6 +2,7 @@
 
 #include "../common/network/socket/socket.h"
 #include "client.h"
+#include "../tests/mock_server.h"
 
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -17,6 +18,8 @@ int main(int argc, char** argv) {
         // ...
         std::string hostname = argv[1];
         std::string servname = argv[2];
+
+        std::cout << "LOG: Connecting to server at " << hostname << ":" << servname << std::endl;
 
         Client cliente(hostname, servname);
         cliente.run();

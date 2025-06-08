@@ -17,10 +17,6 @@ class TextureProvider {
         static std::shared_ptr<SDL2pp::Texture> get_texture(const std::string& texture_name);
 
         static void load_textures(SDL2pp::Renderer& renderer);
-
-        // SDL2pp::Texture* get_texture_pointer();
-
-        // SDL2pp::Texture* get_texture_terrorist();
 };
 
 #endif // TEXTURE_PROVIDER_H
