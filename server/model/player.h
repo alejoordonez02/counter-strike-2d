@@ -12,53 +12,74 @@
 enum class MovementState { IDLE, MOVING };
 enum class ActionState { NONE, ATTACKING, RELOADING, PLANTING, DEFUSING };
 
-class Player: public PlayerPhysics {
+class Player {
 private:
+    Position pos;
+    int health;
+    bool alive;
+    PlayerPhysics physics;
+
     int kills;
     int money;
 
-    int health;
-    bool alive;
+    bool pay(const int& cost);
 
 protected:
+    Map& map;
     Equipment equipment;
     Weapon& current;
 
-    virtual bool pay(const int& cost);
-
 public:
-    Player(const Position& pos, const Direction& dir, Equipment&& equipment, Map& map);
+    Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
-     * Both TT & CT commands
+     * Update
      * */
-    virtual void attack(const Position& destination);
-    virtual void use_primary();
-    virtual void use_secondary();
-    virtual void use_knife();
-    // virtual void drop_current();
-    virtual void buy_primary(Weapon& weapon);
-    virtual void buy_secondary(Weapon& weapon);
-    virtual void buy_primary_ammo(const int& count);
-    virtual void buy_secondary_ammo(const int& count);
+    void update(float dt);
 
-    virtual void get_attacked(const int& damage) override;
+    /*
+     * Move
+     * */
+    void start_moving(Direction dir) { physics.start_moving(dir); }
+    void stop_moving() { physics.stop_moving(); }
 
-    // virtual void update(float dt);
+    /*
+     * Attack
+     * */
+    void start_attacking() {}
+    void stop_attacking() {}
+
+    /*
+     * Set current weapon
+     * */
+    void use_primary();
+    void use_secondary();
+    void use_knife();
+
+    /*
+     * Buy
+     * */
+    void buy_primary(Weapon& weapon);
+    void buy_secondary(Weapon& weapon);
+    void buy_primary_ammo(const int& count);
+    void buy_secondary_ammo(const int& count);
 
     /*
      * Terrorist
      * */
-    virtual void plant_bomb();
-    virtual void stop_planting();
+    virtual void plant_bomb() {}
+    virtual void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    virtual void defuse_bomb();
-    virtual void stop_defusing();
+    virtual void defuse_bomb() {}
+    virtual void stop_defusing() {}
 
-    ~Player() = default;
+    /*
+     * Destructor
+     * */
+    virtual ~Player() = default;
 };
 
 #endif

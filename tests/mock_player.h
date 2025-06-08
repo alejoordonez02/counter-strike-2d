@@ -12,23 +12,22 @@
 class MockPlayer: public Player {
 private:
     static Position dummy_pos;
-    static Direction dummy_dir;
     static Map dummy_map;
 
 public:
     MockPlayer():
-            Player(dummy_pos, dummy_dir,
+            Player(dummy_pos,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
     MockPlayer(const Position& pos):
-            Player(pos, dummy_dir,
+            Player(pos,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
-    MOCK_METHOD(void, move, (const Direction&), (override));
-    MOCK_METHOD(void, attack, (const Position&), (override));
-    MOCK_METHOD(void, get_attacked, (const int&), (override));
+    MOCK_METHOD(void, start_moving, (const Direction&), ());
+    MOCK_METHOD(void, start_attacking, (), ());
+    MOCK_METHOD(void, get_attacked, (int), ());
     virtual ~MockPlayer() = default;
 };
 

@@ -9,10 +9,10 @@ struct Equipment {
     std::unique_ptr<Weapon> primary;
     std::unique_ptr<Weapon> secondary;
     std::unique_ptr<Weapon> knife;
-    int shield;
+    float shield;
 
     Equipment(std::unique_ptr<Weapon>&& primary, std::unique_ptr<Weapon>&& secondary,
-              std::unique_ptr<Weapon>&& knife, const int& shield):
+              std::unique_ptr<Weapon>&& knife, const float& shield):
             primary(std::move(primary)),
             secondary(std::move(secondary)),
             knife(std::move(knife)),
