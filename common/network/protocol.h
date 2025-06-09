@@ -10,10 +10,13 @@ constexpr int MaxLen = 256; // <= 65535
 
 namespace DTOSerial {
     namespace PlayerCommands {
-    constexpr uint8_t MOVE = 0x6D;    // m
-    constexpr uint8_t ATTACK = 0x61;  // a
+    constexpr uint8_t MOVE = 0x6D;    // m - 109
+    constexpr uint8_t ATTACK = 0x61;  // a - 97
     constexpr uint8_t SNAPSHOT = 0x62; // NOTE alepaff: 98 Totalmente arbitrario, solo para que compile
     };  // namespace PlayerCommands
+    namespace GameState {
+        // TODO: Snapshot
+    }
 };  // namespace DTO
 
 #endif

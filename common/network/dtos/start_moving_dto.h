@@ -32,6 +32,11 @@ public:
     }
 
     ~StartMovingDTO() = default;
+
+    /* BORRAR ESTO -alepaff*/
+    Direction get_direction(){
+        return dir;
+    }
 };
 
 #endif

@@ -7,6 +7,13 @@
 #include "../common/network/receiver.h"
 #include "../common/network/sender.h"
 #include "../common/network/dtos/snapshot_dto.h"
+#include "../server/model/equipment.h"
+#include "../server/model/map.h"
+#include "../server/model/player.h"
+#include "../server/model/weapons.h"
+#include "../server/cmd_constructor.h"
+#include "../common/position.h"
+
 #include <memory>
 #include <thread>
 #include <iostream>
@@ -33,44 +40,44 @@ void mock_server() {
     receiver.start();
     sender.start();
 
-    // Poner un dato inicial de prueba del mock server en la cola de snapshots con un PlayerData
+    // == inicializacion ===
     PlayerData player1{};
     player1.player_id = 1;
-    player1.team_id = 0;
-    player1.x = 50;
-    player1.y = 100;
-
-    // Crear el snapshot inicial y agregar el jugador
     Snapshot snap{};
     snap.round_number = 0;
     snap.players.push_back(player1);
-
-    // Empaquetar el snapshot en un DTO
     std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(snap);
-
-    // Si quieres ponerlo en la cola:
     snapshots_queue.try_push(std::move(initial_snapshot));
+    // TODO: habria que hacer esto: pero no me funca, son las 2am y estoy cansado jefe -alepaff
+    // Map map;
+    // Player player(Position(0, 0),
+    //               Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
+    //                         std::make_unique<Fist>(), 0),
+    //               map);
+    // CmdConstructor constructor;
+    // std::unique_ptr<Command> cmd = constructor.construct(std::move(dto_ptr));
+    // cmd->execute(player);
 
-    // 5. Loop principal del mock server
-    int position_inc = 0;
     while (true) {
         // Obtener el último comando recibido (si hay)
-        position_inc++;
         std::unique_ptr<DTO> dto_ptr;
         if (commands_queue.try_pop(dto_ptr)) {
             std::cout << "MockServer: Recibido comando tipo: " << int(dto_ptr->get_type()) << std::endl;
+            StartMovingDTO* start_moving_dto = dynamic_cast<StartMovingDTO*>(dto_ptr.get());
+            if (!start_moving_dto) {
+                continue;
+            }
 
-            // Crear un Snapshot de ejemplo
+            // Procesar el comando de movimiento
+            Direction new_pos = start_moving_dto->get_direction();
+            player1.x += new_pos.x * 5;
+            player1.y += new_pos.y * 5;
+            std::cout << "MockServer: Jugador movido a (" << player1.x << ", " << player1.y << ")" << std::endl;
+        
+            // debe crear siempre un nuevo snapshot
             Snapshot snap;
             snap.round_number = 1;
-
-            PlayerData player1{};
-            player1.player_id = 1;
-            player1.team_id = 0;
-            player1.x = position_inc;
-            player1.y = 100;
             snap.players.push_back(player1);
-            std::cout << "Pusheando jugador con ID: " << player1.player_id << std::endl;
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
             std::shared_ptr<DTO> snapshot_dto = std::make_shared<SnapshotDTO>(snap);
