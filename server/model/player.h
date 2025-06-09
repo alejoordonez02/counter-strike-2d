@@ -33,6 +33,9 @@ protected:
     Equipment equipment;
     Weapon& current;
 
+    friend class Game;
+    PlayerPhysics& get_physics() { return physics; }
+
 public:
     Player(Position pos, Equipment&& equipment, Map& map);
 

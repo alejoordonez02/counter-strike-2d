@@ -74,8 +74,8 @@ TEST(PlayerPhysics, PlayerCanNotDirectlyWalkThroughAnotherPlayer) {
 
     PlayerPhysics* p1_ptr = p1.get();
 
-    map.add_collidable(std::move(p2));
-    map.add_collidable(std::move(p1));
+    map.add_collidable(*p2);
+    map.add_collidable(*p1);
 
     Position expected(0, 0.5);
     Direction move_dir(0, 1);
@@ -109,8 +109,8 @@ TEST(PlayerPhysics, PlayerCanNotSideWalkThroughAnotherPlayer) {
 
     PlayerPhysics* p1_ptr = p1.get();
 
-    map.add_collidable(std::move(p2));
-    map.add_collidable(std::move(p1));
+    map.add_collidable(*p2);
+    map.add_collidable(*p1);
 
     Direction move_dir(0, 1);
     Direction dummy_dir(1, 0);
