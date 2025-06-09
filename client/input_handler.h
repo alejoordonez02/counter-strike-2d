@@ -5,14 +5,13 @@
 #include "../common/queue.h"
 #include "../common/network/dto.h"
 #include "../common/snapshot.h"
+#include "../common/thread.h"
 
-class InputHandler {
+class InputHandler: public Thread {
 private:
     Queue<std::shared_ptr<DTO>>& commands_queue;
-
-public:
-    InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
-
+    std::atomic<bool> is_alive = true;
+    
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);
 
@@ -23,6 +22,15 @@ public:
     void process_movement();
 
     bool handle_events();
+
+public:
+    InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
+    
+    bool alive_status();
+
+    void run() override;
+
+    ~InputHandler() = default;
 };
 
 #endif

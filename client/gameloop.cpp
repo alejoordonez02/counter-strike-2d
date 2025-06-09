@@ -10,7 +10,9 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots, Queue<std::shared_ptr
     snapshots_queue(snapshots),
     commands_queue(commands),
     input_handler(commands)
-{}
+{
+    input_handler.start();
+}
 
 
 Snapshot GameLoop::get_snapshot_from_queue(){
@@ -44,7 +46,7 @@ void GameLoop::run(){
         render.update(last_snapshot);
         render.render();
         
-        is_running = input_handler.handle_events();
+        is_running = input_handler.alive_status();
 
         usleep(FRAME_RATE);
         

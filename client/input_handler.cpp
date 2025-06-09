@@ -7,7 +7,7 @@
 #include <iostream>
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue): 
-    commands_queue(commands_queue) {
+    commands_queue(commands_queue){
     }
 
 /**
@@ -47,6 +47,7 @@ void InputHandler::send_direction(){
 
     // envía solo si hay un movimiento
     if(dir.x != 0 || dir.y != 0){
+        std::cout << "LOG: Enviando dirección: (" << dir.x << ", " << dir.y << ")" << std::endl;
         commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
     }
 }
@@ -58,7 +59,6 @@ void InputHandler::process_movement() {
     // send_attack();
     // send_states();       
 }
-
 
 bool InputHandler::handle_events() {
     SDL_Event event;
@@ -86,4 +86,15 @@ bool InputHandler::handle_events() {
     return true;
 }
 
+
+void InputHandler::run(){
+    while (is_alive) {
+        is_alive = handle_events();
+    }
+    std::cout << "LOG: InputHandler ha terminado." << std::endl;
+}
+
+bool InputHandler::alive_status(){
+    return is_alive;
+}
 
