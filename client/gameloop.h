@@ -29,7 +29,7 @@ class GameLoop {
 
         void run();
 
-        Snapshot get_snapshot_from_queue();
+        Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
 
         void closeWindow();
 };

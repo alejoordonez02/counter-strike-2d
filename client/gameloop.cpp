@@ -15,25 +15,22 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots, Queue<std::shared_ptr
 }
 
 
-Snapshot GameLoop::get_snapshot_from_queue(){
+Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot){
     std::unique_ptr<DTO> dto_ptr;
     SnapshotDTO* snapshot_dto = nullptr;
 
-    // Esperar hasta recibir un SnapshotDTO válido
-    while (true) {
-        // se asegura que la cola tenga el ultimo estado del juego
-        while (snapshots_queue.try_pop(dto_ptr)) {
-            if (!dto_ptr) {
-                throw std::runtime_error("Received a null DTO from the snapshots queue.");
-            }
-            snapshot_dto = dynamic_cast<SnapshotDTO*>(dto_ptr.get());
+    // se asegura que la cola tenga el ultimo estado del juego
+    while (snapshots_queue.try_pop(dto_ptr)) {
+        if (!dto_ptr) {
+            throw std::runtime_error("Received a null DTO from the snapshots queue.");
         }
-        if (snapshot_dto) {
-            return snapshot_dto->snapshot;
-        }
-        // REFACTOR: Si la cola está vacía, esperar un poco antes de volver a intentar
-        usleep(1000);
+        snapshot_dto = dynamic_cast<SnapshotDTO*>(dto_ptr.get());
     }
+    if (snapshot_dto) {
+        return snapshot_dto->snapshot;
+    }
+    // si no hay snapshot nueva, devuelve el último estado -> Esto permite que siga renderizando
+    return last_snapshot;
 }
 
 
@@ -41,7 +38,7 @@ void GameLoop::run(){
     Snapshot last_snapshot;
 
     while (is_running) {
-        last_snapshot = this->get_snapshot_from_queue();
+        last_snapshot = this->get_snapshot_from_queue(last_snapshot);
         
         render.update(last_snapshot);
         render.render();
@@ -49,7 +46,6 @@ void GameLoop::run(){
         is_running = input_handler.alive_status();
 
         usleep(FRAME_RATE);
-        
     }
 }
 
