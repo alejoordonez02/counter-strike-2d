@@ -39,9 +39,6 @@ private:
         auto sorted_idx = sort_by_distance_idx(collidable);
         for (size_t i: sorted_idx) {
             auto& c = collidable[i];
-            if (c.get() == this)
-                continue;  // skip self
-
             if (auto intersection = c->intersect(t)) {
                 pos = *intersection - dir * radius;
                 return;
@@ -82,9 +79,17 @@ public:
     void stop_moving() { moving = false; }
 
     /*
+     * Retornar un vector de punteros a collisionables ordenados por distancia a PlayerPhysics
+     * */
+    std::vector<size_t> get_distance_sorted_collidables_idx(
+            const std::vector<std::unique_ptr<Hitbox>>& collidables) const {
+        return sort_by_distance_idx(collidables);
+    }
+
+    /*
      * Hitbox overrides
      * */
-    std::optional<Position> intersect(const Trajectory& trajectory) override {
+    std::optional<Position> intersect(const Trajectory& trajectory) const override {
         /*
          * Calcula el punto más cercano al segmento de recta definido por la trayectoria y luego
          * checkea si la distancia al mismo resulta menor al radio del jugador
