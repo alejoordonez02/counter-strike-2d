@@ -1,0 +1,194 @@
+[
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/connection.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/connection.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/connection.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/connection.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/dto.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dto.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dto.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/dto.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/socket/liberror.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/liberror.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/liberror.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/socket/liberror.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/socket/resolver.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/resolver.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/resolver.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/socket/resolver.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/socket/resolvererror.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/resolvererror.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/resolvererror.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/socket/resolvererror.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/dtos -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket -I/home/marcos/Escritorio/Taller/counter-strike-2d/common/network -I/home/marcos/Escritorio/Taller/counter-strike-2d/common -I/home/marcos/Escritorio/Taller/counter-strike-2d/. -std=gnu++20 -Wall -Wextra -Wmisleading-indentation -Wzero-as-null-pointer-constant -Wnon-virtual-dtor -Wunused -Woverloaded-virtual -Wpedantic -Wnull-dereference -Wformat=2 -Wimplicit-fallthrough -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wsuggest-override -Werror -o CMakeFiles/cs2d_common.dir/common/network/socket/socket.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/socket.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/common/network/socket/socket.cpp",
+  "output": "CMakeFiles/cs2d_common.dir/common/network/socket/socket.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/cs2d_editor_autogen/mocs_compilation.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/mocs_compilation.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/cs2d_editor_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/main.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/main.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/main.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/mainwindow.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/mainwindow.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/mainwindow.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/mainwindow.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/sheetdata.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/sheetdata.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/sheetdata.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/sheetdata.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/sheeteditor.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/sheeteditor.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/sheeteditor.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/sheeteditor.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/mapeditor.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/mapeditor.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/mapeditor.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/mapeditor.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/maploader.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/maploader.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/maploader.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/maploader.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/src/block.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/block.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src/block.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/src/block.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/cs2d_editor_autogen/include -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++20 -fPIC -o CMakeFiles/cs2d_editor.dir/qrc_resources.cpp.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/qrc_resources.cpp",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/qrc_resources.cpp",
+  "output": "CMakeFiles/cs2d_editor.dir/qrc_resources.cpp.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/AudioDevice.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioDevice.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioDevice.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/AudioDevice.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/AudioLock.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioLock.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioLock.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/AudioLock.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/AudioSpec.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioSpec.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/AudioSpec.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/AudioSpec.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Color.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Color.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Color.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Color.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Exception.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Exception.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Exception.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Exception.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Point.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Point.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Point.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Point.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/RWops.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/RWops.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/RWops.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/RWops.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Rect.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Rect.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Rect.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Rect.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Renderer.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Renderer.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Renderer.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Renderer.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/SDL.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SDL.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SDL.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SDL.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Surface.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Surface.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Surface.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Surface.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/SurfaceLock.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SurfaceLock.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SurfaceLock.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SurfaceLock.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Texture.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Texture.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Texture.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Texture.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/TextureLock.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/TextureLock.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/TextureLock.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/TextureLock.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Wav.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Wav.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Wav.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Wav.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/Window.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Window.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/Window.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/Window.cc.o"
+},
+{
+  "directory": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build",
+  "command": "/usr/bin/c++ -DDATA_PATH=\\\"/home/marcos/Escritorio/Taller/counter-strike-2d/client\\\" -DSDL2pp_EXPORTS -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src -I/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-build -isystem /usr/include/SDL2 -std=c++17 -fPIC -o CMakeFiles/SDL2pp.dir/SDL2pp/SDLImage.cc.o -c /home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SDLImage.cc",
+  "file": "/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-src/SDL2pp/SDLImage.cc",
+  "output": "_deps/libsdl2pp-build/CMakeFiles/SDL2pp.dir/SDL2pp/SDLImage.cc.o"
+}
+]

@@ -125,29 +125,51 @@ if(CS2D_SERVER)
 endif()
 
 if(CS2D_EDITOR)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(cs2d_editor)
-
-    # Make them depend on cs2d_common lib
-    add_dependencies(cs2d_editor cs2d_common SDL2pp::SDL2pp)
-
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
+    find_package(yaml-cpp REQUIRED)
+
+    # UI files
+    qt5_wrap_ui(UI_HEADERS 
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/MapEditor.ui
+    )
+    qt5_add_resources(RESOURCES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc
+    )
+
+    # Source files
+    set(EDITOR_SOURCES
+        ${UI_HEADERS}
+        ${RESOURCES}
+    )
+
+    add_executable(cs2d_editor ${EDITOR_SOURCES})
     add_subdirectory(editor)
 
-    set_project_warnings(cs2d_editor ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_target_properties(cs2d_editor PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON
+        POSITION_INDEPENDENT_CODE ON
+    )
 
-    # add libSDL2pp's headers
-    target_include_directories(cs2d_editor PRIVATE ${libSDL2pp_SOURCE_DIR})
+    target_include_directories(cs2d_editor PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${yaml-cpp_INCLUDE_DIRS}
+    )
 
-    # Include SDL2 headers
-    include_directories(${SDL2_INCLUDE_DIRS})
+    target_link_libraries(cs2d_editor
+        Qt5::Widgets
+        Qt5::Core
+        Qt5::Gui
+        yaml-cpp::yaml-cpp
+    )
 
-    # Link the cs2d_common lib target
-    target_link_libraries(cs2d_editor PRIVATE cs2d_common SDL2pp::SDL2pp)
-
-    # Link SDL2 library
-    target_link_libraries(cs2d_editor PRIVATE SDL2::SDL2)
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(cs2d_editor PRIVATE -fPIC)
+    endif()
 endif()
 
 
@@ -194,7 +216,7 @@ if(CS2D_TESTS)
         cs2d_server_model
         GTest::gmock_main # This includes gmock and gtest and provides a main function
         # If you have your own main() in tests, you would use:
-        # GTest::gmock
-        # GTest::gtest
+        #GTest::gmock
+        #GTest::gtest
     )
 endif()

@@ -1,0 +1,3 @@
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/libsdl2pp-populate.dir
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/edit_cache.dir
+/home/marcos/Escritorio/Taller/counter-strike-2d/editor/_deps/libsdl2pp-subbuild/CMakeFiles/rebuild_cache.dir
