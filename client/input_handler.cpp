@@ -5,6 +5,7 @@
 
 #include <map>
 #include <iostream>
+#include <chrono>
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue): 
     commands_queue(commands_queue){
@@ -32,16 +33,16 @@ void InputHandler::handle_key_up(const SDL_Event& event) {
 void InputHandler::send_direction(){
     Direction dir(0, 0);
 
-    if (key_states[SDLK_UP]) {
+    if (key_states[SDLK_UP] || key_states[SDLK_w]) {
         dir.y -= 1;
     }
-    if (key_states[SDLK_DOWN]) {
+    if (key_states[SDLK_DOWN] || key_states[SDLK_s]) {
         dir.y += 1;
     }
-    if (key_states[SDLK_LEFT]) {
+    if (key_states[SDLK_LEFT] || key_states[SDLK_a]) {
         dir.x -= 1;
     }
-    if (key_states[SDLK_RIGHT]) {
+    if (key_states[SDLK_RIGHT] || key_states[SDLK_d]) {
         dir.x += 1;
     }
 
@@ -88,8 +89,17 @@ bool InputHandler::handle_events() {
 
 
 void InputHandler::run(){
+    // se utiliza un timer para evitar que el input sea demasiado sensible
+    using clock = std::chrono::steady_clock;
+    auto last_sent = clock::now();
+    const int cooldown_ms = 50; // ajustar sensibilidad 
+
     while (is_alive) {
-        is_alive = handle_events();
+        auto now = clock::now();
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_sent).count() > cooldown_ms) {
+            is_alive = handle_events();
+            last_sent = now;
+        }
     }
     std::cout << "LOG: InputHandler ha terminado." << std::endl;
 }
