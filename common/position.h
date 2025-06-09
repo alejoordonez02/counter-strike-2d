@@ -13,9 +13,15 @@ struct Position: public Tuple<Position, float> {
 
     float dot(const Direction& dir) const { return x * dir.x + y * dir.y; }
 
+    Direction get_direction(const Position& to) const { return Direction(to.x - x, to.y - y); }
+
     Position operator+(const Position& pos) const { return Position(x + pos.x, y + pos.y); }
 
     Position operator+(const Direction& dir) const { return Position(x + dir.x, y + dir.y); }
+
+    Position operator-(const Position& pos) const { return Position(x - pos.x, y - pos.y); }
+
+    Position operator-(const Direction& dir) const { return Position(x - dir.x, y - dir.y); }
 
     Position& operator+=(const Direction& dir) {
         x += dir.x;

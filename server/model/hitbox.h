@@ -4,35 +4,40 @@
 #include <algorithm>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <vector>
 
 #include "trajectory.h"
 
 class Hitbox {
+private:
+    float get_distance(const Hitbox& hitbox) const { return pos.get_distance(hitbox.pos); }
+
 protected:
-    Position pos;
-
-public:
-    Hitbox(const Position& pos): pos(pos) {}
-
-    virtual const Position& get_position() const { return pos; }
-
-    virtual float get_distance(const Hitbox& hitbox) const { return pos.get_distance(hitbox.pos); }
-
-    virtual bool intersects(const Trajectory& t) = 0;
-
-    virtual void get_attacked(const int& damage) = 0;
+    Position& pos;
 
     std::vector<size_t> sort_by_distance_idx(
-            const std::vector<std::unique_ptr<Hitbox>>& coll) const {
-        std::vector<size_t> idx(coll.size());
-        std::iota(idx.begin(), idx.end(), 0);
+            const std::vector<std::reference_wrapper<Hitbox>>& coll) const {
+        std::vector<size_t> idx;
+        idx.reserve(coll.size());
+        for (size_t i = 0; i < coll.size(); ++i) {
+            if (&coll[i].get() != this)  // skip self
+                idx.push_back(i);
+        }
 
         std::sort(idx.begin(), idx.end(), [&coll, this](size_t i, size_t j) {
-            return get_distance(*coll[i]) < get_distance(*coll[j]);
+            return get_distance(coll[i].get()) < get_distance(coll[j].get());
         });
+
         return idx;
     }
+
+public:
+    Hitbox(Position& pos): pos(pos) {}
+
+    virtual std::optional<Position> intersect(const Trajectory& t) const = 0;
+
+    virtual void get_attacked(int damage) = 0;
 
     virtual ~Hitbox() = default;
 };

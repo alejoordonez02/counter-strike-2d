@@ -6,8 +6,8 @@
 #include <memory>
 #include <unordered_map>
 
-#include "../common/network/dto.h"
-#include "../common/network/protocol.h"
+#include "common/network/dto.h"
+#include "common/network/protocol.h"
 #include "player_commands/command.h"
 #include "player_commands/start_attacking.h"
 #include "player_commands/start_moving.h"

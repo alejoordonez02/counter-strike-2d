@@ -26,6 +26,8 @@ struct Tuple {
 
     Derived operator*(const float& n) const { return Derived(x * n, y * n); }
 
+    Derived operator/(const float& n) const { return Derived(x / n, y / n); }
+
     bool operator==(const Derived& other) const { return x == other.x and y == other.y; }
 
     bool operator<(const Derived& other) const { return get_length() < other.get_length(); }
