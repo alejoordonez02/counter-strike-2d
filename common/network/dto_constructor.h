@@ -10,6 +10,7 @@
 #include "protocol.h"
 #include "dtos/start_moving_dto.h"
 #include "dtos/start_attacking_dto.h"
+#include "dtos/snapshot_dto.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;
@@ -26,6 +27,7 @@ public:
         maker_map = {
             {MOVE, [](auto&& bytes) { return std::make_unique<StartMovingDTO>(std::move(bytes)); }},
             {ATTACK, [](auto&& bytes) { return std::make_unique<StartAttackingDTO>(std::move(bytes)); }},
+            {SNAPSHOT, [](auto&& bytes) { return std::make_unique<SnapshotDTO>(std::move(bytes)); }},
             // ...
         };
     }

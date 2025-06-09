@@ -37,10 +37,10 @@ void GameLoop::run(){
     while (is_running) {
         last_snapshot = this->get_snapshot_from_queue();
         
-        is_running = input_handler.handle_events();
-
         render.update(last_snapshot);
         render.render();
+        
+        is_running = input_handler.handle_events();
 
         usleep(FRAME_RATE);
         

@@ -12,11 +12,8 @@ namespace DTOSerial {
     namespace PlayerCommands {
     constexpr uint8_t MOVE = 0x6D;    // m
     constexpr uint8_t ATTACK = 0x61;  // a
+    constexpr uint8_t SNAPSHOT = 0x62; // NOTE alepaff: 98 Totalmente arbitrario, solo para que compile
     };  // namespace PlayerCommands
-
-    namespace GameState {
-        constexpr uint8_t SNAPSHOT = 0x62; // NOTE alepaff: Totalmente arbitrario, solo para que compile
-    };
 };  // namespace DTO
 
 #endif
