@@ -107,7 +107,7 @@ public:
         return intersection;
     }
 
-    void get_attacked(int damage) override {
+    virtual void get_attacked(int damage) override {
         health -= (1 - shield) * damage;
         if (health <= 0)
             alive &= 0;
