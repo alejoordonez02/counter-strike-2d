@@ -288,10 +288,10 @@
     <file>icons/zoom-in.svg</file>
     <file>icons/zoom-out.svg</file>
   </qresource>
-  <qresource prefix="prefijoNuevo">
-    <file>cs2d.bmp</file>
-    <file>gametitle.png</file>
-    <file>gui_c.bmp</file>
-    <file>hud_slot.bmp</file>
+  <qresource prefix="images">
+    <file>images/cs2d.bmp</file>
+    <file>images/gametitle.png</file>
+    <file>images/gui_c.bmp</file>
+    <file>images/hud_slot.bmp</file>
   </qresource>
 </RCC>

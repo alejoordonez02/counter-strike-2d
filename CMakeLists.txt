@@ -127,48 +127,49 @@ endif()
 if(CS2D_EDITOR)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-
-    cmake_minimum_required(VERSION 3.5)
-    project(cs2d_editor)
-
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-    find_package(Qt5 5.15 REQUIRED COMPONENTS Widgets Core Gui)
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
     find_package(yaml-cpp REQUIRED)
 
-    qt5_wrap_ui(UI_HEADERS editor/MapEditor.ui)
-    qt5_add_resources(RESOURCES resources/resources.qrc)
+    # UI files
+    qt5_wrap_ui(UI_HEADERS 
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/MapEditor.ui
+    )
+    qt5_add_resources(RESOURCES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc
+    )
 
-    # Archivos fuente
-    set(SOURCE_FILES
-        editor/src/main.cpp
-        editor/src/mainwindow.cpp
-        editor/src/sheetdata.cpp
-        editor/src/sheeteditor.cpp
-        editor/src/mapeditor.cpp
-        editor/src/maploader.cpp
-        editor/src/block.cpp
+    # Source files
+    set(EDITOR_SOURCES
         ${UI_HEADERS}
+        ${RESOURCES}
     )
 
-    set(CMAKE_AUTOMOC ON)
+    add_executable(cs2d_editor ${EDITOR_SOURCES})
+    add_subdirectory(editor)
 
-    add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${UI_HEADERS} ${RESOURCES})
-
-    target_link_libraries(${PROJECT_NAME} 
-        Qt5::Widgets 
-        Qt5::Gui
-        Qt5::Core
-        yaml-cpp::yaml-cpp
+    set_target_properties(cs2d_editor PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON
+        POSITION_INDEPENDENT_CODE ON
     )
 
-    target_include_directories(${PROJECT_NAME} PRIVATE
+    target_include_directories(cs2d_editor PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
         ${yaml-cpp_INCLUDE_DIRS}
     )
 
+    target_link_libraries(cs2d_editor
+        Qt5::Widgets
+        Qt5::Core
+        Qt5::Gui
+        yaml-cpp::yaml-cpp
+    )
+
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(cs2d_editor PRIVATE -fPIC)
+    endif()
 endif()
 
 
@@ -215,7 +216,7 @@ if(CS2D_TESTS)
         cs2d_server_model
         GTest::gmock_main # This includes gmock and gtest and provides a main function
         # If you have your own main() in tests, you would use:
-        # GTest::gmock
-        # GTest::gtest
+        #GTest::gmock
+        #GTest::gtest
     )
 endif()

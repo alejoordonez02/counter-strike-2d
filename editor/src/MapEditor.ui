@@ -172,11 +172,14 @@
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
                <property name="text">
                 <string>Save</string>
                </property>
                <property name="icon">
-                <iconset resource="resources/resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/icons/icons/save.svg</normaloff>:/icons/icons/save.svg</iconset>
                </property>
                <property name="iconSize">
@@ -211,7 +214,7 @@
                 <string>Load</string>
                </property>
                <property name="icon">
-                <iconset resource="resources/resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/icons/icons/upload.svg</normaloff>:/icons/icons/upload.svg</iconset>
                </property>
                <property name="iconSize">
@@ -246,7 +249,7 @@
                 <string>Background</string>
                </property>
                <property name="icon">
-                <iconset resource="resources/resources.qrc">
+                <iconset resource="resources.qrc">
                  <normaloff>:/icons/icons/edit-2.svg</normaloff>:/icons/icons/edit-2.svg</iconset>
                </property>
                <property name="iconSize">
@@ -269,7 +272,7 @@
              <enum>Qt::LeftToRight</enum>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-image: url(:/prefijoNuevo/hud_slot.bmp);</string>
+             <string notr="true">border-image: url(:/images/images/hud_slot.bmp);</string>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -301,7 +304,7 @@
              <cursorShape>OpenHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-image: url(:/prefijoNuevo/cs2d.bmp);</string>
+             <string notr="true">border-image: url(:/images/images/cs2d.bmp);</string>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -429,7 +432,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="resources/resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>
