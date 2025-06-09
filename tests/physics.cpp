@@ -17,8 +17,9 @@ TEST(PlayerPhysics, PlayerCanWalkFreelyIfThereAreNotAnyObstaclesInTheMap) {
     float dummy_shield = 0.0f;
     bool dummy_alive = true;
 
-    PlayerPhysics p(initial_pos, dummy_health, dummy_shield, dummy_alive, player_max_velocity,
-                    player_acceleration, player_radius, dummy_map);
+    PlayerPhysics p(initial_pos, dummy_health, dummy_shield, dummy_alive,
+                    player_max_velocity, player_acceleration, player_radius,
+                    dummy_map);
 
     Position expected = initial_pos;
     EXPECT_EQ(expected, p.pos);
@@ -50,6 +51,7 @@ TEST(PlayerPhysics, PlayerCanWalkFreelyIfThereAreNotAnyObstaclesInTheMap) {
     EXPECT_NEAR(expected.y, p.pos.y, 1e-7);
 }
 
+// cppcheck-suppress syntaxError
 TEST(PlayerPhysics, PlayerCanNotDirectlyWalkThroughAnotherPlayer) {
     float player_radius = 1;
     float player_max_velocity = 1;
@@ -62,15 +64,15 @@ TEST(PlayerPhysics, PlayerCanNotDirectlyWalkThroughAnotherPlayer) {
 
     Map map;
 
-    auto p1 = std::make_unique<PlayerPhysics>(initial_pos, dummy_health, dummy_shield, dummy_alive,
-                                              player_max_velocity, player_acceleration,
-                                              player_radius, map);
+    auto p1 = std::make_unique<PlayerPhysics>(
+            initial_pos, dummy_health, dummy_shield, dummy_alive,
+            player_max_velocity, player_acceleration, player_radius, map);
 
     Position p2_pos = Position(0, 2.5);
 
-    auto p2 = std::make_unique<PlayerPhysics>(p2_pos, dummy_health, dummy_shield, dummy_alive,
-                                              player_max_velocity, player_acceleration,
-                                              player_radius, map);
+    auto p2 = std::make_unique<PlayerPhysics>(
+            p2_pos, dummy_health, dummy_shield, dummy_alive,
+            player_max_velocity, player_acceleration, player_radius, map);
 
     PlayerPhysics* p1_ptr = p1.get();
 
@@ -97,15 +99,15 @@ TEST(PlayerPhysics, PlayerCanNotSideWalkThroughAnotherPlayer) {
 
     Map map;
 
-    auto p1 = std::make_unique<PlayerPhysics>(initial_pos, dummy_health, dummy_shield, dummy_alive,
-                                              player_max_velocity, player_acceleration,
-                                              player_radius, map);
+    auto p1 = std::make_unique<PlayerPhysics>(
+            initial_pos, dummy_health, dummy_shield, dummy_alive,
+            player_max_velocity, player_acceleration, player_radius, map);
 
     Position p2_pos = Position(0, 2.5);
 
-    auto p2 = std::make_unique<PlayerPhysics>(p2_pos, dummy_health, dummy_shield, dummy_alive,
-                                              player_max_velocity, player_acceleration,
-                                              player_radius, map);
+    auto p2 = std::make_unique<PlayerPhysics>(
+            p2_pos, dummy_health, dummy_shield, dummy_alive,
+            player_max_velocity, player_acceleration, player_radius, map);
 
     PlayerPhysics* p1_ptr = p1.get();
 
@@ -116,12 +118,14 @@ TEST(PlayerPhysics, PlayerCanNotSideWalkThroughAnotherPlayer) {
     Direction dummy_dir(1, 0);
 
     /*
-     * Esperar que la posición del jugador luego del movimiento sea la resta de la
-     * intersección con el obstáculo y el producto de la dirección de movimiento y
-     * el radio del jugador
+     * Esperar que la posición del jugador luego del movimiento sea la resta de
+     * la intersección con el obstáculo y el producto de la dirección de
+     * movimiento y el radio del jugador
      * */
-    Position intended_destination = initial_pos + move_dir * player_max_velocity;
-    Position intersection = p2_pos + p2_pos.get_direction(intended_destination) * player_radius;
+    Position intended_destination =
+            initial_pos + move_dir * player_max_velocity;
+    Position intersection =
+            p2_pos + p2_pos.get_direction(intended_destination) * player_radius;
     Position expected = intersection - move_dir * player_radius;
 
     p1_ptr->start_moving(move_dir);

@@ -1,6 +1,7 @@
-#include "attack.h"
+#include "server/model/attack.h"
 
-Attack::Attack(PlayerPhysics& physics, Position& pos, Direction& dir, Weapon& weapon, Map& map):
+Attack::Attack(PlayerPhysics& physics, Position& pos, Direction& dir,
+               Weapon& weapon, Map& map):
         physics(physics), pos(pos), dir(dir), weapon(weapon), map(map) {}
 
 void Attack::update(float dt) {

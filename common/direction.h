@@ -1,9 +1,9 @@
-#ifndef DIRECTION_H
-#define DIRECTION_H
+#ifndef COMMON_DIRECTION_H
+#define COMMON_DIRECTION_H
 
 #include <cmath>
 
-#include "tuple.h"
+#include "common/tuple.h"
 
 /*
  * Las direcciones son vectores unitarios (length = 1)
@@ -25,7 +25,9 @@ struct Direction: public Tuple<Direction, float> {
         }
     }
 
-    Direction operator*(const float& n) const { return Direction(x * n, y * n, false); }
+    Direction operator*(const float& n) const {
+        return Direction(x * n, y * n, false);
+    }
 };
 
 #endif

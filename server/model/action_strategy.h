@@ -1,11 +1,11 @@
-#ifndef ACTION_STRATEGY_H
-#define ACTION_STRATEGY_H
+#ifndef SERVER_MODEL_ACTION_STRATEGY_H
+#define SERVER_MODEL_ACTION_STRATEGY_H
 
 /*
  * Action strategy
  * */
 class ActionStrategy {
-public:
+    public:
     virtual void update(float dt) = 0;
     virtual ~ActionStrategy() = default;
 };

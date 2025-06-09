@@ -1,19 +1,20 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef SERVER_MODEL_PLAYER_H
+#define SERVER_MODEL_PLAYER_H
+
+#include <memory>
 
 #include "common/direction.h"
 #include "common/position.h"
-
-#include "action_strategy.h"
-#include "attack.h"
-#include "equipment.h"
-#include "idle.h"
-#include "map.h"
-#include "player_physics.h"
-#include "weapon.h"
+#include "server/model/action_strategy.h"
+#include "server/model/attack.h"
+#include "server/model/equipment.h"
+#include "server/model/idle.h"
+#include "server/model/map.h"
+#include "server/model/player_physics.h"
+#include "server/model/weapon.h"
 
 class Player {
-private:
+    private:
     Position pos;
     Direction dir;
     int health;
@@ -28,7 +29,7 @@ private:
 
     void stop_action() { action = std::make_unique<Idle>(); }
 
-protected:
+    protected:
     Map& map;
     Equipment equipment;
     Weapon& current;
@@ -36,7 +37,7 @@ protected:
     friend class Game;
     PlayerPhysics& get_physics() { return physics; }
 
-public:
+    public:
     Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
@@ -79,14 +80,14 @@ public:
     /*
      * Terrorist
      * */
-    void plant_bomb() {}
-    void stop_planting() {}
+    virtual void plant_bomb() {}
+    virtual void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    void defuse_bomb() {}
-    void stop_defusing() {}
+    virtual void defuse_bomb() {}
+    virtual void stop_defusing() {}
 
     /*
      * Destructor

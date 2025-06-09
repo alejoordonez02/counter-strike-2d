@@ -1,26 +1,26 @@
-#ifndef ATTACK_H
-#define ATTACK_H
+#ifndef SERVER_MODEL_ATTACK_H
+#define SERVER_MODEL_ATTACK_H
 
 #include "common/direction.h"
-
-#include "action_strategy.h"
-#include "map.h"
-#include "player_physics.h"
-#include "weapon.h"
+#include "server/model/action_strategy.h"
+#include "server/model/map.h"
+#include "server/model/player_physics.h"
+#include "server/model/weapon.h"
 
 /*
  * Attack
  * */
 class Attack: public ActionStrategy {
-private:
+    private:
     const PlayerPhysics& physics;
     const Position& pos;
     const Direction& dir;
     Weapon& weapon;
     Map& map;
 
-public:
-    Attack(PlayerPhysics& physics, Position& pos, Direction& dir, Weapon& weapon, Map& map);
+    public:
+    Attack(PlayerPhysics& physics, Position& pos, Direction& dir,
+           Weapon& weapon, Map& map);
     void update(float dt) override;
 };
 

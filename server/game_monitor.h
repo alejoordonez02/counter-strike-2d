@@ -1,10 +1,9 @@
-#ifndef GAME_MONITOR_H
-#define GAME_MONITOR_H
+#ifndef SERVER_GAME_MONITOR_H
+#define SERVER_GAME_MONITOR_H
 
 class GameMonitor {
-private:
-
-public:
+    private:
+    public:
     GameMonitor();
 
     void reap_dead_games();

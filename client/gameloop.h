@@ -1,37 +1,34 @@
-#ifndef GAMELOOP_H
-#define GAMELOOP_H
+#ifndef CLIENT_GAMELOOP_H
+#define CLIENT_GAMELOOP_H
 
 #include <memory>
 
-#include "texture_provider.h"
-#include "animation_provider.h"
-#include "input_handler.h"
-
-#include "../common/queue.h"
-#include "../common/snapshot.h"
-#include "../common/network/dto.h"
-#include "render.h"
-
+#include "client/input_handler.h"
+#include "client/render.h"
+#include "common/network/dto.h"
+#include "common/queue.h"
+#include "common/snapshot.h"
 
 class GameLoop {
     private:
-        Render render;
-        
-        bool is_running = true;
+    Render render;
 
-        Queue<std::unique_ptr<DTO>>& snapshots_queue;
-        Queue<std::shared_ptr<DTO>>& commands_queue;
+    bool is_running = true;
 
-        InputHandler input_handler;
+    Queue<std::unique_ptr<DTO>>& snapshots_queue;
+    Queue<std::shared_ptr<DTO>>& commands_queue;
+
+    InputHandler input_handler;
 
     public:
-        GameLoop(Queue<std::unique_ptr<DTO>>& snapshots, Queue<std::shared_ptr<DTO>>& commands);
+    GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
+             Queue<std::shared_ptr<DTO>>& commands);
 
-        void run();
+    void run();
 
-        Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
+    Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
 
-        void closeWindow();
+    void closeWindow();
 };
 
-#endif // GAMELOOP_H
+#endif  // GAMELOOP_H

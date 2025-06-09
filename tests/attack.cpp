@@ -2,11 +2,10 @@
 
 #include "gtest/gtest.h"
 #include "server/model/weapon.h"
-
-#include "mock_player_physics.h"
+#include "tests/mock_player_physics.h"
 
 class MagicWeapon: public Weapon {
-public:
+    public:
     MagicWeapon(): Weapon(100, 100, 1, 100, 0, 0) {}
 };
 
@@ -18,8 +17,8 @@ TEST(AttackActionStrategy, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
     float dummy_shield = 1;
     bool dummy_alive = 1;
 
-    auto p_ptr = std::make_unique<PlayerPhysics>(pos, dummy_health, dummy_shield, dummy_alive, 1, 1,
-                                                 1, map);
+    auto p_ptr = std::make_unique<PlayerPhysics>(
+            pos, dummy_health, dummy_shield, dummy_alive, 1, 1, 1, map);
     Position enemy_pos(Position(5, 5));
     auto enemy = std::make_unique<MockPlayerPhysics>(enemy_pos);
     auto p_raw = p_ptr.get();
@@ -35,15 +34,16 @@ TEST(AttackActionStrategy, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
     attack_action.update(1);
 }
 
-TEST(AttackActionStrategy, AttackingWithBadAimDoesNotResultsInHitboxGettingAttacked) {
+TEST(AttackActionStrategy,  // cppcheck-suppress syntaxError
+     AttackingWithBadAimDoesNotResultsInHitboxGettingAttacked) {
     Map map;
     Position pos(0, 0);
     int dummy_health = 1;
     float dummy_shield = 1;
     bool dummy_alive = 1;
 
-    auto p_ptr = std::make_unique<PlayerPhysics>(pos, dummy_health, dummy_shield, dummy_alive, 1, 1,
-                                                 1, map);
+    auto p_ptr = std::make_unique<PlayerPhysics>(
+            pos, dummy_health, dummy_shield, dummy_alive, 1, 1, 1, map);
     Position enemy_pos(Position(5, 5));
     auto enemy = std::make_unique<MockPlayerPhysics>(enemy_pos);
     auto p_raw = p_ptr.get();

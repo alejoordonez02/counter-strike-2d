@@ -1,7 +1,7 @@
-#ifndef TRAJECTORY_H
-#define TRAJECTORY_H
+#ifndef SERVER_MODEL_TRAJECTORY_H
+#define SERVER_MODEL_TRAJECTORY_H
 
-#include "../../common/position.h"
+#include "common/position.h"
 
 /*
  * la trayectoria podría ser un atributo de Weapon, de esa forma
@@ -9,17 +9,20 @@
  * de la misma
  * */
 class Trajectory {
-private:
+    private:
     const float width;
 
-public:
+    public:
     const Position origin;
     const Position destination;
 
-    Trajectory(const Position& origin, const Position& destination, float width = 0):
+    Trajectory(const Position& origin, const Position& destination,
+               float width = 0):
             width(width), origin(origin), destination(destination) {}
 
-    Position eval(const float& t) const { return origin + (destination - origin) * t; }
+    Position eval(const float& t) const {
+        return origin + (destination - origin) * t;
+    }
 
     float get_length() const { return origin.get_distance(destination); }
 

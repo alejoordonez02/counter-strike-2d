@@ -1,4 +1,4 @@
-#include "mock_player_physics.h"
+#include "tests/mock_player_physics.h"
 
 Position MockPlayerPhysics::dummy_pos;
 int MockPlayerPhysics::dummy_health;

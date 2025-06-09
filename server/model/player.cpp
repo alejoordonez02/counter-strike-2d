@@ -1,15 +1,13 @@
-#include "player.h"
+#include "server/model/player.h"
 
-#include "../../common/direction.h"  //
-#include "../../common/position.h"   // mover a model
-                                     /* */
+#include <memory>
+#include <utility>
 
-#include "../../common/direction.h"
-#include "../../common/position.h"
-
-#include "map.h"
-#include "player_physics.h"
-#include "weapon.h"
+#include "common/direction.h"
+#include "common/position.h"
+#include "server/model/map.h"
+#include "server/model/player_physics.h"
+#include "server/model/weapon.h"
 
 #define PLAYER_VELOCITY 1.0
 #define PLAYER_ACCELERATION 1.0
@@ -23,8 +21,8 @@ Player::Player(Position pos, Equipment&& equipment, Map& map):
         alive(true),
         map(map),
         equipment(std::move(equipment)),
-        physics(pos, health, this->equipment.shield, alive, PLAYER_VELOCITY, PLAYER_ACCELERATION,
-                PLAYER_RADIUS, map),
+        physics(pos, health, this->equipment.shield, alive, PLAYER_VELOCITY,
+                PLAYER_ACCELERATION, PLAYER_RADIUS, map),
         action(std::make_unique<Idle>()),
         kills(0),
         money(PLAYER_MONEY),
