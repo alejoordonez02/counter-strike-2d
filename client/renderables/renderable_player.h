@@ -1,9 +1,10 @@
 #ifndef RENDERABLE_PLAYER_H
 #define RENDERABLE_PLAYER_H
 
-#include "SDL2pp/SDL2pp.hh"
-#include <memory>
+#include "SDL2pp/Renderer.hh"
+#include "SDL2pp/Point.hh"
 
+#include <memory>
 
 #include "../../common/snapshot.h"
 #include "../animation_provider.h"
@@ -39,10 +40,12 @@ private:
 public:
     RenderablePlayer(uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider);
     
-    void update(PlayerDTO& player);
+    void update(PlayerData& player);
     void render(SDL2pp::Renderer &renderer);
 
     void load_animation(const std::string& animation_name);
+
+    double calculate_facing_angle(int16_t x, int16_t y);
     ~RenderablePlayer();
 };
 

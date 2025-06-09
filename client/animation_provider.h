@@ -14,6 +14,10 @@ struct AnimationPrototype {
     AnimationData data;
 };
 
+
+/*
+* Las animaciones pueden ser estaticas (un frame) o animadas (varios frames).
+*/
 class AnimationProvider {
 private:
     std::unordered_map<std::string, AnimationPrototype> animation_prototypes;

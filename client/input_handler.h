@@ -1,32 +1,39 @@
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
 #include "../common/queue.h"
-#include "../server/player_commands/command.h"
+#include "../common/network/dto.h"
 #include "../common/snapshot.h"
+#include "../common/thread.h"
 
-class InputHandler {
+class InputHandler: public Thread {
 private:
-    Queue<PlayerDTO>& comandos;
-    PlayerDTO player;
-
-
-public:
-    InputHandler(Queue<PlayerDTO>& comandos_queue);
-
+    Queue<std::shared_ptr<DTO>>& commands_queue;
+    std::atomic<bool> is_alive = true;
+    
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);
 
-    void update_player_values(Snapshot& snapshot);
-
-    void send_direction();
-
-    double calculate_facing_angle(int16_t x, int16_t y);
-
-    void process_movement();
+    void handle_mouse_down(const SDL_Event& event);
+    void handle_mouse_up(const SDL_Event& event);
 
     bool handle_events();
+    
+    void process_movement();
+    void send_direction();
+
+    void send_attack();
+
+
+public:
+    InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
+    
+    bool alive_status();
+
+    void run() override;
+
+    ~InputHandler() = default;
 };
 
 #endif
