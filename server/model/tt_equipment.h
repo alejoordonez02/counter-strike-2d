@@ -1,15 +1,17 @@
-#ifndef TT_EQUIPMENT_H
-#define TT_EQUIPMENT_H
+#ifndef SERVER_MODEL_TT_EQUIPMENT_H
+#define SERVER_MODEL_TT_EQUIPMENT_H
 
-#include "bomb.h"
-#include "equipment.h"
-#include "weapons.h"
+#include <memory>
+
+#include "server/model/bomb.h"
+#include "server/model/equipment.h"
+#include "server/model/weapons.h"
 
 class TTEquipment: public Equipment {
-private:
+    private:
     Bomb bomb;
 
-public:
+    public:
     TTEquipment():
             Equipment(std::make_unique<Fist>(), std::make_unique<Glock>(),
                       std::make_unique<Knife>(), 0),

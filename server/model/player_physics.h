@@ -1,16 +1,17 @@
-#ifndef PLAYER_PHYSICS_H
-#define PLAYER_PHYSICS_H
+#ifndef SERVER_MODEL_PLAYER_PHYSICS_H
+#define SERVER_MODEL_PLAYER_PHYSICS_H
 
 #include <optional>
+#include <utility>
+#include <vector>
 
 #include "common/position.h"
-
-#include "hitbox.h"
-#include "map.h"
-#include "trajectory.h"
+#include "server/model/hitbox.h"
+#include "server/model/map.h"
+#include "server/model/trajectory.h"
 
 class PlayerPhysics: public Hitbox {
-private:
+    private:
     Direction dir;
     float max_v;
     float v;
@@ -24,9 +25,10 @@ private:
 
     void move(float dt) {
         /*
-         * Genera la trayectoria del movimiento para checkear si colisiona con algún elemento
-         * en el mapa. En caso de colisión, ajusta la posición hasta donde puede. En caso de
-         * no haber colisión, ajusta la posición hasta el final de la trayectoria
+         * Genera la trayectoria del movimiento para checkear si colisiona con
+         * algún elemento en el mapa. En caso de colisión, ajusta la posición
+         * hasta donde puede. En caso de no haber colisión, ajusta la posición
+         * hasta el final de la trayectoria
          * */
         v += 0.5 * a * dt * dt;
         if (v > max_v)
@@ -37,7 +39,7 @@ private:
         Trajectory t(pos, destination, radius);
         auto& collidable = map.get_collidable();
         auto sorted_idx = sort_by_distance_idx(collidable);
-        for (size_t i: sorted_idx) {
+        for (size_t i : sorted_idx) {
             auto& c = collidable[i].get();
             if (auto intersection = c.intersect(t)) {
                 pos = *intersection - dir * radius;
@@ -51,9 +53,10 @@ private:
         pos = destination;
     }
 
-public:
-    PlayerPhysics(Position& pos, int& health, const float& shield, bool& alive, float max_velocity,
-                  float acceleration, float radius, Map& map):
+    public:
+    PlayerPhysics(Position& pos, int& health, const float& shield, bool& alive,
+                  float max_velocity, float acceleration, float radius,
+                  Map& map):
             Hitbox(pos),
             dir(),
             max_v(max_velocity),
@@ -79,24 +82,29 @@ public:
     void stop_moving() { moving = false; }
 
     /*
-     * Retornar un vector de punteros a collisionables ordenados por distancia a PlayerPhysics
+     * Retornar un vector de punteros a collisionables ordenados por distancia a
+     * PlayerPhysics
      * */
     std::vector<size_t> get_distance_sorted_collidables_idx(
-            const std::vector<std::reference_wrapper<Hitbox>>& collidables) const {
+            const std::vector<std::reference_wrapper<Hitbox>>& collidables)
+            const {
         return sort_by_distance_idx(collidables);
     }
 
     /*
      * Hitbox overrides
      * */
-    std::optional<Position> intersect(const Trajectory& trajectory) const override {
+    std::optional<Position> intersect(
+            const Trajectory& trajectory) const override {
         /*
-         * Calcula el punto más cercano al segmento de recta definido por la trayectoria y luego
-         * checkea si la distancia al mismo resulta menor al radio del jugador
+         * Calcula el punto más cercano al segmento de recta definido por la
+         * trayectoria y luego checkea si la distancia al mismo resulta menor al
+         * radio del jugador
          * */
         auto dir = trajectory.get_direction();
-        float t = std::clamp((pos - trajectory.origin).dot(dir) / trajectory.get_length(), 0.0f,
-                             1.0f);
+        float t = std::clamp(
+                (pos - trajectory.origin).dot(dir) / trajectory.get_length(),
+                0.0f, 1.0f);
         Position closest = trajectory.eval(t);
         auto distance = (closest - pos).get_length();
         Direction to_closest = pos.get_direction(closest);
@@ -107,7 +115,7 @@ public:
         return intersection;
     }
 
-    virtual void get_attacked(int damage) override {
+    void get_attacked(int damage) override {
         health -= (1 - shield) * damage;
         if (health <= 0)
             alive &= 0;

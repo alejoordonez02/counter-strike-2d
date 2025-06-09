@@ -1,23 +1,17 @@
 #ifndef MOCK_SERVER_H
 #define MOCK_SERVER_H
 
-#include "../common/queue.h"
-#include "../common/snapshot.h"
-#include "../common/network/connection.h"
-#include "../common/network/receiver.h"
-#include "../common/network/sender.h"
-#include "../common/network/dtos/snapshot_dto.h"
-#include "../server/model/equipment.h"
-#include "../server/model/map.h"
-#include "../server/model/player.h"
-#include "../server/model/weapons.h"
-#include "../server/cmd_constructor.h"
-#include "../common/position.h"
-
+#include <iostream>
 #include <memory>
 #include <thread>
-#include <iostream>
+#include <utility>
 
+#include "common/network/connection.h"
+#include "common/network/dtos/snapshot_dto.h"
+#include "common/network/receiver.h"
+#include "common/network/sender.h"
+#include "common/queue.h"
+#include "common/snapshot.h"
 
 void mock_server() {
     // 1. Crear socket de escucha en localhost:7878
@@ -48,10 +42,10 @@ void mock_server() {
     snap.players.push_back(player1);
     std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(snap);
     snapshots_queue.try_push(std::move(initial_snapshot));
-    // TODO: habria que hacer esto: pero no me funca, son las 2am y estoy cansado jefe -alepaff
-    // Map map;
-    // Player player(Position(0, 0),
-    //               Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
+    // TODO: habria que hacer esto: pero no me funca, son las 2am y estoy
+    // cansado jefe -alepaff Map map; Player player(Position(0, 0),
+    //               Equipment(std::make_unique<Fist>(),
+    //               std::make_unique<Fist>(),
     //                         std::make_unique<Fist>(), 0),
     //               map);
     // CmdConstructor constructor;
@@ -64,8 +58,10 @@ void mock_server() {
         // Obtener el último comando recibido (si hay)
         std::unique_ptr<DTO> dto_ptr;
         if (commands_queue.try_pop(dto_ptr)) {
-            std::cout << "MockServer: Recibido comando tipo: " << int(dto_ptr->get_type()) << std::endl;
-            StartMovingDTO* start_moving_dto = dynamic_cast<StartMovingDTO*>(dto_ptr.get());
+            std::cout << "MockServer: Recibido comando tipo: "
+                      << int(dto_ptr->get_type()) << std::endl;
+            StartMovingDTO* start_moving_dto =
+                    dynamic_cast<StartMovingDTO*>(dto_ptr.get());
             if (!start_moving_dto) {
                 continue;
             }
@@ -75,21 +71,21 @@ void mock_server() {
             player1.x += new_pos.x * 5;
             player1.y += new_pos.y * 5;
             player1.is_walking = true;
-            std::cout << "MockServer: Jugador movido a (" << player1.x << ", " << player1.y << ")" << std::endl;
-        
+            std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
+                      << player1.y << ")" << std::endl;
+
             // debe crear siempre un nuevo snapshot
-            Snapshot snap;
+            snap = Snapshot{};
             snap.round_number = 1;
             snap.players.push_back(player1);
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
-            std::shared_ptr<DTO> snapshot_dto = std::make_shared<SnapshotDTO>(snap);
+            std::shared_ptr<DTO> snapshot_dto =
+                    std::make_shared<SnapshotDTO>(snap);
             snapshots_queue.try_push(std::move(snapshot_dto));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
-
-
 
 #endif

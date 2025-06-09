@@ -1,35 +1,35 @@
-#ifndef WEAPONS_H
-#define WEAPONS_H
+#ifndef SERVER_MODEL_EAPONS_H
+#define SERVER_MODEL_EAPONS_H
 
-#include "weapon.h"
+#include "server/model/weapon.h"
 
 class Fist: public Weapon {
-public:
+    public:
     Fist(): Weapon(0, 0, 0, 0, 0, 0) {}
 };
 
 class Knife: public Weapon {
-public:
+    public:
     Knife(): Weapon(20, 30, 0.8, 0, 0, 0) {}
 };
 
 class Glock: public Weapon {
-public:
+    public:
     Glock(): Weapon(20, 30, 0.8, 30, 700, 1) {}
 };
 
 class Ak47: public Weapon {
-public:
+    public:
     Ak47(): Weapon(30, 30, 0.8, 50, 2500, 1) {}
 };
 
 class M3: public Weapon {
-public:
+    public:
     M3(): Weapon(20, 30, 0.5, 10, 1200, 1) {}
 };
 
 class Awp: public Weapon {
-public:
+    public:
     Awp(): Weapon(100, 30, 1, 100, 3500, 1) {}
 };
 

@@ -1,16 +1,18 @@
-#include "input_handler.h"
-#include "../common/direction.h"
-#include "../common/network/dto.h"
-#include "../common/network/dtos/start_moving_dto.h"
-#include "../common/network/dtos/start_attacking_dto.h"
+#include "client/input_handler.h"
 
-#include <map>
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <string>
 
-InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue): 
-    commands_queue(commands_queue){
-    }
+#include "common/direction.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/start_attacking_dto.h"
+#include "common/network/dtos/start_moving_dto.h"
+
+InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
+        commands_queue(commands_queue) {}
 
 /**
  * @brief Mapa para almacenar el estado de las teclas.
@@ -20,18 +22,15 @@ InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
 std::map<SDL_Keycode, bool> key_states;
 std::map<std::string, bool> mouse_states;
 
-
 void InputHandler::handle_key_down(const SDL_Event& event) {
-    SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+    SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&)event;
     key_states[keyEvent.keysym.sym] = true;
 }
 
 void InputHandler::handle_key_up(const SDL_Event& event) {
-    SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
+    SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&)event;
     key_states[keyEvent.keysym.sym] = false;
 }
-
-
 
 void InputHandler::handle_mouse_down(const SDL_Event& event) {
     if (event.button.button == SDL_BUTTON_LEFT) {
@@ -51,7 +50,7 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
 
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
-void InputHandler::send_direction(){
+void InputHandler::send_direction() {
     Direction dir(0, 0);
 
     if (key_states[SDLK_UP] || key_states[SDLK_w]) {
@@ -68,8 +67,9 @@ void InputHandler::send_direction(){
     }
 
     // envía solo si hay un movimiento
-    if(dir.x != 0 || dir.y != 0){
-        std::cout << "LOG: Enviando dirección: (" << dir.x << ", " << dir.y << ")" << std::endl;
+    if (dir.x != 0 || dir.y != 0) {
+        std::cout << "LOG: Enviando dirección: (" << dir.x << ", " << dir.y
+                  << ")" << std::endl;
         commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
     }
 }
@@ -85,7 +85,8 @@ void InputHandler::send_attack() {
     }
 
     if (mouse_states["mouse_left"]) {
-        std::cout << "LOG: TAKA TAKA TAKAAA (estoy disparando no enviando)" << std::endl;
+        std::cout << "LOG: TAKA TAKA TAKAAA (estoy disparando no enviando)"
+                  << std::endl;
     } else if (mouse_states["mouse_right"]) {
         std::cout << "LOG: Click izquierdo sostenido" << std::endl;
         // commands_queue.try_push(std::make_shared<StartSecondaryAttackingDTO>());
@@ -93,18 +94,17 @@ void InputHandler::send_attack() {
     prev_left = curr_left;
 }
 
-
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
     send_attack();
-    // send_states();       
+    // send_states();
 }
 
 bool InputHandler::handle_events() {
     SDL_Event event;
-    while(SDL_PollEvent(&event)){
-        switch(event.type) {
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
             case SDL_KEYDOWN:
                 handle_key_down(event);
                 break;
@@ -130,16 +130,17 @@ bool InputHandler::handle_events() {
     return true;
 }
 
-
-void InputHandler::run(){
+void InputHandler::run() {
     // se utiliza un timer para evitar que el input sea demasiado sensible
     using clock = std::chrono::steady_clock;
     auto last_sent = clock::now();
-    const int cooldown_ms = 50; // ajustar sensibilidad 
+    const int cooldown_ms = 50;  // ajustar sensibilidad
 
     while (is_alive) {
         auto now = clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_sent).count() > cooldown_ms) {
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now -
+                                                                  last_sent)
+                    .count() > cooldown_ms) {
             is_alive = handle_events();
             last_sent = now;
         }
@@ -147,7 +148,4 @@ void InputHandler::run(){
     std::cout << "LOG: InputHandler ha terminado." << std::endl;
 }
 
-bool InputHandler::alive_status(){
-    return is_alive;
-}
-
+bool InputHandler::alive_status() { return is_alive; }

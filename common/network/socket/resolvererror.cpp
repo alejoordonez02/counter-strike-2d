@@ -4,16 +4,16 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#include "resolvererror.h"
+#include "common/network/socket/resolvererror.h"
 
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/types.h>
 
-ResolverError::ResolverError(int gai_errno) : gai_errno(gai_errno) {}
+ResolverError::ResolverError(int gai_errno): gai_errno(gai_errno) {}
 
-const char *ResolverError::what() const noexcept {
-  return gai_strerror(gai_errno);
+const char* ResolverError::what() const noexcept {
+    return gai_strerror(gai_errno);
 }
 
 ResolverError::~ResolverError() {}

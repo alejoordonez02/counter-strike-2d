@@ -1,18 +1,20 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef SERVER_MODEL_GAME_H
+#define SERVER_MODEL_GAME_H
 
 #include <map>
+#include <memory>
 #include <string>
+#include <utility>
 
-#include "map.h"
-#include "player.h"
+#include "server/model/map.h"
+#include "server/model/player.h"
 
 class Game {
-private:
+    private:
     std::map<std::string, std::unique_ptr<Player>> players;
     Map map;
 
-public:
+    public:
     Game() = default;
 
     void add_player(const std::string& id, std::unique_ptr<Player> p) {
@@ -23,7 +25,7 @@ public:
     Player& get_player(const std::string& id) { return *players.at(id); }
 
     void update(float dt) {
-        for (auto& p: players) p.second->update(dt);
+        for (auto& p : players) p.second->update(dt);
     }
 };
 

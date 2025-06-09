@@ -1,9 +1,10 @@
-#ifndef EQUIPMENT_H
-#define EQUIPMENT_H
+#ifndef SERVER_MODEL_EQUIPMENT_H
+#define SERVER_MODEL_EQUIPMENT_H
 
 #include <memory>
+#include <utility>
 
-#include "weapon.h"
+#include "server/model/weapon.h"
 
 struct Equipment {
     std::unique_ptr<Weapon> primary;
@@ -11,7 +12,8 @@ struct Equipment {
     std::unique_ptr<Weapon> knife;
     float shield;
 
-    Equipment(std::unique_ptr<Weapon>&& primary, std::unique_ptr<Weapon>&& secondary,
+    Equipment(std::unique_ptr<Weapon>&& primary,
+              std::unique_ptr<Weapon>&& secondary,
               std::unique_ptr<Weapon>&& knife, const float& shield):
             primary(std::move(primary)),
             secondary(std::move(secondary)),
