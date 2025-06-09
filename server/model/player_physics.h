@@ -38,8 +38,8 @@ private:
         auto& collidable = map.get_collidable();
         auto sorted_idx = sort_by_distance_idx(collidable);
         for (size_t i: sorted_idx) {
-            auto& c = collidable[i];
-            if (auto intersection = c->intersect(t)) {
+            auto& c = collidable[i].get();
+            if (auto intersection = c.intersect(t)) {
                 pos = *intersection - dir * radius;
                 return;
             }
@@ -82,7 +82,7 @@ public:
      * Retornar un vector de punteros a collisionables ordenados por distancia a PlayerPhysics
      * */
     std::vector<size_t> get_distance_sorted_collidables_idx(
-            const std::vector<std::unique_ptr<Hitbox>>& collidables) const {
+            const std::vector<std::reference_wrapper<Hitbox>>& collidables) const {
         return sort_by_distance_idx(collidables);
     }
 

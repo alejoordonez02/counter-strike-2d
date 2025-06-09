@@ -24,8 +24,8 @@ TEST(AttackActionStrategy, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
     auto enemy = std::make_unique<MockPlayerPhysics>(enemy_pos);
     auto p_raw = p_ptr.get();
     auto enemy_ptr = enemy.get();
-    map.add_collidable(std::move(p_ptr));
-    map.add_collidable(std::move(enemy));
+    map.add_collidable(*p_ptr);
+    map.add_collidable(*enemy);
 
     Direction aim_dir = pos.get_direction(enemy_pos);
     MagicWeapon weapon;
@@ -48,8 +48,8 @@ TEST(AttackActionStrategy, AttackingWithBadAimDoesNotResultsInHitboxGettingAttac
     auto enemy = std::make_unique<MockPlayerPhysics>(enemy_pos);
     auto p_raw = p_ptr.get();
     auto enemy_ptr = enemy.get();
-    map.add_collidable(std::move(p_ptr));
-    map.add_collidable(std::move(enemy));
+    map.add_collidable(*p_ptr);
+    map.add_collidable(*enemy);
 
     Direction aim_dir = pos.get_direction(enemy_pos) + Direction(100, 0);
     MagicWeapon weapon;

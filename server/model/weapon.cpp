@@ -14,7 +14,7 @@ Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy, const 
         ammo_cost(ammo_cost) {}
 
 void Weapon::attack(Position origin, Direction direction,
-                    std::vector<std::unique_ptr<Hitbox>>& collidables,
+                    std::vector<std::reference_wrapper<Hitbox>>& collidables,
                     const std::vector<size_t>& sorted_idx) {
     /*
      * Recibe un vector de colisionables y de índices que los ordena,
@@ -23,7 +23,7 @@ void Weapon::attack(Position origin, Direction direction,
      * */
     Trajectory t(origin, origin + direction * range);
     for (auto i: sorted_idx) {
-        auto& coll = *collidables[i];
+        auto& coll = collidables[i].get();
         if (coll.intersect(t) and Random::get() < accuracy) {
             coll.get_attacked(damage);
             ammo--;

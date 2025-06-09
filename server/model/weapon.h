@@ -19,7 +19,7 @@ public:
            const int& cost, const int& ammo_cost);
 
     virtual void attack(Position origin, Direction direction,
-                        std::vector<std::unique_ptr<Hitbox>>& collidables,
+                        std::vector<std::reference_wrapper<Hitbox>>& collidables,
                         const std::vector<size_t>& sorted_idx);
 
     virtual void load_ammo(const int& count) { ammo += count; }
