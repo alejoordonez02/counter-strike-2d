@@ -53,7 +53,9 @@ public:
     /*
      * Attack
      * */
-    virtual void start_attacking() { action = std::make_unique<Attack>(dir, current); }
+    virtual void start_attacking() {
+        action = std::make_unique<Attack>(physics, pos, dir, current, map);
+    }
     void stop_attacking() { stop_action(); }
 
     /*

@@ -4,6 +4,8 @@
 #include "common/direction.h"
 
 #include "action_strategy.h"
+#include "map.h"
+#include "player_physics.h"
 #include "weapon.h"
 
 /*
@@ -11,11 +13,14 @@
  * */
 class Attack: public ActionStrategy {
 private:
-    Direction& dir;
+    const PlayerPhysics& physics;
+    const Position& pos;
+    const Direction& dir;
     Weapon& weapon;
+    Map& map;
 
 public:
-    Attack(Direction& dir, Weapon& weapon);
+    Attack(PlayerPhysics& physics, Position& pos, Direction& dir, Weapon& weapon, Map& map);
     void update(float dt) override;
 };
 
