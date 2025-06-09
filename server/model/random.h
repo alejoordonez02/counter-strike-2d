@@ -1,16 +1,16 @@
-#ifndef RANDOM_H
-#define RANDOM_H
+#ifndef SERVER_MODEL_RANDOM_H
+#define SERVER_MODEL_RANDOM_H
 
 #include <functional>
 #include <random>
 
 class Random {
-private:
+    private:
     static std::mt19937_64 gen;
     static std::uniform_real_distribution<float> dist;
     static std::function<float()> custom_generator;
 
-public:
+    public:
     static void initialize();
 
     static void set_custom_generator(std::function<float()> generator);

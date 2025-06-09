@@ -1,15 +1,15 @@
-#ifndef TERRORIST_H
-#define TERRORIST_H
+#ifndef SERVER_MODEL_TERRORIST_H
+#define SERVER_MODEL_TERRORIST_H
 
-#include "player.h"
-#include "tt_equipment.h"
+#include "server/model/player.h"
+#include "server/model/tt_equipment.h"
 
 class Terrorist: public Player {
-public:
+    public:
     Terrorist(const Position& pos, Map& map): Player(pos, TTEquipment(), map) {}
 
-    virtual void plant_bomb() override {}
-    virtual void stop_planting() override {}
+    void plant_bomb() override {}
+    void stop_planting() override {}
 };
 
 #endif

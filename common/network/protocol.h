@@ -1,18 +1,23 @@
-#ifndef PROTOCOL_H
-#define PROTOCOL_H
+#ifndef COMMON_NETWORK_PROTOCOL_H
+#define COMMON_NETWORK_PROTOCOL_H
 
 #include <cstdint>
 
 namespace Message {
 constexpr int LenBytes = 2;  // vamos a mandar algo mas grande que 255 bytes?
-constexpr int MaxLen = 256; // <= 65535
-};  // namespace Message
+constexpr int MaxLen = 256;  // <= 65535
+};                           // namespace Message
 
 namespace DTOSerial {
-    namespace PlayerCommands {
-    constexpr uint8_t MOVE = 0x6D;    // m
-    constexpr uint8_t ATTACK = 0x61;  // a
-    };  // namespace PlayerCommands
-};  // namespace DTO
+namespace PlayerCommands {
+constexpr uint8_t MOVE = 0x6D;    // m - 109
+constexpr uint8_t ATTACK = 0x61;  // a - 97
+constexpr uint8_t SNAPSHOT =
+        0x62;  // NOTE alepaff: 98 Totalmente arbitrario, solo para que compile
+};             // namespace PlayerCommands
+namespace GameState {
+// TODO: Snapshot
+}
+};  // namespace DTOSerial
 
 #endif

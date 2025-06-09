@@ -1,10 +1,10 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef SERVER_MODEL_MAP_H
+#define SERVER_MODEL_MAP_H
 
-#include <memory>
+#include <functional>
 #include <vector>
 
-#include "hitbox.h"
+#include "server/model/hitbox.h"
 
 /*
  * El mapa contiene tanto los objetos estáticos, como los dinámicos.
@@ -13,15 +13,17 @@
  * nombre: collidables
  * */
 class Map {
-private:
-    std::vector<std::unique_ptr<Hitbox>> collidables;
+    private:
+    std::vector<std::reference_wrapper<Hitbox>> dynamic_collidables;
 
-public:
-    Map(): collidables() {}
+    public:
+    Map(): dynamic_collidables() {}
 
-    void add_collidable(std::unique_ptr<Hitbox>&& cll) { collidables.push_back(std::move(cll)); }
+    void add_collidable(Hitbox& cll) { dynamic_collidables.push_back(cll); }
 
-    std::vector<std::unique_ptr<Hitbox>>& get_collidable() { return collidables; }
+    std::vector<std::reference_wrapper<Hitbox>>& get_collidable() {
+        return dynamic_collidables;
+    }
 };
 
 #endif

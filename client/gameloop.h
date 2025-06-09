@@ -1,55 +1,34 @@
-#ifndef GAMELOOP_H
-#define GAMELOOP_H
+#ifndef CLIENT_GAMELOOP_H
+#define CLIENT_GAMELOOP_H
 
-#include <SDL2pp/SDL2pp.hh>
 #include <memory>
 
-#include "texture_provider.h"
-#include "animation_provider.h"
-#include "input_handler.h"
-
-#include "../common/queue.h"
-#include "../common/snapshot.h"
-#include "../server/player_commands/command.h"
-#include "renderables/renderable_player.h"
-
+#include "client/input_handler.h"
+#include "client/render.h"
+#include "common/network/dto.h"
+#include "common/queue.h"
+#include "common/snapshot.h"
 
 class GameLoop {
     private:
-        SDL2pp::SDL sdl;
-        SDL2pp::Window window;
-        SDL2pp::Renderer renderer;
-        // TextureProvider texture_provider;
-        
-        bool is_running = true;
+    Render render;
 
-        Queue<Snapshot>& snapshots_queue;
-        Queue<PlayerDTO>& comandos_queue;
+    bool is_running = true;
 
-        InputHandler input_handler;
-        Snapshot ultima_snapshot;
-        
-        // encapsular luego en una clase renderables?
-        std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>> players_renderables;
+    Queue<std::unique_ptr<DTO>>& snapshots_queue;
+    Queue<std::shared_ptr<DTO>>& commands_queue;
 
-        std::shared_ptr<AnimationProvider> animation_provider;
+    InputHandler input_handler;
 
-
-public:
-    GameLoop(Queue<Snapshot>& snapshots, Queue<PlayerDTO>& comandos);
+    public:
+    GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
+             Queue<std::shared_ptr<DTO>>& commands);
 
     void run();
 
-    void update_renderables_from_snapshot();
-
-    void render_all();
-
-
-    void sleep_or_catch_up(uint32_t& t1);
-
-    void _debug_simulacion_servidor(Snapshot& snapshot);
+    Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
 
     void closeWindow();
 };
 
-#endif // GAMELOOP_H
+#endif  // GAMELOOP_H

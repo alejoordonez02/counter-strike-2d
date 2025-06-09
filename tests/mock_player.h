@@ -1,32 +1,32 @@
 #ifndef MOCK_PLAYER_H
 #define MOCK_PLAYER_H
 
-#include "../common/direction.h"
-#include "../server/model/player.h"
-#include "gmock/gmock.h"
+#include <memory>
 
-#include "equipment.h"
-#include "weapons.h"
+#include "common/direction.h"
+#include "gmock/gmock.h"
+#include "server/model/equipment.h"
+#include "server/model/player.h"
+#include "server/model/weapons.h"
 
 class MockPlayer: public Player {
-private:
+    private:
     static Position dummy_pos;
     static Map dummy_map;
 
-public:
+    public:
     MockPlayer():
             Player(dummy_pos,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
-    MockPlayer(const Position& pos):
+    explicit MockPlayer(const Position& pos):
             Player(pos,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
                    dummy_map) {}
-    MOCK_METHOD(void, start_moving, (const Direction&), (override));
+    MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
-    MOCK_METHOD(void, get_attacked, (const int&), (override));
     virtual ~MockPlayer() = default;
 };
 

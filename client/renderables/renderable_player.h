@@ -1,21 +1,22 @@
-#ifndef RENDERABLE_PLAYER_H
-#define RENDERABLE_PLAYER_H
+#ifndef CLIENT_RENDERABLES_RENDERABLE_PLAYER_H
+#define CLIENT_RENDERABLES_RENDERABLE_PLAYER_H
 
-#include "SDL2pp/SDL2pp.hh"
 #include <memory>
+#include <string>
+#include <unordered_map>
 
+#include "SDL2pp/Point.hh"
+#include "SDL2pp/Renderer.hh"
+#include "client/animation_provider.h"
+#include "client/renderables/animation.h"
+#include "client/renderables/renderable_legs.h"
+#include "common/snapshot.h"
 
-#include "../../common/snapshot.h"
-#include "../animation_provider.h"
-#include "animation.h"
-#include "renderable_legs.h"
-
-class RenderablePlayer
-{
-private:
+class RenderablePlayer {
+    private:
     uint16_t player_id;
     bool is_terrorist;
-    
+
     // Coordenadas del jugador: x,y
     SDL2pp::Point position;
 
@@ -35,14 +36,16 @@ private:
 
     std::shared_ptr<AnimationProvider> animation_provider;
 
+    public:
+    RenderablePlayer(uint16_t player_id,
+                     std::shared_ptr<AnimationProvider> animation_provider);
 
-public:
-    RenderablePlayer(uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider);
-    
-    void update(PlayerDTO& player);
-    void render(SDL2pp::Renderer &renderer);
+    void update(PlayerData& player);
+    void render(SDL2pp::Renderer& renderer);
 
     void load_animation(const std::string& animation_name);
+
+    double calculate_facing_angle(int16_t x, int16_t y);
     ~RenderablePlayer();
 };
 

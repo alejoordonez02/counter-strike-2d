@@ -75,10 +75,15 @@ cmake -S . -B build -DCS2D_CLIENT=ON -DCS2D_SERVER=OFF -DCS2D_EDITOR=OFF -DCS2D_
 cmake --build build
 # o bien "cd build && make"
 ```
+
 Para levantar la interfaz grafica
 ```bash
-./build/cs2d_client
+# levantar el servidor
+./build/cs2d_server
+# levantar cliente
+./build/cs2d_client localhost 7878
 ```
+
 
 
 ## Licencia:

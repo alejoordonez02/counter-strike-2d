@@ -1,25 +1,27 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef CLIENT_CLIENT_H
+#define CLIENT_CLIENT_H
 
-// #include "common/player_commands.h"
-// #include "common/event.h"
-// #include "common/receiver.h"
-// #include "common/sender.h"
-#include "../common/queue.h"
-#include "../common/snapshot.h"
-#include "../server/player_commands/command.h"
-// #include "input_handler.h"
+#include <memory>
+#include <string>
+
+#include "client/input_handler.h"
+#include "common/network/receiver.h"
+#include "common/network/sender.h"
+#include "common/queue.h"
 
 class Client {
-private:
-    // InputHandler input_handler;
-    Queue<Snapshot> snapshots;
-    Queue<PlayerDTO> comandos;
+    private:
+    Connection con;
 
-    // Sender sender;
-    // Receiver receiver;
+    Queue<std::shared_ptr<DTO>> commands;
+    Queue<std::unique_ptr<DTO>> snapshots;
 
-public:
+    Sender sender;
+    Receiver receiver;
+    InputHandler input_handler;
+
+    public:
+    Client(const std::string& hostname, const std::string& servname);
     void run();
 };
 

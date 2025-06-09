@@ -1,9 +1,11 @@
-#include "dto.h"
+#include "common/network/dto.h"
+
+#include <cstring>
 
 const std::vector<uint8_t>& DTO::serialize() {
-    if (not _is_serialized) {
+    if (!_is_serialized) {
         serialize_into(payload);
-        _is_serialized = true;    
+        _is_serialized = true;
     }
     return payload;
 }
@@ -18,7 +20,8 @@ void DTO::serialize_float_into(std::vector<uint8_t>& out, const float& n) {
     out.insert(out.end(), bytes.begin(), bytes.end());
 }
 
-void DTO::serialize_tuple_into(std::vector<uint8_t>& out, const float& x, const float& y) {
+void DTO::serialize_tuple_into(std::vector<uint8_t>& out, const float& x,
+                               const float& y) {
     serialize_float_into(out, x);
     serialize_float_into(out, y);
 }
@@ -30,7 +33,6 @@ void DTO::serialize_pos_into(std::vector<uint8_t>& out, const Position& pos) {
 void DTO::serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir) {
     serialize_tuple_into(out, dir.x, dir.y);
 }
-
 
 // deserialization
 

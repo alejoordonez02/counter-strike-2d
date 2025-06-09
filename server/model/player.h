@@ -1,71 +1,98 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef SERVER_MODEL_PLAYER_H
+#define SERVER_MODEL_PLAYER_H
 
-#include "../../common/direction.h"  //
-#include "../../common/position.h"   // mover a model
-                                     /* */
+#include <memory>
 
-#include "../../common/direction.h"
-#include "../../common/position.h"
+#include "common/direction.h"
+#include "common/position.h"
+#include "server/model/action_strategy.h"
+#include "server/model/attack.h"
+#include "server/model/equipment.h"
+#include "server/model/idle.h"
+#include "server/model/map.h"
+#include "server/model/player_physics.h"
+#include "server/model/weapon.h"
 
-#include "circle.h"
-#include "equipment.h"
-#include "map.h"
-#include "weapon.h"
-
-class Player: public Circle {
-private:
-    float velocity;
+class Player {
+    private:
+    Position pos;
+    Direction dir;
+    int health;
+    bool alive;
+    PlayerPhysics physics;
+    std::unique_ptr<ActionStrategy> action;
 
     int kills;
     int money;
 
-    int health;
-    bool alive;
+    bool pay(const int& cost);
 
-protected:
+    void stop_action() { action = std::make_unique<Idle>(); }
+
+    protected:
     Map& map;
-
     Equipment equipment;
     Weapon& current;
 
-    virtual bool pay(const int& cost);
+    friend class Game;
+    PlayerPhysics& get_physics() { return physics; }
 
-public:
-    Player(const Position& pos, Equipment&& equipment, Map& map);
+    public:
+    Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
-     * Both TT & CT commands
+     * Update
      * */
-    virtual void start_moving(const Direction& dir) {dir + dir;}
-    virtual void start_attacking() {}
+    void update(float dt) {
+        physics.update(dt);
+        action->update(dt);
+    }
 
-    virtual void move(const Direction& dir);
-    virtual void attack(const Position& destination);
-    virtual void use_primary();
-    virtual void use_secondary();
-    virtual void use_knife();
-    // virtual void drop_current();
-    virtual void buy_primary(Weapon& weapon);
-    virtual void buy_secondary(Weapon& weapon);
-    virtual void buy_primary_ammo(const int& count);
-    virtual void buy_secondary_ammo(const int& count);
+    /*
+     * Move
+     * */
+    virtual void start_moving(Direction dir) { physics.start_moving(dir); }
+    void stop_moving() { physics.stop_moving(); }
 
-    virtual void get_attacked(const int& damage) override;
+    /*
+     * Attack
+     * */
+    virtual void start_attacking() {
+        action = std::make_unique<Attack>(physics, pos, dir, current, map);
+    }
+    void stop_attacking() { stop_action(); }
+
+    /*
+     * Set current weapon
+     * */
+    void use_primary();
+    void use_secondary();
+    void use_knife();
+
+    /*
+     * Buy
+     * */
+    void buy_primary(Weapon& weapon);
+    void buy_secondary(Weapon& weapon);
+    void buy_primary_ammo(const int& count);
+    void buy_secondary_ammo(const int& count);
 
     /*
      * Terrorist
      * */
-    virtual void plant_bomb();
-    virtual void stop_planting();
+    virtual void plant_bomb() {}
+    virtual void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    virtual void defuse_bomb();
-    virtual void stop_defusing();
+    virtual void defuse_bomb() {}
+    virtual void stop_defusing() {}
 
-    ~Player() = default;
+    /*
+     * Destructor
+     * */
+    virtual ~Player() = default;
 };
 
 #endif

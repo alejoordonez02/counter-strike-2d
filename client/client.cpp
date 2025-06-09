@@ -1,15 +1,23 @@
-#include "gameloop.h"
-#include "client.h"
+#include "client/client.h"
 
+#include <string>
 
-// Client::Client(){}
+#include "client/gameloop.h"
 
-void Client::run(){
+Client::Client(const std::string& hostname, const std::string& servname):
+        con(hostname, servname),
+        commands(),
+        snapshots(),
+        sender(con, commands),
+        receiver(con, snapshots),
+        input_handler(commands) {}
 
-    // receiver.start();
-    // sender.start();    
+void Client::run() {
+    sender.start();
+    receiver.start();
 
-    GameLoop gameloop(snapshots, comandos);
+    // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y
+    // final se encontrará en el GameLoop
+    GameLoop gameloop(snapshots, commands);
     gameloop.run();
-
 }

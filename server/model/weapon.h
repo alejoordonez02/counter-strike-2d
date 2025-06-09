@@ -1,10 +1,12 @@
-#ifndef WEAPON_H
-#define WEAPON_H
+#ifndef SERVER_MODEL_EAPON_H
+#define SERVER_MODEL_EAPON_H
 
-#include "hitbox.h"
+#include <vector>
+
+#include "server/model/hitbox.h"
 
 class Weapon {
-private:
+    private:
     int damage;
     int ammo;
     float accuracy; /* entre 0 y 1, es una proba */
@@ -12,13 +14,16 @@ private:
     int cost;
     int ammo_cost;
 
-public:
+    public:
     Weapon();
 
-    Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range,
-           const int& cost, const int& ammo_cost);
+    Weapon(const int& damage, const int& ammo, const float& accuracy,
+           const float& range, const int& cost, const int& ammo_cost);
 
-    virtual void attack(const Position& origin, const Position& destination, Hitbox& coll);
+    virtual void attack(
+            Position origin, Direction direction,
+            std::vector<std::reference_wrapper<Hitbox>>& collidables,
+            const std::vector<size_t>& sorted_idx);
 
     virtual void load_ammo(const int& count) { ammo += count; }
 

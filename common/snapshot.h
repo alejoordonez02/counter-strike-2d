@@ -1,5 +1,5 @@
-#ifndef SNAPSHOT_H
-#define SNAPSHOT_H
+#ifndef COMMON_SNAPSHOT_H
+#define COMMON_SNAPSHOT_H
 
 #include <cstdint>
 #include <vector>
@@ -19,18 +19,18 @@ struct WeaponDTO {
     int16_t y;
 };
 
-
-struct PlayerDTO {
+struct PlayerData {
     uint16_t player_id;
     char player_name[MAX_PLAYER_NAME];
     uint8_t team_id;  // 0 para terroristas, 1 para counter
     uint16_t player_hp;
-    
+
     // Armas
     // El cuchillo siempre lo tienen
     // WeaponType primaryGun;
     // WeaponType secondaryGun;
-    WeaponType current_weapon;  // Para poder ser visualizada por otros jugadores
+    WeaponType
+            current_weapon;  // Para poder ser visualizada por otros jugadores
     bool has_bomb;
 
     // estadisticas
@@ -39,7 +39,6 @@ struct PlayerDTO {
     uint8_t total_money = 0;
 
     // animaciones y sonidos
-    double facing_angle;        // hacia donde esta mirando el jugador, valor entre 0 y 360
     bool is_shooting;
     bool was_hurt;
     bool is_walking;
@@ -48,8 +47,11 @@ struct PlayerDTO {
     // coordenadas del jugador
     int16_t x;
     int16_t y;
-};
 
+    // coordenadas del mouse
+    int16_t aim_x;
+    int16_t aim_y;
+};
 
 struct Snapshot {
     bool round_finished = false;
@@ -60,9 +62,8 @@ struct Snapshot {
     uint8_t terrorists_score = 0;
     uint8_t counter_terrorists_score = 0;
 
-    std::vector<PlayerDTO> players;
+    std::vector<PlayerData> players;
     std::vector<WeaponDTO> weapons_on_floor;
 };
-
 
 #endif
