@@ -22,35 +22,49 @@ void mock_server() {
     // 2. Crear la conexión
     Connection server_con(std::move(client_socket));
 
-    // 3. Crear las colas compartidas
-    Queue<std::shared_ptr<DTO>> commands_queue;
-    Queue<std::unique_ptr<DTO>> snapshots_queue;
+    // 3. Crear las colas
+    Queue<std::unique_ptr<DTO>> commands_queue;
+    Queue<std::shared_ptr<DTO>> snapshots_queue;
 
     // 4. Crear Receiver y Sender
-    Receiver receiver(server_con, snapshots_queue); // Recibe comandos del cliente y los pone en snapshots_queue
-    Sender sender(server_con, commands_queue);      // Envía snapshots al cliente desde commands_queue
+    Receiver receiver(server_con, commands_queue);
+    Sender sender(server_con, snapshots_queue);
 
     receiver.start();
     sender.start();
+
+    // Poner un dato inicial de prueba del mock server en la cola de snapshots con un PlayerData
+    PlayerData player1{};
+    player1.player_id = 1;
+    player1.team_id = 0;
+    player1.x = 50;
+    player1.y = 100;
+
+    // Crear el snapshot inicial y agregar el jugador
+    Snapshot snap{};
+    snap.round_number = 0;
+    snap.players.push_back(player1);
+
+    // Empaquetar el snapshot en un DTO
+    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(snap);
+
+    // Si quieres ponerlo en la cola:
+    snapshots_queue.try_push(std::move(initial_snapshot));
 
     // 5. Loop principal del mock server
     while (true) {
         // Obtener el último comando recibido (si hay)
         std::unique_ptr<DTO> dto_ptr;
-        if (snapshots_queue.try_pop(dto_ptr)) {
-            // Aquí podrías procesar el comando si quieres
-            // Por ejemplo, imprimir el tipo de comando recibido
+        if (commands_queue.try_pop(dto_ptr)) {
             std::cout << "MockServer: Recibido comando tipo: " << int(dto_ptr->get_type()) << std::endl;
 
             // Crear un Snapshot de ejemplo (puedes personalizarlo)
             Snapshot snap;
             snap.round_number = 1;
-            snap.terrorists_score = 2;
-            snap.counter_terrorists_score = 3;
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
-            auto snapshot_dto = std::make_shared<SnapshotDTO>(snap);
-            commands_queue.try_push(snapshot_dto);
+            std::shared_ptr<DTO> snapshot_dto = std::make_shared<SnapshotDTO>(snap);
+            snapshots_queue.try_push(std::move(snapshot_dto));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }

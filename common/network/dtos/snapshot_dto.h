@@ -15,15 +15,37 @@ public:
     }
 
     explicit SnapshotDTO(const Snapshot& snap)
-        : DTO(DTOSerial::GameState::SNAPSHOT), snapshot(snap) {}
+        : DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        // TODO: Serializar campos snapshot
+        // Serializar campos snapshot
+        out.push_back(snapshot.round_number);
+
+        // jugadores
+        out.push_back(snapshot.players.size());
+        for (const auto& player : snapshot.players) {
+            out.push_back(player.player_id);
+            serialize_tuple_into(out, player.x, player.y);
+            serialize_tuple_into(out, player.aim_x, player.aim_y);
+        }
     }
 
     void deserialize() override {
-        // TODO: Deserializar campos snapshot
+        // Deserializar campos snapshot
+        int i = 1; // Start after type byte
+        snapshot.round_number = payload[i++];
+        size_t num_players = payload[i++];
+        snapshot.players.clear();
+        snapshot.players.reserve(num_players);
+        for (size_t j = 0; j < num_players; ++j) {
+            PlayerData player;
+            player.player_id = payload[i++];
+            Position pos = deserialize_pos(i);
+            player.x = pos.x;
+            player.y = pos.y;
+            snapshot.players.push_back(player);
+        }
     }
 
     ~SnapshotDTO() = default;
