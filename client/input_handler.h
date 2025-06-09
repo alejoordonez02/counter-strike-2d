@@ -15,13 +15,16 @@ private:
     void handle_key_down(const SDL_Event& event);
     void handle_key_up(const SDL_Event& event);
 
-    void send_direction();
-
-    double calculate_facing_angle(int16_t x, int16_t y);
-
-    void process_movement();
+    void handle_mouse_down(const SDL_Event& event);
+    void handle_mouse_up(const SDL_Event& event);
 
     bool handle_events();
+    
+    void process_movement();
+    void send_direction();
+
+    void send_attack();
+
 
 public:
     InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);

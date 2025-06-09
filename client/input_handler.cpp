@@ -2,6 +2,7 @@
 #include "../common/direction.h"
 #include "../common/network/dto.h"
 #include "../common/network/dtos/start_moving_dto.h"
+#include "../common/network/dtos/start_attacking_dto.h"
 
 #include <map>
 #include <iostream>
@@ -17,6 +18,8 @@ InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
  * que indica si la tecla está presionada (true) o no (false)
  */
 std::map<SDL_Keycode, bool> key_states;
+std::map<std::string, bool> mouse_states;
+
 
 void InputHandler::handle_key_down(const SDL_Event& event) {
     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
@@ -26,6 +29,24 @@ void InputHandler::handle_key_down(const SDL_Event& event) {
 void InputHandler::handle_key_up(const SDL_Event& event) {
     SDL_KeyboardEvent& keyEvent = (SDL_KeyboardEvent&) event;
     key_states[keyEvent.keysym.sym] = false;
+}
+
+
+
+void InputHandler::handle_mouse_down(const SDL_Event& event) {
+    if (event.button.button == SDL_BUTTON_LEFT) {
+        mouse_states["mouse_left"] = true;
+    } else if (event.button.button == SDL_BUTTON_RIGHT) {
+        mouse_states["mouse_right"] = true;
+    }
+}
+
+void InputHandler::handle_mouse_up(const SDL_Event& event) {
+    if (event.button.button == SDL_BUTTON_LEFT) {
+        mouse_states["mouse_left"] = false;
+    } else if (event.button.button == SDL_BUTTON_RIGHT) {
+        mouse_states["mouse_right"] = false;
+    }
 }
 
 // en base a que teclas presiones envía un comando de movimiento
@@ -53,11 +74,30 @@ void InputHandler::send_direction(){
     }
 }
 
+void InputHandler::send_attack() {
+    static bool prev_left = false;
+    bool curr_left = mouse_states["mouse_left"];
+
+    if (curr_left && !prev_left) {
+        std::cout << "LOG: Enviando comando de ataque." << std::endl;
+        // enviarlo solo una vez, no todo el tiempo
+        commands_queue.try_push(std::make_shared<StartAttackingDTO>());
+    }
+
+    if (mouse_states["mouse_left"]) {
+        std::cout << "LOG: TAKA TAKA TAKAAA (estoy disparando no enviando)" << std::endl;
+    } else if (mouse_states["mouse_right"]) {
+        std::cout << "LOG: Click izquierdo sostenido" << std::endl;
+        // commands_queue.try_push(std::make_shared<StartSecondaryAttackingDTO>());
+    }
+    prev_left = curr_left;
+}
+
 
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
-    // send_attack();
+    send_attack();
     // send_states();       
 }
 
@@ -72,11 +112,14 @@ bool InputHandler::handle_events() {
                 handle_key_up(event);
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    std::cout << "LOG: Botón izquierdo del ratón presionado." << std::endl;
-                } else if (event.button.button == SDL_BUTTON_RIGHT) {
-                    std::cout << "LOG: Botón derecho del ratón presionado." << std::endl;
-                }
+                handle_mouse_down(event);
+                break;
+            case SDL_MOUSEBUTTONUP:
+                handle_mouse_up(event);
+                break;
+            case SDL_MOUSEMOTION:
+                // handle_mouse_motion(event);
+                // TODO: Comando Aim
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Cerrando ventana..." << std::endl;

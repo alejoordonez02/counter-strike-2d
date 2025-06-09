@@ -40,7 +40,7 @@ void mock_server() {
     receiver.start();
     sender.start();
 
-    // == inicializacion ===
+    // ======== inicializacion ========
     PlayerData player1{};
     player1.player_id = 1;
     Snapshot snap{};
@@ -57,7 +57,9 @@ void mock_server() {
     // CmdConstructor constructor;
     // std::unique_ptr<Command> cmd = constructor.construct(std::move(dto_ptr));
     // cmd->execute(player);
+    // ================================
 
+    // Loop del server
     while (true) {
         // Obtener el último comando recibido (si hay)
         std::unique_ptr<DTO> dto_ptr;
