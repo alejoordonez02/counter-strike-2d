@@ -52,15 +52,25 @@ void mock_server() {
     snapshots_queue.try_push(std::move(initial_snapshot));
 
     // 5. Loop principal del mock server
+    int position_inc = 0;
     while (true) {
         // Obtener el último comando recibido (si hay)
+        position_inc++;
         std::unique_ptr<DTO> dto_ptr;
         if (commands_queue.try_pop(dto_ptr)) {
             std::cout << "MockServer: Recibido comando tipo: " << int(dto_ptr->get_type()) << std::endl;
 
-            // Crear un Snapshot de ejemplo (puedes personalizarlo)
+            // Crear un Snapshot de ejemplo
             Snapshot snap;
             snap.round_number = 1;
+
+            PlayerData player1{};
+            player1.player_id = 1;
+            player1.team_id = 0;
+            player1.x = position_inc;
+            player1.y = 100;
+            snap.players.push_back(player1);
+            std::cout << "Pusheando jugador con ID: " << player1.player_id << std::endl;
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
             std::shared_ptr<DTO> snapshot_dto = std::make_shared<SnapshotDTO>(snap);

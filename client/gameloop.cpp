@@ -17,17 +17,21 @@ Snapshot GameLoop::get_snapshot_from_queue(){
     std::unique_ptr<DTO> dto_ptr;
     SnapshotDTO* snapshot_dto = nullptr;
 
-    // se asegura que la cola tenga el ultimo estado del juego
-    while(snapshots_queue.try_pop(dto_ptr)){
-        if(!dto_ptr){
-            throw std::runtime_error("Received a null DTO from the snapshots queue.");
+    // Esperar hasta recibir un SnapshotDTO válido
+    while (true) {
+        // se asegura que la cola tenga el ultimo estado del juego
+        while (snapshots_queue.try_pop(dto_ptr)) {
+            if (!dto_ptr) {
+                throw std::runtime_error("Received a null DTO from the snapshots queue.");
+            }
+            snapshot_dto = dynamic_cast<SnapshotDTO*>(dto_ptr.get());
         }
-        snapshot_dto = dynamic_cast<SnapshotDTO*>(dto_ptr.get());
+        if (snapshot_dto) {
+            return snapshot_dto->snapshot;
+        }
+        // REFACTOR: Si la cola está vacía, esperar un poco antes de volver a intentar
+        usleep(1000);
     }
-    if(!snapshot_dto){
-        throw std::runtime_error("The DTO received from the snapshots queue is not a SnapshotDTO.");
-    }
-    return snapshot_dto->snapshot;
 }
 
 
