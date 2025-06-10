@@ -55,6 +55,7 @@ class Player {
         if (!alive)
             return;
 
+        current.update(dt);
         physics.update(dt);
         action->update(dt);
     }
