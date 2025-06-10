@@ -9,6 +9,7 @@
 #include <bit>
 #include <arpa/inet.h>
 #include <cstring>
+#include <string>
 
 class DTO {
 protected:
@@ -41,12 +42,14 @@ protected:
     void serialize_tuple_into(std::vector<uint8_t>& out, const float& x, const float& y);
     void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
     void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
+    void serialize_string_into(std::vector<uint8_t>& out, const std::string& str);
 
     // deserialization
 
     float deserialize_float(int& i);
     Position deserialize_pos(int& i);
     Direction deserialize_dir(int& i);
+    std::string deserialize_string(int& i);
 };
 
 #endif

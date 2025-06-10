@@ -31,6 +31,12 @@ void DTO::serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir) {
     serialize_tuple_into(out, dir.x, dir.y);
 }
 
+void DTO::serialize_string_into(std::vector<uint8_t>& out, const std::string& str) {
+    out.push_back(static_cast<uint8_t>(str.size() >> 8));
+    out.push_back(static_cast<uint8_t>(str.size() & 0xFF));
+    out.insert(out.end(), str.begin(), str.end());
+}
+
 
 // deserialization
 
@@ -52,4 +58,14 @@ Direction DTO::deserialize_dir(int& i) {
     float x = deserialize_float(i);
     float y = deserialize_float(i);
     return Direction(x, y);
+}
+
+std::string DTO::deserialize_string(int& i) {
+    uint16_t fb = static_cast<uint16_t>(payload[i++]) << 8;
+    uint16_t sb = static_cast<uint16_t>(payload[i++]);
+    uint16_t size = ntohs(fb | sb);
+    std::string str(size, '0');
+    std::memcpy(str.data(), payload.data() + i, size);
+    i += size;
+    return str;
 }
