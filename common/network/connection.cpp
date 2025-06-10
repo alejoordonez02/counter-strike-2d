@@ -51,3 +51,29 @@ void Connection::send_length(const std::vector<uint8_t>& msg) {
     if (not skt.sendall(&sz_be, sizeof(sz_be)))
         throw std::runtime_error("Socket send error: disconnected");
 }
+
+void Connection::send_single(const uint8_t b) {
+    if (not skt.sendall(&b, 1))
+        throw std::runtime_error("Socket send error: disconnected");
+}
+
+uint8_t Connection::receive_single() {
+    uint8_t b;
+    if (not skt.recvall(&b, 1))
+        throw std::runtime_error("Socket receive error: disconnected");
+
+    return b;
+}
+
+void Connection::destroy_socket() {
+    skt.shutdown(2);
+    skt.close();
+}
+
+Socket Connection::release_socket() {
+    return std::move(skt);
+}
+
+void Connection::acquire_socket(Socket&& s) {
+    skt = std::move(s);
+}
