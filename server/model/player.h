@@ -63,6 +63,11 @@ class Player {
     void stop_attacking() { stop_action(); }
 
     /*
+     * Aim
+     * */
+    void aim(Direction dir) { this->dir = dir; }
+
+    /*
      * Set current weapon
      * */
     void use_primary();
