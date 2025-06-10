@@ -9,6 +9,7 @@
 
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
+#include "server/player_commands/aim.h"
 #include "server/player_commands/command.h"
 #include "server/player_commands/start_attacking.h"
 #include "server/player_commands/start_moving.h"
@@ -30,6 +31,10 @@ class CmdConstructor {
                 {DTOSerial::PlayerCommands::ATTACK,
                  [](auto&& dto_p) {
                      return std::make_unique<StartAttacking>(std::move(dto_p));
+                 }},
+                {DTOSerial::PlayerCommands::AIM,
+                 [](auto&& dto_p) {
+                     return std::make_unique<Aim>(std::move(dto_p));
                  }},
                 // ...
         };

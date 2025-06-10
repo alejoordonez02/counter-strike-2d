@@ -13,9 +13,14 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
+#define PLAYER_VELOCITY 1.0
+#define PLAYER_ACCELERATION 1.0
+#define PLAYER_RADIUS 1.0
+#define PLAYER_MONEY 500
+#define PLAYER_MAX_HEALTH 100
+
 class Player {
     private:
-    Position pos;
     Direction dir;
     int health;
     bool alive;
@@ -30,12 +35,15 @@ class Player {
     void stop_action() { action = std::make_unique<Idle>(); }
 
     protected:
+    Position pos;
     Map& map;
     Equipment equipment;
     Weapon& current;
 
     friend class Game;
     PlayerPhysics& get_physics() { return physics; }
+
+    virtual void teleport_to_spawn() = 0;
 
     public:
     Player(Position pos, Equipment&& equipment, Map& map);
@@ -44,14 +52,32 @@ class Player {
      * Update
      * */
     void update(float dt) {
+        if (!alive)
+            return;
+
         physics.update(dt);
         action->update(dt);
     }
 
     /*
+     * Restart/respawn
+     * */
+    void restart() {
+        teleport_to_spawn();
+        health = PLAYER_MAX_HEALTH;
+        alive = true;
+    }
+
+    /*
+     * Alive?
+     * */
+    bool is_alive() { return alive; }
+
+    /*
      * Move
      * */
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
+
     void stop_moving() { physics.stop_moving(); }
 
     /*
@@ -60,7 +86,13 @@ class Player {
     virtual void start_attacking() {
         action = std::make_unique<Attack>(physics, pos, dir, current, map);
     }
+
     void stop_attacking() { stop_action(); }
+
+    /*
+     * Aim
+     * */
+    void aim(Direction dir) { this->dir = dir; }
 
     /*
      * Set current weapon

@@ -16,18 +16,31 @@ class Bomb {
     BombState state;
 
     public:
-    Bomb(): timer(bomb_time), state(BombState::NOT_PLANTED) {}
+    Bomb(float time_left): timer(time_left), state(BombState::NOT_PLANTED) {}
 
-    void tick(const int& time_elapsed) {
+    void update(float dt) {
         if (state == BombState::PLANTED)
-            timer.tick(time_elapsed);
+            timer.update(dt);
+
         if (timer.is_done())
             state = BombState::EXPLODED;
     }
 
-    void plant() { state = BombState::PLANTED; }
+    void plant() {
+        if (state == BombState::NOT_PLANTED)
+            state = BombState::PLANTED;
+    }
 
-    void defuse() { state = BombState::DEFUSED; }
+    void defuse() {
+        if (state == BombState::PLANTED)
+            state = BombState::DEFUSED;
+    }
+
+    bool is_planted() const { return state == BombState::PLANTED; }
+
+    bool is_defused() const { return state == BombState::DEFUSED; }
+
+    bool has_exploded() const { return state == BombState::EXPLODED; }
 };
 
 #endif
