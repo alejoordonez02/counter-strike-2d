@@ -25,8 +25,6 @@ private slots:
 private:
     void setupUI();
     void setupTilesheetEditor();
-    void setupWeaponsheetEditor();
-    void setupMapEditor();
     void loadConfigurations();
     void connectSignals();
 

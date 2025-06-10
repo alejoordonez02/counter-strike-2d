@@ -63,6 +63,23 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     find_package(SDL2_image REQUIRED)
     find_package(SDL2_mixer REQUIRED)
     find_package(SDL2_ttf REQUIRED)
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
+    find_package(yaml-cpp REQUIRED)
+
+    # UI files
+    qt5_wrap_ui(UI_HEADERS 
+        ${CMAKE_CURRENT_SOURCE_DIR}/editor/src/MapEditor.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/client/ClientInterface.ui
+    )
+    qt5_add_resources(RESOURCES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc
+    )
+
+    # Source files
+    set(UI_SOURCES
+        ${UI_HEADERS}
+        ${RESOURCES}
+    )
 
     # Include FetchContent module
     include(FetchContent)
@@ -88,7 +105,7 @@ find_package(SDL2 REQUIRED)
 # ---------------
 if(CS2D_CLIENT)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(cs2d_client)
+    add_executable(cs2d_client ${UI_SOURCES})
 
     # Make them depend on cs2d_common lib
     add_dependencies(cs2d_client cs2d_common SDL2pp::SDL2pp)
@@ -98,12 +115,27 @@ if(CS2D_CLIENT)
     add_subdirectory(client)
 
     set_project_warnings(cs2d_client ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
+    set_target_properties(cs2d_client PROPERTIES
+        AUTOMOC ON
+        AUTOUIC ON
+        AUTORCC ON
+        POSITION_INDEPENDENT_CODE ON
+    )
 
+    target_include_directories(cs2d_client PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${yaml-cpp_INCLUDE_DIRS}
+    )
     # add libSDL2pp's headers
     target_include_directories(cs2d_client PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the cs2d_common lib target
-    target_link_libraries(cs2d_client cs2d_common SDL2pp::SDL2pp)
+    target_link_libraries(cs2d_client cs2d_common SDL2pp::SDL2pp Qt5::Widgets Qt5::Core Qt5::Gui)
+
+    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(cs2d_client PRIVATE -fPIC)
+    endif()
 endif()
 
 if(CS2D_SERVER)
@@ -117,6 +149,7 @@ if(CS2D_SERVER)
     # HEY!! TODO XXX: add more subfolders here
     add_subdirectory(server)
     add_subdirectory(server/model)
+    
 
     set_project_warnings(cs2d_server ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
 
@@ -127,24 +160,8 @@ endif()
 if(CS2D_EDITOR)
     # Add source files and enable warnings
     # HEY!! TODO XXX: add more subfolders here
-    find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
-    find_package(yaml-cpp REQUIRED)
 
-    # UI files
-    qt5_wrap_ui(UI_HEADERS 
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/MapEditor.ui
-    )
-    qt5_add_resources(RESOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc
-    )
-
-    # Source files
-    set(EDITOR_SOURCES
-        ${UI_HEADERS}
-        ${RESOURCES}
-    )
-
-    add_executable(cs2d_editor ${EDITOR_SOURCES})
+    add_executable(cs2d_editor ${UI_SOURCES})
     add_subdirectory(editor)
 
     set_target_properties(cs2d_editor PROPERTIES
@@ -160,11 +177,7 @@ if(CS2D_EDITOR)
         ${yaml-cpp_INCLUDE_DIRS}
     )
 
-    target_link_libraries(cs2d_editor
-        Qt5::Widgets
-        Qt5::Core
-        Qt5::Gui
-        yaml-cpp::yaml-cpp
+    target_link_libraries(cs2d_editor Qt5::Widgets Qt5::Core Qt5::Gui yaml-cpp::yaml-cpp
     )
 
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
