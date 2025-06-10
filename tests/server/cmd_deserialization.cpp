@@ -9,11 +9,7 @@
 #include "gtest/gtest.h"
 #include "server/cmd_constructor.h"
 #include "server/player_commands/command.h"
-#include "tests/mock_player.h"
-
-using ::testing::HasSubstr;
-using ::testing::NotNull;
-using ::testing::ThrowsMessage;
+#include "tests/server/model/mocks/mock_player.h"
 
 namespace {
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorth) {

@@ -10,25 +10,33 @@
 #include "server/model/weapons.h"
 
 class MockPlayer: public Player {
-    private:
-    static Position dummy_pos;
-    static Map dummy_map;
-    void teleport_to_spawn() override {}
-
     public:
-    MockPlayer():
-            Player(dummy_pos,
-                   Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
-                             std::make_unique<Fist>(), 0),
-                   dummy_map) {}
-    explicit MockPlayer(const Position& pos):
+    MockPlayer(Position& pos, Map& map):
             Player(pos,
                    Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
                              std::make_unique<Fist>(), 0),
-                   dummy_map) {}
+                   map) {}
+
+    MockPlayer():
+            Player(default_pos(),
+                   Equipment(std::make_unique<Fist>(), std::make_unique<Fist>(),
+                             std::make_unique<Fist>(), 0),
+                   default_map()) {}
+
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
     virtual ~MockPlayer() = default;
+
+    private:
+    static Position& default_pos() {
+        static Position pos(0, 0);
+        return pos;
+    }
+    static Map& default_map() {
+        static Map map;
+        return map;
+    }
+    void teleport_to_spawn() override {}
 };
 
 #endif
