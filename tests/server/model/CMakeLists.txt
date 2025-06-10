@@ -3,6 +3,7 @@ target_sources(cs2d_tests
     bomb.cpp
     collisions.cpp
     attack_action.cpp
+    fire_rate.cpp
 )
 
 add_subdirectory(mocks)

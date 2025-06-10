@@ -5,7 +5,7 @@
 
 class MagicWeapon: public Weapon {
     public:
-    MagicWeapon(): Weapon(100, 100, 100, 100, 0, 0) {}
+    MagicWeapon(): Weapon(100, 100, 100, 100, 1, 0, 0) {}
 };
 
 class AttackActionTest: public ::testing::Test {
@@ -17,6 +17,7 @@ class AttackActionTest: public ::testing::Test {
     int player_health = 1;
     float player_shield = 1;
     bool player_alive = true;
+    MagicWeapon weapon;
 
     std::unique_ptr<PlayerPhysics> player;
     std::unique_ptr<MockPlayerPhysics> enemy;
@@ -40,12 +41,13 @@ class AttackActionTest: public ::testing::Test {
         map.add_collidable(*player);
         map.add_collidable(*enemy);
         map.add_collidable(*aligned_enemy);
+
+        weapon.update(1);
     }
 };
 
 TEST_F(AttackActionTest, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
     Direction aim_dir = player_pos.get_direction(enemy_raw->get_position());
-    MagicWeapon weapon;
     Attack attack_action(*player_raw, player_pos, aim_dir, weapon, map);
 
     EXPECT_CALL(*enemy_raw, get_attacked(::testing::_));
@@ -56,7 +58,6 @@ TEST_F(AttackActionTest,
        AttackingWithBadAimDoesNotResultInHitboxGettingAttacked) {
     Direction aim_dir = player_pos.get_direction(enemy_raw->get_position()) +
                         Direction(100, 0);
-    MagicWeapon weapon;
     Attack attack_action(*player_raw, player_pos, aim_dir, weapon, map);
 
     EXPECT_CALL(*enemy_raw, get_attacked(::testing::_)).Times(0);
@@ -66,7 +67,6 @@ TEST_F(AttackActionTest,
 TEST_F(AttackActionTest,
        AttackingToAlignedHitboxedDoesNotResultInColateralDamage) {
     Direction aim_dir = player_pos.get_direction(enemy_raw->get_position());
-    MagicWeapon weapon;
     Attack attack_action(*player_raw, player_pos, aim_dir, weapon, map);
 
     EXPECT_CALL(*enemy_raw, get_attacked(::testing::_));
