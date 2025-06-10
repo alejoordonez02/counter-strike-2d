@@ -21,8 +21,10 @@ class Hitbox {
         std::vector<size_t> idx;
         idx.reserve(coll.size());
         for (size_t i = 0; i < coll.size(); ++i) {
-            if (&coll[i].get() != this)  // skip self
-                idx.push_back(i);
+            if (&coll[i].get() == this)
+                continue;  // skip self
+
+            idx.push_back(i);
         }
 
         std::sort(idx.begin(), idx.end(), [&coll, this](size_t i, size_t j) {
@@ -38,6 +40,8 @@ class Hitbox {
     virtual std::optional<Position> intersect(const Trajectory& t) const = 0;
 
     virtual void get_attacked(int damage) = 0;
+
+    virtual Position get_position() const { return pos; }
 
     virtual ~Hitbox() = default;
 };
