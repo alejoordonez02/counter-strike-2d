@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "common/network/dto.h"
+#include "common/network/dtos/aim_dto.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
@@ -32,6 +33,10 @@ class DTOConstructor {
                      return std::make_unique<StartAttackingDTO>(
                              std::move(bytes));
                  }},
+                {DTOSerial::PlayerCommands::AIM,
+                 [](auto&& bytes) {
+                     return std::make_unique<AimDTO>(std::move(bytes));
+                 }},
                 {DTOSerial::PlayerCommands::SNAPSHOT,
                  [](auto&& bytes) {
                      return std::make_unique<SnapshotDTO>(std::move(bytes));
@@ -44,7 +49,7 @@ class DTOConstructor {
         if (!maker_map.count(bytes[0]))
             throw std::runtime_error("DTOConstructor error: unknown DTO type");
 
-        std::function<std::unique_ptr<DTO>(std::vector<uint8_t> &&)> f =
+        std::function<std::unique_ptr<DTO>(std::vector<uint8_t>&&)> f =
                 maker_map.at(bytes[0]);
 
         return f(std::move(bytes));
