@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "common/network//protocol.h"
 #include "common/network/dto.h"
+#include "common/network/protocol.h"
 
 class StartAttackingDTO: public DTO {
     private:
