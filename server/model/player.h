@@ -77,6 +77,7 @@ class Player {
      * Move
      * */
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
+
     void stop_moving() { physics.stop_moving(); }
 
     /*
@@ -85,6 +86,7 @@ class Player {
     virtual void start_attacking() {
         action = std::make_unique<Attack>(physics, pos, dir, current, map);
     }
+
     void stop_attacking() { stop_action(); }
 
     /*

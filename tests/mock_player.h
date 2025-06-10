@@ -13,6 +13,7 @@ class MockPlayer: public Player {
     private:
     static Position dummy_pos;
     static Map dummy_map;
+    void teleport_to_spawn() override {}
 
     public:
     MockPlayer():
