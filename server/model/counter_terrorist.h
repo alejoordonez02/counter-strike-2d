@@ -5,6 +5,9 @@
 #include "server/model/player.h"
 
 class CounterTerrorist: public Player {
+    private:
+    void teleport_to_spawn() override { pos = map.get_ct_spawn(); }
+
     public:
     CounterTerrorist(const Position& pos, Map& map):
             Player(pos, CTEquipment(), map) {}

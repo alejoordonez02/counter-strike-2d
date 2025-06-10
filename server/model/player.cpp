@@ -9,15 +9,10 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
-#define PLAYER_VELOCITY 1.0
-#define PLAYER_ACCELERATION 1.0
-#define PLAYER_RADIUS 1.0
-#define PLAYER_MONEY 500
-
 Player::Player(Position pos, Equipment&& equipment, Map& map):
         pos(pos),
         dir(Direction()),
-        health(100),
+        health(PLAYER_MAX_HEALTH),
         alive(true),
         map(map),
         equipment(std::move(equipment)),
