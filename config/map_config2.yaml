@@ -160,3 +160,4 @@ blocks:
   - x: 288
     y: 0
     type: Plantable
+    texture: "../resources/tiles/siteb.png"
