@@ -5,6 +5,9 @@
 #include "server/model/tt_equipment.h"
 
 class Terrorist: public Player {
+    private:
+    void teleport_to_spawn() override { pos = map.get_tt_spawn(); }
+
     public:
     Terrorist(const Position& pos, Map& map): Player(pos, TTEquipment(), map) {}
 
