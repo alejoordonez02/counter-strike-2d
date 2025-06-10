@@ -15,8 +15,8 @@
 class Acceptor: public Thread {
 private:
     Socket skt;
-    std::vector<std::unique_ptr<ClientSession>> clients;
     GameMonitor& gm_ref;
+    std::vector<ClientSession> clients;
 
 public:
     Acceptor(const std::string& servname, GameMonitor& gm): skt(servname.c_str()), gm_ref(gm) {}
@@ -25,14 +25,16 @@ public:
         try {
             while (true) {
                 Socket peer_skt = skt.accept();
-                auto new_client = std::make_unique<ClientSession>(std::move(peer_skt), gm_ref);
+                ClientSession new_client(std::move(peer_skt), gm_ref);
+                new_client.start_lobby_phase();
                 clients.push_back(std::move(new_client));
 
-                clear_finished_clients();
-                // gm_ref.reap_dead_games();
+                clear_offline_clients();
+                gm_ref.reap_dead_games();
             }
         } catch (const LibError& err) {  // cierre de server
-            // handle_server_shutdown()
+            gm_ref.shutdown(); // (metodo de GameMonitor con mutex, dejarlo cerrado/bloqueado al final al GM)
+            terminate_all_clients();
         }
     }
     
@@ -44,12 +46,23 @@ public:
     ~Acceptor() = default;
 
 private:
-    void clear_finished_clients() {
+    void clear_offline_clients() {
         clients.erase(std::remove_if(clients.begin(), clients.end(),
-                                     [](std::unique_ptr<ClientSession> c) {
-                                         return c->is_finished();
+                                     [](ClientSession& c) {
+                                        if (c.is_offline()) {
+                                            c.end_lobby_phase();
+                                            return true;
+                                        }
+                                        return false;
                                      }),
                       clients.end());
+    }
+
+    void terminate_all_clients() {
+        for (auto& c : clients) {
+            c.force_terminate();
+        }
+        clients.clear();
     }
 };
 
