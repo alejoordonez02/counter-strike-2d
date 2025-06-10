@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcs2d_common.a CMakeFiles/cs2d_common.dir/common/network/connection.cpp.o CMakeFiles/cs2d_common.dir/common/network/dto.cpp.o CMakeFiles/cs2d_common.dir/common/network/socket/liberror.cpp.o CMakeFiles/cs2d_common.dir/common/network/socket/resolver.cpp.o CMakeFiles/cs2d_common.dir/common/network/socket/resolvererror.cpp.o CMakeFiles/cs2d_common.dir/common/network/socket/socket.cpp.o
-/usr/bin/ranlib libcs2d_common.a
