@@ -126,6 +126,16 @@ public:
         is_not_empty.notify_all();
     }
 
+    void reset() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        closed = false;
+        if (not q.empty())
+            q = std::queue<T, C>();
+
+        is_not_full.notify_all();
+    }
+
 private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
@@ -144,6 +154,7 @@ private:
     std::condition_variable is_not_empty;
 
 public:
+    Queue(): max_size(UINT_MAX - 1), closed(false) {}
     explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
 
 
@@ -243,6 +254,7 @@ private:
 template <typename T>
 class Queue<T*>: private Queue<void*> {
 public:
+    Queue() = default;
     explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
 
     using Queue<void*>::try_push;
