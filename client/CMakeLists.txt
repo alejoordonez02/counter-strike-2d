@@ -7,6 +7,7 @@ target_sources(cs2d_client
         animation_provider.cpp
         input_handler.cpp
         render.cpp
+        mainwindow.cpp
     PUBLIC
         client.h
         gameloop.h
@@ -14,6 +15,7 @@ target_sources(cs2d_client
         animation_provider.h
         input_handler.h
         render.h
+        mainwindow.h
 )
 
 add_subdirectory(renderables)
