@@ -26,15 +26,21 @@ class Bomb {
             state = BombState::EXPLODED;
     }
 
+    void plant() {
+        if (state == BombState::NOT_PLANTED)
+            state = BombState::PLANTED;
+    }
+
+    void defuse() {
+        if (state == BombState::PLANTED)
+            state = BombState::DEFUSED;
+    }
+
     bool is_planted() const { return state == BombState::PLANTED; }
 
     bool is_defused() const { return state == BombState::DEFUSED; }
 
     bool has_exploded() const { return state == BombState::EXPLODED; }
-
-    void plant() { state = BombState::PLANTED; }
-
-    void defuse() { state = BombState::DEFUSED; }
 };
 
 #endif
