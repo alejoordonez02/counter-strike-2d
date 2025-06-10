@@ -37,7 +37,7 @@ class PlayerPhysics: public Hitbox {
         Position destination = pos + dir * v;
 
         Trajectory t(pos, destination, radius);
-        auto& collidable = map.get_collidable();
+        auto& collidable = map.get_collidables();
         auto sorted_idx = sort_by_distance_idx(collidable);
         for (size_t i : sorted_idx) {
             auto& c = collidable[i].get();
