@@ -3,14 +3,17 @@
 
 class Timer {
     private:
-    int time;
-    int time_left;
+    float time;
+    float time_left;
     bool done;
 
     public:
-    explicit Timer(const int& time): time(time), time_left(time), done(false) {}
+    explicit Timer(float time): time(time), time_left(time), done(false) {}
 
     void update(float dt) {
+        if (done)
+            return;
+
         time_left -= dt;
         if (time_left <= 0)
             done = true;
