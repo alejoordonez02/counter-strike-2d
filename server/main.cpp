@@ -1,4 +1,4 @@
-#include "tests/mock_server.h"
+#include "tests/client/mock_server.h"
 
 int main() {
     mock_server();

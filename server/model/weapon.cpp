@@ -26,8 +26,9 @@ void Weapon::attack(Position origin, Direction direction,
     Trajectory t(origin, origin + direction * range);
     for (auto i : sorted_idx) {
         auto& coll = collidables[i].get();
-        if (coll.intersect(t) && Random::get() < accuracy) {
-            coll.get_attacked(damage);
+        if (coll.intersect(t)) {
+            if (Random::get() < accuracy)
+                coll.get_attacked(damage);
             ammo--;
             break;
         }
