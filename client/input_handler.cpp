@@ -74,15 +74,13 @@ void InputHandler::send_direction() {
 
     // envía solo si hay un movimiento
     if (dir.x != 0 || dir.y != 0) {
-        if (!was_moving) {
-            std::cout << "LOG: Enviando comando de movimiento." << std::endl;
-            commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
-            was_moving = true;
-        }
+        std::cout << "LOG: Enviando comando de movimiento." << std::endl;
+        commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
+        was_moving = true;
     } else {
         if (was_moving) {
             std::cout << "LOG: Enviando comando de fin de movimiento." << std::endl;
-            commands_queue.try_push(std::make_shared<StopMovingDTO>());
+            commands_queue.try_push(std::make_shared<StopMovingDTO>(dir));
             was_moving = false;
         }
     }
@@ -92,28 +90,27 @@ void InputHandler::send_attack() {
     // con static hacemos que se mantenga su valor entre llamadas
     // tambien se podria poner como miembro de la clase
     static bool prev_left = false;
-    bool curr_left = mouse_states["mouse_left"];
+    bool is_attacking = mouse_states["mouse_left"];
 
-    if (curr_left && !prev_left) {
+    // detecta el inicio del ataque (sostener click)
+    if (is_attacking && !prev_left) {
         std::cout << "LOG: Enviando comando de ataque." << std::endl;
         // enviarlo solo una vez, no todo el tiempo
         commands_queue.try_push(std::make_shared<StartAttackingDTO>());
     }
-
     // Detecta el fin del ataque (soltar click)
-    if (!curr_left && prev_left) {
+    if (!is_attacking && prev_left) {
         std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
         commands_queue.try_push(std::make_shared<StopAttackingDTO>());
     }
 
     if (mouse_states["mouse_left"]) {
-        std::cout << "LOG: TAKA (estoy disparando no enviando)"
-                  << std::endl;
+        // Sonido de disparo ?
     } else if (mouse_states["mouse_right"]) {
         std::cout << "LOG: Click izquierdo sostenido" << std::endl;
-        // commands_queue.try_push(std::make_shared<StartSecondaryAttackingDTO>());
     }
-    prev_left = curr_left;
+    // actualiza el estado del click izquierdo
+    prev_left = is_attacking;
 }
 
 // Nueva función para procesar el movimiento:
@@ -127,15 +124,19 @@ bool InputHandler::handle_events() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
+            // mantener presionada una tecla
             case SDL_KEYDOWN:
                 handle_key_down(event);
                 break;
+            // soltar una tecla
             case SDL_KEYUP:
                 handle_key_up(event);
                 break;
+            // click del mouse
             case SDL_MOUSEBUTTONDOWN:
                 handle_mouse_down(event);
                 break;
+            // soltar click del mouse
             case SDL_MOUSEBUTTONUP:
                 handle_mouse_up(event);
                 break;
