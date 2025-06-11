@@ -12,6 +12,7 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_attacking_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
+#include "common/network/dtos/aim_dto.h"
 #include "input_handler.h"
 
 
@@ -114,18 +115,21 @@ void InputHandler::send_attack() {
     prev_left = is_attacking;
 }
 
-static int last_mouse_x = -1;
-static int last_mouse_y = -1;
-static int current_mouse_x = -1;
-static int current_mouse_y = -1;
 
-
+// envia las coordenadas del mouse como comando de aim
 void InputHandler::send_aim() {
-    if (current_mouse_x != last_mouse_x || current_mouse_y != last_mouse_y) {
-        std::cout << "LOG: Enviando comando de aim a (" << current_mouse_x << ", " << current_mouse_y << ")" << std::endl;
-        // commands_queue.try_push(std::make_shared<AimDTO>(current_mouse_x, current_mouse_y));
-        last_mouse_x = current_mouse_x;
-        last_mouse_y = current_mouse_y;
+    // NOTE: Se le puede poner un cooldown para no enviar demasiados comandos
+    static int last_mouse_x = -1;
+    static int last_mouse_y = -1;
+
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    if (mouse_x != last_mouse_x || mouse_y != last_mouse_y) {
+        std::cout << "LOG: Enviando comando de aim a (" << mouse_x << ", " << mouse_y << ")" << std::endl;
+        // commands_queue.try_push(std::make_shared<AimDTO>(Direction(mouse_x, mouse_y, false)));
+        last_mouse_x = mouse_x;
+        last_mouse_y = mouse_y;
     }
 }
 
@@ -157,11 +161,6 @@ bool InputHandler::handle_events() {
             // soltar click del mouse
             case SDL_MOUSEBUTTONUP:
                 handle_mouse_up(event);
-                break;
-            case SDL_MOUSEMOTION:
-                // send_aim(event);
-                current_mouse_x = event.motion.x;
-                current_mouse_y = event.motion.y;
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Cerrando ventana..." << std::endl;
