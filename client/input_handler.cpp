@@ -10,6 +10,9 @@
 #include "common/network/dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
+#include "common/network/dtos/stop_attacking_dto.h"
+#include "common/network/dtos/stop_moving_dto.h"
+
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
         commands_queue(commands_queue) {}
@@ -51,6 +54,9 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
 void InputHandler::send_direction() {
+    // recuerda si antes se estaba moviendo
+    static bool was_moving = false;
+
     Direction dir(0, 0);
 
     if (key_states[SDLK_UP] || key_states[SDLK_w]) {
@@ -68,13 +74,23 @@ void InputHandler::send_direction() {
 
     // envía solo si hay un movimiento
     if (dir.x != 0 || dir.y != 0) {
-        std::cout << "LOG: Enviando dirección: (" << dir.x << ", " << dir.y
-                  << ")" << std::endl;
-        commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
+        if (!was_moving) {
+            std::cout << "LOG: Enviando comando de movimiento." << std::endl;
+            commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
+            was_moving = true;
+        }
+    } else {
+        if (was_moving) {
+            std::cout << "LOG: Enviando comando de fin de movimiento." << std::endl;
+            commands_queue.try_push(std::make_shared<StopMovingDTO>());
+            was_moving = false;
+        }
     }
 }
 
 void InputHandler::send_attack() {
+    // con static hacemos que se mantenga su valor entre llamadas
+    // tambien se podria poner como miembro de la clase
     static bool prev_left = false;
     bool curr_left = mouse_states["mouse_left"];
 
@@ -84,8 +100,14 @@ void InputHandler::send_attack() {
         commands_queue.try_push(std::make_shared<StartAttackingDTO>());
     }
 
+    // Detecta el fin del ataque (soltar click)
+    if (!curr_left && prev_left) {
+        std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
+        commands_queue.try_push(std::make_shared<StopAttackingDTO>());
+    }
+
     if (mouse_states["mouse_left"]) {
-        std::cout << "LOG: TAKA TAKA TAKAAA (estoy disparando no enviando)"
+        std::cout << "LOG: TAKA (estoy disparando no enviando)"
                   << std::endl;
     } else if (mouse_states["mouse_right"]) {
         std::cout << "LOG: Click izquierdo sostenido" << std::endl;
