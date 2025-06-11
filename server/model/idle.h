@@ -1,14 +1,14 @@
-#ifndef IDLE_H
-#define IDLE_H
+#ifndef SERVER_MODEL_IDLE_H
+#define SERVER_MODEL_IDLE_H
 
-#include "action_strategy.h"
+#include "server/model/action_strategy.h"
 
 /*
  * Idle
  * */
 class Idle: public ActionStrategy {
-public:
-    Idle() {};
+    public:
+    Idle() = default;
     void update(float /* dt */) override {}
 };
 

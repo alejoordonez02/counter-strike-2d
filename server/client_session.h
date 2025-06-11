@@ -1,5 +1,5 @@
-#ifndef CLIENT_SESSION_H
-#define CLIENT_SESSION_H
+#ifndef SERVER_CLIENT_SESSION_H
+#define SERVER_CLIENT_SESSION_H
 
 #include <memory>
 #include <string>

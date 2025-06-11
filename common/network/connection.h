@@ -1,11 +1,11 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef COMMON_NETWORK_CONNECTION_H
+#define COMMON_NETWORK_CONNECTION_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
-#include "socket/socket.h"
+#include "common/network/socket/socket.h"
 
 class Connection {
 private:
@@ -17,7 +17,7 @@ public:
     /*
      * Server connection
      * */
-    Connection(Socket&& s);
+    explicit Connection(Socket&& s);
 
     /*
      * Client connection

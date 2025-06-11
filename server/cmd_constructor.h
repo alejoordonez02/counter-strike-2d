@@ -1,21 +1,23 @@
-#ifndef CMD_CONSTRUCTOR_H
-#define CMD_CONSTRUCTOR_H
+#ifndef SERVER_CMD_CONSTRUCTOR_H
+#define SERVER_CMD_CONSTRUCTOR_H
 
 #include <cstdint>
 #include <functional>
 #include <memory>
 #include <unordered_map>
+#include <utility>
 
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
-#include "player_commands/command.h"
-#include "player_commands/start_attacking.h"
-#include "player_commands/start_moving.h"
+#include "server/player_commands/aim.h"
+#include "server/player_commands/command.h"
+#include "server/player_commands/start_attacking.h"
+#include "server/player_commands/start_moving.h"
 
 using namespace DTOSerial::PlayerCommands;
 
-using CmdMaker = std::function<std::unique_ptr<Command>(std::unique_ptr<DTO>&&)>;
-
+using CmdMaker =
+        std::function<std::unique_ptr<Command>(std::unique_ptr<DTO>&&)>;
 
 class CmdConstructor {
 private:
@@ -36,7 +38,8 @@ public:
         uint8_t cmd_type = dto_p->get_type();
 
         if (not maker_map.count(cmd_type))
-            throw std::runtime_error("CmdConstructor error: unknown Command type");
+            throw std::runtime_error(
+                    "CmdConstructor error: unknown Command type");
 
         CmdMaker f = maker_map.at(cmd_type);
 

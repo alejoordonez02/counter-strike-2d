@@ -1,16 +1,16 @@
-#ifndef ACCEPTOR_H
-#define ACCEPTOR_H
+#ifndef SERVER_ACCEPTOR_H
+#define SERVER_ACCEPTOR_H
 
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "common/network/socket/socket.h"
 #include "common/network/socket/liberror.h"
+#include "common/network/socket/socket.h"
 #include "common/thread.h"
-#include "client_session.h"
-#include "game_monitor.h"
+#include "server/client_session.h"
+#include "server/game_monitor.h"
 
 class Acceptor: public Thread {
 private:
@@ -19,7 +19,8 @@ private:
     std::vector<ClientSession> clients;
 
 public:
-    Acceptor(const std::string& servname, GameMonitor& gm): skt(servname.c_str()), gm_ref(gm) {}
+    Acceptor(const std::string& servname, GameMonitor& gm):
+            skt(servname.c_str()), gm_ref(gm) {}
 
     void run() override {
         try {
@@ -37,12 +38,12 @@ public:
             terminate_all_clients();
         }
     }
-    
+
     void force_stop() {
         skt.shutdown(2);
         skt.close();
     }
-    
+
     ~Acceptor() = default;
 
 private:

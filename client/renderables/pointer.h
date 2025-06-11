@@ -1,19 +1,20 @@
-#ifndef __POINTER_H__
-#define __POINTER_H__
-#include <SDL2pp/SDL2pp.hh>
+#ifndef CLIENT_RENDERABLES_POINTER_H
+#define CLIENT_RENDERABLES_POINTER_H
+
 #include <SDL2/SDL.h>
+#include <SDL2pp/SDL2pp.hh>
 
 class Pointer {
-private:
+    private:
     int x, y;
     SDL2pp::Texture& texture;
 
-public:
-    Pointer(SDL2pp::Texture& tex);
+    public:
+    explicit Pointer(SDL2pp::Texture& tex);
 
     void update();
 
     void render(SDL2pp::Renderer& renderer);
 };
 
-#endif // __POINTER_H__
+#endif  // __POINTER_H__

@@ -1,13 +1,14 @@
-#include "connection.h"
+#include "common/network/connection.h"
 
-#include <string>
-#include <vector>
 #include <cstdint>
 #include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <arpa/inet.h>
 
-#include "protocol.h"
+#include "common/network/protocol.h"
 
 /*
  * Server connection
@@ -17,7 +18,8 @@ Connection::Connection(Socket&& s): skt(std::move(s)) {}
 /*
  * Client connection
  * */
-Connection::Connection(const std::string& hostname, const std::string& servname):
+Connection::Connection(const std::string& hostname,
+                       const std::string& servname):
         skt(hostname.c_str(), servname.c_str()) {}
 
 

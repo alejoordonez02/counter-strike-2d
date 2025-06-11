@@ -1,10 +1,14 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef SERVER_MODEL_MAP_H
+#define SERVER_MODEL_MAP_H
 
 #include <functional>
+#include <memory>
 #include <vector>
 
-#include "hitbox.h"
+#include "server/model/bomb.h"
+#include "server/model/hitbox.h"
+
+#define BOMB_SITE_RADIUS 10
 
 /*
  * El mapa contiene tanto los objetos estáticos, como los dinámicos.
@@ -13,15 +17,70 @@
  * nombre: collidables
  * */
 class Map {
-private:
-    std::vector<std::reference_wrapper<Hitbox>> dynamic_collidables;
+    private:
+    std::vector<std::reference_wrapper<Hitbox>> collidables;
+    std::unique_ptr<Bomb> bomb;
+    Position bomb_site;
 
-public:
-    Map(): dynamic_collidables() {}
+    public:
+    Map(): collidables(), bomb() {}
 
-    void add_collidable(Hitbox& cll) { dynamic_collidables.push_back(cll); }
+    /*
+     * Update
+     * */
+    void update(float dt) {
+        if (bomb)
+            bomb->update(dt);
+    }
 
-    std::vector<std::reference_wrapper<Hitbox>>& get_collidable() { return dynamic_collidables; }
+    /*
+     * Restart
+     * */
+    void restart() { bomb = nullptr; }
+
+    /*
+     * Sites
+     * */
+    Position get_tt_spawn() const;
+
+    Position get_ct_spawn() const;
+
+    /*
+     * Collidables
+     * */
+    void add_collidable(Hitbox& cll) { collidables.push_back(cll); }
+
+    std::vector<std::reference_wrapper<Hitbox>>& get_collidables() {
+        return collidables;
+    }
+
+    /*
+     * Bomb
+     * */
+    void plant_bomb(std::unique_ptr<Bomb> bomb, const Position& pos) {
+        if (bomb_site.get_distance(pos) < BOMB_SITE_RADIUS) {
+            this->bomb = std::move(bomb);
+            bomb->plant();
+        }
+    }
+
+    bool bomb_has_exploded() const {
+        if (!bomb)
+            return false;
+        return bomb->has_exploded();
+    }
+
+    bool bomb_is_planted() const {
+        if (!bomb)
+            return false;
+        return bomb->is_defused();
+    }
+
+    bool bomb_is_defused() const {
+        if (!bomb)
+            return false;
+        return bomb->is_defused();
+    }
 };
 
 #endif

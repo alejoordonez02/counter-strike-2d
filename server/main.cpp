@@ -1,6 +1,6 @@
-#include "../tests/mock_server.h"
+#include "tests/client/mock_server.h"
 
-int main() { 
+int main() {
     mock_server();
-    return 0; 
+    return 0;
 }

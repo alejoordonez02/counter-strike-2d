@@ -1,16 +1,19 @@
-#ifndef DTO_CONSTRUCTOR_H
-#define DTO_CONSTRUCTOR_H
+#ifndef COMMON_NETWORK_DTO_CONSTRUCTOR_H
+#define COMMON_NETWORK_DTO_CONSTRUCTOR_H
 
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <unordered_map>
-#include <cstdint>
+#include <utility>
+#include <vector>
 
-#include "dto.h"
-#include "protocol.h"
-#include "dtos/start_moving_dto.h"
-#include "dtos/start_attacking_dto.h"
-#include "dtos/snapshot_dto.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/aim_dto.h"
+#include "common/network/dtos/snapshot_dto.h"
+#include "common/network/dtos/start_attacking_dto.h"
+#include "common/network/dtos/start_moving_dto.h"
+#include "common/network/protocol.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;

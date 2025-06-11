@@ -1,12 +1,12 @@
-#ifndef PROTOCOL_H
-#define PROTOCOL_H
+#ifndef COMMON_NETWORK_PROTOCOL_H
+#define COMMON_NETWORK_PROTOCOL_H
 
 #include <cstdint>
 
 #include "common/map_list.h"
 
 namespace Message {
-constexpr int LenBytes = 2;  // vamos a mandar algo mas grande que 255 bytes?
+constexpr int LenBytes = 2; // vamos a mandar algo mas grande que 255 bytes?
 constexpr int MaxLen = 256; // <= 65535
 };  // namespace Message
 

@@ -1,21 +1,23 @@
-#ifndef SNAPSHOT_DTO_H
-#define SNAPSHOT_DTO_H
+#ifndef COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
+#define COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 
-#include "../../snapshot.h"
-#include "../dto.h"
-#include "../protocol.h"
+#include <utility>
+#include <vector>
 
-class SnapshotDTO : public DTO {
-public:
+#include "common/network/dto.h"
+#include "common/network/protocol.h"
+#include "common/snapshot.h"
+
+class SnapshotDTO: public DTO {
+    public:
     Snapshot snapshot;
 
-    explicit SnapshotDTO(std::vector<uint8_t>&& bytes)
-        : DTO(std::move(bytes)) {
+    explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         deserialize();
     }
 
-    explicit SnapshotDTO(const Snapshot& snap)
-        : DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
+    explicit SnapshotDTO(const Snapshot& snap):
+            DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
@@ -33,7 +35,7 @@ public:
 
     void deserialize() override {
         // Deserializar campos snapshot
-        int i = 1; // Start after type byte
+        int i = 1;  // Start after type byte
         snapshot.round_number = payload[i++];
         size_t num_players = payload[i++];
         snapshot.players.clear();

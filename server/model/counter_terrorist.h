@@ -1,15 +1,19 @@
-#ifndef COUNTER_TERRORIST_H
-#define COUNTER_TERRORIST_H
+#ifndef SERVER_MODEL_OUNTER_TERRORIST_H
+#define SERVER_MODEL_OUNTER_TERRORIST_H
 
-#include "ct_equipment.h"
-#include "player.h"
+#include "server/model/ct_equipment.h"
+#include "server/model/player.h"
 
 class CounterTerrorist: public Player {
-public:
-    CounterTerrorist(const Position& pos, Map& map): Player(pos, CTEquipment(), map) {}
+    private:
+    void teleport_to_spawn() override { pos = map.get_ct_spawn(); }
 
-    virtual void defuse_bomb() override;
-    virtual void stop_defusing() override;
+    public:
+    CounterTerrorist(const Position& pos, Map& map):
+            Player(pos, CTEquipment(), map) {}
+
+    void defuse_bomb() override;
+    void stop_defusing() override;
 };
 
 #endif

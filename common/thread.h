@@ -5,68 +5,68 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#ifndef THREAD_H_
-#define THREAD_H_
+#ifndef COMMON_THREAD_H_
+#define COMMON_THREAD_H_
 
 #include <atomic>
 #include <iostream>
 #include <thread>
 
 class Runnable {
-public:
-  virtual void start() = 0;
-  virtual void join() = 0;
-  virtual void stop() = 0;
-  virtual bool is_alive() const = 0;
+    public:
+    virtual void start() = 0;
+    virtual void join() = 0;
+    virtual void stop() = 0;
+    virtual bool is_alive() const = 0;
 
-  virtual ~Runnable() {}
+    virtual ~Runnable() {}
 };
 
-class Thread : public Runnable {
-private:
-  std::thread thread;
+class Thread: public Runnable {
+    private:
+    std::thread thread;
 
-  std::atomic<bool> _keep_running;
-  std::atomic<bool> _is_alive;
+    std::atomic<bool> _keep_running;
+    std::atomic<bool> _is_alive;
 
-protected:
-  bool should_keep_running() const { return _keep_running; }
+    protected:
+    bool should_keep_running() const { return _keep_running; }
 
-public:
-  Thread() : _keep_running(true), _is_alive(false) {}
+    public:
+    Thread(): _keep_running(true), _is_alive(false) {}
 
-  void start() override {
-    _is_alive = true;
-    _keep_running = true;
-    thread = std::thread(&Thread::main, this);
-  }
-
-  void join() override { thread.join(); }
-
-  void main() {
-    try {
-      this->run();
-    } catch (const std::exception &err) {
-      std::cerr << "Unexpected exception: " << err.what() << "\n";
-    } catch (...) {
-      std::cerr << "Unexpected exception: <unknown>\n";
+    void start() override {
+        _is_alive = true;
+        _keep_running = true;
+        thread = std::thread(&Thread::main, this);
     }
 
-    _is_alive = false;
-  }
+    void join() override { thread.join(); }
 
-  void stop() override { _keep_running = false; }
+    void main() {
+        try {
+            this->run();
+        } catch (const std::exception& err) {
+            std::cerr << "Unexpected exception: " << err.what() << "\n";
+        } catch (...) {
+            std::cerr << "Unexpected exception: <unknown>\n";
+        }
 
-  bool is_alive() const override { return _is_alive; }
+        _is_alive = false;
+    }
 
-  virtual void run() = 0;
-  virtual ~Thread() override {}
+    void stop() override { _keep_running = false; }
 
-  Thread(const Thread &) = delete;
-  Thread &operator=(const Thread &) = delete;
+    bool is_alive() const override { return _is_alive; }
 
-  Thread(Thread &&other) = delete;
-  Thread &operator=(Thread &&other) = delete;
+    virtual void run() = 0;
+    ~Thread() override {}
+
+    Thread(const Thread&) = delete;
+    Thread& operator=(const Thread&) = delete;
+
+    Thread(Thread&& other) = delete;
+    Thread& operator=(Thread&& other) = delete;
 };
 
 #endif

@@ -1,20 +1,26 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef SERVER_MODEL_PLAYER_H
+#define SERVER_MODEL_PLAYER_H
+
+#include <memory>
 
 #include "common/direction.h"
 #include "common/position.h"
+#include "server/model/action_strategy.h"
+#include "server/model/attack.h"
+#include "server/model/equipment.h"
+#include "server/model/idle.h"
+#include "server/model/map.h"
+#include "server/model/player_physics.h"
+#include "server/model/weapon.h"
 
-#include "action_strategy.h"
-#include "attack.h"
-#include "equipment.h"
-#include "idle.h"
-#include "map.h"
-#include "player_physics.h"
-#include "weapon.h"
+#define PLAYER_VELOCITY 1.0
+#define PLAYER_ACCELERATION 1.0
+#define PLAYER_RADIUS 1.0
+#define PLAYER_MONEY 500
+#define PLAYER_MAX_HEALTH 100
 
 class Player {
-private:
-    Position pos;
+    private:
     Direction dir;
     int health;
     bool alive;
@@ -28,7 +34,8 @@ private:
 
     void stop_action() { action = std::make_unique<Idle>(); }
 
-protected:
+    protected:
+    Position pos;
     Map& map;
     Equipment equipment;
     Weapon& current;
@@ -36,21 +43,41 @@ protected:
     friend class Game;
     PlayerPhysics& get_physics() { return physics; }
 
-public:
+    virtual void teleport_to_spawn() = 0;
+
+    public:
     Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
      * Update
      * */
     void update(float dt) {
+        if (!alive)
+            return;
+
         physics.update(dt);
         action->update(dt);
     }
 
     /*
+     * Restart/respawn
+     * */
+    void restart() {
+        teleport_to_spawn();
+        health = PLAYER_MAX_HEALTH;
+        alive = true;
+    }
+
+    /*
+     * Alive?
+     * */
+    bool is_alive() { return alive; }
+
+    /*
      * Move
      * */
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
+
     void stop_moving() { physics.stop_moving(); }
 
     /*
@@ -59,7 +86,13 @@ public:
     virtual void start_attacking() {
         action = std::make_unique<Attack>(physics, pos, dir, current, map);
     }
+
     void stop_attacking() { stop_action(); }
+
+    /*
+     * Aim
+     * */
+    void aim(Direction dir) { this->dir = dir; }
 
     /*
      * Set current weapon
@@ -79,14 +112,14 @@ public:
     /*
      * Terrorist
      * */
-    void plant_bomb() {}
-    void stop_planting() {}
+    virtual void plant_bomb() {}
+    virtual void stop_planting() {}
 
     /*
      * Counter terrorist
      * */
-    void defuse_bomb() {}
-    void stop_defusing() {}
+    virtual void defuse_bomb() {}
+    virtual void stop_defusing() {}
 
     /*
      * Destructor

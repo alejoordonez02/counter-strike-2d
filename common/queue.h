@@ -5,8 +5,8 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#ifndef QUEUE_H_
-#define QUEUE_H_
+#ifndef COMMON_QUEUE_H
+#define COMMON_QUEUE_H
 
 #include <climits>
 #include <condition_variable>
@@ -20,7 +20,7 @@ struct ClosedQueue: public std::runtime_error {
     ClosedQueue(): std::runtime_error("The queue is closed") {}
 };
 
-template <typename T, class C = std::deque<T> >
+template <typename T, class C = std::deque<T>>
 class Queue {
 private:
     std::queue<T, C> q;

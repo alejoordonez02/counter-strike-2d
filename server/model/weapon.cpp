@@ -1,11 +1,13 @@
-#include "weapon.h"
+#include "server/model/weapon.h"
 
-#include "random.h"
+#include <vector>
+
+#include "server/model/random.h"
 
 Weapon::Weapon() {}
 
-Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy, const float& range,
-               const int& cost, const int& ammo_cost):
+Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy,
+               const float& range, const int& cost, const int& ammo_cost):
         damage(damage),
         ammo(ammo),
         accuracy(accuracy),
@@ -22,10 +24,11 @@ void Weapon::attack(Position origin, Direction direction,
      * ataque, le pega (con probabilidad de miss), resta munición y corta
      * */
     Trajectory t(origin, origin + direction * range);
-    for (auto i: sorted_idx) {
+    for (auto i : sorted_idx) {
         auto& coll = collidables[i].get();
-        if (coll.intersect(t) and Random::get() < accuracy) {
-            coll.get_attacked(damage);
+        if (coll.intersect(t)) {
+            if (Random::get() < accuracy)
+                coll.get_attacked(damage);
             ammo--;
             break;
         }

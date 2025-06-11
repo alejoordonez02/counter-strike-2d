@@ -1,19 +1,19 @@
-#ifndef HITBOX_H
-#define HITBOX_H
+#ifndef SERVER_MODEL_HITBOX_H
+#define SERVER_MODEL_HITBOX_H
 
 #include <algorithm>
-#include <memory>
-#include <numeric>
 #include <optional>
 #include <vector>
 
-#include "trajectory.h"
+#include "server/model/trajectory.h"
 
 class Hitbox {
-private:
-    float get_distance(const Hitbox& hitbox) const { return pos.get_distance(hitbox.pos); }
+    private:
+    float get_distance(const Hitbox& hitbox) const {
+        return pos.get_distance(hitbox.pos);
+    }
 
-protected:
+    protected:
     Position& pos;
 
     std::vector<size_t> sort_by_distance_idx(
@@ -21,8 +21,10 @@ protected:
         std::vector<size_t> idx;
         idx.reserve(coll.size());
         for (size_t i = 0; i < coll.size(); ++i) {
-            if (&coll[i].get() != this)  // skip self
-                idx.push_back(i);
+            if (&coll[i].get() == this)
+                continue;  // skip self
+
+            idx.push_back(i);
         }
 
         std::sort(idx.begin(), idx.end(), [&coll, this](size_t i, size_t j) {
@@ -32,12 +34,14 @@ protected:
         return idx;
     }
 
-public:
-    Hitbox(Position& pos): pos(pos) {}
+    public:
+    explicit Hitbox(Position& pos): pos(pos) {}
 
     virtual std::optional<Position> intersect(const Trajectory& t) const = 0;
 
     virtual void get_attacked(int damage) = 0;
+
+    virtual Position get_position() const { return pos; }
 
     virtual ~Hitbox() = default;
 };
