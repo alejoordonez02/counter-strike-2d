@@ -114,16 +114,19 @@ void InputHandler::send_attack() {
     prev_left = is_attacking;
 }
 
+static int last_mouse_x = -1;
+static int last_mouse_y = -1;
+static int current_mouse_x = -1;
+static int current_mouse_y = -1;
 
 
-void InputHandler::send_aim(const SDL_Event& event) {
-    // Enviar la dirección del mouse como un DTO
-    SDL_MouseMotionEvent& mouseEvent = (SDL_MouseMotionEvent&)event;
-    Direction aim_direction(mouseEvent.xrel, mouseEvent.yrel, false);
-
-    // commands_queue.try_push(std::make_shared<AimDTO>(aim_direction));
-    std::cout << "LOG: Enviando dirección de apuntado: (" << aim_direction.x << ", " << aim_direction.y << ")" << std::endl;
-
+void InputHandler::send_aim() {
+    if (current_mouse_x != last_mouse_x || current_mouse_y != last_mouse_y) {
+        std::cout << "LOG: Enviando comando de aim a (" << current_mouse_x << ", " << current_mouse_y << ")" << std::endl;
+        // commands_queue.try_push(std::make_shared<AimDTO>(current_mouse_x, current_mouse_y));
+        last_mouse_x = current_mouse_x;
+        last_mouse_y = current_mouse_y;
+    }
 }
 
 
@@ -131,6 +134,7 @@ void InputHandler::send_aim(const SDL_Event& event) {
 void InputHandler::process_movement() {
     send_direction();
     send_attack();
+    send_aim();
     // send_states();
 }
 
@@ -155,7 +159,9 @@ bool InputHandler::handle_events() {
                 handle_mouse_up(event);
                 break;
             case SDL_MOUSEMOTION:
-                send_aim(event);
+                // send_aim(event);
+                current_mouse_x = event.motion.x;
+                current_mouse_y = event.motion.y;
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Cerrando ventana..." << std::endl;
