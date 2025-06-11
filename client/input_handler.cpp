@@ -12,6 +12,7 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_attacking_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
+#include "input_handler.h"
 
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
@@ -113,6 +114,19 @@ void InputHandler::send_attack() {
     prev_left = is_attacking;
 }
 
+
+
+void InputHandler::send_aim(const SDL_Event& event) {
+    // Enviar la dirección del mouse como un DTO
+    SDL_MouseMotionEvent& mouseEvent = (SDL_MouseMotionEvent&)event;
+    Direction aim_direction(mouseEvent.xrel, mouseEvent.yrel, false);
+
+    // commands_queue.try_push(std::make_shared<AimDTO>(aim_direction));
+    std::cout << "LOG: Enviando dirección de apuntado: (" << aim_direction.x << ", " << aim_direction.y << ")" << std::endl;
+
+}
+
+
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
@@ -141,8 +155,7 @@ bool InputHandler::handle_events() {
                 handle_mouse_up(event);
                 break;
             case SDL_MOUSEMOTION:
-                // handle_mouse_motion(event);
-                // TODO: Comando Aim
+                send_aim(event);
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Cerrando ventana..." << std::endl;

@@ -27,6 +27,8 @@ class InputHandler: public Thread {
 
     void send_attack();
 
+    void send_aim(const SDL_Event& event);
+
     public:
     explicit InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
 
