@@ -4,19 +4,19 @@
 #include <memory>
 #include <string>
 
-#include "../common/network/connection.h"
-#include "../common/queue.h"
-#include "../common/network/dto.h"
-#include "../common/network/sender.h"
-#include "../common/network/receiver.h"
-#include "client_lobby.h"
-#include "game_monitor.h"
-#include "cmd_constructor.h"
-#include "player_commands/command.h"
+#include "common/network/connection.h"
+#include "common/network/dto.h"
+#include "common/network/receiver.h"
+#include "common/network/sender.h"
 #include "common/network/socket/socket.h"
+#include "common/queue.h"
+#include "server/client_lobby.h"
+#include "server/cmd_constructor.h"
+#include "server/game_monitor.h"
+#include "server/player_commands/command.h"
 
 class ClientSession {
-private:
+    private:
     Connection con;
     Queue<std::shared_ptr<DTO>> send_q;
     Queue<std::unique_ptr<DTO>> recv_q;
@@ -30,10 +30,9 @@ private:
 
     CmdConstructor cmd_ctr;
 
-public:
-    ClientSession(Socket&& s, GameMonitor& gm): 
+    public:
+    ClientSession(Socket&& s, GameMonitor& gm):
             con(std::move(s)), game_monitor(gm), _is_offline(false) {}
-
 
     bool is_offline();
     const std::string& get_username();
@@ -48,8 +47,8 @@ public:
     ClientSession(const ClientSession&) = delete;
     ClientSession& operator=(const ClientSession&) = delete;
 
-    ClientSession(ClientSession&&) = default;
-    ClientSession& operator=(ClientSession&&) = default;
+    ClientSession(ClientSession&&) = delete;
+    ClientSession& operator=(ClientSession&&) = delete;
 
     ~ClientSession() = default;
 };
