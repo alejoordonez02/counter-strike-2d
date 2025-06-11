@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "server/model/hitbox.h"
+#include "server/model/timer.h"
 
 class Weapon {
     private:
@@ -11,14 +12,16 @@ class Weapon {
     int ammo;
     float accuracy; /* entre 0 y 1, es una proba */
     float range;
+    Timer fire_delay;
     int cost;
     int ammo_cost;
 
     public:
-    Weapon();
-
     Weapon(const int& damage, const int& ammo, const float& accuracy,
-           const float& range, const int& cost, const int& ammo_cost);
+           const float& range, float fire_rate, const int& cost,
+           const int& ammo_cost);
+
+    void update(float dt) { fire_delay.update(dt); }
 
     virtual void attack(
             Position origin, Direction direction,
