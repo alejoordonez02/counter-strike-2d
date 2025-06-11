@@ -14,7 +14,7 @@
 #define TIME_OUT 20
 
 class Game {
-    private:
+private:
     Map map;
     std::map<std::string, std::unique_ptr<Player>> players;
     bool round_ongoing;
@@ -67,9 +67,9 @@ class Game {
             return sum_round(ct_won_rounds);
     }
 
-    public:
-    Game():
-            map(),
+public:
+    Game(Map&& map):
+            map(std::move(map)),
             players(),
             round_time(ROUND_TIME),
             tt_won_rounds(0),
