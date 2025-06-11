@@ -1,21 +1,16 @@
 #ifndef SERVER_MODEL_OMB_H
 #define SERVER_MODEL_OMB_H
 
-/*
- * este número tiene que ir a una config!
- * */
-const int bomb_time = 300;
-
 #include "server/model/timer.h"
 
 enum class BombState { NOT_PLANTED, PLANTED, EXPLODED, DEFUSED };
 
 class Bomb {
-    private:
+private:
     Timer timer;
     BombState state;
 
-    public:
+public:
     Bomb(float time_left): timer(time_left), state(BombState::NOT_PLANTED) {}
 
     void update(float dt) {

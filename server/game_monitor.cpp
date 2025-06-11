@@ -1,18 +1,20 @@
 #include "game_monitor.h"
+
 #include "common/network/dtos/game_details_dto.h"
 
 std::vector<std::unique_ptr<GameDetailsDTO>> GameMonitor::list_games() {
     std::unique_lock<std::mutex> lck(mtx);
 
     std::vector<std::unique_ptr<GameDetailsDTO>> list;
-    for (const auto& [k, v]: games) {
+    for (const auto& [k, v] : games) {
         list.push_back(v->get_details());
     }
 
     return list;
 }
 
-bool GameMonitor::create_game(ClientSession* client_s, const std::string& g_name, MapName map_name) {
+bool GameMonitor::create_game(ClientSession* client_s,
+                              const std::string& g_name, MapName map_name) {
     std::unique_lock<std::mutex> lck(mtx);
 
     if (_is_shutdown)
@@ -29,7 +31,8 @@ bool GameMonitor::create_game(ClientSession* client_s, const std::string& g_name
     return true;
 }
 
-bool GameMonitor::join_game(ClientSession* client_s, const std::string& g_name) {
+bool GameMonitor::join_game(ClientSession* client_s,
+                            const std::string& g_name) {
     std::unique_lock<std::mutex> lck(mtx);
 
     if (_is_shutdown)
@@ -37,7 +40,7 @@ bool GameMonitor::join_game(ClientSession* client_s, const std::string& g_name) 
     if (not games.count(g_name) || player_count[g_name] == MAX_PLYS_PER_GAME)
         return false;
     auto game = games[g_name].get();
-    if (game->has_started())
+    if (game->is_running())
         return false;
 
     game->add_client(client_s);
@@ -68,7 +71,7 @@ void GameMonitor::remove_username(const std::string& name) {
 void GameMonitor::reap_dead_games() {
     std::unique_lock<std::mutex> lck(mtx);
 
-    for (auto it = games.begin(); it != games.end(); ) {
+    for (auto it = games.begin(); it != games.end();) {
         if (not it->second->is_alive()) {
             it->second->join();
             it = games.erase(it);

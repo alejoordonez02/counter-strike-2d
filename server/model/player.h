@@ -20,7 +20,7 @@
 #define PLAYER_MAX_HEALTH 100
 
 class Player {
-    private:
+private:
     Direction dir;
     int health;
     bool alive;
@@ -34,7 +34,7 @@ class Player {
 
     void stop_action() { action = std::make_unique<Idle>(); }
 
-    protected:
+protected:
     Position pos;
     Map& map;
     Equipment equipment;
@@ -45,7 +45,7 @@ class Player {
 
     virtual void teleport_to_spawn() = 0;
 
-    public:
+public:
     Player(Position pos, Equipment&& equipment, Map& map);
 
     /*
