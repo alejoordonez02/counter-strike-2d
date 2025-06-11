@@ -37,10 +37,17 @@ void mock_server() {
     // ======== inicializacion ========
     PlayerData player1{};
     player1.player_id = 1;
-    Snapshot snap{};
-    snap.round_number = 0;
-    snap.players.push_back(player1);
-    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(snap);
+
+    PlayerData player2{};
+    player2.player_id = 2;
+    player2.x = 200;
+    player2.y = 200;
+
+    Snapshot initial_snap{};
+    initial_snap.round_number = 0;
+    initial_snap.players.push_back(player1);
+    initial_snap.players.push_back(player2);
+    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(initial_snap);
     snapshots_queue.try_push(std::move(initial_snapshot));
     // TODO: habria que hacer esto: pero no me funca, son las 2am y estoy
     // cansado jefe -alepaff Map map; Player player(Position(0, 0),
@@ -75,9 +82,10 @@ void mock_server() {
                       << player1.y << ")" << std::endl;
 
             // debe crear siempre un nuevo snapshot
-            snap = Snapshot{};
+            Snapshot snap{};
             snap.round_number = 1;
             snap.players.push_back(player1);
+            snap.players.push_back(player2);
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
             std::shared_ptr<DTO> snapshot_dto =

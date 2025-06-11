@@ -22,9 +22,10 @@ class Render {
             players_renderables;
 
     std::shared_ptr<AnimationProvider> animation_provider;
+    int user_player_id;
 
     public:
-    Render();
+    Render(int user_player_id);
 
     void run();
 

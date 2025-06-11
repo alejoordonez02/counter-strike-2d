@@ -22,7 +22,8 @@ class GameLoop {
 
     public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::shared_ptr<DTO>>& commands);
+             Queue<std::shared_ptr<DTO>>& commands,
+            int user_player_id);
 
     void run();
 
