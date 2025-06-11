@@ -34,6 +34,8 @@ public:
         serialize_dir_into(out, dir);
     }
 
+    Direction get_direction() { return dir; }
+
     ~StartMovingDTO() = default;
 };
 
