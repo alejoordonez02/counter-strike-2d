@@ -9,12 +9,12 @@
 #include "common/network/protocol.h"
 
 class StartAttackingDTO: public DTO {
-    private:
+private:
     friend class StartAttacking;
 
     void deserialize() override {}
 
-    public:
+public:
     explicit StartAttackingDTO(std::vector<uint8_t>&& bytes):
             DTO(std::move(bytes)) {
         deserialize();

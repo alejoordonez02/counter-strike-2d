@@ -15,43 +15,32 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/protocol.h"
 
-class DTOConstructor {
-    private:
-    std::unordered_map<uint8_t, std::function<std::unique_ptr<DTO>(
-                                        std::vector<uint8_t>&&)>>
-            maker_map;
+using namespace DTOSerial::PlayerCommands;
+// using namespace DTOSerial:: otros;
 
-    public:
+using DTOMaker = std::function<std::unique_ptr<DTO>(std::vector<uint8_t>&&)>;
+
+
+class DTOConstructor {
+private:
+    std::unordered_map<uint8_t, DTOMaker> maker_map;
+
+public:
     DTOConstructor() {
         maker_map = {
-                {DTOSerial::PlayerCommands::MOVE,
-                 [](auto&& bytes) {
-                     return std::make_unique<StartMovingDTO>(std::move(bytes));
-                 }},
-                {DTOSerial::PlayerCommands::ATTACK,
-                 [](auto&& bytes) {
-                     return std::make_unique<StartAttackingDTO>(
-                             std::move(bytes));
-                 }},
-                {DTOSerial::PlayerCommands::AIM,
-                 [](auto&& bytes) {
-                     return std::make_unique<AimDTO>(std::move(bytes));
-                 }},
-                {DTOSerial::PlayerCommands::SNAPSHOT,
-                 [](auto&& bytes) {
-                     return std::make_unique<SnapshotDTO>(std::move(bytes));
-                 }},
-                // ...
+            {MOVE, [](auto&& bytes) { return std::make_unique<StartMovingDTO>(std::move(bytes)); }},
+            {ATTACK, [](auto&& bytes) { return std::make_unique<StartAttackingDTO>(std::move(bytes)); }},
+            {SNAPSHOT, [](auto&& bytes) { return std::make_unique<SnapshotDTO>(std::move(bytes)); }},
+            // ...
         };
     }
 
     std::unique_ptr<DTO> construct(std::vector<uint8_t>&& bytes) {
-        if (!maker_map.count(bytes[0]))
+        if (not maker_map.count(bytes[0]))
             throw std::runtime_error("DTOConstructor error: unknown DTO type");
 
-        std::function<std::unique_ptr<DTO>(std::vector<uint8_t>&&)> f =
-                maker_map.at(bytes[0]);
-
+        DTOMaker f = maker_map.at(bytes[0]);
+        
         return f(std::move(bytes));
     }
 

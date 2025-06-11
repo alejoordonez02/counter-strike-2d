@@ -14,28 +14,22 @@
 #include "server/player_commands/start_attacking.h"
 #include "server/player_commands/start_moving.h"
 
+using namespace DTOSerial::PlayerCommands;
+
 using CmdMaker =
         std::function<std::unique_ptr<Command>(std::unique_ptr<DTO>&&)>;
 
 class CmdConstructor {
-    private:
+private:
     std::unordered_map<uint8_t, CmdMaker> maker_map;
 
-    public:
+public:
     CmdConstructor() {
         maker_map = {
-                {DTOSerial::PlayerCommands::MOVE,
-                 [](auto&& dto_p) {
-                     return std::make_unique<StartMoving>(std::move(dto_p));
-                 }},
-                {DTOSerial::PlayerCommands::ATTACK,
-                 [](auto&& dto_p) {
-                     return std::make_unique<StartAttacking>(std::move(dto_p));
-                 }},
-                {DTOSerial::PlayerCommands::AIM,
-                 [](auto&& dto_p) {
-                     return std::make_unique<Aim>(std::move(dto_p));
-                 }},
+                {MOVE,
+                 [](auto&& dto_p) { return std::make_unique<StartMoving>(std::move(dto_p)); }},
+                {ATTACK,
+                 [](auto&& dto_p) { return std::make_unique<StartAttacking>(std::move(dto_p)); }},
                 // ...
         };
     }
@@ -43,7 +37,7 @@ class CmdConstructor {
     std::unique_ptr<Command> construct(std::unique_ptr<DTO>&& dto_p) {
         uint8_t cmd_type = dto_p->get_type();
 
-        if (!maker_map.count(cmd_type))
+        if (not maker_map.count(cmd_type))
             throw std::runtime_error(
                     "CmdConstructor error: unknown Command type");
 

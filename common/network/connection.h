@@ -8,12 +8,12 @@
 #include "common/network/socket/socket.h"
 
 class Connection {
-    private:
+private:
     Socket skt;
 
     void send_length(const std::vector<uint8_t>& msg);
 
-    public:
+public:
     /*
      * Server connection
      * */
@@ -24,8 +24,15 @@ class Connection {
      * */
     Connection(const std::string& hostname, const std::string& servname);
 
+    
     void send_msg(const std::vector<uint8_t>& msg);
     std::vector<uint8_t> receive_msg();
+    void send_single(const uint8_t b);
+    uint8_t receive_single();
+
+    void destroy_socket();
+    Socket release_socket();
+    void acquire_socket(Socket&& s);
 
     Connection(const Connection&) = delete;
     Connection& operator=(const Connection&) = delete;

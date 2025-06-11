@@ -1,4 +1,4 @@
-background: "../resources/backgrounds/mars.png"
+background: "../resources/backgrounds/dust.png"
 planting_spots: 16
 blocks:
   - x: 32
@@ -112,52 +112,52 @@ blocks:
   - x: 0
     y: 0
     type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 64
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 160
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 224
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 320
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 384
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 352
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 288
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 256
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 192
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 128
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
-  - x: 96
-    y: 0
-    type: Plantable
-    texture: "../resources/tiles/sitea.png"
+    texture: "../resources/tiles/siteb.png"
   - x: 32
     y: 0
     type: Plantable
-    texture: "../resources/tiles/sitea.png"
+    texture: "../resources/tiles/siteb.png"
+  - x: 64
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 96
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 128
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 160
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 192
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 224
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 256
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 320
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 352
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 384
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
+  - x: 288
+    y: 0
+    type: Plantable
+    texture: "../resources/tiles/siteb.png"
