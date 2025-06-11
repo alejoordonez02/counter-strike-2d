@@ -2,22 +2,22 @@
 #define GAME_MONITOR_H
 
 #include <map>
-#include <string>
-#include <mutex>
-#include <vector>
 #include <memory>
+#include <mutex>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
-#include "game_loop.h"
-#include "common/network/dtos/game_details_dto.h"
 #include "common/map_name.h"
+#include "common/network/dtos/game_details_dto.h"
+#include "server/game_loop.h"
 
 #define MAX_PLYS_PER_GAME 10
 
 class ClientSession;
 
 class GameMonitor {
-private:
+    private:
     std::map<std::string, std::unique_ptr<GameLoop>> games;
     std::map<std::string, int> player_count;
     std::unordered_set<std::string> player_usernames;
@@ -25,11 +25,12 @@ private:
 
     std::mutex mtx;
 
-public:
+    public:
     GameMonitor(): _is_shutdown(false) {}
 
     std::vector<std::unique_ptr<GameDetailsDTO>> list_games();
-    bool create_game(ClientSession* client_s, const std::string& g_name, MapName map_name);
+    bool create_game(ClientSession* client_s, const std::string& g_name,
+                     MapName map_name);
     bool join_game(ClientSession* client_s, const std::string& g_name);
     bool add_username(const std::string& name);
     void remove_username(const std::string& name);
@@ -40,8 +41,8 @@ public:
     GameMonitor(const GameMonitor&) = delete;
     GameMonitor& operator=(const GameMonitor&) = delete;
 
-    GameMonitor(GameMonitor&&) = default;
-    GameMonitor& operator=(GameMonitor&&) = default;
+    GameMonitor(GameMonitor&&) = delete;
+    GameMonitor& operator=(GameMonitor&&) = delete;
 
     ~GameMonitor() = default;
 };
