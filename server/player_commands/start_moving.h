@@ -15,10 +15,10 @@
  * Start moving
  * */
 class StartMoving: public Command {
-    private:
+private:
     Direction dir;
 
-    public:
+public:
     explicit StartMoving(const Direction& d): dir(d) {}
 
     explicit StartMoving(std::unique_ptr<DTO>&& dto_p) {

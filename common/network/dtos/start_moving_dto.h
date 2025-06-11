@@ -10,7 +10,7 @@
 #include "common/network/protocol.h"
 
 class StartMovingDTO: public DTO {
-    private:
+private:
     Direction dir;
 
     friend class StartMoving;
@@ -20,7 +20,7 @@ class StartMovingDTO: public DTO {
         dir = deserialize_dir(i);
     }
 
-    public:
+public:
     explicit StartMovingDTO(std::vector<uint8_t>&& bytes):
             DTO(std::move(bytes)) {
         deserialize();
@@ -34,10 +34,9 @@ class StartMovingDTO: public DTO {
         serialize_dir_into(out, dir);
     }
 
-    ~StartMovingDTO() = default;
-
-    /* BORRAR ESTO -alepaff*/
     Direction get_direction() { return dir; }
+
+    ~StartMovingDTO() = default;
 };
 
 #endif

@@ -15,12 +15,12 @@
 #include "common/thread.h"
 
 class Receiver: public Thread {
-    private:
+private:
     Connection& con;
     Queue<std::unique_ptr<DTO>>& queue;
     DTOConstructor dto_ctr;
 
-    public:
+public:
     Receiver(Connection& c, Queue<std::unique_ptr<DTO>>& q): con(c), queue(q) {}
 
     void run() override {
@@ -30,10 +30,10 @@ class Receiver: public Thread {
                 std::unique_ptr<DTO> dto_p = dto_ctr.construct(std::move(msg));
                 queue.push(std::move(dto_p));
             }
-        } catch (const std::runtime_error&
-                         err) {  // ClosedQueue or socket was closed
-        } catch (const LibError&
-                         err) {  // socket was closed during Socket::recvall()
+        } catch (const std::runtime_error& err) {
+            // ClosedQueue or socket was closed
+        } catch (const LibError& err) {
+            // socket was closed during Socket::recvall()
         }
     }
 

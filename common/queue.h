@@ -5,8 +5,8 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#ifndef COMMON_QUEUE_H_
-#define COMMON_QUEUE_H_
+#ifndef COMMON_QUEUE_H
+#define COMMON_QUEUE_H
 
 #include <climits>
 #include <condition_variable>
@@ -22,7 +22,7 @@ struct ClosedQueue: public std::runtime_error {
 
 template <typename T, class C = std::deque<T>>
 class Queue {
-    private:
+private:
     std::queue<T, C> q;
     const unsigned int max_size;
 
@@ -32,10 +32,10 @@ class Queue {
     std::condition_variable is_not_full;
     std::condition_variable is_not_empty;
 
-    public:
+public:
     Queue(): max_size(UINT_MAX - 1), closed(false) {}
-    explicit Queue(const unsigned int max_size):
-            max_size(max_size), closed(false) {}
+    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
+
 
     template <typename U>
     bool try_push(U&& val) {
@@ -126,14 +126,24 @@ class Queue {
         is_not_empty.notify_all();
     }
 
-    private:
+    void reset() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        closed = false;
+        if (not q.empty())
+            q = std::queue<T, C>();
+
+        is_not_full.notify_all();
+    }
+
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };
 
 template <>
 class Queue<void*> {
-    private:
+private:
     std::queue<void*> q;
     const unsigned int max_size;
 
@@ -143,9 +153,10 @@ class Queue<void*> {
     std::condition_variable is_not_full;
     std::condition_variable is_not_empty;
 
-    public:
-    explicit Queue(const unsigned int max_size):
-            max_size(max_size), closed(false) {}
+public:
+    Queue(): max_size(UINT_MAX - 1), closed(false) {}
+    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
+
 
     bool try_push(void* const& val) {
         std::unique_lock<std::mutex> lck(mtx);
@@ -234,14 +245,16 @@ class Queue<void*> {
         is_not_empty.notify_all();
     }
 
-    private:
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };
 
+
 template <typename T>
 class Queue<T*>: private Queue<void*> {
-    public:
+public:
+    Queue() = default;
     explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
 
     using Queue<void*>::try_push;
@@ -250,19 +263,15 @@ class Queue<T*>: private Queue<void*> {
     using Queue<void*>::pop;
     using Queue<void*>::close;
 
-    bool try_push(T* const& val) override {
-        return Queue<void*>::try_push(val);
-    }
+    bool try_push(T* const& val) override { return Queue<void*>::try_push(val); }
 
-    bool try_pop(T*& val) override {
-        return Queue<void*>::try_pop((void*&)val);
-    }  // cppcheck-suppress cstyleCast
+    bool try_pop(T*& val) override { return Queue<void*>::try_pop((void*&)val); } // cppcheck-suppress cstyleCast
 
     void push(T* const& val) override { return Queue<void*>::push(val); }
 
     T* pop() override { return static_cast<T*>(Queue<void*>::pop()); }
 
-    private:
+private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
 };

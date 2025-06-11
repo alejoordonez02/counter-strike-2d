@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include <arpa/inet.h>
 
@@ -11,7 +12,7 @@
 #include "common/position.h"
 
 class DTO {
-    protected:
+protected:
     uint8_t type;
     std::vector<uint8_t> payload;
     bool _is_serialized;
@@ -22,7 +23,7 @@ class DTO {
 
     virtual void deserialize() = 0;
 
-    public:
+public:
     uint8_t get_type() const { return type; }
     const std::vector<uint8_t>& serialize();
     virtual void serialize_into(std::vector<uint8_t>& out) = 0;
@@ -35,7 +36,7 @@ class DTO {
 
     virtual ~DTO() = default;
 
-    protected:
+protected:
     // serialization
 
     void serialize_float_into(std::vector<uint8_t>& out, const float& n);
@@ -43,12 +44,14 @@ class DTO {
                               const float& y);
     void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
     void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
+    void serialize_string_into(std::vector<uint8_t>& out, const std::string& str);
 
     // deserialization
 
     float deserialize_float(int& i);
     Position deserialize_pos(int& i);
     Direction deserialize_dir(int& i);
+    std::string deserialize_string(int& i);
 };
 
 #endif
