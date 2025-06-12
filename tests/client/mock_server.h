@@ -47,6 +47,8 @@ void mock_server() {
     player2.is_walking = false;
     player2.x = 200;
     player2.y = 200;
+    player2.aim_x = 400;
+    player2.aim_y = 400;
 
     PlayerData player3{};
     player3.player_id = 3;
