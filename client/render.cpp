@@ -71,9 +71,6 @@ void Render::render() {
 
 
 Render::~Render() {
-    this->window.~Window();
-    this->renderer.~Renderer();
-    this->sdl.~SDL();
     // Limpiar los renderables de jugadores
     players_renderables.clear();
 }

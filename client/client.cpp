@@ -25,6 +25,10 @@ void Client::run() {
     GameLoop gameloop(snapshots, commands, player_id);
     gameloop.run();
 
+    commands.close();
+    snapshots.close();
+
+    con.destroy_socket();
     
     input_handler.stop();
     
