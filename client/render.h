@@ -26,14 +26,13 @@ class Render {
 
     public:
     Render(int user_player_id);
+    ~Render();
 
     void run();
 
     void update(Snapshot snapshot);
 
     void render();
-
-    void closeWindow();
 };
 
 #endif  // Render_H

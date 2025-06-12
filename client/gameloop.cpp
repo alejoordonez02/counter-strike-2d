@@ -49,3 +49,4 @@ void GameLoop::run() {
         usleep(FRAME_RATE);
     }
 }
+

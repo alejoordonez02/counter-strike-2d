@@ -24,4 +24,15 @@ void Client::run() {
     // final se encontrará en el GameLoop
     GameLoop gameloop(snapshots, commands, player_id);
     gameloop.run();
+
+    
+    input_handler.stop();
+    
+    // Detener el sender y receiver
+    sender.stop();
+    receiver.stop();
+    
+    // Esperar a que terminen
+    sender.join();
+    receiver.join();
 }

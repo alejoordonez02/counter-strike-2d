@@ -47,8 +47,6 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
     Camera::center_rectangle(src);
     Camera::center_rectangle(dst);
 
-    std::cout << "POS NUEVA: " <<src.GetX() << ", " << src.GetY() << std::endl;
-
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed
                   flipType);
