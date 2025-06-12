@@ -22,13 +22,12 @@ class GameLoop {
 
     public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::shared_ptr<DTO>>& commands);
-
+             Queue<std::shared_ptr<DTO>>& commands,
+            int user_player_id);
+            
     void run();
 
     Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
-
-    void closeWindow();
 };
 
 #endif  // GAMELOOP_H

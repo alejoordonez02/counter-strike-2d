@@ -1,4 +1,5 @@
 #include "client/renderables/animation.h"
+#include "client/camera.h"
 
 #include <iostream>
 #include <string>
@@ -41,8 +42,10 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
     int frameY = (this->current_frame / columns) * size;
 
     SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
-
     SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
+
+    // se modifica su posición para que este centrado en la cámara
+    Camera::modify_center_rectangle(dst);
 
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed

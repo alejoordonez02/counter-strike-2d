@@ -163,7 +163,7 @@ bool InputHandler::handle_events() {
                 handle_mouse_up(event);
                 break;
             case SDL_QUIT:
-                std::cout << "LOG: Cerrando ventana..." << std::endl;
+                std::cout << "LOG: Saliendo del input handler..." << std::endl;
                 return false;
         }
     }
