@@ -17,7 +17,7 @@ void Camera::set_screen_size(const SDL2pp::Point& size) {
 }
 
 
-void Camera::center_rectangle(SDL2pp::Rect& rect) {
+void Camera::modify_center_rectangle(SDL2pp::Rect& rect) {
     // centra el rectángulo en la pantalla usando el offset de la cámara
     rect.x -= camera_offset.x;
     rect.y -= camera_offset.y;

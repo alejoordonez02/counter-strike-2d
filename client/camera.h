@@ -5,7 +5,10 @@
 #include "SDL2pp/Rect.hh"
 
 
-
+/**
+ * Se encarga de centrar la cámara en el jugador actual.
+ * Es quien convierte las posiciones absolutas en relativas a la posición del jugador
+ */
 class Camera {
     private:
     static SDL2pp::Point camera_offset;
@@ -16,7 +19,7 @@ class Camera {
     ~Camera() {}
     static void set_center(int jugador_x, int jugador_y);
     static void set_screen_size(const SDL2pp::Point& size);
-    static void center_rectangle(SDL2pp::Rect& rect);
+    static void modify_center_rectangle(SDL2pp::Rect& rect);
 };
 
 #endif

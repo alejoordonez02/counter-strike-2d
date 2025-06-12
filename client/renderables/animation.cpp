@@ -44,7 +44,8 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
     SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
     SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
 
-    Camera::center_rectangle(dst);
+    // se modifica su posición para que este centrado en la cámara
+    Camera::modify_center_rectangle(dst);
 
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed
