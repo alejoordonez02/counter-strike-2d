@@ -4,6 +4,7 @@
 
 #include "client/animation_provider.h"
 #include "client/texture_provider.h"
+#include "client/camera.h"
 
 Render::Render(int user_player_id):
         sdl(SDL_INIT_VIDEO),
@@ -23,6 +24,12 @@ Render::Render(int user_player_id):
 void Render::update(Snapshot snapshot) {
     // actualizar jugadores
     for (auto& jugador : snapshot.players) {
+        // si es el jugador actual actualiza el offset de la camara
+        if (jugador.player_id == user_player_id) {
+            Camera::set_center(jugador.x, jugador.y);
+            Camera::set_screen_size(renderer.GetOutputSize());
+        }
+
         // iterar cada uno y buscarlo por ID
         auto it = players_renderables.find(jugador.player_id);
         if (it != players_renderables.end()) {
