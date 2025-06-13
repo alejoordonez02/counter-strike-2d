@@ -22,17 +22,17 @@ class Render {
             players_renderables;
 
     std::shared_ptr<AnimationProvider> animation_provider;
+    int user_player_id;
 
     public:
-    Render();
+    Render(int user_player_id);
+    ~Render();
 
     void run();
 
     void update(Snapshot snapshot);
 
     void render();
-
-    void closeWindow();
 };
 
 #endif  // Render_H

@@ -7,8 +7,8 @@
 #define FRAME_RATE 1000000.0f / 25.0f
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-                   Queue<std::unique_ptr<DTO>>& commands):
-        render(),
+                   Queue<std::unique_ptr<DTO>>& commands, int user_player_id):
+        render(user_player_id),
         snapshots_queue(snapshots),
         commands_queue(commands),
         input_handler(commands) {
@@ -30,8 +30,8 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
     if (snapshot_dto) {
         return snapshot_dto->snapshot;
     }
-    // si no hay snapshot nueva, devuelve el último estado -> Esto permite que
-    // siga renderizando
+    // si no hay snapshot nueva, devuelve el último estado
+    // -> Esto permite que siga renderizando
     return last_snapshot;
 }
 

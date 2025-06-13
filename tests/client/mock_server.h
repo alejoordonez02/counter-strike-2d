@@ -23,7 +23,7 @@ using Ms = std::chrono::milliseconds;
 #define TICK_RATE 64
 
 class MockServer {
-private:
+    private:
     static inline int id = 0;
     static inline int get_player_id() { return id++; }
     static inline std::unique_ptr<Equipment> get_starting_equipment1() {
@@ -45,7 +45,7 @@ private:
                 get_player_max_health());
     }
 
-public:
+    public:
     void start(const std::string& servname) {
         std::vector<std::unique_ptr<ClientHandler>> clients;
 

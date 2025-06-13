@@ -10,7 +10,7 @@
 #include "common/snapshot.h"
 
 class GameLoop {
-private:
+    private:
     Render render;
 
     bool is_running = true;
@@ -20,15 +20,12 @@ private:
 
     InputHandler input_handler;
 
-public:
+    public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::unique_ptr<DTO>>& commands);
-
+             Queue<std::unique_ptr<DTO>>& commands, int user_player_id);
     void run();
 
     Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
-
-    void closeWindow();
 };
 
 #endif  // GAMELOOP_H
