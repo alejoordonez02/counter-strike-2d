@@ -4,8 +4,10 @@
 #include <unistd.h>
 #include "gameloop.h"
 
-// 1 segundo / / 25 frames = 40 milisegundos por frame
-#define FRAME_RATE 1000000.0f / 25.0f
+
+// Va con milisegundos ya que utilizo el timer de SDL
+const static int RATE = 1000 / 60;
+
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::shared_ptr<DTO>>& commands, 
@@ -37,13 +39,9 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
     return last_snapshot;
 }
 
-// Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / 25;
-
 
 void GameLoop::run() {
     Snapshot last_snapshot;
-
     uint32_t frameStart = SDL_GetTicks();
 
     while (is_running) {
@@ -56,6 +54,7 @@ void GameLoop::run() {
 
         handle_frame_timing(frameStart);
     }
+
 }
 
 
@@ -68,6 +67,7 @@ void GameLoop::handle_frame_timing(uint32_t& t1) {
     // si se pasó (frame negativo), hay que saltar frames
     // si no, dormir el tiempo restante
     if (rest < 0) {
+        // std::cout << "LOG: Se pasó el tiempo de frame por " << -rest << " milisegundos.\n";
         int behind = -rest;     // siempre positivo
         int lost = behind - behind % RATE;
 
@@ -76,6 +76,7 @@ void GameLoop::handle_frame_timing(uint32_t& t1) {
 
         render.skip_frames(frames_to_skip);
     } else {
+        // std::cout << "LOG: Debe dormir " << rest << " milisegundos.\n";
         SDL_Delay(rest);
     }
 
