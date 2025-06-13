@@ -16,7 +16,7 @@ private:
     Queue<std::unique_ptr<DTO>>& queue;
 
 public:
-    Sender(Connection& c, Queue<std::shared_ptr<DTO>>& q): con(c), queue(q) {}
+    Sender(Connection& c, Queue<std::unique_ptr<DTO>>& q): con(c), queue(q) {}
 
     void run() override {
         try {
