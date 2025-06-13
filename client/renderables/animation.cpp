@@ -16,17 +16,30 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         columns(data.columns),
         is_animated(data.is_animated),
         size(frame_width / columns),  // siempre texturas con tamaño cuadrado
-        elapsed(0.0f) {}
+        elapsed(0),
+        step(data.steps){}
 
-Animation::~Animation() {}
+Animation::~Animation() {
+}
 
 void Animation::update() {
-    if (this->is_animated) {
-        this->advanceFrame();
+    if (!this->is_animated) {
+        // sprite estatico. Toma solo 1 frame y no permite avanzar al siguiente
+        this->current_frame = this->num_frames;
         return;
     }
-    // toma solo 1 frame y no permite avanzar al siguiente
-    this->current_frame = this->num_frames;
+
+    elapsed++;
+    if (elapsed < step) return;
+    elapsed = 0;
+    this->advanceFrame();
+}
+
+void Animation::skip_frames(uint8_t frames_to_skip){
+    // se salta los frames que no se renderizan
+    this->current_frame += frames_to_skip;
+    
+    this->current_frame = this->current_frame % this->num_frames;
 }
 
 void Animation::advanceFrame() {

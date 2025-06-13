@@ -18,6 +18,8 @@ class RenderableLegs {
 
     std::shared_ptr<AnimationProvider> animation_provider;
 
+    void load_animation(const std::string& animation_name);
+
     public:
     explicit RenderableLegs(
             std::shared_ptr<AnimationProvider> animation_provider);
@@ -25,7 +27,7 @@ class RenderableLegs {
     void update(const SDL2pp::Point& position, double facing_angle);
     void render(SDL2pp::Renderer& renderer);
 
-    void load_animation(const std::string& animation_name);
+    void skip_frames(uint8_t frames_to_skip);
     ~RenderableLegs();
 };
 
