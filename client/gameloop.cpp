@@ -3,6 +3,7 @@
 
 #include <unistd.h>
 
+// 1 segundo / / 25 frames = 40 milisegundos por frame
 #define FRAME_RATE 1000000.0f / 25.0f
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
@@ -46,6 +47,10 @@ void GameLoop::run() {
 
         is_running = input_handler.alive_status();
 
+        // aqui el problema es que se esta descansando exactamente
+        // 40ms (o sea 1000000/25 microsegundos) sin importar cuanto tiempo
+        // haya tardado el renderizado, lo que puede causar que se acumulen errores
+        // y vaya más lento
         usleep(FRAME_RATE);
     }
 }
