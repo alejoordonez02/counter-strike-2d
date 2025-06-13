@@ -17,12 +17,12 @@
  * nombre: collidables
  * */
 class Map {
-    private:
+private:
     std::vector<std::reference_wrapper<Hitbox>> collidables;
     std::unique_ptr<Bomb> bomb;
     Position bomb_site;
 
-    public:
+public:
     Map(): collidables(), bomb() {}
 
     /*
