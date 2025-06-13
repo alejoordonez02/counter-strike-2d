@@ -86,7 +86,10 @@ void PlayerPhysics::start_moving(const Direction& dir) {
     moving = true;
 }
 
-void PlayerPhysics::stop_moving() { moving = false; }
+void PlayerPhysics::stop_moving() {
+    v = 0;
+    moving = false;
+}
 
 std::vector<size_t> PlayerPhysics::get_distance_sorted_collidables_idx(
         const std::vector<std::reference_wrapper<Hitbox>>& collidables) const {
