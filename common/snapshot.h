@@ -45,12 +45,12 @@ struct PlayerData {
     bool is_dead;
 
     // coordenadas del jugador
-    int16_t x;
-    int16_t y;
+    float x;
+    float y;
 
     // coordenadas del mouse
-    int16_t aim_x;
-    int16_t aim_y;
+    float aim_x;
+    float aim_y;
 };
 
 struct Snapshot {
