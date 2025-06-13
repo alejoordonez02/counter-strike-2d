@@ -1,70 +1,47 @@
 #ifndef SERVER_ACCEPTOR_H
 #define SERVER_ACCEPTOR_H
 
-#include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "common/network/socket/liberror.h"
+#include "common/network/connection.h"
 #include "common/network/socket/socket.h"
 #include "common/thread.h"
-#include "server/client_session.h"
-#include "server/game_monitor.h"
+#include "server/client_handler.h"
+
+#define CLOSE_BOTH_STREAMS 2
 
 class Acceptor: public Thread {
 private:
-    Socket skt;
-    GameMonitor& gm_ref;
-    std::vector<ClientSession> clients;
+    Socket listener;
+    std::vector<std::unique_ptr<ClientHandler>>& clients;
 
 public:
-    Acceptor(const std::string& servname, GameMonitor& gm):
-            skt(servname.c_str()), gm_ref(gm) {}
+    Acceptor(const std::string& servname,
+             std::vector<std::unique_ptr<ClientHandler>>& clients):
+            listener(servname.c_str()), clients(clients) {}
 
     void run() override {
-        try {
-            while (true) {
-                Socket peer_skt = skt.accept();
-                ClientSession new_client(std::move(peer_skt), gm_ref);
-                new_client.start_lobby_phase();
-                clients.push_back(std::move(new_client));
-
-                clear_offline_clients();
-                gm_ref.reap_dead_games();
+        while (should_keep_running()) {
+            try {
+                Socket skt = listener.accept();
+                Connection con(std::move(skt));
+                auto client = std::make_unique<ClientHandler>(std::move(con));
+                clients.push_back(std::move(client));
+            } catch (...) {
+                if (!should_keep_running())
+                    break;
             }
-        } catch (const LibError& err) {  // cierre de server
-            gm_ref.shutdown(); // (metodo de GameMonitor con mutex, dejarlo cerrado/bloqueado al final al GM)
-            terminate_all_clients();
         }
     }
 
-    void force_stop() {
-        skt.shutdown(2);
-        skt.close();
+    void stop() override {
+        Thread::stop();
+        listener.shutdown(CLOSE_BOTH_STREAMS);
     }
 
     ~Acceptor() = default;
-
-private:
-    void clear_offline_clients() {
-        clients.erase(std::remove_if(clients.begin(), clients.end(),
-                                     [](ClientSession& c) {
-                                        if (c.is_offline()) {
-                                            c.end_lobby_phase();
-                                            return true;
-                                        }
-                                        return false;
-                                     }),
-                      clients.end());
-    }
-
-    void terminate_all_clients() {
-        for (auto& c : clients) {
-            c.force_terminate();
-        }
-        clients.clear();
-    }
 };
 
 #endif
