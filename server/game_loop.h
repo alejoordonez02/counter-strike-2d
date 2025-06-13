@@ -1,38 +1,58 @@
 #ifndef GAME_LOOP_H
 #define GAME_LOOP_H
 
-#include <map>
-#include <memory>
-#include <string>
+#include <chrono>
 
-#include "common/map_name.h"
-#include "common/network/dtos/game_details_dto.h"
-#include "common/queue.h"
 #include "common/thread.h"
-#include "model/game.h"
+#include "server/model/game.h"
+#include "server/player_handler.h"
 
-class ClientSession;
+using Duration = std::chrono::duration<float>;
+using Clock = std::chrono::steady_clock;
+using Ms = std::chrono::milliseconds;
 
 class GameLoop: public Thread {
 private:
-    const std::string name;
-    MapName mn;
-    Queue<ClientSession*> incoming_clients;
-    std::map<ClientSession*, std::unique_ptr<Player>> clients;
-    bool _has_started;
+    std::vector<std::unique_ptr<PlayerHandler>> players;
+    Game game;
+    Clock::duration tick_duration;
 
 public:
-    GameLoop(const std::string& name, MapName map_name);
+    GameLoop(std::vector<std::unique_ptr<PlayerHandler>>&& handlers,
+             std::vector<std::shared_ptr<Player>>&& players, Map&& map,
+             int tick_rate, int rounds, float round_time, float time_out):
+            players(std::move(handlers)),
+            game(std::move(players), std::move(map), rounds, round_time,
+                 time_out),
+            tick_duration(Ms(1000) / tick_rate) {}
 
-    void run() override;
+    void run() override {
+        auto t1 = Clock::now();
+        float elapsed_seconds = Duration(tick_duration).count();
+        /* for (auto& p : players) {
+            auto snapshot = game.get_snapshot();
+            p->start();
+            p->send_snapshot(snapshot);
+        } */
 
-    std::unique_ptr<GameDetailsDTO> get_details();
+        while (should_keep_running()) {
+            for (auto& p : players) p->play();
 
-    bool has_started() const { return _has_started; }
+            game.update(elapsed_seconds);
+            auto t2 = Clock::now();
+            auto work_time = t2 - t1;
+            auto rest_time = tick_duration - work_time;
+            if (rest_time.count() > 0) {
+                std::this_thread::sleep_for(rest_time);
+                t1 += tick_duration;
+            }
 
-    void add_client(ClientSession* c_session);
+            /* auto snapshot = game.get_snapshot();
+            for (auto& p : players) p->send_snapshot(snapshot); */
 
-    ~GameLoop() = default;
+            std::cout << "tick!\n";
+        }
+    }
 };
 
 #endif

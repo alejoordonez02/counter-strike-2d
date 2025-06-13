@@ -40,7 +40,7 @@ bool GameMonitor::join_game(ClientSession* client_s,
     if (not games.count(g_name) || player_count[g_name] == MAX_PLYS_PER_GAME)
         return false;
     auto game = games[g_name].get();
-    if (game->is_running())
+    if (game->has_started())
         return false;
 
     game->add_client(client_s);
