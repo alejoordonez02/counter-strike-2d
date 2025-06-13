@@ -7,7 +7,7 @@
 #define FRAME_RATE 1000000.0f / 25.0f
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-                   Queue<std::shared_ptr<DTO>>& commands):
+                   Queue<std::unique_ptr<DTO>>& commands):
         render(),
         snapshots_queue(snapshots),
         commands_queue(commands),
@@ -38,13 +38,7 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
 void GameLoop::run() {
     Snapshot last_snapshot;
 
-    using clock = std::chrono::steady_clock;
-    auto last_time = clock::now();
     while (is_running) {
-        auto now = clock::now();
-        float dt = (now - last_time).count();
-
-        auto last_time = clock::now();
         last_snapshot = this->get_snapshot_from_queue(last_snapshot);
 
         render.update(last_snapshot);
@@ -52,11 +46,6 @@ void GameLoop::run() {
 
         is_running = input_handler.alive_status();
 
-        float behing = FRAME_RATE - dt;
-        if (behind > 0)
-            usleep(behind);
-        else (
-
-        last_time = now;
+        usleep(FRAME_RATE);
     }
 }

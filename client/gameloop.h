@@ -10,19 +10,19 @@
 #include "common/snapshot.h"
 
 class GameLoop {
-    private:
+private:
     Render render;
 
     bool is_running = true;
 
     Queue<std::unique_ptr<DTO>>& snapshots_queue;
-    Queue<std::shared_ptr<DTO>>& commands_queue;
+    Queue<std::unique_ptr<DTO>>& commands_queue;
 
     InputHandler input_handler;
 
-    public:
+public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::shared_ptr<DTO>>& commands);
+             Queue<std::unique_ptr<DTO>>& commands);
 
     void run();
 
