@@ -53,14 +53,14 @@ void Render::update(Snapshot snapshot) {
 }
 
 
-void Render::skip_frames(uint8_t frames, Snapshot& last_snapshot) {
+void Render::skip_frames(uint8_t frames) {
     if(frames == 0) {
         return;
     }
     // se salta los frames que no se renderizan
     std::cout << "LOG: Debe saltearse " << (int)frames << " frames." << std::endl;
-    for (uint8_t i = 0; i < frames; ++i) {
-        update(last_snapshot);
+    for (auto& [id, renderable_player] : players_renderables) {
+        renderable_player->skip_frames(frames);
     }
 }
 

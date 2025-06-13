@@ -35,6 +35,13 @@ void Animation::update() {
     this->advanceFrame();
 }
 
+void Animation::skip_frames(uint8_t frames_to_skip){
+    // se salta los frames que no se renderizan
+    this->current_frame += frames_to_skip;
+    
+    this->current_frame = this->current_frame % this->num_frames;
+}
+
 void Animation::advanceFrame() {
     this->current_frame += 1;
     // Se reinicia solo. EJ: si hay 4 frames, entonces 1%4=0, 2%4=1, 3%4=2,

@@ -29,7 +29,7 @@ class GameLoop {
 
     void debug_get_fps(uint32_t& fps_timer, int& frame_count);
 
-    void handle_frame_timing(uint32_t& t1, Snapshot& last_snapshot);
+    void handle_frame_timing(uint32_t& t1);
 
     // void handle_frame_timing(uint32_t& t1);
 

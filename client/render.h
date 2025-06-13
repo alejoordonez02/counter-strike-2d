@@ -34,7 +34,7 @@ class Render {
 
     // void skip_frames(uint8_t frames);
 
-    void skip_frames(uint8_t frames, Snapshot& last_snapshot);
+    void skip_frames(uint8_t frames);
 
     void render();
 };

@@ -40,4 +40,8 @@ void RenderableLegs::render(SDL2pp::Renderer& renderer) {
     current_animation->render(renderer, position, flip, this->facing_angle);
 }
 
+void RenderableLegs::skip_frames(uint8_t frames_to_skip){
+    current_animation->skip_frames(frames_to_skip);
+}
+
 RenderableLegs::~RenderableLegs() {}

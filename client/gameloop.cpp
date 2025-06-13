@@ -54,12 +54,11 @@ void GameLoop::run() {
         render.update(last_snapshot);
         render.render();
 
-        // Si pasó un segundo, imprimís los FPS
         debug_get_fps(fps_timer, frame_count);
         
         is_running = input_handler.alive_status();
 
-        handle_frame_timing(frameStart, last_snapshot);
+        handle_frame_timing(frameStart);
     }
 
 }
@@ -67,8 +66,9 @@ void GameLoop::run() {
 
 void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count){
     frame_count++; // contar frame renderizado
-
+    
     uint32_t now = SDL_GetTicks();
+    // si pasó 1 segundo imprime los frames y resetea contador
     if (now - fps_timer >= 1000) {
         std::cout << "FPS: " << frame_count << std::endl;
         frame_count = 0;
@@ -77,7 +77,7 @@ void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count){
 }
 
 
-void GameLoop::handle_frame_timing(uint32_t& t1, Snapshot& last_snapshot) {
+void GameLoop::handle_frame_timing(uint32_t& t1) {
     uint32_t t2 = SDL_GetTicks();
 
     // cuando tiempo debe dormir
@@ -92,7 +92,7 @@ void GameLoop::handle_frame_timing(uint32_t& t1, Snapshot& last_snapshot) {
         t1 += lost;
         uint8_t frames_to_skip = int(lost / RATE);  // truncar hacia abajo
 
-        render.skip_frames(frames_to_skip, last_snapshot);
+        render.skip_frames(frames_to_skip);
     } else {
         // std::cout << "LOG: Debe dormir " << rest << " milisegundos.\n";
         SDL_Delay(rest);
