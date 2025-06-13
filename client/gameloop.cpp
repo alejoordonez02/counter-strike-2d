@@ -44,12 +44,19 @@ void GameLoop::run() {
     Snapshot last_snapshot;
     uint32_t frameStart = SDL_GetTicks();
 
+     // FPS tracking
+    uint32_t fps_timer = SDL_GetTicks(); // marca el inicio de un segundo
+    int frame_count = 0; // cuenta cuantos frames/bucles hay. Se reinicia luego de 1 segundo
+
     while (is_running) {
         last_snapshot = this->get_snapshot_from_queue(last_snapshot);
 
         render.update(last_snapshot);
         render.render();
 
+        // Si pasó un segundo, imprimís los FPS
+        debug_get_fps(fps_timer, frame_count);
+        
         is_running = input_handler.alive_status();
 
         handle_frame_timing(frameStart);
@@ -58,7 +65,19 @@ void GameLoop::run() {
 }
 
 
+void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count){
+    frame_count++; // contar frame renderizado
 
+    uint32_t now = SDL_GetTicks();
+    if (now - fps_timer >= 1000) {
+        std::cout << "FPS: " << frame_count << std::endl;
+        frame_count = 0;
+        fps_timer = now;
+    }
+}
+
+
+    
 void GameLoop::handle_frame_timing(uint32_t& t1) {
     uint32_t t2 = SDL_GetTicks();
 

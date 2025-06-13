@@ -27,6 +27,8 @@ class GameLoop {
             
     void run();
 
+    void debug_get_fps(uint32_t& fps_timer, int& frame_count);
+
     void handle_frame_timing(uint32_t& t1);
 
     Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
