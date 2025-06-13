@@ -5,9 +5,10 @@
 #include <SDL2pp/SDL2pp.hh>
 
 struct AnimationData {
-    int columns;
-    int frames;
-    bool is_animated;
+    int columns;        // cantidad de columnas de la imagen (ej. terrorista tiene 2)
+    int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6)
+    bool is_animated;       // true si es una animación, false si es un sprite estático
+    int steps;          // si es animado, velocidad del sprite, cada cuántos frames avanza al siguiente
 };
 
 class Animation {
@@ -37,8 +38,9 @@ class Animation {
     /** Size of the sprite (height and width). */
     int size;
 
-    /** Time elapsed since last update. */
-    float elapsed;
+    // contador para animaciones
+    int elapsed;
+    int step;
 };
 
 #endif
