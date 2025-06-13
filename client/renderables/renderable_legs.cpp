@@ -25,8 +25,9 @@ void RenderableLegs::update(const SDL2pp::Point& position,
                             double facing_angle) {
     this->facing_angle = facing_angle;
 
+    // NOTE: Para que las piernas queden alineadas
+    // respecto al jugador
     double radians = facing_angle * M_PI / 180.0;
-
     double offset = -3;
     this->position.x = position.x + std::cos(radians) * offset;
     this->position.y = position.y + std::sin(radians) * offset;

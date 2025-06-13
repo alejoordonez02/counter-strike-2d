@@ -53,12 +53,14 @@ void Render::update(Snapshot snapshot) {
 }
 
 
-void Render::skip_frames(uint8_t frames) {
+void Render::skip_frames(uint8_t frames, Snapshot& last_snapshot) {
+    if(frames == 0) {
+        return;
+    }
     // se salta los frames que no se renderizan
     std::cout << "LOG: Debe saltearse " << (int)frames << " frames." << std::endl;
     for (uint8_t i = 0; i < frames; ++i) {
-        renderer.Clear();
-        renderer.Present();
+        update(last_snapshot);
     }
 }
 

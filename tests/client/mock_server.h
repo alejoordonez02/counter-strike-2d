@@ -90,8 +90,8 @@ void mock_server() {
 
             // Procesar el comando de movimiento
             Direction new_pos = start_moving_dto->get_direction();
-            player1.x += new_pos.x * 5;
-            player1.y += new_pos.y * 5;
+            player1.x += new_pos.x * 20;
+            player1.y += new_pos.y * 20;
             player1.is_walking = true;
             std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
                       << player1.y << ")" << std::endl;

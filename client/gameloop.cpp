@@ -59,7 +59,7 @@ void GameLoop::run() {
         
         is_running = input_handler.alive_status();
 
-        handle_frame_timing(frameStart);
+        handle_frame_timing(frameStart, last_snapshot);
     }
 
 }
@@ -77,8 +77,7 @@ void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count){
 }
 
 
-    
-void GameLoop::handle_frame_timing(uint32_t& t1) {
+void GameLoop::handle_frame_timing(uint32_t& t1, Snapshot& last_snapshot) {
     uint32_t t2 = SDL_GetTicks();
 
     // cuando tiempo debe dormir
@@ -93,7 +92,7 @@ void GameLoop::handle_frame_timing(uint32_t& t1) {
         t1 += lost;
         uint8_t frames_to_skip = int(lost / RATE);  // truncar hacia abajo
 
-        render.skip_frames(frames_to_skip);
+        render.skip_frames(frames_to_skip, last_snapshot);
     } else {
         // std::cout << "LOG: Debe dormir " << rest << " milisegundos.\n";
         SDL_Delay(rest);
