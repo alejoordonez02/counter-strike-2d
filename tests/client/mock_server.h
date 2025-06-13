@@ -14,6 +14,7 @@
 #include "server/cmd_constructor.h"
 #include "server/model/equipment.h"
 #include "server/model/player.h"
+#include "server/model/random.h"
 #include "server/model/weapons.h"
 
 using Duration = std::chrono::duration<float>;
@@ -31,7 +32,7 @@ class MockServer {
                                            std::make_unique<Glock>(),
                                            std::make_unique<Knife>(), 0);
     };
-    static inline float get_player_max_velocity() { return 20; }
+    static inline float get_player_max_velocity() { return 50; }
     static inline float get_player_acceleration() { return 10; }
     static inline float get_player_radius() { return 1; }
     static inline int get_player_starting_money() { return 500; }
@@ -39,10 +40,11 @@ class MockServer {
 
     static inline std::shared_ptr<Player> get_player(Map& map) {
         return std::make_shared<Player>(
-                get_player_id(), Position(0, 0), get_starting_equipment1(), map,
-                get_player_max_velocity(), get_player_acceleration(),
-                get_player_radius(), get_player_starting_money(),
-                get_player_max_health());
+                get_player_id(),
+                Position(Random::get(-100, 100), Random::get(-100, 100)),
+                get_starting_equipment1(), map, get_player_max_velocity(),
+                get_player_acceleration(), get_player_radius(),
+                get_player_starting_money(), get_player_max_health());
     }
 
     public:
