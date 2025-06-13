@@ -5,6 +5,7 @@
 #include "client/animation_provider.h"
 #include "client/texture_provider.h"
 #include "client/camera.h"
+#include "render.h"
 
 Render::Render(int user_player_id):
         sdl(SDL_INIT_VIDEO),
@@ -49,6 +50,15 @@ void Render::update(Snapshot snapshot) {
     // TODO: actualizar dropeables
 
     // TODO: actualizar mapa
+}
+
+
+void Render::skip_frames(uint8_t frames) {
+    // se salta los frames que no se renderizan
+    for (uint8_t i = 0; i < frames; ++i) {
+        renderer.Clear();
+        renderer.Present();
+    }
 }
 
 void Render::render() {

@@ -2,6 +2,7 @@
 #include "common/network/dtos/snapshot_dto.h"
 
 #include <unistd.h>
+#include "gameloop.h"
 
 // 1 segundo / / 25 frames = 40 milisegundos por frame
 #define FRAME_RATE 1000000.0f / 25.0f
@@ -36,8 +37,14 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
     return last_snapshot;
 }
 
+// Va con milisegundos ya que utilizo el timer de SDL
+const static int RATE = 1000 / 25;
+
+
 void GameLoop::run() {
     Snapshot last_snapshot;
+
+    uint32_t frameStart = SDL_GetTicks();
 
     while (is_running) {
         last_snapshot = this->get_snapshot_from_queue(last_snapshot);
@@ -47,11 +54,34 @@ void GameLoop::run() {
 
         is_running = input_handler.alive_status();
 
-        // aqui el problema es que se esta descansando exactamente
-        // 40ms (o sea 1000000/25 microsegundos) sin importar cuanto tiempo
-        // haya tardado el renderizado, lo que puede causar que se acumulen errores
-        // y vaya más lento
-        usleep(FRAME_RATE);
+        handle_frame_timing(frameStart);
     }
 }
 
+
+
+void GameLoop::handle_frame_timing(uint32_t& t1) {
+    uint32_t t2 = SDL_GetTicks();
+
+    // cuando tiempo debe dormir
+    int rest = RATE - (t2 - t1);
+    // si se pasó (frame negativo), hay que saltar frames
+    // si no, dormir el tiempo restante
+    if (rest < 0) {
+        int behind = -rest;     // siempre positivo
+        int lost = behind - behind % RATE;
+
+        t1 += lost;
+        uint8_t frames_to_skip = int(lost / RATE);  // truncar hacia abajo
+
+        render.skip_frames(frames_to_skip);
+    } else {
+        SDL_Delay(rest);
+    }
+
+    // NOTE: No pongo el numero de iteración del loop
+    // cada Animation se encarga de avanzar su frame    
+
+    // para el siguiente loop
+    t1 = SDL_GetTicks();
+}
