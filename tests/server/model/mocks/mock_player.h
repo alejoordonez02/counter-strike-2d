@@ -48,7 +48,7 @@ public:
     MOCK_METHOD(void, start_attacking, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
     /* MOCK_METHOD(std::optional<Position>, intersect, (const Trajectory& t),
-                (const, override)); */
+                (const)); */
     MOCK_METHOD(void, use_primary, (), ());
     MOCK_METHOD(void, use_secondary, (), ());
     MOCK_METHOD(void, use_knife, (), ());
