@@ -1,32 +1,33 @@
 #ifndef MAPLOADER_H
 #define MAPLOADER_H
 
-#include <QString>
-#include <QVector>
-#include <QPoint>
-#include <QPixmap>
-#include <QMap>
 #include <yaml-cpp/yaml.h>
-#include "block.h"
-#include "mapdata.h"
+// #include "mapdata.h"
 
-class MapLoader : public QObject
+struct BlockData{
+    int x;
+    int y;
+    std::string texture;
+    std::string type;
+};
+
+struct MapOnlyData{
+    std::string backgroundPath;
+    int plantingSpots;
+    std::vector<BlockData> blocks;
+};
+
+class MapLoader
 {
-    Q_OBJECT
-
 public:
-    explicit MapLoader(QObject *parent = nullptr);
+    MapLoader();
     
-    MapData loadMapData(const QString& filePath);
+    MapOnlyData loadMapData(const std::string& filePath);
     
-    static bool validateMapData(const MapData& data);
-
-signals:
-    void textureLoaded(const QString& id, const QPixmap& texture);
+    static bool validateMapData(const MapOnlyData& data);
 
 private:
-    void parseBlocks(const YAML::Node& blocksNode, MapData& data);
-    void loadTextureResources(MapData& data);
+    void parseBlocks(const YAML::Node& blocksNode, MapOnlyData& data);
 };
 
 #endif // MAPLOADER_H
