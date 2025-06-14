@@ -14,78 +14,66 @@ public:
 
 class AttackActionTest: public ::testing::Test {
 protected:
-    Map map;
-    Position player_actual_pos_obj{0, 0};
-    Position enemy_actual_pos_obj{10, 0};
-
-    Position aligned_enemy_actual_pos_obj{20, 0};
+    MagicWeapon weapon;
+    std::shared_ptr<Map> map;
+    std::weak_ptr<Map> map_weak_ptr;
 
     float player_max_vel = 1.0f;
     float player_accel = 1.0f;
     float player_radius = 1.0f;
 
-    MagicWeapon weapon;
+    Position player_pos{0, 0};
+    Position enemy_pos{10, 0};
+    Position aligned_enemy_pos{20, 0};
+
+    std::shared_ptr<MockPlayer> enemy;
+    std::shared_ptr<MockPlayer> aligned_enemy;
 
     std::unique_ptr<PlayerPhysics> attacker_physics;
 
-    std::unique_ptr<MockPlayer> enemy;
-    std::unique_ptr<MockPlayer> aligned_enemy;
-
-    PlayerPhysics* attacker_physics_raw;
-    MockPlayer* enemy_raw;
-    MockPlayer* aligned_enemy_raw;
-
     void SetUp() override {
+        map = std::make_shared<Map>();
+        map_weak_ptr = map;
+
         attacker_physics = std::make_unique<PlayerPhysics>(
-                player_actual_pos_obj, player_max_vel, player_accel,
-                player_radius, map);
-        attacker_physics_raw = attacker_physics.get();
+                player_pos, player_max_vel, player_accel, player_radius,
+                map_weak_ptr);
 
-        enemy = std::make_unique<MockPlayer>(enemy_actual_pos_obj, map);
+        enemy = std::make_shared<MockPlayer>(enemy_pos, map);
         aligned_enemy =
-                std::make_unique<MockPlayer>(aligned_enemy_actual_pos_obj, map);
+                std::make_shared<MockPlayer>(aligned_enemy_pos, map_weak_ptr);
 
-        enemy_raw = enemy.get();
-        aligned_enemy_raw = aligned_enemy.get();
-
-        map.add_collidable(*enemy_raw);
-        map.add_collidable(*aligned_enemy_raw);
+        map->add_collidable(enemy);
+        map->add_collidable(aligned_enemy);
 
         weapon.update(1);
     }
 };
 
 TEST_F(AttackActionTest, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
-    Direction aim_dir =
-            player_actual_pos_obj.get_direction(enemy_raw->get_position());
-    Attack attack_action(*attacker_physics_raw, player_actual_pos_obj, aim_dir,
-                         weapon, map);
-
-    EXPECT_CALL(*enemy_raw, get_attacked(::testing::_));
+    Direction aim_dir = player_pos.get_direction(enemy->get_position());
+    Attack attack_action(*attacker_physics, player_pos, aim_dir, weapon,
+                         map_weak_ptr);
+    EXPECT_CALL(*enemy, get_attacked(::testing::_));
     attack_action.update(1);
 }
 
 TEST_F(AttackActionTest,
        AttackingWithBadAimDoesNotResultInHitboxGettingAttacked) {
     Direction bad_aim_dir =
-            player_actual_pos_obj.get_direction(enemy_raw->get_position()) +
-            Direction(0, 100);
-    Attack attack_action(*attacker_physics_raw, player_actual_pos_obj,
-                         bad_aim_dir, weapon, map);
-
-    EXPECT_CALL(*enemy_raw, get_attacked(::testing::_)).Times(0);
+            player_pos.get_direction(enemy->get_position()) + Direction(0, 100);
+    Attack attack_action(*attacker_physics, player_pos, bad_aim_dir, weapon,
+                         map_weak_ptr);
+    EXPECT_CALL(*enemy, get_attacked(::testing::_)).Times(0);
     attack_action.update(1);
 }
 
 TEST_F(AttackActionTest,
        AttackingToAlignedHitboxedDoesNotResultInColateralDamage) {
-    Direction aim_dir =
-            player_actual_pos_obj.get_direction(enemy_raw->get_position());
-    Attack attack_action(*attacker_physics_raw, player_actual_pos_obj, aim_dir,
-                         weapon, map);
-
-    EXPECT_CALL(*enemy_raw, get_attacked(::testing::_));
-
-    EXPECT_CALL(*aligned_enemy_raw, get_attacked(::testing::_)).Times(0);
+    Direction aim_dir = player_pos.get_direction(enemy->get_position());
+    Attack attack_action(*attacker_physics, player_pos, aim_dir, weapon,
+                         map_weak_ptr);
+    EXPECT_CALL(*enemy, get_attacked(::testing::_));
+    EXPECT_CALL(*aligned_enemy, get_attacked(::testing::_)).Times(0);
     attack_action.update(1);
 }

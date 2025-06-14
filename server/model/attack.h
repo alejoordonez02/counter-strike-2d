@@ -11,16 +11,16 @@
  * Attack
  * */
 class Attack: public ActionStrategy {
-    private:
+private:
     const PlayerPhysics& physics;
     const Position& pos;
     const Direction& dir;
     Weapon& weapon;
-    Map& map;
+    std::weak_ptr<Map> map;
 
-    public:
+public:
     Attack(PlayerPhysics& physics, Position& pos, Direction& dir,
-           Weapon& weapon, Map& map);
+           Weapon& weapon, std::weak_ptr<Map> map);
     void update(float dt) override;
 };
 

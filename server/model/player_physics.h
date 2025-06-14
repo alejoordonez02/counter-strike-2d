@@ -17,19 +17,18 @@ private:
     float a;
     float radius;
     bool moving;
-    Map& map;
+    std::weak_ptr<Map> map;
 
     float get_distance(const Hitbox& hitbox) const;
 
     std::vector<size_t> sort_by_distance_idx(
-            const std::vector<std::reference_wrapper<Hitbox>>& collidables)
-            const;
+            const std::vector<std::shared_ptr<Hitbox>>& collidables) const;
 
     void move(float dt);
 
 public:
     PlayerPhysics(Position& pos, float max_velocity, float acceleration,
-                  float radius, Map& map);
+                  float radius, std::weak_ptr<Map> map);
 
     void update(float dt);
 
@@ -44,8 +43,7 @@ public:
      * ordenados de menor a mayor distancia a PlayerPhysics
      * */
     std::vector<size_t> get_distance_sorted_collidables_idx(
-            const std::vector<std::reference_wrapper<Hitbox>>& collidables)
-            const;
+            const std::vector<std::shared_ptr<Hitbox>>& collidables) const;
 
     /*
      * Retornar el punto donde interseca la trayectoria con el exterior del

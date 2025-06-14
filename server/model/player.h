@@ -16,7 +16,7 @@
 
 class Player: public Hitbox {
 protected:
-    Map& map;
+    std::weak_ptr<Map> map;
 
 private:
     int id;
@@ -36,13 +36,9 @@ private:
     void stop_action() { action = std::make_unique<Idle>(); }
 
 public:
-    Player(Position pos, std::unique_ptr<Equipment>&& equipment, Map& map,
-           float max_velocity, float acceleration, float radius, int money,
-           int health);
-
     Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
-           Map& map, float max_velocity, float acceleration, float radius,
-           int money, int health);
+           std::weak_ptr<Map> map, float max_velocity, float acceleration,
+           float radius, int money, int health);
 
     void update(float dt) {
         if (!alive)

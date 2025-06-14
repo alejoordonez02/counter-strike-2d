@@ -10,7 +10,7 @@
 class Game {
 private:
     std::vector<std::shared_ptr<Player>> players;
-    Map map;
+    std::shared_ptr<Map> map;  // lo tiene game pero Player tiene un weak ptr
     int rounds;
     Timer round_time;
     float time_out;
@@ -20,7 +20,7 @@ private:
     int ct_won_rounds;
 
     bool terrorists_won_round() const {
-        return map.bomb_has_exploded();
+        return map->bomb_has_exploded();
 
         /* bool all_alive;
         for (auto& p : players) all_alive &= p->is_alive();
@@ -28,7 +28,7 @@ private:
     }
 
     bool counter_terrorists_won_round() const {
-        return map.bomb_is_defused();
+        return map->bomb_is_defused();
 
         /* bool all_alive;
         for (auto& p : players) all_alive &= p->is_alive();
@@ -37,7 +37,7 @@ private:
 
     void start_round() {
         for (auto& p : players) p->restart();
-        map.restart();
+        map->restart();
         round_time.restart();
     }
 
@@ -60,11 +60,9 @@ private:
     }
 
 public:
-    Game(std::vector<std::shared_ptr<Player>> players, Map&& map, int rounds,
-         float round_time, float time_out):
-            /* game(std::move(players), std::move(map), rounds, round_time,
-                 time_out), */
-
+    Game(std::vector<std::shared_ptr<Player>> players,
+         std::shared_ptr<Map>&& map, int rounds, float round_time,
+         float time_out):
             players(players),
             map(std::move(map)),
             rounds(rounds),
@@ -80,7 +78,7 @@ public:
             return;
 
         for (auto& p : players) p->update(dt);
-        map.update(dt);
+        map->update(dt);
         update_rounds(dt);
     }
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <numeric>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -16,19 +17,16 @@ float PlayerPhysics::get_distance(const Hitbox& hitbox) const {
 }
 
 std::vector<size_t> PlayerPhysics::sort_by_distance_idx(
-        const std::vector<std::reference_wrapper<Hitbox>>& collidables) const {
-    std::vector<size_t> idx;
-    idx.reserve(collidables.size());
-    for (size_t i = 0; i < collidables.size(); ++i) {
-        if (pos == collidables[i].get().get_position())
-            continue;  // skip same position
-
-        idx.push_back(i);
-    }
-
+        const std::vector<std::shared_ptr<Hitbox>>& collidables) const {
+    std::vector<size_t> idx(collidables.size());  // <-- ?
+    std::iota(idx.begin(), idx.end(), 0);
     std::sort(idx.begin(), idx.end(), [&collidables, this](size_t i, size_t j) {
-        return get_distance(collidables[i]) < get_distance(collidables[j]);
+        return get_distance(*collidables[i]) < get_distance(*collidables[j]);
     });
+
+    /*
+     * En todo caso idx 0 lo debería remover acá
+     * */
 
     return idx;
 }
@@ -47,11 +45,11 @@ void PlayerPhysics::move(float dt) {
     Position destination = pos + dir * v;
 
     Trajectory t(pos, destination, radius);
-    auto& collidable = map.get_collidables();
+    auto& collidable = map.lock()->get_collidables();
     auto sorted_idx = sort_by_distance_idx(collidable);
     for (size_t i : sorted_idx) {
         auto& c = collidable[i];
-        if (auto intersection = c.get().intersect(t)) {
+        if (auto intersection = c->intersect(t)) {
             pos = *intersection - dir * radius;
             return;
         }
@@ -64,7 +62,8 @@ void PlayerPhysics::move(float dt) {
 }
 
 PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
-                             float acceleration, float radius, Map& map):
+                             float acceleration, float radius,
+                             std::weak_ptr<Map> map):
         pos(pos),
         dir(),
         max_v(max_velocity),
@@ -92,7 +91,7 @@ void PlayerPhysics::stop_moving() {
 }
 
 std::vector<size_t> PlayerPhysics::get_distance_sorted_collidables_idx(
-        const std::vector<std::reference_wrapper<Hitbox>>& collidables) const {
+        const std::vector<std::shared_ptr<Hitbox>>& collidables) const {
     return sort_by_distance_idx(collidables);
 }
 

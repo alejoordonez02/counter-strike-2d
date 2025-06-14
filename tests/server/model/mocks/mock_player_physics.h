@@ -19,9 +19,8 @@ private:
         return pos;
     }
 
-    static Map& default_map() {
-        static Map map;
-        return map;
+    static std::shared_ptr<Map> default_map() {
+        return std::make_shared<Map>();
     }
 
     static float default_max_velocity() { return 1.0f; }
@@ -32,10 +31,10 @@ private:
 
 public:
     MockPlayerPhysics(Position& pos, float max_v = 1.0f, float accel = 1.0f,
-                      float r = 1.0f, Map& map_instance = default_map()):
-            PlayerPhysics(pos, max_v, accel, r, map_instance) {}
+                      float r = 1.0f, std::weak_ptr<Map> map = default_map()):
+            PlayerPhysics(pos, max_v, accel, r, map) {}
 
-    MockPlayerPhysics(Position& pos, Map& map):
+    MockPlayerPhysics(Position& pos, std::weak_ptr<Map> map):
             PlayerPhysics(pos, default_max_velocity(), default_acceleration(),
                           default_radius(), map) {}
 
@@ -47,10 +46,9 @@ public:
 
     MOCK_METHOD(void, stop_moving, (), ());
 
-    MOCK_METHOD(
-            (std::vector<size_t>), get_distance_sorted_collidables_idx,
-            (const std::vector<std::reference_wrapper<Hitbox>>& collidables),
-            (const override));
+    MOCK_METHOD((std::vector<size_t>), get_distance_sorted_collidables_idx,
+                (const std::vector<std::shared_ptr<Hitbox>>& collidables),
+                (const override));
 
     MOCK_METHOD(std::optional<Position>, intersect,
                 (const Trajectory& trajectory), (const override));

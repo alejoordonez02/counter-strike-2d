@@ -10,7 +10,7 @@
 #include "server/model/weapons.h"
 
 class CollisionsTest: public ::testing::Test {
-    protected:
+protected:
     int player_id = 0;
     float player_radius = 1.0f;
     float player_max_velocity = 1.0f;
@@ -18,14 +18,14 @@ class CollisionsTest: public ::testing::Test {
     int player_money = 800;
     int player_max_health = 100;
 
-    Map map;
+    std::shared_ptr<Map> map;
 
-    std::unique_ptr<Player> get_player(Position& pos_ref) {
+    std::shared_ptr<Player> get_player(Position& pos_ref) {
         auto equipment = std::make_unique<Equipment>(
                 std::make_unique<Fist>(), std::make_unique<Glock>(),
                 std::make_unique<Knife>(), 0);
 
-        return std::make_unique<Player>(
+        return std::make_shared<Player>(
                 player_id, pos_ref, std::move(equipment), map,
                 player_max_velocity, player_acceleration, player_radius,
                 player_money, player_max_health);
@@ -35,6 +35,8 @@ class CollisionsTest: public ::testing::Test {
         EXPECT_NEAR(pos.x, other.x, 1e-7);
         EXPECT_NEAR(pos.y, other.y, 1e-7);
     }
+
+    void SetUp() override { map = std::make_shared<Map>(); }
 };
 
 TEST_F(CollisionsTest, PlayerCanWalkFreelyIfTheraAreNotAnyObstacles) {
@@ -68,8 +70,8 @@ TEST_F(CollisionsTest, PlayerCannotWalkThroughAnotherPlayer) {
     auto p1 = get_player(p1_pos);
     auto p2 = get_player(p2_pos);
 
-    map.add_collidable(*p2);
-    map.add_collidable(*p1);
+    map->add_collidable(p2);
+    map->add_collidable(p1);
 
     p1->start_moving(Direction(0, 1));
     p1->update(1);

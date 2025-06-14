@@ -16,12 +16,15 @@ class MockPlayer: public Player {
 private:
     static inline int default_id = 0;
     static inline Position default_pos_val{0, 0};
-    static inline Map default_map_val;
     static inline float default_max_velocity = 3.0f;
     static inline float default_acceleration = 1.0f;
     static inline float default_radius = 1.0f;
     static inline int default_money = 500;
     static inline int default_max_health = 100;
+
+    static inline std::shared_ptr<Map> get_default_map() {
+        return std::make_shared<Map>();
+    }
 
     static inline std::unique_ptr<Equipment> get_default_equipment() {
         return std::make_unique<Equipment>(std::make_unique<Fist>(),
@@ -30,15 +33,16 @@ private:
     }
 
 public:
-    MockPlayer(Position& pos, Map& map):
+    MockPlayer(Position& pos, std::weak_ptr<Map> map):
             Player(default_id, pos, get_default_equipment(), map,
                    default_max_velocity, default_acceleration, default_radius,
                    default_money, default_max_health) {}
 
     MockPlayer():
             Player(default_id, default_pos_val, get_default_equipment(),
-                   default_map_val, default_max_velocity, default_acceleration,
-                   default_radius, default_money, default_max_health) {}
+                   get_default_map(), default_max_velocity,
+                   default_acceleration, default_radius, default_money,
+                   default_max_health) {}
 
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));

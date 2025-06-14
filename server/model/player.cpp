@@ -10,12 +10,12 @@
 #include "server/model/weapon.h"
 
 Player::Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
-               Map& map, float max_velocity, float acceleration, float radius,
-               int money, int max_health):
+               std::weak_ptr<Map> map, float max_velocity, float acceleration,
+               float radius, int money, int max_health):
         Hitbox(pos),
         id(id),
         map(map),
-        physics(this->pos, max_velocity, acceleration, radius, this->map),
+        physics(this->pos, max_velocity, acceleration, radius, map),
         action(std::make_unique<Idle>()),
         dir(),
         equipment(std::move(equipment)),

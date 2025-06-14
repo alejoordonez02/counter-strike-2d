@@ -18,12 +18,15 @@
  * */
 class Map {
 private:
-    std::vector<std::reference_wrapper<Hitbox>> collidables;
+    /*
+     * Comparte los ptrs con Game y con los PlayerHandler
+     * */
+    std::vector<std::shared_ptr<Hitbox>> collidables;
     std::unique_ptr<Bomb> bomb;
     Position bomb_site;
 
 public:
-    Map(): collidables(), bomb() {}
+    Map(): collidables(0), bomb() {}
 
     /*
      * Update
@@ -48,9 +51,11 @@ public:
     /*
      * Collidables
      * */
-    void add_collidable(Hitbox& cll) { collidables.push_back(cll); }
+    void add_collidable(std::shared_ptr<Hitbox> cll) {
+        collidables.push_back(cll);
+    }
 
-    std::vector<std::reference_wrapper<Hitbox>>& get_collidables() {
+    std::vector<std::shared_ptr<Hitbox>>& get_collidables() {
         return collidables;
     }
 

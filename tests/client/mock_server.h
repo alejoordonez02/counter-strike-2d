@@ -24,8 +24,9 @@ using Ms = std::chrono::milliseconds;
 #define TICK_RATE 64
 
 class MockServer {
-    private:
-    static inline int id = 0;
+private:
+    std::string servname;
+    static inline int id = 1;
     static inline int get_player_id() { return id++; }
     static inline std::unique_ptr<Equipment> get_starting_equipment1() {
         return std::make_unique<Equipment>(std::make_unique<Fist>(),
@@ -38,7 +39,7 @@ class MockServer {
     static inline int get_player_starting_money() { return 500; }
     static inline int get_player_max_health() { return 1; }
 
-    static inline std::shared_ptr<Player> get_player(Map& map) {
+    static inline std::shared_ptr<Player> get_player(std::weak_ptr<Map> map) {
         return std::make_shared<Player>(
                 get_player_id(),
                 Position(Random::get(-100, 100), Random::get(-100, 100)),
@@ -47,8 +48,10 @@ class MockServer {
                 get_player_starting_money(), get_player_max_health());
     }
 
-    public:
-    void start(const std::string& servname) {
+public:
+    MockServer(const std::string& servname): servname(servname) {}
+
+    void start() {
         std::vector<std::unique_ptr<ClientHandler>> clients;
 
         Acceptor acceptor(servname, clients);
@@ -65,11 +68,11 @@ class MockServer {
         std::vector<std::unique_ptr<PlayerHandler>> handlers;
         std::vector<std::shared_ptr<Player>> players;
 
-        Map map;
+        auto map = std::make_shared<Map>();
 
         for (auto& c : clients) {
             auto p = get_player(map);
-            map.add_collidable(*p);
+            map->add_collidable(p);
             auto h = c->play(p);
             h->start();
             players.push_back(std::move(p));
@@ -80,11 +83,7 @@ class MockServer {
         s.round_number = 0;
         for (auto& p : players) s.players.push_back(p->get_data());
 
-        for (auto& h : handlers) {
-            h->send_snapshot(s);
-        }
-
-        CmdConstructor constructor;
+        for (auto& h : handlers) h->send_snapshot(s);
 
         auto t1 = Clock::now();
         Clock::duration tick_duration = Ms(1000) / TICK_RATE;

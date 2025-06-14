@@ -19,8 +19,9 @@ private:
 
 public:
     GameLoop(std::vector<std::unique_ptr<PlayerHandler>>&& handlers,
-             std::vector<std::shared_ptr<Player>>&& players, Map&& map,
-             int tick_rate, int rounds, float round_time, float time_out):
+             std::vector<std::shared_ptr<Player>>&& players,
+             std::shared_ptr<Map>&& map, int tick_rate, int rounds,
+             float round_time, float time_out):
             players(std::move(handlers)),
             game(std::move(players), std::move(map), rounds, round_time,
                  time_out),
@@ -29,13 +30,10 @@ public:
     void run() override {
         auto t1 = Clock::now();
         float elapsed_seconds = Duration(tick_duration).count();
-        /* for (auto& p : players) {
-            auto snapshot = game.get_snapshot();
-            p->start();
-            p->send_snapshot(snapshot);
-        } */
-
         while (should_keep_running()) {
+            auto snapshot = game.get_snapshot();
+            for (auto& p : players) p->send_snapshot(snapshot);
+
             for (auto& p : players) p->play();
 
             game.update(elapsed_seconds);
@@ -46,9 +44,6 @@ public:
                 std::this_thread::sleep_for(rest_time);
                 t1 += tick_duration;
             }
-
-            /* auto snapshot = game.get_snapshot();
-            for (auto& p : players) p->send_snapshot(snapshot); */
 
             std::cout << "tick!\n";
         }
