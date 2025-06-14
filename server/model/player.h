@@ -16,10 +16,16 @@
 
 class Player: public Hitbox {
 protected:
-    std::weak_ptr<Map> map;
+    std::weak_ptr<Map> map;  // o shared_ptr& ?
 
 private:
     int id;
+    /*
+     * Esta es una alternativa para excluir self de los collidables del mapa. El
+     * problema es el ownership, con weak_ptr no es trivial y shared está mal
+     * std::vector<std::shared_ptr<Hitbox>> other_collidables;
+     * */
+    std::vector<size_t> sorted_collidables_idx;
     PlayerPhysics physics;
     std::unique_ptr<ActionStrategy> action;
     Direction dir;
@@ -44,8 +50,8 @@ public:
         if (!alive)
             return;
 
-        current.update(dt);
         physics.update(dt);
+        current.update(dt);
         action->update(dt);
     }
 
@@ -89,7 +95,9 @@ public:
     void stop_moving() { physics.stop_moving(); }
 
     virtual void start_attacking() {
-        action = std::make_unique<Attack>(physics, pos, dir, current, map);
+        action = std::make_unique<Attack>(pos, dir, current,
+                                          map.lock()->get_collidables(),
+                                          sorted_collidables_idx);
     }
 
     void stop_attacking() { stop_action(); }

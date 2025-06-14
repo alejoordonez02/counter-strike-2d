@@ -1,34 +1,40 @@
 #include "server/model/player_physics.h"
 
 #include <algorithm>
-#include <functional>
 #include <numeric>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "common/position.h"
 #include "server/model/hitbox.h"
-#include "server/model/map.h"
 #include "server/model/trajectory.h"
 
-float PlayerPhysics::get_distance(const Hitbox& hitbox) const {
-    return pos.get_distance(hitbox.get_position());
+float PlayerPhysics::get_distance(const std::shared_ptr<Hitbox>& hitbox) const {
+    return pos.get_distance(hitbox->get_position());
 }
 
-std::vector<size_t> PlayerPhysics::sort_by_distance_idx(
-        const std::vector<std::shared_ptr<Hitbox>>& collidables) const {
-    std::vector<size_t> idx(collidables.size());  // <-- ?
-    std::iota(idx.begin(), idx.end(), 0);
-    std::sort(idx.begin(), idx.end(), [&collidables, this](size_t i, size_t j) {
-        return get_distance(*collidables[i]) < get_distance(*collidables[j]);
-    });
+/*
+ * Esto es muy caro, se hace encima en cada update de Player... pero la otra
+ * opción viable (por lo menos que se me ocurra ahora) es rediseñar todo para
+ * que Map maneje las colisiones, si el juego anda mal es derecho ir a hacer
+ * eso, si no puede esperar hasta que haya tiempo
+ * */
+void PlayerPhysics::sort_by_distance_idx(
+        const std::vector<std::shared_ptr<Hitbox>>& collidables,
+        std::vector<size_t>& idx) const {
+    if (collidables.size() == 0)
+        return;
 
-    /*
-     * En todo caso idx 0 lo debería remover acá
-     * */
+    std::vector<size_t> sorted_idx(collidables.size());
+    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);
+    std::sort(sorted_idx.begin(), sorted_idx.end(),
+              [&collidables, this](size_t i, size_t j) {
+                  return get_distance(collidables[i]) <
+                         get_distance(collidables[j]);
+              });
 
-    return idx;
+    sorted_idx.erase(sorted_idx.begin());  // skip self
+    idx = sorted_idx;
 }
 
 void PlayerPhysics::move(float dt) {
@@ -43,12 +49,9 @@ void PlayerPhysics::move(float dt) {
         v = max_v;
 
     Position destination = pos + dir * v;
-
     Trajectory t(pos, destination, radius);
-    auto& collidable = map.lock()->get_collidables();
-    auto sorted_idx = sort_by_distance_idx(collidable);
     for (size_t i : sorted_idx) {
-        auto& c = collidable[i];
+        auto c = collidables[sorted_idx[i]];
         if (auto intersection = c->intersect(t)) {
             pos = *intersection - dir * radius;
             return;
@@ -63,7 +66,8 @@ void PlayerPhysics::move(float dt) {
 
 PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
                              float acceleration, float radius,
-                             std::weak_ptr<Map> map):
+                             std::vector<std::shared_ptr<Hitbox>>& collidables,
+                             std::vector<size_t>& sorted_idx):
         pos(pos),
         dir(),
         max_v(max_velocity),
@@ -71,11 +75,13 @@ PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
         a(acceleration),
         radius(radius),
         moving(false),
-        map(map) {}
+        collidables(collidables),
+        sorted_idx(sorted_idx) {}
 
 bool PlayerPhysics::is_moving() const { return moving; }
 
 void PlayerPhysics::update(float dt) {
+    sort_by_distance_idx(collidables, sorted_idx);
     if (moving)
         move(dt);
 }
@@ -88,11 +94,6 @@ void PlayerPhysics::start_moving(const Direction& dir) {
 void PlayerPhysics::stop_moving() {
     v = 0;
     moving = false;
-}
-
-std::vector<size_t> PlayerPhysics::get_distance_sorted_collidables_idx(
-        const std::vector<std::shared_ptr<Hitbox>>& collidables) const {
-    return sort_by_distance_idx(collidables);
 }
 
 std::optional<Position> PlayerPhysics::intersect(
