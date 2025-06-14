@@ -5,7 +5,7 @@
 #include "common/network/dtos/snapshot_dto.h"
 
 // Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / 60;
+const static int RATE = 1000 / 30;
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::unique_ptr<DTO>>& commands, int user_player_id):
@@ -42,8 +42,8 @@ void GameLoop::run() {
 
     // FPS tracking
     uint32_t fps_timer = SDL_GetTicks();  // marca el inicio de un segundo
-    int frame_count = 0;  // cuenta cuantos frames/bucles hay. Se reinicia luego
-                          // de 1 segundo
+    // cuenta cuantos frames/bucles hay. Se reinicia luego de 1 segundo
+    int frame_count = 0;
 
     while (is_running) {
         last_snapshot = this->get_snapshot_from_queue(last_snapshot);
