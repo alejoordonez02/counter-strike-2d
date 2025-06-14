@@ -10,17 +10,17 @@
 #include "common/queue.h"
 
 class Client {
-    private:
+private:
     Connection con;
 
-    Queue<std::shared_ptr<DTO>> commands;
+    Queue<std::unique_ptr<DTO>> commands;
     Queue<std::unique_ptr<DTO>> snapshots;
 
     Sender sender;
     Receiver receiver;
     InputHandler input_handler;
 
-    public:
+public:
     Client(const std::string& hostname, const std::string& servname);
     void run();
 };

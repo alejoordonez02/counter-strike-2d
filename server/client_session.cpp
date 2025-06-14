@@ -13,9 +13,10 @@ bool ClientSession::try_pop_command(std::unique_ptr<Command>& cmd_p) {
     return false;
 }
 
-bool ClientSession::try_push_game_update(/* std::shared_ptr<GameSnapshotDTO> g_snap */) {
-    // send_q.try_push(std::move(g_snap)) // el move no hace falta pero para probar la queue mejorada
-    // send_q.try_push( info especifica del player )
+bool ClientSession::try_push_game_update(
+        /* std::shared_ptr<GameSnapshotDTO> g_snap */) {
+    // send_q.try_push(std::move(g_snap)) // el move no hace falta pero para
+    // probar la queue mejorada send_q.try_push( info especifica del player )
 }
 
 void ClientSession::start_lobby_phase() {
@@ -46,7 +47,8 @@ void ClientSession::end_game_phase(/* std::shared_ptr<GameSnapshot> o std::share
 
     Socket s = con.release_socket();
     std::unique_ptr<DTO> discard;
-    recv_q.try_pop(discard); // desbloquear receiver por si estaba en push con queue llena
+    recv_q.try_pop(discard);  // desbloquear receiver por si estaba en push con
+                              // queue llena
     rcvr->join();
     con.acquire_socket(std::move(s));
     delete rcvr;
@@ -54,7 +56,7 @@ void ClientSession::end_game_phase(/* std::shared_ptr<GameSnapshot> o std::share
     start_lobby_phase();
 }
 
-void ClientSession::force_terminate() { // falta definir cierre de server
+void ClientSession::force_terminate() {  // falta definir cierre de server
     con.destroy_socket();
     end_lobby_phase();
 }

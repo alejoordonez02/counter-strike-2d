@@ -16,15 +16,13 @@ class GameLoop {
     bool is_running = true;
 
     Queue<std::unique_ptr<DTO>>& snapshots_queue;
-    Queue<std::shared_ptr<DTO>>& commands_queue;
+    Queue<std::unique_ptr<DTO>>& commands_queue;
 
     InputHandler input_handler;
 
     public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::shared_ptr<DTO>>& commands,
-            int user_player_id);
-            
+             Queue<std::unique_ptr<DTO>>& commands, int user_player_id);
     void run();
 
     void debug_get_fps(uint32_t& fps_timer, int& frame_count);

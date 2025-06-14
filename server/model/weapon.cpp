@@ -1,5 +1,6 @@
 #include "server/model/weapon.h"
 
+#include <memory>
 #include <vector>
 
 #include "server/model/random.h"
@@ -16,17 +17,17 @@ Weapon::Weapon(const int& damage, const int& ammo, const float& accuracy,
         ammo_cost(ammo_cost) {}
 
 void Weapon::attack(Position origin, Direction direction,
-                    std::vector<std::reference_wrapper<Hitbox>>& collidables,
+                    std::vector<std::shared_ptr<Hitbox>>& collidables,
                     const std::vector<size_t>& sorted_idx) {
     if (!fire_delay.is_done())
         return;
 
     Trajectory t(origin, origin + direction * range);
     for (auto i : sorted_idx) {
-        auto& coll = collidables[i].get();
-        if (coll.intersect(t)) {
+        auto coll = collidables[i];
+        if (coll->intersect(t)) {
             if (Random::get() < accuracy)
-                coll.get_attacked(damage);
+                coll->get_attacked(damage);
 
             ammo--;
             break;

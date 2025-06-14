@@ -1,33 +1,34 @@
 #ifndef CLIENT_LOBBY_H
 #define CLIENT_LOBBY_H
 
+#include <algorithm>
+#include <cstdint>
+#include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <cstdint>
-#include <stdexcept>
-#include <memory>
 
-#include "common/thread.h"
-#include "common/network/connection.h"
-#include "game_monitor.h"
-#include "common/network/protocol.h"
-#include "common/network/dtos/game_details_dto.h"
 #include "common/map_name.h"
+#include "common/network/connection.h"
+#include "common/network/dtos/game_details_dto.h"
+#include "common/network/protocol.h"
+#include "common/thread.h"
+#include "server/game_monitor.h"
 
 class ClientSession;
 
 class ClientLobby: public Thread {
-private:
+    private:
     ClientSession* c_session;
     Connection& conn;
     std::string& c_uname;
     bool& c_offline;
     GameMonitor& gm;
 
-public:
-    ClientLobby(ClientSession* cs, Connection& c, std::string& un, bool& off, GameMonitor& gm): 
+    public:
+    ClientLobby(ClientSession* cs, Connection& c, std::string& un, bool& off,
+                GameMonitor& gm):
             c_session(cs), conn(c), c_uname(un), c_offline(off), gm(gm) {}
-
 
     void run() override {
         try {
@@ -55,20 +56,24 @@ public:
                         gm.remove_username(c_uname);
                         return;
                     default:
-                        throw std::runtime_error("ClientLobby error: unknown operation received"); // que lo agarre un catch
+                        throw std::runtime_error(
+                                "ClientLobby error: unknown operation "
+                                "received");  // que lo agarre un catch
                 }
             }
-        } catch (const std::runtime_error& err) { // cierre de server
+        } catch (const std::runtime_error& err) {  // cierre de server
         }
     }
 
     ~ClientLobby() = default;
 
-private:
+    private:
     bool is_valid_username(const std::string& u) {
         if (u.empty())
             return false;
-        bool has_spaces = std::any_of(u.begin(), u.end(), [](unsigned char ch) {return std::isspace(ch);});
+        bool has_spaces = std::any_of(u.begin(), u.end(), [](unsigned char ch) {
+            return std::isspace(ch);
+        });
         if (has_spaces)
             return false;
 
@@ -80,7 +85,8 @@ private:
         while (true) {
             std::vector<uint8_t> msg = conn.receive_msg();
             std::string usrn(msg.begin(), msg.end());
-            if (is_valid_username(usrn) && gm.add_username(usrn)) { // agregar chequeo usernames unicos
+            if (is_valid_username(usrn) &&
+                gm.add_username(usrn)) {  // agregar chequeo usernames unicos
                 c_uname = usrn;
                 gm.remove_username(prev_usrn);
                 conn.send_single(LobbySerial::SUCCESS);
