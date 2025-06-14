@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "sheeteditor.h"
 #include "mapeditor.h"
-#include "maploader.h"
+#include "common/maploader.h"
 
 namespace Ui {
 class MapEditor;

@@ -2,7 +2,6 @@
 #define MAPLOADER_H
 
 #include <yaml-cpp/yaml.h>
-// #include "mapdata.h"
 
 struct BlockData{
     int x;
