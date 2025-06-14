@@ -1,5 +1,4 @@
-/* #include "server/server.h"
-#include "tests/client/borrador_server.h" */
+#include "server/server.h"
 #include "tests/client/mock_server.h"
 
 int main(int argc, char* argv[]) {
@@ -8,13 +7,11 @@ int main(int argc, char* argv[]) {
 
     std::string servname = argv[1];
 
-    // mock_server(servname);
+    /* MockServer server;
+    server.start(servname); */
 
-    MockServer server;
-    server.start(servname);
-
-    /* Server server(servname);
-    server.start(); */
+    Server server(servname);
+    server.start();
 
     return 0;
 }
