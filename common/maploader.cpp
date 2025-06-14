@@ -3,12 +3,15 @@
 #include <filesystem>
 #include <stdexcept>
 #include <fstream>
+#include <iostream>
 
 
 MapLoader::MapLoader() {
 }
 
 MapData MapLoader::loadMapData(const std::string& filePath) {
+    std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
+    
     if (!std::filesystem::exists(filePath)) {
         throw std::runtime_error("File does not exist: " + filePath);
     }
@@ -22,6 +25,9 @@ MapData MapLoader::loadMapData(const std::string& filePath) {
         if (config["blocks"]) {
             parseBlocks(config["blocks"], data);
         }
+
+        std::cout << "background: " << data.backgroundPath << std::endl;
+        std::cout << "planting_spots: " << data.plantingSpots << std::endl;
 
         if (!validateMapData(data)) {
             throw std::runtime_error("Map data validation failed");

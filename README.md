@@ -88,8 +88,7 @@ Para levantar la interfaz grafica
 ## Editor de niveles
 Una vez compilado el proyecto ejecutar el editor mediante
 ```bash
-cd build/
-./cs2d_editor
+./build/cs2d_editor
 ```
 
 

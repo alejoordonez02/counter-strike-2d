@@ -43,10 +43,10 @@ void MainWindow::setupUI() {
 }
 
 void MainWindow::loadConfigurations() {
-    QString weaponsheetConfigPath = "../config/weaponsheet_config.yaml";
+    QString weaponsheetConfigPath = "config/weaponsheet_config.yaml";
     m_weaponsheetEditor->loadsheet(weaponsheetConfigPath);
 
-    QString tilesheetConfigPath = "../config/tilesheet_config.yaml";
+    QString tilesheetConfigPath = "config/tilesheet_config.yaml";
     m_tilesheetEditor->loadsheet(tilesheetConfigPath);
 }
 
