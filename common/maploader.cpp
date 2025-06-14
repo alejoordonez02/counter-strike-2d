@@ -8,12 +8,12 @@
 MapLoader::MapLoader() {
 }
 
-MapOnlyData MapLoader::loadMapData(const std::string& filePath) {
+MapData MapLoader::loadMapData(const std::string& filePath) {
     if (!std::filesystem::exists(filePath)) {
         throw std::runtime_error("File does not exist: " + filePath);
     }
 
-    MapOnlyData data;
+    MapData data;
     try {
         YAML::Node config = YAML::LoadFile(filePath);
 
@@ -34,7 +34,7 @@ MapOnlyData MapLoader::loadMapData(const std::string& filePath) {
     return data;
 }
 
-void MapLoader::parseBlocks(const YAML::Node& blocksNode, MapOnlyData& data) {
+void MapLoader::parseBlocks(const YAML::Node& blocksNode, MapData& data) {
     for (const auto& blockNode : blocksNode) {
         BlockData block;
         block.x = blockNode["x"].as<int>();
@@ -45,7 +45,7 @@ void MapLoader::parseBlocks(const YAML::Node& blocksNode, MapOnlyData& data) {
     }
 }
 
-bool MapLoader::validateMapData(const MapOnlyData& data) {
+bool MapLoader::validateMapData(const MapData& data) {
     if (data.backgroundPath.empty() || !std::filesystem::exists(data.backgroundPath)) {
         return false;
     }

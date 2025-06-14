@@ -15,9 +15,9 @@ public:
     void loadBackground(const QString &imagePath);
     void setTileSize(int width, int height);
     void placeTile(const QPoint& position, const QString& texturePath, const QString& type);
-    void loadMapFromData(const MapData& data);
+    void loadMapFromData(const MapDataEditor& data);
     void saveMapData(const QString& filePath);
-    MapData getMapData();
+    MapDataEditor getMapData();
 
     protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -36,7 +36,7 @@ private:
     QHash<QString, QPixmap> textureCache;
     int m_tileWidth;
     int m_tileHeight;
-    MapData mapdata;
+    MapDataEditor mapdata;
     struct {
         QString texturePath;
         QString typeString;

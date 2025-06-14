@@ -10,7 +10,7 @@ struct BlockData{
     std::string type;
 };
 
-struct MapOnlyData{
+struct MapData{
     std::string backgroundPath;
     int plantingSpots;
     std::vector<BlockData> blocks;
@@ -21,12 +21,12 @@ class MapLoader
 public:
     MapLoader();
     
-    MapOnlyData loadMapData(const std::string& filePath);
+    MapData loadMapData(const std::string& filePath);
     
-    static bool validateMapData(const MapOnlyData& data);
+    static bool validateMapData(const MapData& data);
 
 private:
-    void parseBlocks(const YAML::Node& blocksNode, MapOnlyData& data);
+    void parseBlocks(const YAML::Node& blocksNode, MapData& data);
 };
 
 #endif // MAPLOADER_H

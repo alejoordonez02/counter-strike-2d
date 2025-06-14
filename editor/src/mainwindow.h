@@ -27,7 +27,7 @@ private:
     void setupTilesheetEditor();
     void loadConfigurations();
     void connectSignals();
-    MapData convertToMapData(MapOnlyData data_struct);
+    MapDataEditor convertToMapData(MapData data_struct);
 
     Ui::MapEditor *ui;
     SheetEditor *m_tilesheetEditor;

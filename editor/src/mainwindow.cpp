@@ -76,8 +76,8 @@ void MainWindow::on_LoadButton_clicked()
     if (!filePath.isEmpty()) {
         try {
             std::string filePathString = filePath.toStdString();
-            MapOnlyData data_struct = m_mapLoader.loadMapData(filePathString);
-            MapData data = convertToMapData(data_struct);
+            MapData data_struct = m_mapLoader.loadMapData(filePathString);
+            MapDataEditor data = convertToMapData(data_struct);
             m_mapEditor->loadMapFromData(data);
             
         } catch (const std::exception& e) {
@@ -87,8 +87,8 @@ void MainWindow::on_LoadButton_clicked()
     }
 }
 
-MapData MainWindow::convertToMapData(MapOnlyData data_struct){
-    MapData data;
+MapDataEditor MainWindow::convertToMapData(MapData data_struct){
+    MapDataEditor data;
     data.backgroundPath = QString::fromStdString(data_struct.backgroundPath);
     data.plantingSpots = data_struct.plantingSpots;
 
