@@ -51,7 +51,7 @@ void PlayerPhysics::move(float dt) {
     Position destination = pos + dir * v;
     Trajectory t(pos, destination, radius);
     for (size_t i : sorted_idx) {
-        auto c = collidables[sorted_idx[i]];
+        auto c = collidables[i];
         if (auto intersection = c->intersect(t)) {
             pos = *intersection - dir * radius;
             return;
