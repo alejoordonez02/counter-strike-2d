@@ -76,13 +76,13 @@ void InputHandler::send_direction() {
 
     // envía solo si hay un movimiento
     if (dir.x != 0 || dir.y != 0) {
-        std::cout << "LOG: Enviando comando de movimiento." << std::endl;
+        // std::cout << "LOG: Enviando comando de movimiento." << std::endl;
         commands_queue.try_push(std::make_unique<StartMovingDTO>(dir));
         was_moving = true;
     } else {
         if (was_moving) {
-            std::cout << "LOG: Enviando comando de fin de movimiento."
-                      << std::endl;
+            // std::cout << "LOG: Enviando comando de fin de movimiento."
+            //           << std::endl;
             commands_queue.try_push(std::make_unique<StopMovingDTO>(dir));
             was_moving = false;
         }
@@ -126,8 +126,8 @@ void InputHandler::send_aim() {
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
     if (mouse_x != last_mouse_x || mouse_y != last_mouse_y) {
-        std::cout << "LOG: Enviando comando de aim a (" << mouse_x << ", "
-                  << mouse_y << ")" << std::endl;
+        // std::cout << "LOG: Enviando comando de aim a (" << mouse_x << ", " <<
+        // mouse_y << ")" << std::endl;
         // commands_queue.try_push(std::make_shared<AimDTO>(Direction(mouse_x,
         // mouse_y, false)));
         last_mouse_x = mouse_x;

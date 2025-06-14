@@ -5,6 +5,7 @@
 #include "client/animation_provider.h"
 #include "client/texture_provider.h"
 #include "client/camera.h"
+#include "render.h"
 
 Render::Render(int user_player_id):
         sdl(SDL_INIT_VIDEO),
@@ -49,6 +50,18 @@ void Render::update(Snapshot snapshot) {
     // TODO: actualizar dropeables
 
     // TODO: actualizar mapa
+}
+
+
+void Render::skip_frames(uint8_t frames) {
+    if(frames == 0) {
+        return;
+    }
+    // se salta los frames que no se renderizan
+    std::cout << "LOG: Debe saltearse " << (int)frames << " frames." << std::endl;
+    for (auto& [id, renderable_player] : players_renderables) {
+        renderable_player->skip_frames(frames);
+    }
 }
 
 void Render::render() {

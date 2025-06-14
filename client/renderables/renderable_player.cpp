@@ -83,4 +83,9 @@ double RenderablePlayer::calculate_facing_angle(int pos_x, int pos_y, int aim_x,
     return angle + 90.0;                // para alinear la textura
 }
 
+void RenderablePlayer::skip_frames(uint8_t frames_to_skip){
+    current_animation->skip_frames(frames_to_skip);
+    legs.skip_frames(frames_to_skip);
+}
+
 RenderablePlayer::~RenderablePlayer() {}

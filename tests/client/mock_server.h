@@ -1,17 +1,14 @@
 #ifndef MOCK_SERVER_H
 #define MOCK_SERVER_H
 
-#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <thread>
 #include <utility>
 
-#include "common/network/dtos/snapshot_dto.h"
 #include "common/snapshot.h"
 #include "server/acceptor.h"
 #include "server/client_handler.h"
-#include "server/cmd_constructor.h"
 #include "server/model/equipment.h"
 #include "server/model/player.h"
 #include "server/model/random.h"
