@@ -8,6 +8,7 @@
 #include "common/network/dto.h"
 #include "common/queue.h"
 #include "common/snapshot.h"
+#include "common/maploader.h"
 
 class GameLoop {
     private:
@@ -22,7 +23,7 @@ class GameLoop {
 
     public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::unique_ptr<DTO>>& commands, int user_player_id);
+             Queue<std::unique_ptr<DTO>>& commands, int user_player_id, const MapData& map_data);
     void run();
 
     void debug_get_fps(uint32_t& fps_timer, int& frame_count);

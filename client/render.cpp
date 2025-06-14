@@ -7,13 +7,14 @@
 #include "client/camera.h"
 #include "render.h"
 
-Render::Render(int user_player_id):
+Render::Render(int user_player_id, const MapData& map_data):
         sdl(SDL_INIT_VIDEO),
         window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
                SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN),
         renderer(window, -1, SDL_RENDERER_ACCELERATED),
         animation_provider(std::make_shared<AnimationProvider>()),
-        user_player_id(user_player_id) {
+        user_player_id(user_player_id),
+        renderable_map(map_data, animation_provider) {
     // poner color de fondo rosa
     renderer.SetDrawColor(0, 255, 0, 0);
 
