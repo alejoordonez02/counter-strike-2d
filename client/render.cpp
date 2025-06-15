@@ -27,9 +27,6 @@ Render::Render(int user_player_id, const MapData& map_data):
 }
 
 void Render::update(Snapshot snapshot) {
-    // actualizar el mapa
-    renderable_map.update();
-
     // TODO: actualizar dropeables
 
     // actualizar jugadores

@@ -28,7 +28,6 @@ class RenderableMap {
 
     void load_background();
 
-    void update();
     void render(SDL2pp::Renderer& renderer);
 
     void load_blocks();

@@ -18,9 +18,9 @@ void RenderableMap::load_map_info(){
 }
 
 void RenderableMap::load_background() {
-    std::cout << "Background path: " << map_data.backgroundPath << std::endl;
-    background = animation_provider->make_animation("background_sand1");
-
+    std::string full_name = "background_" + map_data.backgroundPath;
+    std::cout << "LOG: Background path: " << full_name << std::endl;
+    background = animation_provider->make_animation(full_name);
 }
 
 void RenderableMap::load_blocks() {
@@ -29,20 +29,14 @@ void RenderableMap::load_blocks() {
         // Crear un RenderableBlock para cada bloque
         blocks[block.texture] = std::make_unique<RenderableBlock>(block, animation_provider);
         blocks[block.texture]->load_block();
-        std::cout << "Block at (" << block.x << ", " << block.y
-                  << ") with texture: " << block.texture
-                  << " and type: " << block.type << std::endl;
+        std::cout << "LOG: Block at (" << block.x << ", " << block.y
+            << ") with texture: " << block.texture << std::endl;
     }
-}
-
-void RenderableMap::update() {
-    // NOTE: no es necesario, salvo que haya algun bloque animado
-    // background->update();
 }
 
 void RenderableMap::render(SDL2pp::Renderer& renderer) {
     // TODO: Hardcodeado el mosaico
-    // iniciar en 0,0 y repetir 10 en x & 10 en y
+    // iniciar en 0,0 y repetir 10 veces en x & 10 veces en y
     background->render_tilling(renderer, SDL2pp::Point(0, 0), 10, 10);
 
     // render all blocks

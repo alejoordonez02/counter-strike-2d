@@ -1,5 +1,4 @@
 #include "client/animation_provider.h"
-
 #include "client/renderables/animation.h"
 #include "client/texture_provider.h"
 
@@ -24,8 +23,9 @@ void AnimationProvider::load_animations() {
                                     AnimationData{4, 8, true, 5, 0}};
 
 // ====== BACKGROUNDS ======
+    animation_prototypes["background_dust"] = {TextureProvider::get_texture("background_dust").get(), AnimationData{1, 0, false, 0, 0}};
     animation_prototypes["background_sand1"] = {TextureProvider::get_texture("background_sand1").get(), AnimationData{1, 0, false, 0, 0}};
-    
+    animation_prototypes["background_aztec"] = {TextureProvider::get_texture("background_aztec").get(), AnimationData{1, 0, false, 0, 0}};
     
     // ======= TILES / BLOCKS ========
     animation_prototypes["solid1"] = {TextureProvider::get_texture("dust_tiles").get(), AnimationData{8, 9, false, 0, 0}};
