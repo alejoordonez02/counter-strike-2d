@@ -22,7 +22,7 @@ private:
 
 public:
     Client(const std::string& hostname, const std::string& servname);
-    void run();
+    void run(int use_id);
 };
 
 #endif
