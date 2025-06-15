@@ -9,14 +9,16 @@
 #include "SDL2pp/Renderer.hh"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
+#include "client/renderables/renderable_block.h"
 #include "common/maploader.h"
+
 
 class RenderableMap {
     private:
     const MapData& map_data;
     std::shared_ptr<AnimationProvider> animation_provider;
 
-    // std::unordered_map<std::string, std::unique_ptr<RenderableBlock>> blocks;
+    std::unordered_map<std::string, std::unique_ptr<RenderableBlock>> blocks;
     std::unique_ptr<Animation> background;
 
     public:
