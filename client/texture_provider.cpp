@@ -40,15 +40,17 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
             renderer, DATA_PATH "/assets/gfx/player/t4.bmp");
     textures["legs"] = std::make_shared<SDL2pp::Texture>(
             renderer, DATA_PATH "/assets/gfx/player/legs.bmp");
-
+            
     // ==== BACKGROUNDS ======
-    textures["background_sand1"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/backgrounds/sand1.jpg");
+    textures["background_sand1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/backgrounds/sand1.jpg");
+    textures["background_dust"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/backgrounds/dust.png");
+    textures["background_aztec"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/backgrounds/aztec.png");
+    textures["background_nuke"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/backgrounds/nuke.png");
             
     // ==== BLOCKS ======
     textures["dust_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/dust.bmp");
-
-
+    textures["aztect_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/aztec.bmp");
+    textures["embrador_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/embrador.bmp");
 
 
 
