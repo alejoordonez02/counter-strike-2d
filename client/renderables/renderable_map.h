@@ -18,7 +18,7 @@ class RenderableMap {
     const MapData& map_data;
     std::shared_ptr<AnimationProvider> animation_provider;
 
-    std::unordered_map<std::string, std::unique_ptr<RenderableBlock>> blocks;
+    std::vector<std::unique_ptr<RenderableBlock>> blocks;
     std::unique_ptr<Animation> background;
 
     public:

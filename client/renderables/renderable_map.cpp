@@ -27,8 +27,9 @@ void RenderableMap::load_blocks() {
     // mostrar el nombre de los blockes por consola
     for (const auto& block : map_data.blocks) {
         // Crear un RenderableBlock para cada bloque
-        blocks[block.texture] = std::make_unique<RenderableBlock>(block, animation_provider);
-        blocks[block.texture]->load_block();
+        blocks.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
+        // carga la data del ultimo bloque
+        blocks.back()->load_block();
     }
 }
 
@@ -38,7 +39,7 @@ void RenderableMap::render(SDL2pp::Renderer& renderer) {
     background->render_tilling(renderer, SDL2pp::Point(0, 0), 10, 10);
 
     // render all blocks
-    for (const auto& [key, block] : blocks) {
+    for (const auto& block : blocks) {
         block->render(renderer);
     }
 }
