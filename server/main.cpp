@@ -7,11 +7,11 @@ int main(int argc, char* argv[]) {
 
     std::string servname = argv[1];
 
-    /* MockServer server;
-    server.start(servname); */
-
-    Server server(servname);
+    MockServer server(servname);
     server.start();
+
+    /* Server server(servname);
+    server.start(); */
 
     return 0;
 }

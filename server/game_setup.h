@@ -6,6 +6,7 @@
 #include "server/model/equipment.h"
 #include "server/model/map.h"
 #include "server/model/player.h"
+#include "server/model/random.h"
 #include "server/model/weapons.h"
 #include "server/player_handler.h"
 
@@ -13,8 +14,8 @@
 #define ROUNDS 15
 #define ROUND_TIME 600
 #define TIME_OUT 10
-#define PLAYER_MAX_VELOCITY 5.0f
-#define PLAYER_ACCELERATION 10.0f
+#define PLAYER_MAX_VELOCITY 15.0f
+#define PLAYER_ACCELERATION 1000.0f
 #define PLAYER_RADIUS 0.5f
 #define PLAYER_STARTING_MONEY 800
 #define PLAYER_MAX_HEALTH 100
@@ -28,7 +29,9 @@ static inline std::shared_ptr<Map> get_map() {
     return std::make_shared<Map>();
 }
 
-static inline Position get_starting_position() { return Position(0, 0); }
+static inline Position get_starting_position() {
+    return Position(Random::get(-30, 30), Random::get(-30, 30));
+}
 
 static inline std::unique_ptr<Equipment> get_starting_equipment() {
     return std::make_unique<Equipment>(std::make_unique<Fist>(),
@@ -44,8 +47,11 @@ static inline float get_round_time() { return ROUND_TIME; }
 
 static inline float get_time_out() { return TIME_OUT; }
 
-static int id = 1;
-static inline int get_player_id() { return id++; }
+static int id = -1;
+static inline int get_player_id() {
+    id++;
+    return id;
+}
 
 static inline float get_player_max_velocity() { return PLAYER_MAX_VELOCITY; }
 

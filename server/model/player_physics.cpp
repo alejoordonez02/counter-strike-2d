@@ -104,9 +104,15 @@ std::optional<Position> PlayerPhysics::intersect(
      * radio del jugador
      * */
     auto dir = trajectory.get_direction();
-    float t = std::clamp(
-            (pos - trajectory.origin).dot(dir) / trajectory.get_length(), 0.0f,
-            1.0f);
+    auto length = trajectory.get_length();
+    /*
+     * Esto de length == 0 obviamente está mal
+     * */
+    if (length == 0)
+        return std::nullopt;
+
+    float t =
+            std::clamp((pos - trajectory.origin).dot(dir) / length, 0.0f, 1.0f);
     Position closest = trajectory.eval(t);
     auto distance = (closest - pos).get_length();
     Direction to_closest = pos.get_direction(closest);
