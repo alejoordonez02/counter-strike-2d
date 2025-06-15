@@ -6,6 +6,7 @@
 struct BlockData{
     int x;
     int y;
+    std::string id;
     std::string texture;
     std::string type;
 };

@@ -22,16 +22,9 @@ MapData MapLoader::loadMapData(const std::string& filePath) {
 
         data.backgroundPath = config["background"].as<std::string>();
         data.plantingSpots = config["planting_spots"].as<int>();
-        data.width = config["width"].as<int>();
-        data.height = config["height"].as<int>();
         if (config["blocks"]) {
             parseBlocks(config["blocks"], data);
         }
-
-        std::cout << "background: " << data.backgroundPath << std::endl;
-        std::cout << "planting_spots: " << data.plantingSpots << std::endl;
-        std::cout << "width: " << data.width << std::endl;
-        std::cout << "height: " << data.height << std::endl;
 
         if (!validateMapData(data)) {
             throw std::runtime_error("Map data validation failed");
