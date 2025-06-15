@@ -22,10 +22,9 @@ void Client::run() {
     // este es asignado por el servidor al iniciar la conexión
     int player_id = 1;
     // TODO: El mapa se debe poner descargar del server supuestamente
+    // std::cout << "LOG: Current working directory: " << std::filesystem::current_path() << std::endl;
     MapLoader map_loader;
-    // debug: imprimir current working directory
-    std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
-    MapData map_to_use = map_loader.loadMapData("config/map_config.yaml");
+    MapData map_to_use = map_loader.loadMapData("tests/client/prueba_mapa_mod.yaml");
 
     // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y
     // final se encontrará en el GameLoop

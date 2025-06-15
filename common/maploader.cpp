@@ -20,7 +20,7 @@ MapData MapLoader::loadMapData(const std::string& filePath) {
     try {
         YAML::Node config = YAML::LoadFile(filePath);
 
-        data.backgroundPath = config["background"].as<std::string>();
+        data.background = config["background"].as<std::string>();
         data.plantingSpots = config["planting_spots"].as<int>();
         if (config["blocks"]) {
             parseBlocks(config["blocks"], data);
@@ -49,7 +49,7 @@ void MapLoader::parseBlocks(const YAML::Node& blocksNode, MapData& data) {
 }
 
 bool MapLoader::validateMapData(const MapData& data) {
-    if (data.backgroundPath.empty()){ //|| !std::filesystem::exists(data.backgroundPath)) {
+    if (data.background.empty()){ //|| !std::filesystem::exists(data.background)) {
         return false;
     }
 

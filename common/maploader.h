@@ -6,16 +6,15 @@
 struct BlockData{
     int x;
     int y;
-    std::string id;
-    std::string texture;
+    std::string texture;        // NOTE: se utiliza el nombre de la textura, no su path
     std::string type;
 };
 
 struct MapData{
-    std::string backgroundPath;
-    std::string mapName;
-    int width;
-    int height;
+    std::string background;
+    // std::string mapName;
+    // int width;
+    // int height;
     int plantingSpots;
     std::vector<BlockData> blocks;
 };

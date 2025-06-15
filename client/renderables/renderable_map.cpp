@@ -18,7 +18,7 @@ void RenderableMap::load_map_info(){
 }
 
 void RenderableMap::load_background() {
-    std::string full_name = "background_" + map_data.backgroundPath;
+    std::string full_name = "background_" + map_data.background;
     std::cout << "LOG: Background path: " << full_name << std::endl;
     background = animation_provider->make_animation(full_name);
 }
@@ -29,8 +29,6 @@ void RenderableMap::load_blocks() {
         // Crear un RenderableBlock para cada bloque
         blocks[block.texture] = std::make_unique<RenderableBlock>(block, animation_provider);
         blocks[block.texture]->load_block();
-        std::cout << "LOG: Block at (" << block.x << ", " << block.y
-            << ") with texture: " << block.texture << std::endl;
     }
 }
 

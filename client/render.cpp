@@ -15,8 +15,8 @@ Render::Render(int user_player_id, const MapData& map_data):
         animation_provider(std::make_shared<AnimationProvider>()),
         user_player_id(user_player_id),
         renderable_map(map_data, animation_provider) {
-    // poner color de fondo rosa
-    renderer.SetDrawColor(0, 255, 0, 0);
+    // color de fondo negro
+    renderer.SetDrawColor(0, 0, 0, 0);
 
     // cargar texturas
     TextureProvider::load_textures(renderer);
@@ -80,8 +80,6 @@ void Render::render() {
     }
 
     // TODO: renderizar dropeables
-
-    // TODO: renderizar mapa
 
     // mostrar la ventana
     renderer.Present();
