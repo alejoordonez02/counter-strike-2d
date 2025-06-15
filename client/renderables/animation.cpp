@@ -10,7 +10,7 @@
 
 Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         texture(texture),
-        current_frame(0),
+        current_frame(data.frames),
         frame_width(this->texture.GetWidth()),
         frame_height(this->texture.GetHeight()),
         num_frames(data.frames),
@@ -25,8 +25,7 @@ Animation::~Animation() {
 
 void Animation::update() {
     if (!this->is_animated) {
-        // sprite estatico. Toma solo 1 frame y no permite avanzar al siguiente
-        this->current_frame = this->num_frames;
+        // sprite estatico. Solo tiene 1 frame, no avanza al siguiente
         return;
     }
 
