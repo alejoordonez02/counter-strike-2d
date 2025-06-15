@@ -7,22 +7,28 @@
 #include "client/camera.h"
 #include "render.h"
 
-Render::Render(int user_player_id):
+Render::Render(int user_player_id, const MapData& map_data):
         sdl(SDL_INIT_VIDEO),
         window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
                SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN),
         renderer(window, -1, SDL_RENDERER_ACCELERATED),
         animation_provider(std::make_shared<AnimationProvider>()),
-        user_player_id(user_player_id) {
-    // poner color de fondo rosa
-    renderer.SetDrawColor(0, 255, 0, 0);
+        user_player_id(user_player_id),
+        renderable_map(map_data, animation_provider) {
+    // color de fondo negro
+    renderer.SetDrawColor(0, 0, 0, 0);
 
     // cargar texturas
     TextureProvider::load_textures(renderer);
     animation_provider->load_animations();
+
+    // carga info del mapa
+    renderable_map.load_map_info();
 }
 
 void Render::update(Snapshot snapshot) {
+    // TODO: actualizar dropeables
+
     // actualizar jugadores
     for (auto& jugador : snapshot.players) {
         // si es el jugador actual actualiza el offset de la camara
@@ -46,10 +52,6 @@ void Render::update(Snapshot snapshot) {
                     std::move(renderable_player);
         }
     }
-
-    // TODO: actualizar dropeables
-
-    // TODO: actualizar mapa
 }
 
 
@@ -68,6 +70,9 @@ void Render::render() {
     // limpiar la ventana
     renderer.Clear();
 
+    // renderizar mapa
+    renderable_map.render(renderer);
+
     // iterar todos los jugadores
     for (auto& [id, renderable_player] : players_renderables) {
         // renderizar cada jugador
@@ -75,8 +80,6 @@ void Render::render() {
     }
 
     // TODO: renderizar dropeables
-
-    // TODO: renderizar mapa
 
     // mostrar la ventana
     renderer.Present();

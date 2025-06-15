@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "sheeteditor.h"
 #include "mapeditor.h"
-#include "maploader.h"
+#include "common/maploader.h"
 
 namespace Ui {
 class MapEditor;
@@ -27,12 +27,13 @@ private:
     void setupTilesheetEditor();
     void loadConfigurations();
     void connectSignals();
+    MapDataEditor convertToMapData(MapData data_struct);
 
     Ui::MapEditor *ui;
     SheetEditor *m_tilesheetEditor;
     SheetEditor *m_weaponsheetEditor;
     MapEditor *m_mapEditor;
-    MapLoader *m_mapLoader;
+    MapLoader m_mapLoader;
     QPixmap m_currentBrush;
 };
 
