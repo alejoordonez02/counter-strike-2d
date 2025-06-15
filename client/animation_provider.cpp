@@ -30,7 +30,7 @@ void AnimationProvider::load_animations() {
     
     // ======= TILES / BLOCKS ========
     // ======= DUST BLOCKS ========
-    animation_prototypes["ctspawn"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 7, false, 0, 0}};
+    animation_prototypes["ctspawn"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 69, false, 0, 0}};
     animation_prototypes["floor1"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 72, false, 0, 0}};
     animation_prototypes["floor2"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 73, false, 0, 0}};
     animation_prototypes["floor3"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 74, false, 0, 0}};
@@ -95,10 +95,10 @@ void AnimationProvider::load_animations() {
     animation_prototypes["sand11"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 48, false, 0, 0}};
     animation_prototypes["sand12"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 48, false, 0, 0}};
     animation_prototypes["sand13"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 48, false, 0, 0}};
-    animation_prototypes["sandpath1"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 0, false, 0, 0}};
-    animation_prototypes["sandpath2"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 0, false, 0, 0}};
-    animation_prototypes["sandpath3"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 0, false, 0, 0}};
-    animation_prototypes["sandpath4"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 0, false, 0, 0}};
+    animation_prototypes["sandpath1"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 40, false, 0, 0}};
+    animation_prototypes["sandpath2"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 41, false, 0, 0}};
+    animation_prototypes["sandpath3"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 42, false, 0, 0}};
+    animation_prototypes["sandpath4"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 43, false, 0, 0}};
     animation_prototypes["sandgrass1"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 24, false, 0, 0}};
     animation_prototypes["sandgrass2"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 25, false, 0, 0}};
     animation_prototypes["sandgrass3"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 26, false, 0, 0}};
@@ -118,7 +118,7 @@ void AnimationProvider::load_animations() {
     animation_prototypes["solid7"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 7, false, 0, 0}};
     animation_prototypes["solid8"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 8, false, 0, 0}};
     animation_prototypes["solid9"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 9, false, 0, 0}};
-    animation_prototypes["tspawn"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 26, false, 0, 0}};
+    animation_prototypes["tspawn"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 68, false, 0, 0}};
     animation_prototypes["woodenbox1"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 20, false, 0, 0}};
     animation_prototypes["woodenbox2"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 57, false, 0, 0}};
     animation_prototypes["woodenbox3"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 58, false, 0, 0}};
