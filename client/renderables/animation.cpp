@@ -6,6 +6,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "animation.h"
 
 Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         texture(texture),
@@ -15,7 +16,7 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         num_frames(data.frames),
         columns(data.columns),
         is_animated(data.is_animated),
-        size(frame_width / columns),  // siempre texturas con tamaño cuadrado
+        size(data.modify_size != 0 ? data.modify_size : frame_width / columns),  // siempre texturas con tamaño cuadrado
         elapsed(0),
         step(data.steps){}
 
@@ -63,4 +64,29 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed
                   flipType);
+}
+
+// repite una Animation en un área rectangular, tipo mosaico
+void Animation::render_tilling(SDL2pp::Renderer& renderer, const SDL2pp::Point from_position, 
+                               int columns, int rows) {
+    // Renderiza la animación en un área rectangular desde from_position
+    int frameX = (this->current_frame % columns) * size;
+    int frameY = (this->current_frame / columns) * size;
+
+    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
+    SDL2pp::Rect dst = SDL2pp::Rect(from_position.x, from_position.y, size, size);
+
+    // se modifica su posición para que este centrado en la cámara
+    Camera::modify_center_rectangle(dst);
+    // guarda la posición inicial para que no se modifique
+    int modified_x = dst.x;
+    int modified_y = dst.y;
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < columns; ++j) {
+            dst.x = modified_x + j * size;
+            dst.y = modified_y + i * size;
+            renderer.Copy(texture, src, dst);
+        }
+    }
 }

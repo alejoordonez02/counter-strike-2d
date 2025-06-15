@@ -35,15 +35,12 @@ void RenderableMap::load_blocks() {
 }
 
 void RenderableMap::update() {
-    background->update();
+    // background->update();
 }
 
 void RenderableMap::render(SDL2pp::Renderer& renderer) {
-    double angle = 0;
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-    SDL2pp::Point position(0, 0);
-
-    background->render(renderer, position, flip, angle);
+    // TODO: Hardcodeado el mosaico
+    background->render_tilling(renderer, SDL2pp::Point(0, 0), 10, 10);
 }
 
 RenderableMap::~RenderableMap() {}

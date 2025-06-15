@@ -19,9 +19,12 @@ class Animation {
     void update();
     void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
                 SDL_RendererFlip& flipType, double rotation_angle = 0.0);
+    void render_tilling(SDL2pp::Renderer& renderer,
+                        const SDL2pp::Point from_position, int columns,
+                        int rows);
     void skip_frames(uint8_t frames_to_skip);
 
-    private:
+private:
     void advanceFrame();
 
     /** SDL texture of the raw image. */

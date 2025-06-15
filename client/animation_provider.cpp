@@ -21,7 +21,7 @@ void AnimationProvider::load_animations() {
             AnimationData{2, 3, false, 1, 0}};
     animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(),
                                     AnimationData{4, 8, true, 5, 0}};
-    animation_prototypes["background_sand1"] = {TextureProvider::get_texture("background_sand1").get(), AnimationData{1, 0, false, 0, 1000}};
+    animation_prototypes["background_sand1"] = {TextureProvider::get_texture("background_sand1").get(), AnimationData{1, 0, false, 0, 0}};
 }
 
 // devuelve un nuevo puntero a la animacion
