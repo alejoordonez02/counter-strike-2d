@@ -17,13 +17,17 @@ class RenderableMap {
     std::shared_ptr<AnimationProvider> animation_provider;
 
     // std::unordered_map<std::string, std::unique_ptr<RenderableBlock>> blocks;
-
+    std::unique_ptr<Animation> background;
 
     public:
     RenderableMap(const MapData& map_data, std::shared_ptr<AnimationProvider> animation_provider);
 
-    // void update(PlayerData& player);
-    // void render(SDL2pp::Renderer& renderer);
+    void load_map_info();
+
+    void load_background();
+
+    void update();
+    void render(SDL2pp::Renderer& renderer);
 
     void load_blocks();
 

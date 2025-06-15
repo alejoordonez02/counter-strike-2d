@@ -6,21 +6,22 @@
 void AnimationProvider::load_animations() {
     animation_prototypes["terrorist_1_idle"] = {
             TextureProvider::get_texture("terrorist_1").get(),
-            AnimationData{2, 1, false, 1}};
+            AnimationData{2, 1, false, 1, 0}};
     animation_prototypes["terrorist_2_idle"] = {
             TextureProvider::get_texture("terrorist_2").get(),
-            AnimationData{2, 1, false, 1}};
+            AnimationData{2, 1, false, 1, 0}};
     animation_prototypes["terrorist_3_idle"] = {
             TextureProvider::get_texture("terrorist_3").get(),
-            AnimationData{2, 1, false, 1}};
+            AnimationData{2, 1, false, 1, 0}};
     animation_prototypes["terrorist_4_idle"] = {
             TextureProvider::get_texture("terrorist_4").get(),
-            AnimationData{2, 1, false, 1}};
+            AnimationData{2, 1, false, 1, 0}};
     animation_prototypes["terrorist_1_shooting"] = {
             TextureProvider::get_texture("terrorist_4").get(),
-            AnimationData{2, 3, false, 1}};
+            AnimationData{2, 3, false, 1, 0}};
     animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(),
-                                    AnimationData{4, 8, true, 5}};
+                                    AnimationData{4, 8, true, 5, 0}};
+    animation_prototypes["background_sand1"] = {TextureProvider::get_texture("background_sand1").get(), AnimationData{1, 0, false, 0, 1000}};
 }
 
 // devuelve un nuevo puntero a la animacion

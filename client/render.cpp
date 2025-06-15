@@ -21,9 +21,17 @@ Render::Render(int user_player_id, const MapData& map_data):
     // cargar texturas
     TextureProvider::load_textures(renderer);
     animation_provider->load_animations();
+
+    // carga info del mapa
+    renderable_map.load_map_info();
 }
 
 void Render::update(Snapshot snapshot) {
+    // actualizar el mapa
+    renderable_map.update();
+
+    // TODO: actualizar dropeables
+
     // actualizar jugadores
     for (auto& jugador : snapshot.players) {
         // si es el jugador actual actualiza el offset de la camara
@@ -47,10 +55,6 @@ void Render::update(Snapshot snapshot) {
                     std::move(renderable_player);
         }
     }
-
-    // TODO: actualizar dropeables
-
-    // TODO: actualizar mapa
 }
 
 
@@ -68,6 +72,9 @@ void Render::skip_frames(uint8_t frames) {
 void Render::render() {
     // limpiar la ventana
     renderer.Clear();
+
+    // renderizar mapa
+    renderable_map.render(renderer);
 
     // iterar todos los jugadores
     for (auto& [id, renderable_player] : players_renderables) {

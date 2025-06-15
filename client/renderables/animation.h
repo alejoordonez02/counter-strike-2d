@@ -9,6 +9,7 @@ struct AnimationData {
     int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6)
     bool is_animated;       // true si es una animación, false si es un sprite estático
     int steps;          // velocidad del sprite, cada cuántos frames avanza al siguiente (solo si es animado)
+    int modify_size = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
 };
 
 class Animation {

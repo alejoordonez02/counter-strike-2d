@@ -12,6 +12,9 @@ struct BlockData{
 
 struct MapData{
     std::string backgroundPath;
+    std::string mapName;
+    int width;
+    int height;
     int plantingSpots;
     std::vector<BlockData> blocks;
 };
