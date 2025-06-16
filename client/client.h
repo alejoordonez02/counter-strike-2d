@@ -9,6 +9,7 @@
 #include "common/network/sender.h"
 #include "common/queue.h"
 
+
 class Client {
 private:
     Connection con;

@@ -19,6 +19,9 @@ class TextureProvider {
     static std::shared_ptr<SDL2pp::Texture> get_texture(
             const std::string& texture_name);
 
+    std::shared_ptr<SDL2pp::Texture> get_texture_from_file(
+            SDL2pp::Renderer& renderer, const std::string& file_path);
+
     static void load_textures(SDL2pp::Renderer& renderer);
 };
 

@@ -6,9 +6,10 @@
 
 struct AnimationData {
     int columns;        // cantidad de columnas de la imagen (ej. terrorista tiene 2)
-    int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6)
+    int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6). Para frames fijos es el numero de frame en la imagen
     bool is_animated;       // true si es una animación, false si es un sprite estático
     int steps;          // velocidad del sprite, cada cuántos frames avanza al siguiente (solo si es animado)
+    int modify_size = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
 };
 
 class Animation {
@@ -18,9 +19,12 @@ class Animation {
     void update();
     void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
                 SDL_RendererFlip& flipType, double rotation_angle = 0.0);
+    void render_tilling(SDL2pp::Renderer& renderer,
+                        const SDL2pp::Point from_position, int columns,
+                        int rows);
     void skip_frames(uint8_t frames_to_skip);
 
-    private:
+private:
     void advanceFrame();
 
     /** SDL texture of the raw image. */

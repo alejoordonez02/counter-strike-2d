@@ -5,11 +5,11 @@
 #include "common/network/dtos/snapshot_dto.h"
 
 // Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / 60;
+const static int RATE = 1000 / 30;
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-                   Queue<std::unique_ptr<DTO>>& commands, int user_player_id):
-        render(user_player_id),
+                   Queue<std::unique_ptr<DTO>>& commands, int user_player_id, const MapData& map_data):
+        render(user_player_id, map_data),
         snapshots_queue(snapshots),
         commands_queue(commands),
         input_handler(commands) {
@@ -20,8 +20,7 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
     std::unique_ptr<DTO> dto_ptr;
     SnapshotDTO* snapshot_dto = nullptr;
 
-    // se asegura que la cola tenga el ultimo estado del juego
-    while (snapshots_queue.try_pop(dto_ptr)) {
+    if (snapshots_queue.try_pop(dto_ptr)) {
         if (!dto_ptr) {
             throw std::runtime_error(
                     "Received a null DTO from the snapshots queue.");
@@ -42,8 +41,8 @@ void GameLoop::run() {
 
     // FPS tracking
     uint32_t fps_timer = SDL_GetTicks();  // marca el inicio de un segundo
-    int frame_count = 0;  // cuenta cuantos frames/bucles hay. Se reinicia luego
-                          // de 1 segundo
+    // cuenta cuantos frames/bucles hay. Se reinicia luego de 1 segundo
+    int frame_count = 0;
 
     while (is_running) {
         last_snapshot = this->get_snapshot_from_queue(last_snapshot);

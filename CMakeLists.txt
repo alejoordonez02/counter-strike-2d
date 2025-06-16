@@ -131,7 +131,7 @@ if(CS2D_CLIENT)
     target_include_directories(cs2d_client PRIVATE ${libSDL2pp_SOURCE_DIR})
 
     # Link the cs2d_common lib target
-    target_link_libraries(cs2d_client cs2d_common SDL2pp::SDL2pp Qt5::Widgets Qt5::Core Qt5::Gui)
+    target_link_libraries(cs2d_client cs2d_common SDL2pp::SDL2pp Qt5::Widgets Qt5::Core Qt5::Gui yaml-cpp::yaml-cpp)
 
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(cs2d_client PRIVATE -fPIC)
