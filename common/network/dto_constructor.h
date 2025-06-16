@@ -13,13 +13,13 @@
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
+#include "common/network/dtos/stop_moving_dto.h"
 #include "common/network/protocol.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;
 
 using DTOMaker = std::function<std::unique_ptr<DTO>(std::vector<uint8_t>&&)>;
-
 
 class DTOConstructor {
 private:
@@ -28,10 +28,24 @@ private:
 public:
     DTOConstructor() {
         maker_map = {
-            {MOVE, [](auto&& bytes) { return std::make_unique<StartMovingDTO>(std::move(bytes)); }},
-            {ATTACK, [](auto&& bytes) { return std::make_unique<StartAttackingDTO>(std::move(bytes)); }},
-            {SNAPSHOT, [](auto&& bytes) { return std::make_unique<SnapshotDTO>(std::move(bytes)); }},
-            // ...
+                {START_MOVING,
+                 [](auto&& bytes) {
+                     return std::make_unique<StartMovingDTO>(std::move(bytes));
+                 }},
+                {STOP_MOVING,
+                 [](auto&& bytes) {
+                     return std::make_unique<StopMovingDTO>(std::move(bytes));
+                 }},
+                {START_ATTACKING,
+                 [](auto&& bytes) {
+                     return std::make_unique<StartAttackingDTO>(
+                             std::move(bytes));
+                 }},
+                {SNAPSHOT,
+                 [](auto&& bytes) {
+                     return std::make_unique<SnapshotDTO>(std::move(bytes));
+                 }},
+                // ...
         };
     }
 
@@ -40,7 +54,7 @@ public:
             throw std::runtime_error("DTOConstructor error: unknown DTO type");
 
         DTOMaker f = maker_map.at(bytes[0]);
-        
+
         return f(std::move(bytes));
     }
 

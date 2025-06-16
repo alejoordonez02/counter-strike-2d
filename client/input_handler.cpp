@@ -83,7 +83,7 @@ void InputHandler::send_direction() {
         if (was_moving) {
             // std::cout << "LOG: Enviando comando de fin de movimiento."
             //           << std::endl;
-            commands_queue.try_push(std::make_unique<StopMovingDTO>(dir));
+            commands_queue.try_push(std::make_unique<StopMovingDTO>());
             was_moving = false;
         }
     }

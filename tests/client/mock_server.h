@@ -20,7 +20,7 @@ using Duration = std::chrono::duration<float>;
 using Clock = std::chrono::steady_clock;
 using Ms = std::chrono::milliseconds;
 
-#define TICK_RATE 64
+#define TICK_RATE 20
 
 class Logger {
     static inline std::string secc = "<=========>\n";
@@ -55,10 +55,10 @@ private:
                                            std::make_unique<Knife>(), 0);
     };
     static inline float get_player_max_velocity() { return 50; }
-    static inline float get_player_acceleration() { return 10; }
-    static inline float get_player_radius() { return 1; }
+    static inline float get_player_acceleration() { return 20; }
+    static inline float get_player_radius() { return 10; }
     static inline int get_player_starting_money() { return 500; }
-    static inline int get_player_max_health() { return 1; }
+    static inline int get_player_max_health() { return 100; }
     static inline Position get_random_position() {
         return Position(Random::get(-100, 100), Random::get(-100, 100));
     }
@@ -126,7 +126,7 @@ public:
                 s.players.push_back(p->get_data());
             }
 
-            Logger::log(s);
+            // Logger::log(s);
 
             for (auto& h : handlers) {
                 h->send_snapshot(s);
