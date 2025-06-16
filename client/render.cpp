@@ -18,7 +18,7 @@ Render::Render(int user_player_id, const MapData& map_data):
         animation_provider(std::make_shared<AnimationProvider>()),
         user_player_id(user_player_id),
         renderable_map(map_data, animation_provider),
-        font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16) {
+        text_manager() {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 
@@ -85,15 +85,8 @@ void Render::render() {
 
     // TODO: renderizar dropeables
 
-    // texturas
-    SDL2pp::Surface text_surface = font.RenderText_Blended("Hola Mundo", SDL_Color{255,255,255,255});
-    SDL2pp::Texture text_texture(renderer, text_surface);
-
-    SDL2pp::Point punto = renderer.GetOutputSize();
-    int text_w = text_texture.GetWidth();
-    int text_h = text_texture.GetHeight();
-    SDL2pp::Rect dst((punto.x - text_w)/2, (punto.y - text_h)/2, text_w, text_h);
-    renderer.Copy(text_texture, SDL2pp::NullOpt, dst);
+    // mostrar textos en pantalla
+    text_manager.show_terrorist_won(renderer);
 
     // mostrar la ventana
     renderer.Present();

@@ -7,13 +7,13 @@
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Window.hh>
-#include <SDL2pp/Font.hh>
 
 #include "client/animation_provider.h"
 #include "client/renderables/renderable_player.h"
 #include "common/snapshot.h"
 #include "common/maploader.h"
 #include "client/renderables/renderable_map.h"
+#include "client/text_manager.h"
 
 class Render {
     private:
@@ -28,8 +28,7 @@ class Render {
     int user_player_id;
     RenderableMap renderable_map;
 
-    SDL2pp::SDLTTF sdl_ttf;     // inicializar fuentes
-    SDL2pp::Font font;
+    TextManager text_manager;
 
     public:
     Render(int user_player_id, const MapData& map_data);
