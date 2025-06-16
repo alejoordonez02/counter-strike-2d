@@ -56,6 +56,9 @@ void Render::update(Snapshot snapshot) {
                     std::move(renderable_player);
         }
     }
+
+    // actualizar textos
+    text_manager.update(snapshot);
 }
 
 
@@ -86,7 +89,7 @@ void Render::render() {
     // TODO: renderizar dropeables
 
     // mostrar textos en pantalla
-    text_manager.show_terrorist_won(renderer);
+    text_manager.render(renderer);
 
     // mostrar la ventana
     renderer.Present();
