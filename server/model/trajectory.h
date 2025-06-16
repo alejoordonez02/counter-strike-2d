@@ -1,41 +1,37 @@
 #ifndef SERVER_MODEL_TRAJECTORY_H
 #define SERVER_MODEL_TRAJECTORY_H
 
+#include <algorithm>
+
 #include "common/position.h"
 
-/*
- * la trayectoria podría ser un atributo de Weapon, de esa forma
- * se podría sobrecargar intersects según, por ejemplo, la accuracy
- * de la misma
- * */
 class Trajectory {
-    private:
+private:
     const float width;
-
-    public:
     const Position origin;
-    const Position destination;
+    const Position destine;
+    const Direction direction;
+    const float length;
 
-    Trajectory(const Position& origin, const Position& destination,
+public:
+    Trajectory(const Position& origin, const Position& destine,
                float width = 0):
-            width(width), origin(origin), destination(destination) {}
+        width(width), origin(origin), destine(destine),
+        direction(origin.get_direction(destine)),
+        length(origin.get_distance(destine)) {}
 
     Position eval(const float& t) const {
-        return origin + (destination - origin) * t;
+        return origin + (destine - origin) * t;
     }
 
-    float get_length() const { return origin.get_distance(destination); }
-
-    float get_width(const float& t, const Direction& dir) const {
-        Position inner = eval(t);
-        Position outter = inner + dir * width;
-        return inner.get_distance(outter);
+    Position get_closest(const Position& pos) const {
+        float t = std::clamp((pos - origin).dot(direction) / length, 0.f, 1.f);
+        auto inner = eval(t);
+        auto dir = inner.get_direction(pos);
+        return inner + dir * width;
     }
 
-    Direction get_direction() const {
-        auto dir = destination - origin;
-        return Direction(dir.x, dir.y);
-    }
+    float get_length() const { return length; }
 };
 
 #endif
