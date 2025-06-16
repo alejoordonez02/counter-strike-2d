@@ -82,9 +82,14 @@ void mock_server() {
             Direction new_pos = start_moving_dto->get_direction();
             player1.x += new_pos.x * 20;
             player1.y += new_pos.y * 20;
-            player1.is_walking = true;
-            std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
-                      << player1.y << ")" << std::endl;
+            if(new_pos.x != 0 || new_pos.y != 0) {
+                player1.is_walking = true;
+            } else {
+                player1.is_walking = false;
+            }
+
+            // std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
+            //           << player1.y << ")" << std::endl;
 
             // debe crear siempre un nuevo snapshot
             Snapshot snap{};
