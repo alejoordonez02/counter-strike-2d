@@ -13,7 +13,7 @@
 
 namespace {
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorth) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0x00,
                                       0x00,
                                       0x00,
@@ -33,7 +33,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorth) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthEast) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0x3f,
                                       0x35,
                                       0x04,
@@ -53,7 +53,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthEast) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandEast) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0x3f,
                                       0x80,
                                       0x00,
@@ -73,7 +73,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandEast) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthEast) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0x3f,
                                       0x35,
                                       0x04,
@@ -94,7 +94,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthEast) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouth) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0x00,
                                       0x00,
                                       0x00,
@@ -114,7 +114,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouth) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthWest) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0xbf,
                                       0x35,
                                       0x04,
@@ -135,7 +135,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthWest) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandWest) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0xbf,
                                       0x80,
                                       0x00,
@@ -155,7 +155,7 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandWest) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthWest) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::MOVE,
+    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::START_MOVING,
                                       0xbf,
                                       0x35,
                                       0x04,
@@ -176,15 +176,16 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthWest) {
 }
 
 TEST(CmdDeserializationTest, DeserializeValidAttackCommandWithPositionXPiYPi) {
-    std::vector<uint8_t> srlzd_cmd = {DTOSerial::PlayerCommands::ATTACK,
-                                      0x40,
-                                      0x49,
-                                      0x0f,
-                                      0xdb,  // ~pi
-                                      0x40,
-                                      0x49,
-                                      0x0f,
-                                      0xdb};  // ~pi
+    std::vector<uint8_t> srlzd_cmd = {
+            DTOSerial::PlayerCommands::START_ATTACKING,
+            0x40,
+            0x49,
+            0x0f,
+            0xdb,  // ~pi
+            0x40,
+            0x49,
+            0x0f,
+            0xdb};  // ~pi
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
             std::make_unique<StartAttackingDTO>(std::move(bytes));

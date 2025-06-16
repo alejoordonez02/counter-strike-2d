@@ -1,6 +1,7 @@
 #include "server/model/player_physics.h"
 
 #include <algorithm>
+#include <iostream>
 #include <numeric>
 #include <optional>
 #include <vector>
@@ -87,11 +88,13 @@ void PlayerPhysics::update(float dt) {
 }
 
 void PlayerPhysics::start_moving(const Direction& dir) {
+    std::cout << "PlayerPhysics: started moving\n";
     this->dir = dir;
     moving = true;
 }
 
 void PlayerPhysics::stop_moving() {
+    std::cout << "PlayerPhysics: stopped moving\n";
     v = 0;
     moving = false;
 }

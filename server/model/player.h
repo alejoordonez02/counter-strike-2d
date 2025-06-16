@@ -1,6 +1,7 @@
 #ifndef SERVER_MODEL_PLAYER_H
 #define SERVER_MODEL_PLAYER_H
 
+#include <iostream>
 #include <memory>
 
 #include "common/direction.h"
@@ -92,7 +93,10 @@ public:
 
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
 
-    void stop_moving() { physics.stop_moving(); }
+    void stop_moving() {
+        std::cout << "Player: stop_moving();\n";
+        physics.stop_moving();
+    }
 
     virtual void start_attacking() {
         action = std::make_unique<Attack>(pos, dir, current,
