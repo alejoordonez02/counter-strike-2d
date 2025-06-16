@@ -7,6 +7,7 @@
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Window.hh>
+#include <SDL2pp/Font.hh>
 
 #include "client/animation_provider.h"
 #include "client/renderables/renderable_player.h"
@@ -26,6 +27,9 @@ class Render {
     std::shared_ptr<AnimationProvider> animation_provider;
     int user_player_id;
     RenderableMap renderable_map;
+
+    SDL2pp::SDLTTF sdl_ttf;     // inicializar fuentes
+    SDL2pp::Font font;
 
     public:
     Render(int user_player_id, const MapData& map_data);
