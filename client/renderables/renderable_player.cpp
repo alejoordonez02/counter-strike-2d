@@ -34,12 +34,12 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
 }
 
 void RenderablePlayer::update(PlayerData& player) {
-    this->facing_angle = calculate_facing_angle(player.aim_x, player.aim_y);
-
     position.x = player.x;
     position.y = player.y;
+    this->is_walking = player.is_walking;
+    this->facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
 
-    if (player.is_walking) {
+    if (this->is_walking) {
         // le pide a renderable_legs que se muevan y se animen. No hace nada con
         // la textura original
         legs.update(position, this->facing_angle);
@@ -74,16 +74,20 @@ void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
     current_animation->render(renderer, position, flip, angle);
 }
 
-double RenderablePlayer::calculate_facing_angle(int16_t x, int16_t y) {
-    int mouse_x, mouse_y;
-    SDL_GetMouseState(&mouse_x, &mouse_y);
-
-    int dx = mouse_x - x;
-    int dy = mouse_y - y;
+double RenderablePlayer::calculate_facing_angle(int pos_x, int pos_y, int aim_x, int aim_y){
+    int dx = aim_x - pos_x;
+    int dy = aim_y - pos_y;
 
     double angle = std::atan2(dy, dx);  // en radianes
     angle = angle * 180.0 / M_PI;       // en grados
     return angle + 90.0;                // para alinear la textura
+}
+
+void RenderablePlayer::skip_frames(uint8_t frames_to_skip){
+    current_animation->skip_frames(frames_to_skip);
+    if (this->is_walking){
+        legs.skip_frames(frames_to_skip);
+    }
 }
 
 RenderablePlayer::~RenderablePlayer() {}

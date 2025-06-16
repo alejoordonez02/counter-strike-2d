@@ -2,6 +2,9 @@
 
 target_sources(cs2d_common
     PRIVATE
+    maploader.cpp
+    PUBLIC
+    maploader.h
 )
 
 add_subdirectory(network)

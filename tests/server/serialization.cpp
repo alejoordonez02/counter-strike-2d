@@ -1,15 +1,10 @@
 #include <cstdint>
 #include <vector>
 
-#include "../common/network/dtos/start_attacking_dto.h"
-#include "../common/network/dtos/start_moving_dto.h"
-#include "../common/network/protocol.h"
-#include "gmock/gmock.h"
+#include "common/network/dtos/start_attacking_dto.h"
+#include "common/network/dtos/start_moving_dto.h"
+#include "common/network/protocol.h"
 #include "gtest/gtest.h"
-
-using ::testing::HasSubstr;
-using ::testing::NotNull;
-using ::testing::ThrowsMessage;
 
 namespace {
 TEST(SerializationTest, SerializeMoveCommandNorth) {

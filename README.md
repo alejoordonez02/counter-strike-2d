@@ -85,6 +85,12 @@ Para levantar la interfaz grafica
 ```
 
 
+## Editor de niveles
+Una vez compilado el proyecto ejecutar el editor mediante
+```bash
+./build/cs2d_editor
+```
+
 
 ## Licencia:
 GPL v2

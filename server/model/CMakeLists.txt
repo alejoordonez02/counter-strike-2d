@@ -1,9 +1,9 @@
 add_library(cs2d_server_model STATIC
-    player.cpp
-    weapon.cpp
-    random.cpp
     attack.cpp
-    # ... add other .cpp files as needed
+    player.cpp
+    player_physics.cpp
+    random.cpp
+    weapon.cpp
 )
 
 target_include_directories(cs2d_server_model PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

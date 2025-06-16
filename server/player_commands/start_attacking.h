@@ -14,13 +14,13 @@
  * Start attacking
  * */
 class StartAttacking: public Command {
-    public:
+public:
     StartAttacking() {}
 
     explicit StartAttacking(std::unique_ptr<DTO>&& dto_p) {
         StartAttackingDTO* att_dto =
                 dynamic_cast<StartAttackingDTO*>(dto_p.get());
-        if (!att_dto) {
+        if (not att_dto) {
             throw std::runtime_error("DTO is not of type StartAttackingDTO");
         }
     }

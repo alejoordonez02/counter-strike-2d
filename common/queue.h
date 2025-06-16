@@ -5,8 +5,8 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#ifndef COMMON_QUEUE_H_
-#define COMMON_QUEUE_H_
+#ifndef COMMON_QUEUE_H
+#define COMMON_QUEUE_H
 
 #include <climits>
 #include <condition_variable>
@@ -126,6 +126,16 @@ class Queue {
         is_not_empty.notify_all();
     }
 
+    void reset() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        closed = false;
+        if (not q.empty())
+            q = std::queue<T, C>();
+
+        is_not_full.notify_all();
+    }
+
     private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
@@ -144,6 +154,7 @@ class Queue<void*> {
     std::condition_variable is_not_empty;
 
     public:
+    Queue(): max_size(UINT_MAX - 1), closed(false) {}
     explicit Queue(const unsigned int max_size):
             max_size(max_size), closed(false) {}
 
@@ -234,6 +245,8 @@ class Queue<void*> {
         is_not_empty.notify_all();
     }
 
+    ~Queue() = default;
+
     private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
@@ -242,6 +255,7 @@ class Queue<void*> {
 template <typename T>
 class Queue<T*>: private Queue<void*> {
     public:
+    Queue() = default;
     explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
 
     using Queue<void*>::try_push;
@@ -250,17 +264,15 @@ class Queue<T*>: private Queue<void*> {
     using Queue<void*>::pop;
     using Queue<void*>::close;
 
-    bool try_push(T* const& val) override {
-        return Queue<void*>::try_push(val);
-    }
+    bool try_push(T* const& val) { return Queue<void*>::try_push(val); }
 
-    bool try_pop(T*& val) override {
+    bool try_pop(T*& val) {
         return Queue<void*>::try_pop((void*&)val);
     }  // cppcheck-suppress cstyleCast
 
-    void push(T* const& val) override { return Queue<void*>::push(val); }
+    void push(T* const& val) { return Queue<void*>::push(val); }
 
-    T* pop() override { return static_cast<T*>(Queue<void*>::pop()); }
+    T* pop() { return static_cast<T*>(Queue<void*>::pop()); }
 
     private:
     Queue(const Queue&) = delete;

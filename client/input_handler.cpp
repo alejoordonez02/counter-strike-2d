@@ -8,10 +8,15 @@
 
 #include "common/direction.h"
 #include "common/network/dto.h"
+#include "common/network/dtos/aim_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
+#include "common/network/dtos/stop_attacking_dto.h"
+#include "common/network/dtos/stop_moving_dto.h"
 
-InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
+#include "input_handler.h"
+
+InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue):
         commands_queue(commands_queue) {}
 
 /**
@@ -51,6 +56,9 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
 void InputHandler::send_direction() {
+    // recuerda si antes se estaba moviendo
+    static bool was_moving = false;
+
     Direction dir(0, 0);
 
     if (key_states[SDLK_UP] || key_states[SDLK_w]) {
@@ -68,36 +76,70 @@ void InputHandler::send_direction() {
 
     // envía solo si hay un movimiento
     if (dir.x != 0 || dir.y != 0) {
-        std::cout << "LOG: Enviando dirección: (" << dir.x << ", " << dir.y
-                  << ")" << std::endl;
-        commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
+        // std::cout << "LOG: Enviando comando de movimiento." << std::endl;
+        commands_queue.try_push(std::make_unique<StartMovingDTO>(dir));
+        was_moving = true;
+    } else {
+        if (was_moving) {
+            // std::cout << "LOG: Enviando comando de fin de movimiento."
+            //           << std::endl;
+            commands_queue.try_push(std::make_unique<StopMovingDTO>(dir));
+            was_moving = false;
+        }
     }
 }
 
 void InputHandler::send_attack() {
+    // con static hacemos que se mantenga su valor entre llamadas
+    // tambien se podria poner como miembro de la clase
     static bool prev_left = false;
-    bool curr_left = mouse_states["mouse_left"];
+    bool is_attacking = mouse_states["mouse_left"];
 
-    if (curr_left && !prev_left) {
+    // detecta el inicio del ataque (sostener click)
+    if (is_attacking && !prev_left) {
         std::cout << "LOG: Enviando comando de ataque." << std::endl;
         // enviarlo solo una vez, no todo el tiempo
-        commands_queue.try_push(std::make_shared<StartAttackingDTO>());
+        commands_queue.try_push(std::make_unique<StartAttackingDTO>());
+    }
+    // Detecta el fin del ataque (soltar click)
+    if (!is_attacking && prev_left) {
+        std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
+        commands_queue.try_push(std::make_unique<StopAttackingDTO>());
     }
 
     if (mouse_states["mouse_left"]) {
-        std::cout << "LOG: TAKA TAKA TAKAAA (estoy disparando no enviando)"
-                  << std::endl;
+        // Sonido de disparo ?
     } else if (mouse_states["mouse_right"]) {
         std::cout << "LOG: Click izquierdo sostenido" << std::endl;
-        // commands_queue.try_push(std::make_shared<StartSecondaryAttackingDTO>());
     }
-    prev_left = curr_left;
+    // actualiza el estado del click izquierdo
+    prev_left = is_attacking;
+}
+
+// envia las coordenadas del mouse como comando de aim
+void InputHandler::send_aim() {
+    // NOTE: Se le puede poner un cooldown para no enviar demasiados comandos
+    static int last_mouse_x = -1;
+    static int last_mouse_y = -1;
+
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    if (mouse_x != last_mouse_x || mouse_y != last_mouse_y) {
+        // std::cout << "LOG: Enviando comando de aim a (" << mouse_x << ", " <<
+        // mouse_y << ")" << std::endl;
+        // commands_queue.try_push(std::make_shared<AimDTO>(Direction(mouse_x,
+        // mouse_y, false)));
+        last_mouse_x = mouse_x;
+        last_mouse_y = mouse_y;
+    }
 }
 
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
     send_attack();
+    send_aim();
     // send_states();
 }
 
@@ -105,24 +147,24 @@ bool InputHandler::handle_events() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
+            // mantener presionada una tecla
             case SDL_KEYDOWN:
                 handle_key_down(event);
                 break;
+            // soltar una tecla
             case SDL_KEYUP:
                 handle_key_up(event);
                 break;
+            // click del mouse
             case SDL_MOUSEBUTTONDOWN:
                 handle_mouse_down(event);
                 break;
+            // soltar click del mouse
             case SDL_MOUSEBUTTONUP:
                 handle_mouse_up(event);
                 break;
-            case SDL_MOUSEMOTION:
-                // handle_mouse_motion(event);
-                // TODO: Comando Aim
-                break;
             case SDL_QUIT:
-                std::cout << "LOG: Cerrando ventana..." << std::endl;
+                std::cout << "LOG: Saliendo del input handler..." << std::endl;
                 return false;
         }
     }

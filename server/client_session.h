@@ -2,87 +2,52 @@
 #define SERVER_CLIENT_SESSION_H
 
 #include <memory>
-#include <utility>
+#include <string>
 
 #include "common/network/connection.h"
 #include "common/network/dto.h"
 #include "common/network/receiver.h"
 #include "common/network/sender.h"
+#include "common/network/socket/socket.h"
 #include "common/queue.h"
+#include "server/client_lobby.h"
 #include "server/cmd_constructor.h"
 #include "server/game_monitor.h"
+#include "server/player_commands/command.h"
 
 class ClientSession {
     private:
     Connection con;
     Queue<std::shared_ptr<DTO>> send_q;
     Queue<std::unique_ptr<DTO>> recv_q;
-    Sender sndr;
-    Receiver rcvr;
+    Sender* sndr;
+    Receiver* rcvr;
 
+    std::string username;
     GameMonitor& game_monitor;
+    ClientLobby* lobby;
+    bool _is_offline;
+
     CmdConstructor cmd_ctr;
-    // Player& player; // default constructor PROBLEMA
-    bool _is_finished;
 
     public:
     ClientSession(Socket&& s, GameMonitor& gm):
-            con(std::move(s)),
-            sndr(con, send_q),
-            rcvr(con, recv_q),
-            game_monitor(gm),
-            _is_finished(false) {
-        // ClientSetup setup(con, game_monitor, player);
-        // setup.start();
-        // setup.join();
-        sndr.start();
-        rcvr.start();
-    }
+            con(std::move(s)), game_monitor(gm), _is_offline(false) {}
 
-    bool is_finished() { return _is_finished; }
-
-    bool try_play() {
-        std::unique_ptr<DTO> dto_p;
-        if (recv_q.try_pop(dto_p)) {
-            std::unique_ptr<Command> cmd_p =
-                    cmd_ctr.construct(std::move(dto_p));
-            // cmd_p->execute(player);
-            return true;
-        }
-        return false;
-    }
-
-    bool try_push_game_update(/* std::shared_ptr<GameSnapshot> */) {
-        // send_q.try_push(lo que sea que definamos en game loop)
-        // agregar info especifica del player?
-    }
-
-    void end(
-      /* std::shared_ptr<GameSnapshot> o std::shared_ptr<GameFinishedDTO> */) {
-        // send_q.push(); // asegura push de update final
-        send_q.close();
-        sndr.join();
-        // con.destroy_socket();
-        recv_q.pop();  // desbloquear receiver por si estaba en push con queue
-                       // llena
-        rcvr.join();
-        _is_finished = true;
-    }
-
-    void force_terminate() {  // falta definir
-                              // con.destroy_socket();
-        send_q.close();
-        recv_q.close();
-        sndr.join();
-        rcvr.join();
-        _is_finished = true;
-    }
+    bool is_offline();
+    const std::string& get_username();
+    bool try_pop_command(std::unique_ptr<Command>& cmd_p);
+    bool try_push_game_update(/* std::shared_ptr<GameSnapshotDTO> g_snap */);
+    void start_lobby_phase();
+    void end_lobby_phase();
+    void start_game_phase();
+    void end_game_phase(/* std::shared_ptr<GameSnapshot> o std::shared_ptr<GameFinishedDTO> */);
+    void force_terminate();
 
     ClientSession(const ClientSession&) = delete;
     ClientSession& operator=(const ClientSession&) = delete;
 
-    ClientSession(ClientSession&&) =
-            delete;  // Thread subclasses (sndr, rcvr) can't be moved
+    ClientSession(ClientSession&&) = delete;
     ClientSession& operator=(ClientSession&&) = delete;
 
     ~ClientSession() = default;

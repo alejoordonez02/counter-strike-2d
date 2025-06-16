@@ -11,6 +11,8 @@
 #include "client/animation_provider.h"
 #include "client/renderables/renderable_player.h"
 #include "common/snapshot.h"
+#include "common/maploader.h"
+#include "client/renderables/renderable_map.h"
 
 class Render {
     private:
@@ -22,17 +24,22 @@ class Render {
             players_renderables;
 
     std::shared_ptr<AnimationProvider> animation_provider;
+    int user_player_id;
+    RenderableMap renderable_map;
 
     public:
-    Render();
+    Render(int user_player_id, const MapData& map_data);
+    ~Render();
 
     void run();
 
     void update(Snapshot snapshot);
 
-    void render();
+    // void skip_frames(uint8_t frames);
 
-    void closeWindow();
+    void skip_frames(uint8_t frames);
+
+    void render();
 };
 
 #endif  // Render_H
