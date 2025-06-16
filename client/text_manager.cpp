@@ -32,12 +32,25 @@ void TextManager::render(SDL2pp::Renderer& renderer) {
 
 
 void TextManager::show_terrorist_won(SDL2pp::Renderer& renderer) {
+    // texto en color blanco
     SDL2pp::Surface text_surface = font.RenderText_Blended("Terrorists win the Round", SDL_Color{255,255,255,255});
+    // convertir texto en textura para poder dibujarla
     SDL2pp::Texture text_texture(renderer, text_surface);
     
     SDL2pp::Point punto = renderer.GetOutputSize();
     int text_w = text_texture.GetWidth();
     int text_h = text_texture.GetHeight();
-    SDL2pp::Rect dst((punto.x - text_w)/2, (punto.y - text_h)/2, text_w, text_h);
+
+    
+    int padding = 20;
+    SDL2pp::Rect dst((punto.x - text_w)/2, (punto.y - text_h)/3, text_w, text_h);
+    // recuadro transparente detrás del texto
+    SDL2pp::Rect box(dst.x - padding/2, dst.y - padding/3, dst.w + padding, dst.h + padding);
+
+    renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);     // permitir transparencia
+    renderer.SetDrawColor(0, 0, 0, 128); // 128 = 50% transparencia
+    renderer.FillRect(box);
+
+    // texto encima
     renderer.Copy(text_texture, SDL2pp::NullOpt, dst);
 }
