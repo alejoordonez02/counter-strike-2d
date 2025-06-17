@@ -28,6 +28,7 @@ Render::Render(int user_player_id, const MapData& map_data):
 
     // carga info del mapa
     renderable_map.load_map_info();
+    text_manager.load_data();
 }
 
 void Render::update(Snapshot snapshot) {

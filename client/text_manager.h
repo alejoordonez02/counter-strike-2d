@@ -24,6 +24,8 @@ class TextManager {
     public:
     TextManager(std::shared_ptr<AnimationProvider> animation_provider);
 
+    void load_data();
+
     void update(const Snapshot& snapshot);
 
     void render(SDL2pp::Renderer& renderer);

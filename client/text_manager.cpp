@@ -4,6 +4,7 @@
 
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
+#include "text_manager.h"
 
 TextManager::TextManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
@@ -11,11 +12,14 @@ TextManager::TextManager(std::shared_ptr<AnimationProvider> animation_provider):
         hp_numbers(animation_provider),
         timer_numbers(animation_provider),
         money_numbers(animation_provider) {
-            hp_numbers.load_numbers();
-            timer_numbers.load_numbers();
-            money_numbers.load_numbers();
 }
 
+
+void TextManager::load_data() {
+    hp_numbers.load_numbers();
+    timer_numbers.load_numbers();
+    money_numbers.load_numbers();
+}
 
 
 void TextManager::update(const Snapshot& snapshot) {
