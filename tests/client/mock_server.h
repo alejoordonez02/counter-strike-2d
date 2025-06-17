@@ -20,8 +20,6 @@ using Duration = std::chrono::duration<float>;
 using Clock = std::chrono::steady_clock;
 using Ms = std::chrono::milliseconds;
 
-#define TICK_RATE 20
-
 class Logger {
     static inline std::string secc = "<=========>\n";
     static inline std::string sec = "  <=====>\n";
@@ -47,6 +45,7 @@ public:
 class MockServer {
 private:
     std::string servname;
+    static inline int tick_rate = 20;
     static inline int id = 1;
     static inline int get_player_id() { return id++; }
     static inline std::unique_ptr<Equipment> get_starting_equipment1() {
@@ -54,8 +53,8 @@ private:
                                            std::make_unique<Glock>(),
                                            std::make_unique<Knife>(), 0);
     };
-    static inline float get_player_max_velocity() { return 50; }
-    static inline float get_player_acceleration() { return 20; }
+    static inline float get_player_max_velocity() { return 70; }
+    static inline float get_player_acceleration() { return 1500; }
     static inline float get_player_radius() { return 10; }
     static inline int get_player_starting_money() { return 500; }
     static inline int get_player_max_health() { return 100; }
@@ -112,7 +111,7 @@ public:
         for (auto& h : handlers) h->send_snapshot(s);
 
         auto t1 = Clock::now();
-        Clock::duration tick_duration = Ms(1000) / TICK_RATE;
+        Clock::duration tick_duration = Ms(1000) / tick_rate;
         float elapsed_seconds = Duration(tick_duration).count();
 
         while (true) {
