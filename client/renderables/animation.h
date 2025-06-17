@@ -18,7 +18,7 @@ class Animation {
     ~Animation();
     void update();
     void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
-                SDL_RendererFlip& flipType, double rotation_angle = 0.0);
+                SDL_RendererFlip& flipType, double rotation_angle = 0.0, bool is_camera_enabled = true);
     void render_tilling(SDL2pp::Renderer& renderer,
                         const SDL2pp::Point from_position, int columns,
                         int rows);

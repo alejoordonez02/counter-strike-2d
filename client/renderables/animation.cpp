@@ -50,7 +50,7 @@ void Animation::advanceFrame() {
 }
 
 void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
-                       SDL_RendererFlip& flipType, double rotation_angle) {
+                       SDL_RendererFlip& flipType, double rotation_angle, bool is_camera_enabled) {
     int frameX = (this->current_frame % columns) * size;
     int frameY = (this->current_frame / columns) * size;
 
@@ -58,7 +58,9 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
     SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
 
     // se modifica su posición para que este centrado en la cámara
-    Camera::modify_center_rectangle(dst);
+    if(is_camera_enabled){
+        Camera::modify_center_rectangle(dst);
+    }
 
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed

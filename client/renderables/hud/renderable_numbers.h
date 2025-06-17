@@ -21,7 +21,7 @@ class RenderableNumbers {
     public:
     RenderableNumbers(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void render(SDL2pp::Renderer& renderer);
+    void render(SDL2pp::Renderer& renderer, bool is_camera_enabled);
 
     void load_numbers();
 

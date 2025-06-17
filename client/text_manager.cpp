@@ -24,7 +24,6 @@ void TextManager::load_data() {
 
 void TextManager::update(const Snapshot& snapshot) {
     this->snapshot = snapshot;
-    std::cout << "show_text: " << snapshot.round_number << std::endl;
     show_text = snapshot.round_number >= 50 ? true : false;
 
     // hp = snapshot.players[0].hp;
@@ -32,12 +31,11 @@ void TextManager::update(const Snapshot& snapshot) {
     uint8_t hp = 0;
     hp_numbers.update(32);
     
-
 }
 
 
 void TextManager::render(SDL2pp::Renderer& renderer) {
-    hp_numbers.render(renderer);
+    hp_numbers.render(renderer, false);
     
     if(!show_text){
         return;
