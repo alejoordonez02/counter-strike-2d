@@ -51,7 +51,14 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["dust_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/dust.bmp");
     textures["aztect_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/aztec.bmp");
     textures["embrador_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/embrador.bmp");
-
+    
+    
+    
+    // ==== HUD ======
+    textures["hud_symbols"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/hud_symbols.bmp");
+    textures["hud_nums"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/hud_nums.bmp");
+    
+    
 
 
     // ==== OTHER ======
