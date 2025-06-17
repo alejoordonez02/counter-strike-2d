@@ -5,22 +5,36 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 
-TextManager::TextManager():
+TextManager::TextManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
-        show_text(false) {
+        show_text(false),
+        hp_numbers(animation_provider),
+        timer_numbers(animation_provider),
+        money_numbers(animation_provider) {
+            hp_numbers.load_numbers();
+            timer_numbers.load_numbers();
+            money_numbers.load_numbers();
 }
+
 
 
 void TextManager::update(const Snapshot& snapshot) {
     this->snapshot = snapshot;
-
     std::cout << "show_text: " << snapshot.round_number << std::endl;
-    show_text = snapshot.round_number >= 10 ? true : false;
+    show_text = snapshot.round_number >= 50 ? true : false;
+
+    // hp = snapshot.players[0].hp;
+
+    uint8_t hp = 0;
+    hp_numbers.update(32);
+    
 
 }
 
 
 void TextManager::render(SDL2pp::Renderer& renderer) {
+    hp_numbers.render(renderer);
+    
     if(!show_text){
         return;
     }
@@ -40,7 +54,6 @@ void TextManager::show_terrorist_won(SDL2pp::Renderer& renderer) {
     SDL2pp::Point punto = renderer.GetOutputSize();
     int text_w = text_texture.GetWidth();
     int text_h = text_texture.GetHeight();
-
     
     int padding = 20;
     SDL2pp::Rect dst((punto.x - text_w)/2, (punto.y - text_h)/3, text_w, text_h);

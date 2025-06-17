@@ -6,6 +6,7 @@
 #include <SDL2pp/Renderer.hh>
 
 #include "common/snapshot.h"
+#include "client/renderables/hud/renderable_numbers.h"
 
 class TextManager {
     private:
@@ -15,8 +16,13 @@ class TextManager {
     bool show_text;
     Snapshot snapshot;
 
+    RenderableNumbers hp_numbers;
+    RenderableNumbers timer_numbers;
+    RenderableNumbers money_numbers;
+
+
     public:
-    TextManager();
+    TextManager(std::shared_ptr<AnimationProvider> animation_provider);
 
     void update(const Snapshot& snapshot);
 

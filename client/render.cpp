@@ -18,7 +18,7 @@ Render::Render(int user_player_id, const MapData& map_data):
         animation_provider(std::make_shared<AnimationProvider>()),
         user_player_id(user_player_id),
         renderable_map(map_data, animation_provider),
-        text_manager() {
+        text_manager(animation_provider) {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 

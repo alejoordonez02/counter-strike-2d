@@ -28,6 +28,28 @@ void AnimationProvider::load_animations() {
     animation_prototypes["background_aztec"] = {TextureProvider::get_texture("background_aztec").get(), AnimationData{1, 0, false, 0, 0}};
     animation_prototypes["background_nuke"] = {TextureProvider::get_texture("background_nuke").get(), AnimationData{1, 0, false, 0, 0}};
     
+    
+    // ====== HUD ICONS ======
+    animation_prototypes["heart"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 0, false, 0, 0}};
+    animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0, 0}};
+    animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0, 0}};
+    
+
+    // ====== HUD NUMBERS ======
+    animation_prototypes["0"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 0, false, 0, 0}};
+    animation_prototypes["1"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 1, false, 0, 0}};
+    animation_prototypes["2"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 2, false, 0, 0}};
+    animation_prototypes["3"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 3, false, 0, 0}};
+    animation_prototypes["4"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 4, false, 0, 0}};
+    animation_prototypes["5"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 5, false, 0, 0}};
+    animation_prototypes["6"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 6, false, 0, 0}};
+    animation_prototypes["7"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 7, false, 0, 0}};
+    animation_prototypes["8"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 8, false, 0, 0}};
+    animation_prototypes["9"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 9, false, 0, 0}};
+    animation_prototypes[":"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 10, false, 0, 0}};
+    animation_prototypes["|"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 11, false, 0, 0}};
+    
+
     // ======= TILES / BLOCKS ========
     // ======= DUST BLOCKS ========
     animation_prototypes["ctspawn"] = {TextureProvider::get_texture("embrador_tiles").get(), AnimationData{8, 69, false, 0, 0}};
