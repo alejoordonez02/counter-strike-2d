@@ -43,16 +43,16 @@ void RenderableNumbers::update_string(const std::string& str) {
 void RenderableNumbers::render(SDL2pp::Renderer& renderer, bool is_camera_enabled) {
     // x e y son en el extremo inferior izquierdo de la pantalla
     SDL2pp::Point screen_size = renderer.GetOutputSize();
-    int x = 100;
-    int y = screen_size.y - 100;
+    int x = 10;
+    int y = screen_size.y - (66 * 0.5) - 10;        // TODO: hardcoded value based on texture
     int spacing_between_digits = 2;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     for (const auto& digit : digits) {
         if (animations.count(digit)) {
             animations[digit]->render(renderer, SDL2pp::Point(x, y), flip, 0, is_camera_enabled);
-            // x += animations[digit]->get_frame_width() + spacing;
-            x += 32 + spacing_between_digits;
+            // TODO: Hardcoded value based on texture
+            x += (48 * 0.5) + spacing_between_digits;
         }
     }
 }

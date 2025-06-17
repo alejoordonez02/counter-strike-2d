@@ -28,8 +28,8 @@ void TextManager::update(const Snapshot& snapshot) {
 
     // hp = snapshot.players[0].hp;
 
-    uint8_t hp = 0;
-    hp_numbers.update(32);
+    uint8_t hp = 98;
+    hp_numbers.update(hp);
     
 }
 
