@@ -39,18 +39,12 @@ void PlayerPhysics::sort_by_distance_idx(
 void PlayerPhysics::move(float dt) {
     v = std::clamp(v + a * dt, v, max_v);
     Position dest = pos + dir * v * dt;
-    Trajectory t(pos + dir * radius, dest, radius);
-    if (!t.get_length()) return;
-
+    Trajectory t(pos + dir * radius / 2 /* tolerate */, dest, radius);
     for (size_t i : sorted_idx) {
         auto c = collidables[i];
         if (auto x = c->intersect(t)) {
-            /*
-             * Algo así podría ser para rozar:
-             * pos = dest + x->get_direction(pos) * radius;
-             * */
-            pos = *x - dir * radius;
-            return;
+            dest = *x + x->get_direction(dest) * radius;
+            break;
         }
     }
 
@@ -82,9 +76,9 @@ void PlayerPhysics::stop_moving() {
 }
 
 std::optional<Position> PlayerPhysics::intersect(const Trajectory& t) const {
-    Position closest = t.get_closest(pos);
-    float distance = pos.get_distance(closest);
+    auto closest = t.get_outter_and_inner_closest(pos);
+    float distance = pos.get_distance(closest.first);
     if (distance > radius) return std::nullopt;
-
-    return closest + pos.get_direction(closest) * radius;
+    auto intersection = pos + pos.get_direction(closest.second) * radius;
+    return intersection;
 }
