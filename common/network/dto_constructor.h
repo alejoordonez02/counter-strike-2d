@@ -28,24 +28,27 @@ private:
 public:
     DTOConstructor() {
         maker_map = {
-                {START_MOVING,
-                 [](auto&& bytes) {
-                     return std::make_unique<StartMovingDTO>(std::move(bytes));
-                 }},
-                {STOP_MOVING,
-                 [](auto&& bytes) {
-                     return std::make_unique<StopMovingDTO>(std::move(bytes));
-                 }},
-                {START_ATTACKING,
-                 [](auto&& bytes) {
-                     return std::make_unique<StartAttackingDTO>(
-                             std::move(bytes));
-                 }},
-                {SNAPSHOT,
-                 [](auto&& bytes) {
-                     return std::make_unique<SnapshotDTO>(std::move(bytes));
-                 }},
-                // ...
+            {AIM,
+             [](auto&& bytes) {
+                 return std::make_unique<AimDTO>(std::move(bytes));
+             }},
+            {START_MOVING,
+             [](auto&& bytes) {
+                 return std::make_unique<StartMovingDTO>(std::move(bytes));
+             }},
+            {STOP_MOVING,
+             [](auto&& bytes) {
+                 return std::make_unique<StopMovingDTO>(std::move(bytes));
+             }},
+            {START_ATTACKING,
+             [](auto&& bytes) {
+                 return std::make_unique<StartAttackingDTO>(std::move(bytes));
+             }},
+            {SNAPSHOT,
+             [](auto&& bytes) {
+                 return std::make_unique<SnapshotDTO>(std::move(bytes));
+             }},
+            // ...
         };
     }
 
