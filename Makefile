@@ -1,3 +1,5 @@
+export CMAKE_BUILD_PARALLEL_LEVEL=16
+
 .PHONY: all test clean editor client common server build
 
 compile-debug:
