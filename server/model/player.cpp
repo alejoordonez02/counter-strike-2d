@@ -13,7 +13,7 @@
 Player::Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
                std::weak_ptr<Map> map, float max_velocity, float acceleration,
                float radius, int money, int max_health):
-    Hitbox(pos), id(id), map(map),
+    Hitbox(pos), map(map), id(id),
     /*
      * lambda para inicializar other collidables, por ahora me quedo con
      * pasar self a physics para delegar el filtrado, o con sacar el primer
