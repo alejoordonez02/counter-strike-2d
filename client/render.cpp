@@ -18,7 +18,7 @@ Render::Render(int user_player_id, const MapData& map_data):
         animation_provider(std::make_shared<AnimationProvider>()),
         user_player_id(user_player_id),
         renderable_map(map_data, animation_provider),
-        text_manager(animation_provider) {
+        hud_manager(animation_provider) {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 
@@ -28,7 +28,7 @@ Render::Render(int user_player_id, const MapData& map_data):
 
     // carga info del mapa
     renderable_map.load_map_info();
-    text_manager.load_data();
+    hud_manager.load_data();
 }
 
 void Render::update(Snapshot snapshot) {
@@ -59,7 +59,7 @@ void Render::update(Snapshot snapshot) {
     }
 
     // actualizar textos
-    text_manager.update(snapshot);
+    hud_manager.update(snapshot);
 }
 
 
@@ -90,7 +90,7 @@ void Render::render() {
     // TODO: renderizar dropeables
 
     // mostrar textos en pantalla
-    text_manager.render(renderer);
+    hud_manager.render(renderer);
 
     // mostrar la ventana
     renderer.Present();

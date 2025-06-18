@@ -13,7 +13,7 @@
 #include "common/snapshot.h"
 #include "common/maploader.h"
 #include "client/renderables/renderable_map.h"
-#include "client/text_manager.h"
+#include "client/hud_manager.h"
 
 class Render {
     private:
@@ -28,7 +28,7 @@ class Render {
     int user_player_id;
     RenderableMap renderable_map;
 
-    TextManager text_manager;
+    HUDManager hud_manager;
 
     public:
     Render(int user_player_id, const MapData& map_data);

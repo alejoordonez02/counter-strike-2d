@@ -1,5 +1,5 @@
-#ifndef CLIENT_TEXT_MANAGER_H
-#define CLIENT_TEXT_MANAGER_H
+#ifndef CLIENT_HUD_MANAGER_H
+#define CLIENT_HUD_MANAGER_H
 
 #include <SDL2pp/Font.hh>
 #include <SDL2pp/SDLTTF.hh>
@@ -8,7 +8,7 @@
 #include "common/snapshot.h"
 #include "client/renderables/hud/renderable_numbers.h"
 
-class TextManager {
+class HUDManager {
     private:
     SDL2pp::SDLTTF sdl_ttf;     // inicializar fuentes
     SDL2pp::Font font;
@@ -22,7 +22,7 @@ class TextManager {
 
 
     public:
-    TextManager(std::shared_ptr<AnimationProvider> animation_provider);
+    HUDManager(std::shared_ptr<AnimationProvider> animation_provider);
 
     void load_data();
 

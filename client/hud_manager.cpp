@@ -1,12 +1,11 @@
-#include "client/text_manager.h"
+#include "hud_manager.h"
 
 #include <utility>
 
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
-#include "text_manager.h"
 
-TextManager::TextManager(std::shared_ptr<AnimationProvider> animation_provider):
+HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
         show_text(false),
         hp_numbers(animation_provider),
@@ -15,14 +14,14 @@ TextManager::TextManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void TextManager::load_data() {
+void HUDManager::load_data() {
     hp_numbers.load_numbers();
     timer_numbers.load_numbers();
     money_numbers.load_numbers();
 }
 
 
-void TextManager::update(const Snapshot& snapshot) {
+void HUDManager::update(const Snapshot& snapshot) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;
 
@@ -34,7 +33,7 @@ void TextManager::update(const Snapshot& snapshot) {
 }
 
 
-void TextManager::render(SDL2pp::Renderer& renderer) {
+void HUDManager::render(SDL2pp::Renderer& renderer) {
     hp_numbers.render(renderer, false);
     
     if(!show_text){
@@ -47,7 +46,7 @@ void TextManager::render(SDL2pp::Renderer& renderer) {
 
 
 
-void TextManager::show_terrorist_won(SDL2pp::Renderer& renderer) {
+void HUDManager::show_terrorist_won(SDL2pp::Renderer& renderer) {
     // texto en color blanco
     SDL2pp::Surface text_surface = font.RenderText_Blended("Terrorists win the Round", SDL_Color{255,255,255,255});
     // convertir texto en textura para poder dibujarla

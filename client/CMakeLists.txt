@@ -9,7 +9,7 @@ target_sources(cs2d_client
         render.cpp
         mainwindow.cpp
         camera.cpp
-        text_manager.cpp
+        hud_manager.cpp
     PUBLIC
         client.h
         gameloop.h
@@ -19,7 +19,7 @@ target_sources(cs2d_client
         render.h
         mainwindow.h
         camera.h
-        text_manager.h
+        hud_manager.h
 )
 
 add_subdirectory(renderables)
