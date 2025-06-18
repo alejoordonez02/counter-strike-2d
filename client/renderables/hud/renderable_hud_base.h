@@ -31,6 +31,10 @@ public:
         numbers.update(number);
     }
 
+    virtual void update(const std::string& str) {
+        numbers.update_string(str);
+    }
+
     virtual void render(SDL2pp::Renderer& renderer) {
         /** 
          * Siempre se calcula el tamaño de la pantalla, ya que permitiria

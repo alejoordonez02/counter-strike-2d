@@ -7,6 +7,7 @@
 
 #include "common/snapshot.h"
 #include "client/renderables/hud/renderable_hud_health.h"
+#include "client/renderables/hud/renderable_hud_timer.h"
 
 class HUDManager {
     private:
@@ -17,7 +18,7 @@ class HUDManager {
     Snapshot snapshot;
 
     RenderableHUDHealth hud_hp;
-    // RenderableHUDTimer hud_timer;
+    RenderableHUDTimer hud_timer;
     // RenderableHUDMoney hud_money;
 
 

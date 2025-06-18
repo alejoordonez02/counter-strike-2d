@@ -18,6 +18,6 @@ SDL2pp::Point RenderableHUDHealth::get_icon_position(const SDL2pp::Renderer& ren
 SDL2pp::Point RenderableHUDHealth::get_number_position(const SDL2pp::Renderer& renderer, const SDL2pp::Point& icon_size, int spacing) const {
     // calcular posicion del hud
     SDL2pp::Point icon_pos = get_icon_position(renderer, icon_size);
-    // icono de vida + espacio
+    // posicion calculada anteriormente + tamaño del icono + espacio entre icono y numero
     return SDL2pp::Point(icon_pos.x + icon_size.x + spacing, icon_pos.y);
 }
