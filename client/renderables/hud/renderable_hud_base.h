@@ -24,8 +24,8 @@ public:
     virtual ~RenderableHUDBase() {}
 
     virtual std::string get_icon_name() const = 0;
-    virtual SDL2pp::Point get_icon_position(const SDL2pp::Renderer& renderer, const SDL2pp::Point& icon_size) const = 0;
-    virtual SDL2pp::Point get_number_position(const SDL2pp::Renderer& renderer, const SDL2pp::Point& icon_size, int spacing) const = 0;
+    virtual SDL2pp::Point get_icon_position(const SDL2pp::Point& screen_size, const SDL2pp::Point& icon_size) const = 0;
+    virtual SDL2pp::Point get_number_position(const SDL2pp::Point& screen_size, const SDL2pp::Point& icon_size, int spacing) const = 0;
 
     virtual void update(uint number) {
         numbers.update(number);
@@ -45,9 +45,12 @@ public:
         SDL2pp::Point icon_size = icon_animation->get_animation_size();
         // espacio entre el icono y el numero
         int spacing_between = icon_size.x / 4;
+
         // calculate positions
-        SDL2pp::Point icon_pos = get_icon_position(renderer, icon_size);
-        SDL2pp::Point number_pos = get_number_position(renderer, icon_size, spacing_between);
+        SDL2pp::Point screen_size = renderer.GetOutputSize();
+        SDL2pp::Point icon_pos = get_icon_position(screen_size, icon_size);
+        SDL2pp::Point number_pos = get_number_position(screen_size, icon_size, spacing_between);
+
         // render icon and numbers
         icon_animation->render(renderer, icon_pos, flip, 0, is_camera_enabled);
         numbers.render(renderer, number_pos, is_camera_enabled);
