@@ -34,7 +34,7 @@ public:
     /*
      * No hace nada
      * */
-    void get_attacked(int damage) override {}
+    void get_attacked(int /* damage */) override {}
 };
 
 #endif
