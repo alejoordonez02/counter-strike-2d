@@ -9,6 +9,12 @@
 #include "server/model/hitbox.h"
 #include "server/model/trajectory.h"
 
+/*
+ * Esto no va a la config porque es algo más propio del algoritmo de colisiones,
+ * no se debería cambiar por fuera del desarrollo del motor de físicas
+ * */
+#define MAX_COLLISIONS 5
+
 float PlayerPhysics::get_distance(const std::shared_ptr<Hitbox>& hitbox) const {
     return pos.get_distance(hitbox->get_position());
 }
@@ -39,13 +45,15 @@ void PlayerPhysics::sort_by_distance_idx(
 void PlayerPhysics::move(float dt) {
     v = std::clamp(v + a * dt, v, max_v);
     Position dest = pos + dir * v * dt;
-    Trajectory t(pos + dir * radius / 2 /* tolerate */, dest, radius);
+    Trajectory t(pos + dir * radius / 2, dest, radius);
+    int count = 0;
     for (size_t i : sorted_idx) {
         auto c = collidables[i];
         if (auto x = c->intersect(t)) {
             dest = *x + x->get_direction(dest) * radius;
-            break;
+            count++;
         }
+        if (count >= MAX_COLLISIONS) break;
     }
 
     pos = dest;

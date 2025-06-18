@@ -1,7 +1,6 @@
 #ifndef SERVER_MODEL_PLAYER_H
 #define SERVER_MODEL_PLAYER_H
 
-#include <iostream>
 #include <memory>
 
 #include "common/direction.h"
@@ -15,7 +14,7 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
-class Player : public Hitbox {
+class Player: public Hitbox {
 protected:
     std::weak_ptr<Map> map;  // o shared_ptr& ?
 
@@ -83,7 +82,7 @@ public:
     }
 
     void get_attacked(int damage) override {
-        alive -= (1 - equipment->shield) * damage;
+        health -= (1 - equipment->shield) * damage;
         if (health <= 0) alive = false;
     }
 
@@ -99,10 +98,7 @@ public:
 
     void stop_attacking() { stop_action(); }
 
-    void aim(Direction dir) {
-        std::cout << "aim: (" << dir.x << ", " << dir.y << ")\n";
-        this->dir = dir;
-    }
+    void aim(Direction dir) { this->dir = dir; }
 
     void use_primary();
     void use_secondary();
