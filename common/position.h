@@ -35,6 +35,12 @@ struct Position: public Tuple<Position, float> {
         return Position(x - dir.x, y - dir.y);
     }
 
+    Position& operator+=(const Position& pos) {
+        x += pos.x;
+        y += pos.y;
+        return *this;
+    }
+
     Position& operator+=(const Direction& dir) {
         x += dir.x;
         y += dir.y;
