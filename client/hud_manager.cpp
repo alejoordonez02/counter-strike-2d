@@ -9,8 +9,8 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
         show_text(false),
         hud_hp(animation_provider),
-        hud_timer(animation_provider)
-        // hud_money(animation_provider)
+        hud_timer(animation_provider),
+        hud_money(animation_provider)
          {
 }
 
@@ -35,7 +35,7 @@ void HUDManager::update(const Snapshot& snapshot) {
 
     hud_timer.update(time_string);
     hud_hp.update(hp);
-    // hud_money.update(money);
+    hud_money.update(money);
 
 }
 
@@ -43,6 +43,7 @@ void HUDManager::update(const Snapshot& snapshot) {
 void HUDManager::render(SDL2pp::Renderer& renderer) {
     hud_hp.render(renderer);
     hud_timer.render(renderer);
+    hud_money.render(renderer);
 
     if(!show_text){
         return;
