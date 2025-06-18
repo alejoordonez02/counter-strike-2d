@@ -6,8 +6,6 @@
 #include <thread>
 #include <utility>
 
-#include <stdio.h>
-
 #include "common/snapshot.h"
 #include "server/acceptor.h"
 #include "server/client_handler.h"
@@ -46,6 +44,7 @@ class MockServer {
 private:
     std::string servname;
     static inline int tick_rate = 20;
+    static inline int command_rate = 20;
     static inline int id = 1;
     static inline int get_player_id() { return id++; }
     static inline std::unique_ptr<Equipment> get_starting_equipment1() {
@@ -53,8 +52,8 @@ private:
                                            std::make_unique<Glock>(),
                                            std::make_unique<Knife>(), 0);
     };
-    static inline float get_player_max_velocity() { return 70; }
-    static inline float get_player_acceleration() { return 1500; }
+    static inline float get_player_max_velocity() { return 100; }
+    static inline float get_player_acceleration() { return 300; }
     static inline float get_player_radius() { return 10; }
     static inline int get_player_starting_money() { return 500; }
     static inline int get_player_max_health() { return 100; }
@@ -63,12 +62,12 @@ private:
     }
 
     static inline std::shared_ptr<Player> get_player(
-            std::weak_ptr<Map> map, Position pos = get_random_position()) {
+        std::weak_ptr<Map> map, Position pos = get_random_position()) {
         return std::make_shared<Player>(
-                get_player_id(), pos, get_starting_equipment1(), map,
-                get_player_max_velocity(), get_player_acceleration(),
-                get_player_radius(), get_player_starting_money(),
-                get_player_max_health());
+            get_player_id(), pos, get_starting_equipment1(), map,
+            get_player_max_velocity(), get_player_acceleration(),
+            get_player_radius(), get_player_starting_money(),
+            get_player_max_health());
     }
 
 public:
@@ -115,7 +114,11 @@ public:
         float elapsed_seconds = Duration(tick_duration).count();
 
         while (true) {
-            for (auto& h : handlers) h->play();
+            /*
+             * Cada handler ejecuta varios comandos por tick
+             * */
+            for (int i = 0; i < command_rate; i++)
+                for (auto& h : handlers) h->play();
 
             for (auto& p : players) p->update(elapsed_seconds);
 
