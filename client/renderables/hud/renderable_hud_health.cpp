@@ -9,9 +9,7 @@ RenderableHUDHealth::RenderableHUDHealth(
         animation_provider(animation_provider),
         heart_icon_animation(nullptr),
         heart_numbers(animation_provider){
-}
-
-void RenderableHUDHealth::initialize_data() {
+    // inicializar datos
     heart_icon_animation = std::move(animation_provider->make_animation("heart"));
     heart_numbers.load_numbers();
 }

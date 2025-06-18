@@ -21,8 +21,6 @@ class RenderableHUDHealth {
     public:
     RenderableHUDHealth(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void initialize_data();
-
     void update(uint8_t number);
 
     void render(SDL2pp::Renderer& renderer);

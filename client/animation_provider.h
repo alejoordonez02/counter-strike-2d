@@ -21,7 +21,7 @@ class AnimationProvider {
     std::unordered_map<std::string, AnimationPrototype> animation_prototypes;
 
     public:
-    AnimationProvider() {}
+    AnimationProvider();
     std::unique_ptr<Animation> make_animation(
             const std::string& animation_name);
 

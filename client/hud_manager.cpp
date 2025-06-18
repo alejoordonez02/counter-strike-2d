@@ -15,13 +15,6 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void HUDManager::load_data() {
-    hud_hp.initialize_data();
-    // hud_timer.load_icons();
-    // hud_money.load_icons();
-}
-
-
 void HUDManager::update(const Snapshot& snapshot) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;

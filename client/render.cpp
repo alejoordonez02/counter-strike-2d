@@ -15,20 +15,17 @@ Render::Render(int user_player_id, const MapData& map_data):
         window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
                SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
         renderer(window, -1, SDL_RENDERER_ACCELERATED),
-        animation_provider(std::make_shared<AnimationProvider>()),
         user_player_id(user_player_id),
-        renderable_map(map_data, animation_provider),
-        hud_manager(animation_provider) {
+        map_data(map_data) {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 
     // cargar texturas
     TextureProvider::load_textures(renderer);
-    animation_provider->load_animations();
-
-    // carga info del mapa
-    renderable_map.load_map_info();
-    hud_manager.load_data();
+    animation_provider = std::make_shared<AnimationProvider>();
+    // cargar renderizables principales
+    renderable_map = std::make_unique<RenderableMap>(map_data, animation_provider);
+    hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
 void Render::update(Snapshot snapshot) {
@@ -59,7 +56,7 @@ void Render::update(Snapshot snapshot) {
     }
 
     // actualizar textos
-    hud_manager.update(snapshot);
+    hud_manager->update(snapshot);
 }
 
 
@@ -79,7 +76,7 @@ void Render::render() {
     renderer.Clear();
 
     // renderizar mapa
-    renderable_map.render(renderer);
+    renderable_map->render(renderer);
 
     // iterar todos los jugadores
     for (auto& [id, renderable_player] : players_renderables) {
@@ -90,7 +87,7 @@ void Render::render() {
     // TODO: renderizar dropeables
 
     // mostrar textos en pantalla
-    hud_manager.render(renderer);
+    hud_manager->render(renderer);
 
     // mostrar la ventana
     renderer.Present();

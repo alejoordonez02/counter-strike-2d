@@ -2,6 +2,10 @@
 #include "client/renderables/animation.h"
 #include "client/texture_provider.h"
 
+AnimationProvider::AnimationProvider(){
+        load_animations();
+}
+
 void AnimationProvider::load_animations() {
 // ====== PLAYERS =======
     animation_prototypes["terrorist_1_idle"] = {

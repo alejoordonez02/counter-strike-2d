@@ -7,6 +7,7 @@
 RenderableNumbers::RenderableNumbers(
         std::shared_ptr<AnimationProvider> animation_provider):
         animation_provider(animation_provider) {
+            load_numbers();
 }
 
 void RenderableNumbers::load_numbers() {
