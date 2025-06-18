@@ -8,6 +8,7 @@ target_sources(cs2d_client
         input_handler.cpp
         render.cpp
         mainwindow.cpp
+        lobbywindow.cpp
         camera.cpp
     PUBLIC
         client.h
@@ -17,6 +18,7 @@ target_sources(cs2d_client
         input_handler.h
         render.h
         mainwindow.h
+        lobbywindow.h
         camera.h
 )
 
