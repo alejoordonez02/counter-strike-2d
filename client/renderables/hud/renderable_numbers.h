@@ -25,7 +25,7 @@ class RenderableNumbers {
 
     void load_numbers();
 
-    void update(uint8_t number);
+    void update(uint number);
 
     void update_string(const std::string& str);
 

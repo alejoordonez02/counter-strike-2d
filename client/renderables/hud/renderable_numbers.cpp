@@ -19,7 +19,7 @@ void RenderableNumbers::load_numbers() {
     animations["|"] = std::move(animation_provider->make_animation("|"));
 }
 
-void RenderableNumbers::update(uint8_t number) {
+void RenderableNumbers::update(uint number) {
     digits.clear();
     std::string str = std::to_string(number);
     for (char c : str) {
