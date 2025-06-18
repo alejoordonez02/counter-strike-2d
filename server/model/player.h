@@ -1,6 +1,7 @@
 #ifndef SERVER_MODEL_PLAYER_H
 #define SERVER_MODEL_PLAYER_H
 
+#include <iostream>
 #include <memory>
 
 #include "common/direction.h"
@@ -14,7 +15,7 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
-class Player: public Hitbox {
+class Player : public Hitbox {
 protected:
     std::weak_ptr<Map> map;  // o shared_ptr& ?
 
@@ -47,8 +48,7 @@ public:
            float radius, int money, int health);
 
     void update(float dt) {
-        if (!alive)
-            return;
+        if (!alive) return;
 
         physics.update(dt);
         current.update(dt);
@@ -78,16 +78,13 @@ public:
     bool is_alive() { return alive; }
 
     std::optional<Position> intersect(const Trajectory& t) const override {
-        if (!alive)
-            return std::nullopt;
-
+        if (!alive) return std::nullopt;
         return physics.intersect(t);
     }
 
     void get_attacked(int damage) override {
         alive -= (1 - equipment->shield) * damage;
-        if (health <= 0)
-            alive = false;
+        if (health <= 0) alive = false;
     }
 
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
@@ -102,7 +99,10 @@ public:
 
     void stop_attacking() { stop_action(); }
 
-    void aim(Direction dir) { this->dir = dir; }
+    void aim(Direction dir) {
+        std::cout << "aim: (" << dir.x << ", " << dir.y << ")\n";
+        this->dir = dir;
+    }
 
     void use_primary();
     void use_secondary();

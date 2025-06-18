@@ -10,7 +10,7 @@
 #include "server/model/weapons.h"
 #include "server/player_handler.h"
 
-#define TICK_RATE 64
+#define TICK_RATE 20
 #define ROUNDS 15
 #define ROUND_TIME 600
 #define TIME_OUT 10

@@ -43,15 +43,16 @@ jobs:
           libyaml-cpp-dev
 
 
-      - name: Build project
+      - name: Build project and run tests
         run: |
-          mkdir -p build
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Debug
-          make -j$(nproc)
+          # mkdir -p build
+          # cd build
+          # cmake .. -DCMAKE_BUILD_TYPE=Debug
+          # make -j$(nproc)
+          make run-tests
 
-      - name: Run tests
-        run: |
-          cd build
-          ./cs2d_tests --output-on-failure
+      # - name: Run tests
+      #   run: |
+      #     cd build
+      #     ./cs2d_tests --output-on-failure
 
