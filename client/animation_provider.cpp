@@ -30,9 +30,9 @@ void AnimationProvider::load_animations() {
     
     
     // ====== HUD ICONS ======
-    animation_prototypes["heart"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 0, false, 0}};
-    animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0}};
-    animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0}};
+    animation_prototypes["heart"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 0, false, 0, 0, 0, 0.5}};
+    animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0, 0, 0, 0.5}};
+    animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0, 0, 0, 0.5}};
     
 
     // ====== HUD NUMBERS ======
