@@ -112,44 +112,22 @@ void InputHandler::send_attack() {
 
 void InputHandler::send_aim() {
     static int last_dx = INT32_MAX, last_dy = INT32_MAX;
-    static auto last_sent_time = std::chrono::steady_clock::now();
-    /*
-     * esto probablemente debería estar relacionado con los fps, lo que se me
-     * ocurre es intermediar los envíos por medio de una queue en gameloop que
-     * se comunique con el input handler, pero de esa manera el problema sería q
-     * se podría llenar la queue y retornaríamos a llevar algún tipo de límite
-     * acá, así que la otra que se me ocurre es pasar por parámetro los fps ?
-     * Otra cosa: vi que tenías puesto un cooldown en el run() pero tenía que
-     * tocar éste en particular y no te quería tocar código de más je
-     * */
-    const int aim_cooldown_ms = 1000 / 20;
-
     int mx, my;
     SDL_GetMouseState(&mx, &my);
-
     SDL_Window* win = SDL_GetMouseFocus();
     int w = 0, h = 0;
-    if (win) {
-        SDL_GetWindowSize(win, &w, &h);
-    }
+    if (win) SDL_GetWindowSize(win, &w, &h);
 
     int dx = mx - w / 2;
     int dy = my - h / 2;
-
-    auto now = std::chrono::steady_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
-                       now - last_sent_time)
-                       .count();
-
     /*
      * checkear q no se vaya a volver a mandar la misma dir, quizás innecesario
      * siendo que hay cooldown...
      * */
-    if ((dx != last_dx || dy != last_dy) && elapsed >= aim_cooldown_ms) {
+    if (dx != last_dx || dy != last_dy) {
         commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
         last_dx = dx;
         last_dy = dy;
-        last_sent_time = now;
     }
 }
 
@@ -201,7 +179,7 @@ void InputHandler::run() {
     // se utiliza un timer para evitar que el input sea demasiado sensible
     using clock = std::chrono::steady_clock;
     auto last_sent = clock::now();
-    const int cooldown_ms = 50;  // ajustar sensibilidad
+    const int cooldown_ms = 20;  // ajustar sensibilidad
 
     while (is_alive) {
         auto now = clock::now();
