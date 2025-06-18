@@ -15,6 +15,7 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
 #include "common/network/protocol.h"
+#include "stop_attacking_dto.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;
@@ -43,6 +44,10 @@ public:
             {START_ATTACKING,
              [](auto&& bytes) {
                  return std::make_unique<StartAttackingDTO>(std::move(bytes));
+             }},
+            {STOP_ATTACKING,
+             [](auto&& bytes) {
+                 return std::make_unique<StopAttackingDTO>(std::move(bytes));
              }},
             {SNAPSHOT,
              [](auto&& bytes) {

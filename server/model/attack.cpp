@@ -3,12 +3,9 @@
 Attack::Attack(Position& pos, Direction& dir, Weapon& weapon,
                std::vector<std::shared_ptr<Hitbox>>& collidables,
                std::vector<size_t>& sorted_idx):
-        pos(pos),
-        dir(dir),
-        weapon(weapon),
-        collidables(collidables),
-        sorted_idx(sorted_idx) {}
+    pos(pos), dir(dir), weapon(weapon), collidables(collidables),
+    sorted_idx(sorted_idx) {}
 
-void Attack::update(float dt) {
+void Attack::update(float /* dt */) {
     weapon.attack(pos, dir, collidables, sorted_idx);
 }

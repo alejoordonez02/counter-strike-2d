@@ -6,6 +6,7 @@ AccessModifierOffset: -4
 ColumnLimit: 80
 BreakConstructorInitializers: AfterColon
 SpaceBeforeCtorInitializerColon: false
+SpaceBeforeInheritanceColon: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 # TabWidth:        4
 # AlignAfterOpenBracket: Align
