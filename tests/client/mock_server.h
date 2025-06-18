@@ -52,7 +52,7 @@ private:
     static inline std::unique_ptr<Equipment> get_starting_equipment1() {
         return std::make_unique<Equipment>(std::make_unique<Fist>(),
                                            std::make_unique<Glock>(),
-                                           std::make_unique<Knife>(), 0);
+                                           std::make_unique<Ak47>(), 0);
     };
     static inline float get_player_max_velocity() { return 50; }
     static inline float get_player_acceleration() { return 300; }
