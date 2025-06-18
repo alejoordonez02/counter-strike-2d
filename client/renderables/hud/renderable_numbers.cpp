@@ -39,12 +39,20 @@ void RenderableNumbers::update_string(const std::string& str) {
     }
 }
 
+SDL2pp::Point RenderableNumbers::get_animation_size(){
+    if (animations.empty()) {
+        throw std::runtime_error("No animations loaded");
+    }
+    // Assuming all animations have the same size, return the size of the first one
+    return animations.begin()->second->get_animation_size();
+}
 
-void RenderableNumbers::render(SDL2pp::Renderer& renderer, bool is_camera_enabled) {
+
+void RenderableNumbers::render(SDL2pp::Renderer& renderer, const SDL2pp::Point& number_position, bool is_camera_enabled) {
     // x e y son en el extremo inferior izquierdo de la pantalla
     SDL2pp::Point screen_size = renderer.GetOutputSize();
-    int x = 10;
-    int y = screen_size.y - (66 * 0.5) - 10;        // TODO: hardcoded value based on texture
+    int x = number_position.x;
+    int y = number_position.y;
     int spacing_between_digits = 2;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 

@@ -25,6 +25,13 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
 Animation::~Animation() {
 }
 
+SDL2pp::Point Animation::get_animation_size() {
+    // devuelve el tamaño del sprite, no de la textura completa
+    return SDL2pp::Point(size_width * modify_size, size_height * modify_size);
+}
+
+
+
 void Animation::update() {
     if (!this->is_animated) {
         // sprite estatico. Solo tiene 1 frame, no avanzar al siguiente

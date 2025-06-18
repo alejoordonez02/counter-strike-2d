@@ -6,7 +6,7 @@
 #include <SDL2pp/Renderer.hh>
 
 #include "common/snapshot.h"
-#include "client/renderables/hud/renderable_numbers.h"
+#include "client/renderables/hud/renderable_hud_health.h"
 
 class HUDManager {
     private:
@@ -16,9 +16,9 @@ class HUDManager {
     bool show_text;
     Snapshot snapshot;
 
-    RenderableNumbers hp_numbers;
-    RenderableNumbers timer_numbers;
-    RenderableNumbers money_numbers;
+    RenderableHUDHealth hud_hp;
+    // RenderableHUDTimer hud_timer;
+    // RenderableHUDMoney hud_money;
 
 
     public:

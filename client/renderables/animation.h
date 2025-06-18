@@ -25,6 +25,7 @@ class Animation {
                         const SDL2pp::Point from_position, int columns,
                         int rows);
     void skip_frames(uint8_t frames_to_skip);
+    SDL2pp::Point get_animation_size();
 
 private:
     void advanceFrame();

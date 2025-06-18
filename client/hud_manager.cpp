@@ -8,16 +8,17 @@
 HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
         show_text(false),
-        hp_numbers(animation_provider),
-        timer_numbers(animation_provider),
-        money_numbers(animation_provider) {
+        hud_hp(animation_provider)
+        // hud_timer(animation_provider),
+        // hud_money(animation_provider)
+         {
 }
 
 
 void HUDManager::load_data() {
-    hp_numbers.load_numbers();
-    timer_numbers.load_numbers();
-    money_numbers.load_numbers();
+    hud_hp.initialize_data();
+    // hud_timer.load_icons();
+    // hud_money.load_icons();
 }
 
 
@@ -28,14 +29,16 @@ void HUDManager::update(const Snapshot& snapshot) {
     // hp = snapshot.players[0].hp;
 
     uint8_t hp = 98;
-    hp_numbers.update(hp);
-    
+    hud_hp.update(hp);
+    // hud_timer.update(snapshot.time);
+    // hud_money.update(snapshot.your_player.total_money);
+
 }
 
 
 void HUDManager::render(SDL2pp::Renderer& renderer) {
-    hp_numbers.render(renderer, false);
-    
+    hud_hp.render(renderer);
+
     if(!show_text){
         return;
     }
