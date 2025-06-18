@@ -48,19 +48,18 @@ SDL2pp::Point RenderableNumbers::get_animation_size(){
 }
 
 
-void RenderableNumbers::render(SDL2pp::Renderer& renderer, const SDL2pp::Point& number_position, bool is_camera_enabled) {
-    // x e y son en el extremo inferior izquierdo de la pantalla
-    SDL2pp::Point screen_size = renderer.GetOutputSize();
-    int x = number_position.x;
-    int y = number_position.y;
-    int spacing_between_digits = 2;
+void RenderableNumbers::render(SDL2pp::Renderer& renderer, const SDL2pp::Point& numbers_position, bool is_camera_enabled) {
+    SDL2pp::Point number_animation_size = get_animation_size();
+    int x = numbers_position.x;
+    int y = numbers_position.y;
+    int spacing_between_digits = number_animation_size.x / 4;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     for (const auto& digit : digits) {
         if (animations.count(digit)) {
             animations[digit]->render(renderer, SDL2pp::Point(x, y), flip, 0, is_camera_enabled);
-            // TODO: Hardcoded value based on texture
-            x += (48 * 0.5) + spacing_between_digits;
+            // next digit position
+            x += number_animation_size.x + spacing_between_digits;
         }
     }
 }

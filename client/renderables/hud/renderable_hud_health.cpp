@@ -13,6 +13,7 @@ RenderableHUDHealth::RenderableHUDHealth(
 
 void RenderableHUDHealth::initialize_data() {
     heart_icon_animation = std::move(animation_provider->make_animation("heart"));
+    heart_numbers.load_numbers();
 }
 
 
@@ -34,10 +35,9 @@ void RenderableHUDHealth::render(SDL2pp::Renderer& renderer) {
     // espacio entre el icono del corazon y el numero
     int spacing_between = heart_icon_size.x / 4; 
     
-
     // calculate positions
     SDL2pp::Point heart_icon_position = SDL2pp::Point(spacing_between, renderer.GetOutputSize().y - (heart_icon_size.y) - spacing_between);
-    SDL2pp::Point number_position = SDL2pp::Point(heart_icon_position.x + (heart_icon_size.x) + spacing_between, heart_icon_position.y);
+    SDL2pp::Point number_position = SDL2pp::Point(heart_icon_position.x + (heart_icon_size.x) + spacing_between, renderer.GetOutputSize().y - (heart_icon_size.y) - spacing_between);
 
     // render heart icon and numbers
     heart_icon_animation->render(renderer, heart_icon_position, flip, 0, is_camera_enabled);
