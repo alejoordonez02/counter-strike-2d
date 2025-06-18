@@ -18,7 +18,7 @@ private:
 
 public:
     explicit StopAttackingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
+        DTO(std::move(bytes)) {
         deserialize();
     }
 
