@@ -7,6 +7,7 @@
 
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/Texture.hh>
+#include <SDL2pp/Surface.hh>
 
 class TextureProvider {
     private:
