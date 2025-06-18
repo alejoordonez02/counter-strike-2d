@@ -6,12 +6,14 @@
 #include <thread>
 #include <utility>
 
+#include "common/maploader.h"
 #include "common/snapshot.h"
 #include "server/acceptor.h"
 #include "server/client_handler.h"
 #include "server/model/equipment.h"
 #include "server/model/player.h"
 #include "server/model/random.h"
+#include "server/model/structure.h"
 #include "server/model/weapons.h"
 
 using Duration = std::chrono::duration<float>;
@@ -52,7 +54,7 @@ private:
                                            std::make_unique<Glock>(),
                                            std::make_unique<Knife>(), 0);
     };
-    static inline float get_player_max_velocity() { return 100; }
+    static inline float get_player_max_velocity() { return 50; }
     static inline float get_player_acceleration() { return 300; }
     static inline float get_player_radius() { return 10; }
     static inline int get_player_starting_money() { return 500; }
@@ -91,6 +93,15 @@ public:
         std::vector<std::shared_ptr<Player>> players;
 
         auto map = std::make_shared<Map>();
+
+        MapLoader map_loader;
+        MapData map_data =
+            map_loader.loadMapData("tests/client/prueba_mapa_mod.yaml");
+
+        for (auto& b : map_data.blocks) {
+            auto s = std::make_shared<Structure>(Position(b.x, b.y), 32);
+            map->add_collidable(s);
+        }
 
         int x = 0;
         int y = 0;
