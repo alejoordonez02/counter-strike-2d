@@ -7,12 +7,14 @@ target_sources(cs2d_client
         renderable_player.cpp
         renderable_legs.cpp
         renderable_gun.cpp
+        renderable_gun_effect.cpp
     PUBLIC
         animation.h
         animation.h
         renderable_player.h
         renderable_legs.h
         renderable_gun.h
+        renderable_gun_effect.h
 )
 
 add_subdirectory(hud)

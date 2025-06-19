@@ -21,14 +21,6 @@ std::unordered_map<std::string, std::shared_ptr<SDL2pp::Texture>>
 TextureProvider::TextureProvider() {}
 
 void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
-    // pointer(
-    //         renderer,
-    //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
-    //             .SetColorKey(true,
-    //             SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0,
-    //             255)) // Magenta
-    //     ),
-
     // ==== PLAYERS ======
     textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(
             renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
@@ -91,12 +83,28 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
 
 
+    // ==== EFFECTS ======
+    // modular color a uno amarillo
+
+    SDL2pp::Surface flare3_surface(DATA_PATH "/assets/gfx/flare3.bmp");
+    flare3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, flare3_surface);
+    textures["flare3"]->SetColorMod(255, 255, 0);
+
 
     // ==== OTHER ======
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
     // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH
     // "/assets/gfx/player/ct1.bmp"); terrorist_1 = SDL2pp::Texture(renderer,
     // DATA_PATH "/assets/gfx/player/t1.bmp");
+
+    // pointer(
+    //         renderer,
+    //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
+    //             .SetColorKey(true,
+    //             SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0,
+    //             255)) // Magenta
+    //     ),
 }
 
 std::shared_ptr<SDL2pp::Texture> TextureProvider::get_texture(

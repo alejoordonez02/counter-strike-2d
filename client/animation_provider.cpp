@@ -27,7 +27,10 @@ void AnimationProvider::load_animations() {
     animation_prototypes["ak47"] = {TextureProvider::get_texture("ak47").get(), AnimationData{1, 0, false}};
     animation_prototypes["m3"] = {TextureProvider::get_texture("m3").get(), AnimationData{1, 0, false}};
     animation_prototypes["awp"] = {TextureProvider::get_texture("awp").get(), AnimationData{1, 0, false}};
-
+    
+    // ====== EFFECTS ======
+    animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{1, 0, false}};
+    
 
     // ====== BACKGROUNDS ======
     animation_prototypes["background_dust"] = {TextureProvider::get_texture("background_dust").get(), AnimationData{1, 0, false, 0}};

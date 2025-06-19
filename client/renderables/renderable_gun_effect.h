@@ -1,5 +1,5 @@
-#ifndef CLIENT_RENDERABLES_RENDERABLE_GUN_H
-#define CLIENT_RENDERABLES_RENDERABLE_GUN_H
+#ifndef CLIENT_RENDERABLES_RENDERABLE_GUN_EFFECT_H
+#define CLIENT_RENDERABLES_RENDERABLE_GUN_EFFECT_H
 
 #include <memory>
 #include <string>
@@ -8,13 +8,11 @@
 #include "snapshot.h"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
-#include "client/renderables/renderable_gun_effect.h"
 
-class RenderableGun {
+class RenderableGunEffect {
     private:
     SDL2pp::Point position;
     double facing_angle;
-    RenderableGunEffect gun_effect;
 
     Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
@@ -24,13 +22,13 @@ class RenderableGun {
     void load_animation(const std::string& animation_name);
 
     public:
-    explicit RenderableGun(std::shared_ptr<AnimationProvider> animation_provider);
+    explicit RenderableGunEffect(std::shared_ptr<AnimationProvider> animation_provider);
 
     void update(const SDL2pp::Point& position, double facing_angle, WeaponType weapon_type, bool is_shooting);
     void render(SDL2pp::Renderer& renderer);
 
     void skip_frames(uint8_t frames_to_skip);
-    ~RenderableGun();
+    ~RenderableGunEffect();
 };
 
 #endif

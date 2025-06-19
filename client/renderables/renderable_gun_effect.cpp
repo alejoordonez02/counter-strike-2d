@@ -1,4 +1,4 @@
-#include "client/renderables/renderable_gun.h"
+#include "client/renderables/renderable_gun_effect.h"
 #include "client/animation_provider.h"
 
 #include <memory>
@@ -6,44 +6,34 @@
 #include <utility>
 
 
-RenderableGun::RenderableGun(
+RenderableGunEffect::RenderableGunEffect(
         std::shared_ptr<AnimationProvider> animation_provider):
         position(0, 0),
         facing_angle(0),
         current_animation(nullptr),
-        animation_provider(animation_provider),
-        gun_effect(animation_provider) {
-    load_animation("bomb");
-    load_animation("knife");
-    load_animation("glock");
-    load_animation("ak47");
-    load_animation("m3");
-    load_animation("awp");
+        animation_provider(animation_provider) {
+    load_animation("flare3");
+    // load_animation("fragments");
+    
     // por default no tiene armas
-    current_animation = nullptr;
+    current_animation = animations["flare3"].get();
 }
 
-void RenderableGun::load_animation(const std::string& animation_name) {
+void RenderableGunEffect::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableGun::update(const SDL2pp::Point& position, double facing_angle, 
+void RenderableGunEffect::update(const SDL2pp::Point& position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
     if(weapon_type == WeaponType::None) {
         current_animation = nullptr;
         return;
     } else if (weapon_type == WeaponType::Bomb) {
-        current_animation = animations["bomb"].get();
+        // current_animation = animations["bomb"].get();
     } else if (weapon_type == WeaponType::Knife) {
-        current_animation = animations["knife"].get();
-    } else if (weapon_type == WeaponType::Glock) {
-        current_animation = animations["glock"].get();
-    } else if (weapon_type == WeaponType::AK47) {
-        current_animation = animations["ak47"].get();
-    } else if (weapon_type == WeaponType::M3) {
-        current_animation = animations["m3"].get();
-    } else if (weapon_type == WeaponType::AWP) {
-        current_animation = animations["awp"].get();
+        // current_animation = animations["knifeslash"].get();
+    } else {
+        current_animation = animations["flare3"].get();
     }
 
 
@@ -55,8 +45,6 @@ void RenderableGun::update(const SDL2pp::Point& position, double facing_angle,
     this->position.x = position.x + std::cos(radians) * offset;
     this->position.y = position.y + std::sin(radians) * offset;
 
-    // actualiza la animacion del efecto del disparo
-    gun_effect.update(position, this->facing_angle, weapon_type, is_shooting);
 
     if(current_animation == nullptr) {
         return;
@@ -64,17 +52,16 @@ void RenderableGun::update(const SDL2pp::Point& position, double facing_angle,
     current_animation->update();
 }
 
-void RenderableGun::render(SDL2pp::Renderer& renderer) {
+void RenderableGunEffect::render(SDL2pp::Renderer& renderer) {
     // No hay arma para renderizar
     if(current_animation == nullptr) {
         return;
     }
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     current_animation->render(renderer, position, flip, this->facing_angle);
-    gun_effect.render(renderer);
 }
 
-void RenderableGun::skip_frames(uint8_t frames_to_skip){
+void RenderableGunEffect::skip_frames(uint8_t frames_to_skip){
      // No hay arma para renderizar
     if(current_animation == nullptr) {
         return;
@@ -82,4 +69,4 @@ void RenderableGun::skip_frames(uint8_t frames_to_skip){
     current_animation->skip_frames(frames_to_skip);
 }
 
-RenderableGun::~RenderableGun() {}
+RenderableGunEffect::~RenderableGunEffect() {}
