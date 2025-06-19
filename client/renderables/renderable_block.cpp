@@ -7,12 +7,11 @@ RenderableBlock::RenderableBlock(
         const BlockData& block_data,
         std::shared_ptr<AnimationProvider> animation_provider):
         block_data(block_data),
-        animation_provider(animation_provider) {
-}
-
-void RenderableBlock::load_block() {
+        animation_provider(animation_provider)
+{
     block = animation_provider->make_animation(block_data.texture);
 }
+
 
 // void RenderableBlock::update() {
 

@@ -19,24 +19,26 @@ struct WeaponDTO {
     int16_t y;
 };
 
-struct PlayerData {
+struct YourPlayerData {
     uint16_t player_id;
-    char player_name[MAX_PLAYER_NAME];
-    uint8_t team_id;  // 0 para terroristas, 1 para counter
     uint16_t player_hp;
-
-    // Armas
-    // El cuchillo siempre lo tienen
-    // WeaponType primaryGun;
-    // WeaponType secondaryGun;
-    WeaponType
-            current_weapon;  // Para poder ser visualizada por otros jugadores
-    bool has_bomb;
+    
+    uint total_money = 0;
 
     // estadisticas
     uint8_t rounds_won = 0;
     uint8_t total_kills = 0;
-    uint8_t total_money = 0;
+};
+
+struct PlayerData {
+    uint16_t player_id;
+    char player_name[MAX_PLAYER_NAME];
+    uint8_t team_id;  // 0 para terroristas, 1 para counter
+
+    // Armas
+    // Para poder ser visualizada por otros jugadores
+    WeaponType current_weapon;  
+    bool has_bomb;
 
     // animaciones y sonidos
     bool is_shooting;
@@ -58,10 +60,14 @@ struct Snapshot {
     bool game_finished = false;
     bool initial_phase = true;
 
+    // medido en segundos
+    uint time_left = 60 * 5;
+
     uint8_t round_number = 0;
     uint8_t terrorists_score = 0;
     uint8_t counter_terrorists_score = 0;
 
+    YourPlayerData user_data;
     std::vector<PlayerData> players;
     std::vector<WeaponDTO> weapons_on_floor;
 };

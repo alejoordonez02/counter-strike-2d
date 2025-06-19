@@ -24,8 +24,6 @@ class RenderableMap {
     public:
     RenderableMap(const MapData& map_data, std::shared_ptr<AnimationProvider> animation_provider);
 
-    void load_map_info();
-
     void load_background();
 
     void render(SDL2pp::Renderer& renderer);

@@ -16,12 +16,21 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         num_frames(data.frames),
         columns(data.columns),
         is_animated(data.is_animated),
-        size(data.modify_size != 0 ? data.modify_size : frame_width / columns),  // siempre texturas con tamaño cuadrado
+        size_width(data.size_width != 0 ? data.size_width : frame_width / columns),
+        size_height(data.size_height != 0 ? data.size_height : size_width),    // si no se especifica se asumen cuadradas
+        modify_size(data.modify_size != 0 ? data.modify_size : 1.0f),
         elapsed(0),
         step(data.steps){}
 
 Animation::~Animation() {
 }
+
+SDL2pp::Point Animation::get_animation_size() {
+    // devuelve el tamaño del sprite, no de la textura completa
+    return SDL2pp::Point(size_width * modify_size, size_height * modify_size);
+}
+
+
 
 void Animation::update() {
     if (!this->is_animated) {
@@ -50,15 +59,17 @@ void Animation::advanceFrame() {
 }
 
 void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
-                       SDL_RendererFlip& flipType, double rotation_angle) {
-    int frameX = (this->current_frame % columns) * size;
-    int frameY = (this->current_frame / columns) * size;
+                       SDL_RendererFlip& flipType, double rotation_angle, bool is_camera_enabled) {
+    int frameX = (this->current_frame % columns) * size_width;
+    int frameY = (this->current_frame / columns) * size_height;
 
-    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
-    SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size, size);
+    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size_width, size_height);
+    SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size_width * modify_size, size_height * modify_size);
 
     // se modifica su posición para que este centrado en la cámara
-    Camera::modify_center_rectangle(dst);
+    if(is_camera_enabled){
+        Camera::modify_center_rectangle(dst);
+    }
 
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed
@@ -72,11 +83,11 @@ void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
 void Animation::render_tilling(SDL2pp::Renderer& renderer, const SDL2pp::Point from_position, 
                                int columns, int rows) {
     // Renderiza la animación en un área rectangular desde from_position
-    int frameX = (this->current_frame % columns) * size;
-    int frameY = (this->current_frame / columns) * size;
+    int frameX = (this->current_frame % columns) * size_width;
+    int frameY = (this->current_frame / columns) * size_height;
 
-    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size, size);
-    SDL2pp::Rect dst = SDL2pp::Rect(from_position.x, from_position.y, size, size);
+    SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size_width, size_height);
+    SDL2pp::Rect dst = SDL2pp::Rect(from_position.x, from_position.y, size_width * modify_size, size_height * modify_size);
 
     // se modifica su posición para que este centrado en la cámara
     Camera::modify_center_rectangle(dst);
@@ -86,8 +97,8 @@ void Animation::render_tilling(SDL2pp::Renderer& renderer, const SDL2pp::Point f
 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < columns; ++j) {
-            dst.x = modified_x + j * size;
-            dst.y = modified_y + i * size;
+            dst.x = modified_x + j * size_width * modify_size;
+            dst.y = modified_y + i * size_height * modify_size;
             renderer.Copy(texture, src, dst);
         }
     }

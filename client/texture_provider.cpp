@@ -51,6 +51,20 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["dust_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/dust.bmp");
     textures["aztect_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/aztec.bmp");
     textures["embrador_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/embrador.bmp");
+    
+    
+    
+    // ==== HUD ======
+    // Cargar hud_symbols con fondo negro como transparente
+    SDL2pp::Surface hud_symbols_surface(DATA_PATH "/assets/gfx/hud_symbols.bmp");
+    hud_symbols_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0)); // Negro
+    textures["hud_symbols"] = std::make_shared<SDL2pp::Texture>(renderer, hud_symbols_surface);
+    
+    SDL2pp::Surface hud_numbers_surface(DATA_PATH "/assets/gfx/hud_nums.bmp");
+    hud_numbers_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0)); // Negro
+    textures["hud_nums"] = std::make_shared<SDL2pp::Texture>(renderer, hud_numbers_surface);
+    
+    
 
 
 

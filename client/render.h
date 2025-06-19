@@ -13,6 +13,7 @@
 #include "common/snapshot.h"
 #include "common/maploader.h"
 #include "client/renderables/renderable_map.h"
+#include "client/hud_manager.h"
 
 class Render {
     private:
@@ -20,12 +21,14 @@ class Render {
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
 
+    int user_player_id;
+    const MapData& map_data;
+    
     std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>>
             players_renderables;
-
     std::shared_ptr<AnimationProvider> animation_provider;
-    int user_player_id;
-    RenderableMap renderable_map;
+    std::unique_ptr<RenderableMap> renderable_map;
+    std::unique_ptr<HUDManager> hud_manager;
 
     public:
     Render(int user_player_id, const MapData& map_data);
