@@ -4,8 +4,6 @@
 
 #include "common/network/dtos/snapshot_dto.h"
 
-// Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / 30;
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::unique_ptr<DTO>>& commands, int user_player_id, const MapData& map_data):

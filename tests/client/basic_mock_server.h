@@ -46,6 +46,7 @@ void mock_server() {
     player2.player_id = 2;
     player2.team_id = 1;
     player2.is_walking = false;
+    player2.is_shooting = true;
     player2.current_weapon = WeaponType::Glock;
     player2.x = 200;
     player2.y = 200;
@@ -92,14 +93,16 @@ void mock_server() {
                 StartAttackingDTO* start_attacking_dto = dynamic_cast<StartAttackingDTO*>(dto_ptr.get());
                 if (start_attacking_dto) {
                     player1.is_shooting = true;
-                    player1.current_weapon = WeaponType::AK47;
+                    player1.current_weapon = WeaponType::M3;
+                    std::cout << "start attacking " << player1.is_shooting << std::endl;
                 }
             } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::STOP_ATTACKING) {
                 // Procesar el comando de detener ataque
                 StopAttackingDTO* stop_attacking_dto = dynamic_cast<StopAttackingDTO*>(dto_ptr.get());
                 if (stop_attacking_dto) {
                     player1.is_shooting = false;
-                    player1.current_weapon = WeaponType::AK47;
+                    player1.current_weapon = WeaponType::Knife;
+                    std::cout << "stop attacking " << player1.is_shooting << std::endl;
                 }
             // } else if(dto_ptr->get_type() == DTOSerial::PlayerCommands::AIM){
             //     AimDTO* aim_dto = dynamic_cast<AimDTO*>(dto_ptr.get());
