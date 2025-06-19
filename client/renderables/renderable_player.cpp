@@ -9,10 +9,12 @@ RenderablePlayer::RenderablePlayer(
     uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider):
     player_id(player_id), is_terrorist(true), position(0, 0), facing_angle(0),
     is_shooting(false), was_hurt(false), is_walking(false), is_dead(false),
-    current_weapon(WeaponType::None), legs(animation_provider),
+    current_weapon(WeaponType::None), legs(animation_provider), gun(animation_provider),
     animation_provider(animation_provider) {
-    // load_animation("walking");
-    load_animation("shooting");
+    load_animation("holding_pistol");
+    load_animation("holding_knife");
+    load_animation("holding_rifle");
+    load_animation("placing_bomb");
     load_animation("idle");
     current_animation = animations["idle"].get();
 }
@@ -32,31 +34,29 @@ void RenderablePlayer::update(const PlayerData& player) {
     // ahora usa float y resta posiciones correctamente
     facing_angle =
         calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
+    current_weapon = player.current_weapon;
 
     if (this->is_walking) {
-        // le pide a renderable_legs que se muevan y se animen. No hace nada con
-        // la textura original
-        legs.update(position, this->facing_angle);
-        current_animation = animations["shooting"].get();
-    } else {
-        current_animation = animations["idle"].get();
+        // le pide a renderable_legs que se muevan y se animen.
+        // No hace nada con la textura original
+        legs.update(this->position, this->facing_angle);
     }
 
-    // adicionalmente se fija que tipo de arma tenes y en base a eso escoje la
-    // textura if (player.weapon_type != knife){
-    //     current_animation = animations["terrorist_standing_shoot"];
-    // } else if (player.weapon_type == knife){
-    //     current_animation = animations["terrorist_standing_knife"];
-    // }
-    // } else if (player.is_shooting){
-    // para disparar necesita un arma y cambiar su textura
-    // RenderableGun a su vez tiene un shooting, que le dice si poner el fuego
-    // en el arma o no update_gun(x, y, gun_type, is_shooting) current_animation
-    // = animations["terrorist_shooting"]; } else if (player.is_placing_bomb){
-    // solo necesita cambiar su textura
-    // current_animation = animations["terrorist_extending_arms"];
-    // }
-
+    // segun el tipo de arma adopta sprite diferente
+    if(this->current_weapon == WeaponType::None) {
+        current_animation = animations["idle"].get();
+    } else if(this->current_weapon == WeaponType::Knife) {
+        current_animation = animations["holding_knife"].get();
+    } else if(this->current_weapon == WeaponType::Glock) {
+        current_animation = animations["holding_pistol"].get();
+    } else if (this->current_weapon == WeaponType::Bomb) {
+        current_animation = animations["placing_bomb"].get();
+    } else {
+        current_animation = animations["holding_rifle"].get();
+    }
+    // renderizar siempre el arma
+    gun.update(this->position, this->facing_angle, this->current_weapon, this->is_shooting);
+    
     current_animation->update();
 }
 
@@ -64,8 +64,10 @@ void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
     double angle = this->facing_angle;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
+    // el orden de renderizado indica como un sprite "pisa" a otro
     legs.render(renderer);
     current_animation->render(renderer, position, flip, angle);
+    gun.render(renderer);
 }
 
 /*

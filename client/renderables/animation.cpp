@@ -20,7 +20,7 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
         size_height(data.size_height != 0 ? data.size_height : size_width),    // si no se especifica se asumen cuadradas
         modify_size(data.modify_size != 0 ? data.modify_size : 1.0f),
         elapsed(0),
-        step(data.steps){}
+        step(data.steps != 0 ? data.steps : 0) {}
 
 Animation::~Animation() {
 }
@@ -45,6 +45,10 @@ void Animation::update() {
 }
 
 void Animation::skip_frames(uint8_t frames_to_skip){
+    if (!this->is_animated) {
+        // sprite estatico. Solo tiene 1 frame, no necesita skipear
+        return;
+    }
     // se salta los frames que no se renderizan
     this->current_frame += frames_to_skip;
     

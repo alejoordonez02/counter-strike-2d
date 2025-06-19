@@ -65,6 +65,30 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["hud_nums"] = std::make_shared<SDL2pp::Texture>(renderer, hud_numbers_surface);
     
     
+    // ==== GUNS ======
+    SDL2pp::Surface bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb.bmp");
+    bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["bomb"] = std::make_shared<SDL2pp::Texture>(renderer, bomb_surface);
+
+    SDL2pp::Surface knife_surface(DATA_PATH "/assets/gfx/weapons/knife.bmp");
+    knife_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["knife"] = std::make_shared<SDL2pp::Texture>(renderer, knife_surface);
+
+    SDL2pp::Surface glock_surface(DATA_PATH "/assets/gfx/weapons/glock.bmp");
+    glock_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["glock"] = std::make_shared<SDL2pp::Texture>(renderer, glock_surface);
+    
+    SDL2pp::Surface ak47_surface(DATA_PATH "/assets/gfx/weapons/ak47.bmp");
+    ak47_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["ak47"] = std::make_shared<SDL2pp::Texture>(renderer, ak47_surface);
+    
+    SDL2pp::Surface m3_surface(DATA_PATH "/assets/gfx/weapons/m3.bmp");
+    m3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["m3"] = std::make_shared<SDL2pp::Texture>(renderer, m3_surface);
+
+    SDL2pp::Surface awp_surface(DATA_PATH "/assets/gfx/weapons/awp.bmp");
+    awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
 
 
 

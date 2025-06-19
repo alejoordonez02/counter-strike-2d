@@ -10,6 +10,7 @@
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "client/renderables/renderable_legs.h"
+#include "client/renderables/renderable_gun.h"
 #include "common/snapshot.h"
 
 class RenderablePlayer {
@@ -30,6 +31,7 @@ private:
 
     WeaponType current_weapon;
     RenderableLegs legs;
+    RenderableGun gun;
 
     Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
