@@ -12,7 +12,7 @@
 #include "client/renderables/renderable_player.h"
 #include "common/snapshot.h"
 #include "common/maploader.h"
-#include "client/renderables/renderable_map.h"
+#include "client/renderables/map/renderable_map.h"
 #include "client/hud_manager.h"
 
 class Render {

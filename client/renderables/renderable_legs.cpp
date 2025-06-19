@@ -17,8 +17,7 @@ RenderableLegs::RenderableLegs(
 }
 
 void RenderableLegs::load_animation(const std::string& animation_name) {
-    animations[animation_name] =
-            std::move(animation_provider->make_animation(animation_name));
+    animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
 void RenderableLegs::update(const SDL2pp::Point& position,

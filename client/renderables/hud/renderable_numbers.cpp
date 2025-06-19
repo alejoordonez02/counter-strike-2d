@@ -13,10 +13,10 @@ RenderableNumbers::RenderableNumbers(
 void RenderableNumbers::load_numbers() {
     for (char c = '0'; c <= '9'; ++c) {
         std::string key(1, c);
-        animations[key] = std::move(animation_provider->make_animation(key));
+        animations[key] = animation_provider->make_animation(key);
     }
-    animations[":"] = std::move(animation_provider->make_animation(":"));
-    animations["|"] = std::move(animation_provider->make_animation("|"));
+    animations[":"] = animation_provider->make_animation(":");
+    animations["|"] = animation_provider->make_animation("|");
 }
 
 void RenderableNumbers::update(uint number) {

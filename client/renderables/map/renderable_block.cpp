@@ -1,4 +1,4 @@
-#include "client/renderables/renderable_block.h"
+#include "client/renderables/map/renderable_block.h"
 #include "client/animation_provider.h"
 
 #include <utility>

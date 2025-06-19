@@ -9,7 +9,7 @@
 #include "SDL2pp/Renderer.hh"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
-#include "client/renderables/renderable_block.h"
+#include "client/renderables/map/renderable_block.h"
 #include "common/maploader.h"
 
 

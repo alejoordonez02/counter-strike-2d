@@ -21,12 +21,7 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
     std::string sufix_name = is_terrorist ? "terrorist_" : "counter_terrorist_";
     std::string skin_id = "1_";
     std::string full_name = sufix_name + skin_id + animation_name;
-    /*
-     * Moving a temporary object prevents copy elision (fix available)
-     * [-Wpessimizing-move]
-     * */
-    // animations[animation_name] =
-    //     std::move(animation_provider->make_animation(full_name));
+    
     animations[animation_name] = animation_provider->make_animation(full_name);
 }
 

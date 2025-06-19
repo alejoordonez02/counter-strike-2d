@@ -8,7 +8,7 @@
 RenderableHUDTimer::RenderableHUDTimer(
         std::shared_ptr<AnimationProvider> animation_provider)
     : RenderableHUDBase(animation_provider) {
-    icon_animation = std::move(animation_provider->make_animation(get_icon_name()));
+    icon_animation = animation_provider->make_animation(get_icon_name());
 }
 
 std::string RenderableHUDTimer::get_icon_name() const {
