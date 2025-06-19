@@ -64,7 +64,7 @@ void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count) {
     uint32_t now = SDL_GetTicks();
     // si pasó 1 segundo imprime los frames y resetea contador
     if (now - fps_timer >= 1000) {
-        std::cout << "FPS: " << frame_count << std::endl;
+        // std::cout << "FPS: " << frame_count << std::endl;
         frame_count = 0;
         fps_timer = now;
     }

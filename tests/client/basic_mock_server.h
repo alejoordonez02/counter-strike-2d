@@ -39,12 +39,14 @@ void mock_server() {
     player1.player_id = 1;
     player1.team_id = 0;
     player1.is_walking = false;
+    player1.current_weapon = WeaponType::AK47;
 
 
     PlayerData player2{};
     player2.player_id = 2;
     player2.team_id = 1;
     player2.is_walking = false;
+    player2.current_weapon = WeaponType::Glock;
     player2.x = 200;
     player2.y = 200;
     player2.aim_x = 400;
@@ -54,6 +56,7 @@ void mock_server() {
     player3.player_id = 3;
     player3.team_id = 1;
     player3.is_walking = false;
+    player3.current_weapon = WeaponType::M3;
     player3.x = 400;
     player3.y = 300;
 
@@ -74,25 +77,40 @@ void mock_server() {
         if (commands_queue.try_pop(dto_ptr)) {
             std::cout << "MockServer: Recibido comando tipo: "
                       << int(dto_ptr->get_type()) << std::endl;
-            StartMovingDTO* start_moving_dto =
-                    dynamic_cast<StartMovingDTO*>(dto_ptr.get());
-            if (!start_moving_dto) {
+            if(dto_ptr->get_type() == DTOSerial::PlayerCommands::START_MOVING){
+                StartMovingDTO* start_moving_dto = dynamic_cast<StartMovingDTO*>(dto_ptr.get());
+                Direction new_pos = start_moving_dto->get_direction();
+                // Procesar el comando de movimiento
+                player1.x += new_pos.x * 20;
+                player1.y += new_pos.y * 20;
+                player1.is_walking = true;
+            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::STOP_MOVING) {
+                // Procesar el comando de detener movimiento
+                player1.is_walking = false;
+            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::START_ATTACKING) {
+                // Procesar el comando de empezar a atacar
+                StartAttackingDTO* start_attacking_dto = dynamic_cast<StartAttackingDTO*>(dto_ptr.get());
+                if (start_attacking_dto) {
+                    player1.is_shooting = true;
+                    player1.current_weapon = WeaponType::AK47;
+                }
+            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::STOP_ATTACKING) {
+                // Procesar el comando de detener ataque
+                StopAttackingDTO* stop_attacking_dto = dynamic_cast<StopAttackingDTO*>(dto_ptr.get());
+                if (stop_attacking_dto) {
+                    player1.is_shooting = false;
+                    player1.current_weapon = WeaponType::AK47;
+                }
+            // } else if(dto_ptr->get_type() == DTOSerial::PlayerCommands::AIM){
+            //     AimDTO* aim_dto = dynamic_cast<AimDTO*>(dto_ptr.get());
+            //     if (aim_dto) {
+                    
+            //     }
+            } else {
+                std::cout << "Comando no reconocido: " << int(dto_ptr->get_type()) << std::endl;
                 continue;
             }
-
-            // Procesar el comando de movimiento
-            Direction new_pos = start_moving_dto->get_direction();
-            player1.x += new_pos.x * 20;
-            player1.y += new_pos.y * 20;
-            if(new_pos.x != 0 || new_pos.y != 0) {
-                player1.is_walking = true;
-            } else {
-                player1.is_walking = false;
-            }
-
-            // std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
-            //           << player1.y << ")" << std::endl;
-
+            
             // debe crear siempre un nuevo snapshot
             Snapshot snap{};
 
