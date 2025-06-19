@@ -90,7 +90,13 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     flare3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, flare3_surface);
     textures["flare3"]->SetColorMod(255, 255, 0);
-
+    textures["flare3"]->SetAlphaMod(128); // 128 es 50% opacidad
+    
+    SDL2pp::Surface knifeslash_surface(DATA_PATH "/assets/gfx/knifeslash.bmp");
+    knifeslash_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["knifeslash"] = std::make_shared<SDL2pp::Texture>(renderer, knifeslash_surface);
+    textures["knifeslash"]->SetColorMod(255, 255, 0);
+    textures["knifeslash"]->SetAlphaMod(128); // 128 es 50% opacidad
 
     // ==== OTHER ======
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");

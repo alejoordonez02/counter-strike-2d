@@ -13,6 +13,7 @@ RenderableGunEffect::RenderableGunEffect(
         current_animation(nullptr),
         animation_provider(animation_provider) {
     load_animation("flare3");
+    load_animation("knifeslash");
     // load_animation("fragments");
     
     // por default no tiene armas
@@ -26,20 +27,25 @@ void RenderableGunEffect::load_animation(const std::string& animation_name) {
 void RenderableGunEffect::update(const SDL2pp::Point& position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
     static int flare_timer = 0;
-
+    std::cout << "flare_timer = " << flare_timer << "is_shooting=" << is_shooting << std::endl;
+    is_shooting = true;
     if(!is_shooting || weapon_type == WeaponType::None) {
         current_animation = nullptr;
         flare_timer = 0;
         return;
     } else if (weapon_type == WeaponType::Bomb) {
-        // current_animation = animations["bomb"].get();
+        // current_animation = animations["bomb_explosion"].get();
     } else if (weapon_type == WeaponType::Knife) {
-        // current_animation = animations["knifeslash"].get();
-    } else if (is_shooting && flare_timer < 2){
+        current_animation = animations["knifeslash"].get();
+    } else if (is_shooting && flare_timer < 5){
+        std::cout << "menos de 5" << flare_timer << std::endl;
         current_animation = animations["flare3"].get();
         flare_timer++;
+    } else if (is_shooting && flare_timer >= 5) {
+        std::cout << "mas de 5" << flare_timer << std::endl;
+        current_animation = nullptr;
+        flare_timer = 0;
     }
-    std::cout << "DISPAROOOO" << std::endl;
 
 
     // NOTE: Para que el arma quede alineada con el eje X
