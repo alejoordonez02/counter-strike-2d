@@ -5,14 +5,14 @@ std::vector<std::unique_ptr<GameDetailsDTO>> GameMonitor::list_games() {
     std::unique_lock<std::mutex> lck(mtx);
 
     std::vector<std::unique_ptr<GameDetailsDTO>> list;
-    for (const auto& [k, v]: games) {
-        list.push_back(v->get_details());
+    for (const auto& [n, g]: games) {
+        list.push_back(g->get_details_dto());
     }
 
     return list;
 }
 
-bool GameMonitor::create_game(ClientSession* client_s, const std::string& g_name, MapName map_name) {
+bool GameMonitor::create_game(ClientSession* client_s, const std::string& g_name, MapName map_name, Team team) {
     std::unique_lock<std::mutex> lck(mtx);
 
     if (_is_shutdown)
@@ -21,29 +21,43 @@ bool GameMonitor::create_game(ClientSession* client_s, const std::string& g_name
         return false;
 
     auto new_game = std::make_unique<GameLoop>(g_name, map_name);
-    new_game->start();
-    new_game->add_client(client_s);
+    new_game->add_client(client_s, team);
     games[g_name] = std::move(new_game);
-    player_count[g_name] = 1;
 
     return true;
 }
 
-bool GameMonitor::join_game(ClientSession* client_s, const std::string& g_name) {
+bool GameMonitor::join_game(ClientSession* client_s, const std::string& g_name, Team team) {
     std::unique_lock<std::mutex> lck(mtx);
 
     if (_is_shutdown)
         return false;
-    if (not games.count(g_name) || player_count[g_name] == MAX_PLYS_PER_GAME)
+    if (not games.count(g_name))
         return false;
+
     auto game = games[g_name].get();
-    if (game->has_started())
-        return false;
 
-    game->add_client(client_s);
-    player_count[g_name]++;
+    return game->add_client(client_s, team);
+}
 
-    return true;
+std::unique_ptr<GameDetailsDTO> GameMonitor::get_game_details(const std::string& g_name) {
+    std::unique_lock<std::mutex> lck(mtx);
+
+    if (not games.count(g_name))
+        std::runtime_error("GameMonitor error: game not found");
+
+    auto game = games[g_name].get();
+
+    return game->get_details_dto();
+}
+
+void GameMonitor::begin_game(const std::string& g_name) {
+    std::unique_lock<std::mutex> lck(mtx);
+
+    if (not games.count(g_name))
+        std::runtime_error("GameMonitor error: game not found");
+
+    games[g_name]->start();
 }
 
 bool GameMonitor::add_username(const std::string& name) {
@@ -80,5 +94,7 @@ void GameMonitor::reap_dead_games() {
 
 void GameMonitor::shutdown() {
     std::unique_lock<std::mutex> lck(mtx);
+
+    _is_shutdown = true;
     // manejar cierre de server
 }
