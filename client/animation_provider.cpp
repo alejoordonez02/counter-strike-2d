@@ -8,8 +8,8 @@ AnimationProvider::AnimationProvider(){
 
 void AnimationProvider::load_animations() {
     // ====== PLAYERS =======
-    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 0, false}};
-    animation_prototypes["terrorist_1_holding_knife"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
+    animation_prototypes["terrorist_1_holding_knife"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 0, false}};
+    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
     animation_prototypes["terrorist_1_placing_bomb"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 2, false}};
     animation_prototypes["terrorist_1_holding_pistol"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 3, false}};
     animation_prototypes["terrorist_1_holding_rifle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 5, false}};
