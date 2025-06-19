@@ -50,6 +50,12 @@ public:
                     case LobbySerial::JOIN_GAME:
                         lobby_over = handle_join_game();
                         break;
+                    case LobbySerial::GET_GAME_DETAILS:
+                        handle_get_game_details();
+                        break;
+                    case LobbySerial::BEGIN_GAME:
+                        lobby_over = handle_begin_game();
+                        break;
                     case LobbySerial::EXIT_SERVER:
                         c_offline = true;
                         gm.remove_username(c_uname);
@@ -75,11 +81,15 @@ private:
         return true;
     }
 
+    std::string receive_str() {
+        std::vector<uint8_t> msg = conn.receive_msg();
+        return std::string(msg.begin(), msg.end());
+    }
+
     void handle_username_change() {
         std::string prev_usrn = c_uname;
         while (true) {
-            std::vector<uint8_t> msg = conn.receive_msg();
-            std::string usrn(msg.begin(), msg.end());
+            std::string usrn = receive_str();
             if (is_valid_username(usrn) && gm.add_username(usrn)) { // agregar chequeo usernames unicos
                 c_uname = usrn;
                 gm.remove_username(prev_usrn);
@@ -101,10 +111,10 @@ private:
     }
 
     bool handle_create_game() {
-        std::vector<uint8_t> msg = conn.receive_msg();
-        std::string game_name(msg.begin(), msg.end());
+        std::string game_name = receive_str();
         MapName map_name = static_cast<MapName>(conn.receive_single());
-        bool success = gm.create_game(c_session, game_name, map_name);
+        Team team = static_cast<Team>(conn.receive_single());
+        bool success = gm.create_game(c_session, game_name, map_name, team);
         if (success)
             conn.send_single(LobbySerial::SUCCESS);
         else
@@ -114,15 +124,28 @@ private:
     }
 
     bool handle_join_game() {
-        std::vector<uint8_t> msg = conn.receive_msg();
-        std::string game_name(msg.begin(), msg.end());
-        bool success = gm.join_game(c_session, game_name);
+        std::string game_name = receive_str();
+        Team team = static_cast<Team>(conn.receive_single());
+        bool success = gm.join_game(c_session, game_name, team);
         if (success)
             conn.send_single(LobbySerial::SUCCESS);
         else
             conn.send_single(LobbySerial::FAILURE);
 
         return success;
+    }
+
+    void handle_get_game_details() {
+        std::string game_name = receive_str();
+        auto details = gm.get_game_details(game_name);
+        conn.send_msg(details->serialize());
+    }
+
+    bool handle_begin_game() {
+        std::string game_name = receive_str();
+        gm.begin_game(game_name);
+
+        return true;
     }
 };
 
