@@ -30,6 +30,7 @@ class SnapshotDTO: public DTO {
             out.push_back(player.player_id);
             out.push_back(player.team_id);
             out.push_back(player.is_walking);
+            out.push_back(static_cast<uint8_t>(player.current_weapon));
             serialize_tuple_into(out, player.x, player.y);
             serialize_tuple_into(out, player.aim_x, player.aim_y);
         }
@@ -47,6 +48,7 @@ class SnapshotDTO: public DTO {
             player.player_id = payload[i++];
             player.team_id = payload[i++];
             player.is_walking = payload[i++];
+            player.current_weapon = static_cast<WeaponType>(payload[i++]);
             Position pos = deserialize_pos(i);
             player.x = pos.x;
             player.y = pos.y;
