@@ -19,24 +19,15 @@ void HUDManager::update(const Snapshot& snapshot) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;
 
-    // uint8_t hp = snapshot.players[0].player_hp;
-    // int time = snapshot.time;
-    
-    // TODO: HARDCODED ONLY FOR TESTING
-    static int time = 60 * 5;
+    int time = snapshot.time_left; //60 * 5;
     std::string time_string = std::to_string(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + std::to_string(time % 60);
-    static uint16_t hp = 100;
-    static int money = 12345;
+    // static uint16_t hp = 100;
+    // static int money = 12345;
 
-    // reducir
-    hp -= 1;
-    time -= 1;
-    money -= 1;
-
+    // update hud elements
     hud_timer.update(time_string);
-    hud_hp.update(hp);
-    hud_money.update(money);
-
+    hud_hp.update(snapshot.user_data.player_hp);
+    hud_money.update(snapshot.user_data.total_money);
 }
 
 
