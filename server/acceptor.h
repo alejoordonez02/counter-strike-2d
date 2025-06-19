@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <memory>
 
 #include "common/network/socket/liberror.h"
 #include "common/network/socket/socket.h"
@@ -16,7 +17,7 @@ class Acceptor: public Thread {
 private:
     Socket skt;
     GameMonitor& gm_ref;
-    std::vector<ClientSession> clients;
+    std::vector<std::unique_ptr<ClientSession>> clients;
 
 public:
     Acceptor(const std::string& servname, GameMonitor& gm):
@@ -26,8 +27,8 @@ public:
         try {
             while (true) {
                 Socket peer_skt = skt.accept();
-                ClientSession new_client(std::move(peer_skt), gm_ref);
-                new_client.start_lobby_phase();
+                auto new_client = std::make_unique<ClientSession>(std::move(peer_skt), gm_ref);
+                new_client->start_lobby_phase();
                 clients.push_back(std::move(new_client));
 
                 clear_offline_clients();
@@ -49,9 +50,9 @@ public:
 private:
     void clear_offline_clients() {
         clients.erase(std::remove_if(clients.begin(), clients.end(),
-                                     [](ClientSession& c) {
-                                        if (c.is_offline()) {
-                                            c.end_lobby_phase();
+                                     [](std::unique_ptr<ClientSession>& c) {
+                                        if (c->is_offline()) {
+                                            c->end_lobby_phase();
                                             return true;
                                         }
                                         return false;
@@ -61,7 +62,7 @@ private:
 
     void terminate_all_clients() {
         for (auto& c : clients) {
-            c.force_terminate();
+            c->force_terminate();
         }
         clients.clear();
     }
