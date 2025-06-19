@@ -16,16 +16,17 @@ private:
     std::vector<std::unique_ptr<PlayerHandler>> players;
     Game game;
     Clock::duration tick_duration;
+    int commands_per_tick;
 
 public:
     GameLoop(std::vector<std::unique_ptr<PlayerHandler>>&& handlers,
              std::vector<std::shared_ptr<Player>>&& players,
-             std::shared_ptr<Map>&& map, int tick_rate, int rounds,
-             float round_time, float time_out):
-            players(std::move(handlers)),
-            game(std::move(players), std::move(map), rounds, round_time,
-                 time_out),
-            tick_duration(Ms(1000) / tick_rate) {}
+             std::shared_ptr<Map>&& map, int tick_rate, int commands_per_tick,
+             int rounds, float round_time, float time_out):
+        players(std::move(handlers)),
+        game(std::move(players), std::move(map), rounds, round_time, time_out),
+        tick_duration(Ms(1000) / tick_rate),
+        commands_per_tick(commands_per_tick) {}
 
     void run() override {
         auto t1 = Clock::now();
@@ -34,7 +35,8 @@ public:
             auto snapshot = game.get_snapshot();
             for (auto& p : players) p->send_snapshot(snapshot);
 
-            for (auto& p : players) p->play();
+            for (int i = 0; i < commands_per_tick; i++)
+                for (auto& p : players) p->play();
 
             game.update(elapsed_seconds);
             auto t2 = Clock::now();
@@ -44,8 +46,6 @@ public:
                 std::this_thread::sleep_for(rest_time);
                 t1 += tick_duration;
             }
-
-            std::cout << "tick!\n";
         }
     }
 };
