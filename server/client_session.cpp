@@ -1,22 +1,9 @@
 #include "client_session.h"
+#include "common/network/protocol.h"
 
 bool ClientSession::is_offline() { return _is_offline; }
 
 const std::string& ClientSession::get_username() { return username; }
-
-bool ClientSession::try_pop_command(std::unique_ptr<Command>& cmd_p) {
-    std::unique_ptr<DTO> dto_p;
-    if (recv_q.try_pop(dto_p)) {
-        cmd_p = cmd_ctr.construct(std::move(dto_p));
-        return true;
-    }
-    return false;
-}
-
-bool ClientSession::try_push_game_update(/* std::shared_ptr<GameSnapshotDTO> g_snap */) {
-    // send_q.try_push(std::move(g_snap)) // el move no hace falta pero para probar la queue mejorada
-    // send_q.try_push( info especifica del player )
-}
 
 void ClientSession::start_lobby_phase() {
     lobby = new ClientLobby(this, con, username, _is_offline, game_monitor);
@@ -28,29 +15,20 @@ void ClientSession::end_lobby_phase() {
     delete lobby;
 }
 
-void ClientSession::start_game_phase() {
+void ClientSession::set_player(std::shared_ptr<Player> p) {
+    p_handler = new PlayerHandler(con, p);
+}
+
+PlayerHandler* ClientSession::start_game_phase() {
     end_lobby_phase();
-    send_q.reset();
-    recv_q.reset();
-    sndr = new Sender(con, send_q);
-    rcvr = new Receiver(con, recv_q);
-    sndr->start();
-    rcvr->start();
+    con.send_single(LobbySerial::GAME_HAS_BEGUN);
+    p_handler->start();
+
+    return p_handler;
 }
 
 void ClientSession::end_game_phase(/* std::shared_ptr<GameSnapshot> o std::shared_ptr<GameFinishedDTO> */) {
-    // send_q.push(); // asegura push de update final
-    send_q.close();
-    sndr->join();
-    delete sndr;
-
-    Socket s = con.release_socket();
-    std::unique_ptr<DTO> discard;
-    recv_q.try_pop(discard); // desbloquear receiver por si estaba en push con queue llena
-    rcvr->join();
-    con.acquire_socket(std::move(s));
-    delete rcvr;
-
+    delete(p_handler);
     start_lobby_phase();
 }
 
