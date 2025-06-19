@@ -19,13 +19,8 @@ private:
     int commands_per_tick;
 
 public:
-    GameLoop(std::vector<std::unique_ptr<PlayerHandler>>&& handlers,
-             std::vector<std::shared_ptr<Player>>&& players,
-             std::shared_ptr<Map>&& map, int tick_rate, int commands_per_tick,
-             int rounds, float round_time, float time_out):
-        players(std::move(handlers)),
-        game(std::move(players), std::move(map), rounds, round_time, time_out),
-        tick_duration(Ms(1000) / tick_rate),
+    GameLoop(Game&& game, int tick_rate, int commands_per_tick):
+        game(game), tick_duration(Ms(1000) / tick_rate),
         commands_per_tick(commands_per_tick) {}
 
     void run() override {
@@ -47,6 +42,11 @@ public:
                 t1 += tick_duration;
             }
         }
+    }
+
+    void add_player(std::unique_ptr<PlayerHandler> p) {
+        players.push_back(std::move(p));
+        game.add_player(p->get_player());
     }
 };
 

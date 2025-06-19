@@ -66,12 +66,11 @@ private:
     }
 
 public:
-    Game(std::vector<std::shared_ptr<Player>> players,
-         std::shared_ptr<Map>&& map, int rounds, float round_time,
+    Game(std::shared_ptr<Map>&& map, int rounds, float round_time,
          float time_out):
-        players(players), map(std::move(map)), rounds(rounds),
-        round_time(round_time), time_out(time_out), round_ongoing(false),
-        ended(false), tt_won_rounds(0), ct_won_rounds(0) {}
+        map(std::move(map)), rounds(rounds), round_time(round_time),
+        time_out(time_out), round_ongoing(false), ended(false),
+        tt_won_rounds(0), ct_won_rounds(0) {}
 
     void update(float dt) {
         if (ended) return;
@@ -88,6 +87,12 @@ public:
             map->update(dt);
             update_rounds(dt);
         }
+    }
+
+    void add_player(std::shared_ptr<Player> p) {
+        map->add_collidable(p);
+        p->set_map(map);
+        players.push_back(p);
     }
 
     Snapshot get_snapshot() {

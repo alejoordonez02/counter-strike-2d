@@ -43,8 +43,8 @@ private:
 
 public:
     Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
-           std::weak_ptr<Map> map, float max_velocity, float acceleration,
-           float radius, int money, int health);
+           float max_velocity, float acceleration, float radius, int money,
+           int health);
 
     void update(float dt) {
         if (!alive) return;
@@ -53,6 +53,8 @@ public:
         current.update(dt);
         action->update(dt);
     }
+
+    void set_map(std::weak_ptr<Map> map) { this->map = map; }
 
     virtual void teleport_to_spawn() {}
 
