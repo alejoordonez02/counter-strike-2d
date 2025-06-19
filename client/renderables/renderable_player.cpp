@@ -28,12 +28,13 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
 }
 
 void RenderablePlayer::update(const PlayerData& player) {
-    position.x = player.x;
-    position.y = player.y;
-    is_walking = player.is_walking;
+    this->position.x = player.x;
+    this->position.y = player.y;
+    this->is_walking = player.is_walking;
+    this->is_shooting = player.is_shooting;
+
     // ahora usa float y resta posiciones correctamente
-    facing_angle =
-        calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
+    facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
     current_weapon = player.current_weapon;
 
     // siempre actualiza las piernas

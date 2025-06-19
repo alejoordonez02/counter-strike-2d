@@ -25,16 +25,21 @@ void RenderableGunEffect::load_animation(const std::string& animation_name) {
 
 void RenderableGunEffect::update(const SDL2pp::Point& position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
-    if(weapon_type == WeaponType::None) {
+    static int flare_timer = 0;
+
+    if(!is_shooting || weapon_type == WeaponType::None) {
         current_animation = nullptr;
+        flare_timer = 0;
         return;
     } else if (weapon_type == WeaponType::Bomb) {
         // current_animation = animations["bomb"].get();
     } else if (weapon_type == WeaponType::Knife) {
         // current_animation = animations["knifeslash"].get();
-    } else {
+    } else if (is_shooting && flare_timer < 2){
         current_animation = animations["flare3"].get();
+        flare_timer++;
     }
+    std::cout << "DISPAROOOO" << std::endl;
 
 
     // NOTE: Para que el arma quede alineada con el eje X

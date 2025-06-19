@@ -14,12 +14,12 @@ class RenderableGun {
     private:
     SDL2pp::Point position;
     double facing_angle;
+    Animation* current_animation;
+    std::shared_ptr<AnimationProvider> animation_provider;
     RenderableGunEffect gun_effect;
 
-    Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
 
-    std::shared_ptr<AnimationProvider> animation_provider;
 
     void load_animation(const std::string& animation_name);
 
