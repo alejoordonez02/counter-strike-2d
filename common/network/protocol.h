@@ -17,6 +17,9 @@ constexpr uint8_t CREATE_GAME = 0x43; // C - 67
 constexpr uint8_t JOIN_GAME = 0x4A; // J - 74
 constexpr uint8_t SUCCESS = 0x53; // S - 83
 constexpr uint8_t FAILURE = 0x46; // F - 70
+constexpr uint8_t GET_GAME_DETAILS = 0x44; // D - 68
+constexpr uint8_t BEGIN_GAME = 0x42; // B - 66
+constexpr uint8_t GAME_HAS_BEGUN = 0xBB; // » - 187
 constexpr uint8_t EXIT_SERVER = 0x45; // E - 69
 }; // namespace LobbySerial
 
@@ -27,6 +30,13 @@ enum : uint8_t {
     #undef X
 };
 }; // namespace MapSerial
+
+namespace GameSerial {
+enum : uint8_t {
+    TERRORISTS,
+    CT_TERRORISTS
+};
+}; // namespace GameSerial
 
 namespace DTOSerial {
 constexpr uint8_t GAME_DETAILS = 0x47; // G - 71
