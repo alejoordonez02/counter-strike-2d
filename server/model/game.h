@@ -1,11 +1,18 @@
 #ifndef SERVER_MODEL_GAME_H
 #define SERVER_MODEL_GAME_H
 
+#include <chrono>
 #include <memory>
 #include <utility>
 
 #include "server/model/map.h"
 #include "server/model/player.h"
+
+/*
+ * Deltas de tiempo correspondientes a un tick rate de 60
+ * */
+#define DT \
+    (std::chrono::duration<float>(std::chrono::milliseconds(1000) / 60).count())
 
 class Game {
 private:
@@ -43,8 +50,7 @@ private:
 
     void sum_round(int& team_won_rounds) {
         team_won_rounds++;
-        if (tt_won_rounds + ct_won_rounds >= rounds)
-            ended = true;
+        if (tt_won_rounds + ct_won_rounds >= rounds) ended = true;
 
         start_round();
     }
@@ -63,23 +69,25 @@ public:
     Game(std::vector<std::shared_ptr<Player>> players,
          std::shared_ptr<Map>&& map, int rounds, float round_time,
          float time_out):
-            players(players),
-            map(std::move(map)),
-            rounds(rounds),
-            round_time(round_time),
-            time_out(time_out),
-            round_ongoing(false),
-            ended(false),
-            tt_won_rounds(0),
-            ct_won_rounds(0) {}
+        players(players), map(std::move(map)), rounds(rounds),
+        round_time(round_time), time_out(time_out), round_ongoing(false),
+        ended(false), tt_won_rounds(0), ct_won_rounds(0) {}
 
     void update(float dt) {
-        if (ended)
-            return;
+        if (ended) return;
 
-        for (auto& p : players) p->update(dt);
-        map->update(dt);
-        update_rounds(dt);
+        int updates = 1;
+        if (dt > DT) {
+            printf("dt: %f, DT: %f", dt, DT);
+            updates = (int)(dt / DT);
+            dt = DT;
+        }
+
+        for (int i = 0; i < updates; i++) {
+            for (auto& p : players) p->update(dt);
+            map->update(dt);
+            update_rounds(dt);
+        }
     }
 
     Snapshot get_snapshot() {
