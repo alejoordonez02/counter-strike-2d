@@ -136,6 +136,12 @@ public:
         is_not_full.notify_all();
     }
 
+    bool empty() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        return q.empty();
+    }
+
 private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
@@ -245,6 +251,22 @@ public:
         is_not_empty.notify_all();
     }
 
+    void reset() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        closed = false;
+        if (not q.empty())
+            q = std::queue<void*>();
+
+        is_not_full.notify_all();
+    }
+
+    bool empty() {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        return q.empty();
+    }
+
 private:
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
@@ -262,6 +284,8 @@ public:
     using Queue<void*>::push;
     using Queue<void*>::pop;
     using Queue<void*>::close;
+    using Queue<void*>::reset;
+    using Queue<void*>::empty;
 
     bool try_push(T* const& val) override { return Queue<void*>::try_push(val); }
 
@@ -270,6 +294,10 @@ public:
     void push(T* const& val) override { return Queue<void*>::push(val); }
 
     T* pop() override { return static_cast<T*>(Queue<void*>::pop()); }
+
+    void reset() override { return Queue<void*>::reset(); }
+
+    bool empty() override { return Queue<void*>::empty(); }
 
 private:
     Queue(const Queue&) = delete;
