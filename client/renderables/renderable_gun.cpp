@@ -45,13 +45,15 @@ void RenderableGun::update(const SDL2pp::Point& position, double facing_angle,
         current_animation = animations["awp"].get();
     }
 
-    this->facing_angle = facing_angle;
 
-    // NOTE: Para que el arma quede alineada
-    double radians = facing_angle * M_PI / 180.0;
-    double offset = 0;
+    // NOTE: Para que el arma quede alineada con el eje X
+    // ya que en SDL, 0 grados es es hacia la derecha
+    this->facing_angle = facing_angle;
+    double radians = (this->facing_angle + 90) * M_PI / 180.0;
+    double offset = -20;
     this->position.x = position.x + std::cos(radians) * offset;
     this->position.y = position.y + std::sin(radians) * offset;
+
 
     if(current_animation == nullptr) {
         return;

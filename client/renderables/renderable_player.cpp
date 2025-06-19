@@ -36,11 +36,8 @@ void RenderablePlayer::update(const PlayerData& player) {
         calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
     current_weapon = player.current_weapon;
 
-    if (this->is_walking) {
-        // le pide a renderable_legs que se muevan y se animen.
-        // No hace nada con la textura original
-        legs.update(this->position, this->facing_angle);
-    }
+    // siempre actualiza las piernas
+    legs.update(this->position, this->facing_angle, is_walking); 
 
     // segun el tipo de arma adopta sprite diferente
     if(this->current_weapon == WeaponType::None) {
