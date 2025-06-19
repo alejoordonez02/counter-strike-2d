@@ -62,6 +62,10 @@ void Animation::advanceFrame() {
     this->current_frame = this->current_frame % this->num_frames;
 }
 
+void Animation::reset() {
+    this->current_frame = 0;
+}
+
 void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
                        SDL_RendererFlip& flipType, double rotation_angle, bool is_camera_enabled) {
     int frameX = (this->current_frame % columns) * size_width;

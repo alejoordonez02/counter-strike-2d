@@ -24,7 +24,7 @@ class RenderableLegs {
     explicit RenderableLegs(
             std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const SDL2pp::Point& position, double facing_angle);
+    void update(const SDL2pp::Point& position, double facing_angle, bool is_walking);
     void render(SDL2pp::Renderer& renderer);
 
     void skip_frames(uint8_t frames_to_skip);
