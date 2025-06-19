@@ -8,10 +8,16 @@
 
 #include "server/model/map.h"
 #include "server/model/player.h"
+#include "common/network/protocol.h"
 
 #define N_ROUNDS 15
 #define ROUND_TIME 600
 #define TIME_OUT 20
+
+enum class Team : uint8_t {
+    TERRORISTS = GameSerial::TERRORISTS,
+    CT_TERRORISTS = GameSerial::CT_TERRORISTS
+};
 
 class Game {
     private:
@@ -92,6 +98,13 @@ class Game {
     }
 
     Player& get_player(const std::string& id) { return *players.at(id); }
+
+    std::shared_ptr<Player> add_player(/* const std::string& username,  */Team team) {}
+
+    int get_tt_count() {}
+
+    int get_ct_count() {}
+
 };
 
 #endif
