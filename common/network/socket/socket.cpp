@@ -5,9 +5,7 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#include "common/network/socket/socket.h"
-
-#include <stdexcept>
+#include "socket.h"
 
 #include <arpa/inet.h>
 #include <assert.h>
@@ -17,8 +15,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "common/network/socket/liberror.h"
-#include "common/network/socket/resolver.h"
+#include <stdexcept>
+
+#include "liberror.h"
+#include "resolver.h"
 
 #define STREAM_SEND_CLOSED 0x01
 #define STREAM_RECV_CLOSED 0x02
@@ -36,8 +36,7 @@ Socket::Socket(const char* hostname, const char* servname) {
     while (resolver.has_next()) {
         struct addrinfo* addr = resolver.next();
 
-        if (lskt != -1)
-            ::close(lskt);
+        if (lskt != -1) ::close(lskt);
 
         lskt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
         if (lskt == -1) {
@@ -57,8 +56,7 @@ Socket::Socket(const char* hostname, const char* servname) {
 
     int saved_errno = errno;
 
-    if (lskt != -1)
-        ::close(lskt);
+    if (lskt != -1) ::close(lskt);
 
     throw LibError(saved_errno, "socket construction failed (connect to %s:%s)",
                    (hostname ? hostname : ""), (servname ? servname : ""));
@@ -74,8 +72,7 @@ Socket::Socket(const char* servname) {
     while (resolver.has_next()) {
         struct addrinfo* addr = resolver.next();
 
-        if (lskt != -1)
-            ::close(lskt);
+        if (lskt != -1) ::close(lskt);
 
         lskt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
         if (lskt == -1) {
@@ -106,8 +103,7 @@ Socket::Socket(const char* servname) {
 
     int saved_errno = errno;
 
-    if (lskt != -1)
-        ::close(lskt);
+    if (lskt != -1) ::close(lskt);
 
     throw LibError(saved_errno, "socket construction failed (listen on %s)",
                    (servname ? servname : ""));
@@ -124,8 +120,7 @@ Socket::Socket(Socket&& other) {
 }
 
 Socket& Socket::operator=(Socket&& other) {
-    if (this == &other)
-        return *this;
+    if (this == &other) return *this;
 
     if (!this->closed) {
         ::shutdown(this->skt, 2);
@@ -156,8 +151,8 @@ int Socket::recvsome(void* data, unsigned int sz) {
 
 int Socket::sendsome(const void* data, unsigned int sz) {
     chk_skt_or_fail();
-    int s = send(this->skt, reinterpret_cast<const char*>(data), sz,
-                 MSG_NOSIGNAL);
+    int s =
+        send(this->skt, reinterpret_cast<const char*>(data), sz, MSG_NOSIGNAL);
     if (s == -1) {
         if (errno == EPIPE) {
             stream_status |= STREAM_SEND_CLOSED;
@@ -177,8 +172,8 @@ int Socket::recvall(void* data, unsigned int sz) {
     unsigned int received = 0;
 
     while (received < sz) {
-        int s = recvsome(reinterpret_cast<char*>(data) + received,
-                         sz - received);
+        int s =
+            recvsome(reinterpret_cast<char*>(data) + received, sz - received);
 
         if (s <= 0) {
             assert(s == 0);
@@ -225,8 +220,7 @@ Socket::Socket(int lskt) {
 Socket Socket::accept() {
     chk_skt_or_fail();
     int peer_skt = ::accept(this->skt, nullptr, nullptr);
-    if (peer_skt == -1)
-        throw LibError(errno, "socket accept failed");
+    if (peer_skt == -1) throw LibError(errno, "socket accept failed");
 
     return Socket(peer_skt);
 }
@@ -276,8 +270,9 @@ Socket::~Socket() {
 
 void Socket::chk_skt_or_fail() const {
     if (this->skt == -1) {
-        throw std::runtime_error("socket with invalid file descriptor (-1), "
-                                 "perhaps you are using a *previously moved* "
-                                 "socket (and therefore invalid).");
+        throw std::runtime_error(
+            "socket with invalid file descriptor (-1), "
+            "perhaps you are using a *previously moved* "
+            "socket (and therefore invalid).");
     }
 }

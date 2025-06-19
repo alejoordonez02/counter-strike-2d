@@ -1,14 +1,14 @@
 #ifndef GAME_SETUP_H
 #define GAME_SETUP_H
 
-#include "server/client_handler.h"
-#include "server/game_loop.h"
-#include "server/model/equipment.h"
-#include "server/model/map.h"
-#include "server/model/player.h"
-#include "server/model/random.h"
-#include "server/model/weapons.h"
-#include "server/player_handler.h"
+#include "game_loop.h"
+#include "map.h"
+#include "model/equipment.h"
+#include "network/client_handler.h"
+#include "player.h"
+#include "player_handler.h"
+#include "random.h"
+#include "weapons.h"
 
 #define TICK_RATE 20
 #define ROUNDS 15
@@ -66,16 +66,16 @@ static inline int get_player_max_health() { return PLAYER_MAX_HEALTH; }
 class GameSetup {
 public:
     static GameLoop setup(
-            const std::vector<std::unique_ptr<ClientHandler>>& clients) {
+        const std::vector<std::unique_ptr<ClientHandler>>& clients) {
         std::vector<std::unique_ptr<PlayerHandler>> handlers;
         std::vector<std::shared_ptr<Player>> players;
         auto map = get_map();
         for (auto& c : clients) {
             auto p = std::make_shared<Player>(
-                    get_player_id(), get_starting_position(),
-                    get_starting_equipment(), map, get_player_max_velocity(),
-                    get_player_acceleration(), get_player_radius(),
-                    get_player_starting_money(), get_player_max_health());
+                get_player_id(), get_starting_position(),
+                get_starting_equipment(), map, get_player_max_velocity(),
+                get_player_acceleration(), get_player_radius(),
+                get_player_starting_money(), get_player_max_health());
 
             /*
              * Map no puede tener un vector de referencias a los players, pues

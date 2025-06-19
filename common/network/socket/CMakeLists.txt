@@ -7,5 +7,3 @@ target_sources(cs2d_common
      resolvererror.cpp
      socket.cpp
 )
-
-target_include_directories(cs2d_common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

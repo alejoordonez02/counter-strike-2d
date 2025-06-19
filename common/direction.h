@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "common/tuple.h"
+#include "tuple.h"
 
 /*
  * Las direcciones son vectores unitarios (length = 1)
@@ -12,7 +12,7 @@ struct Direction: public Tuple<Direction, float> {
     Direction(): Tuple<Direction, float>(0, 0) {}
 
     Direction(const float& x, const float& y, bool normalized = true):
-            Tuple<Direction, float>(0, 0) {
+        Tuple<Direction, float>(0, 0) {
         if (normalized) {
             float length = std::sqrt(x * x + y * y);
             if (length != 0) {

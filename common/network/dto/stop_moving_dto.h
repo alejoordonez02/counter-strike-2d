@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
+#include "dto.h"
+#include "protocol.h"
 
 class StopMovingDTO: public DTO {
     // TODO: Solo le cambie el nombre, no tiene logica, es una copia de start
@@ -18,7 +18,7 @@ private:
 
 public:
     explicit StopMovingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
+        DTO(std::move(bytes)) {
         deserialize();
     }
 

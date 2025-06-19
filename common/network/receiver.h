@@ -7,12 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/connection.h"
-#include "common/network/dto.h"
-#include "common/network/dto_constructor.h"
-#include "common/network/socket/liberror.h"
-#include "common/queue.h"
-#include "common/thread.h"
+#include "connection.h"
+#include "dto/dto.h"
+#include "dto_constructor.h"
+#include "liberror.h"
+#include "queue.h"
+#include "thread.h"
 
 class Receiver: public Thread {
 private:

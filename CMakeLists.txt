@@ -1,48 +1,36 @@
+# config de cmake
 cmake_minimum_required(VERSION 3.24)
-
-if (POLICY CMP0135)
-    cmake_policy(SET CMP0135 NEW)
-endif()
-
-if (NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 20)
-endif()
-
-set(CMAKE_CXX_EXTENSIONS ON)
+cmake_policy(SET CMP0135 NEW)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_EXTENSIONS ON) # extensiones del compilador (gnu, gcc, etc.)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # para el linter
 
-project(cs2d
+# metadata del proyecto
+project(
+    cs2d
     VERSION 1.0
     HOMEPAGE_URL "https://github.com/alejoordonez02/counter-strike-2d"
     LANGUAGES CXX
-    )
+)
 
-option(CS2D_TESTS "Enable / disable tests." ON)
-option(CS2D_CLIENT "Enable / disable client program." ON)
-option(CS2D_SERVER "Enable / disable server program." ON)
-option(CS2D_EDITOR "Enable / disable editor program." ON)
-option(CS2D_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
+# activar/ desactivar partes del build
+option(CS2D_TESTS "" ON)
+option(CS2D_CLIENT "" ON)
+option(CS2D_SERVER "" ON)
+option(CS2D_EDITOR "" ON)
+option(CS2D_MAKE_WARNINGS_AS_ERRORS "" ON)
 
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
-
-# Define target: lib common between client, server and editor programs
-# HEY TODO XXX: change the name to something that you like
-add_library(cs2d_common STATIC)
-
-# add the source files that make the lib
-# HEY!! TODO XXX: add more subfolders here
-add_subdirectory(common/)
-
-
-# set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
-set_project_warnings(cs2d_common ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
+
+#agregar libraries, los subdirectories de cada una están en los cmake específicos
+add_subdirectory(common)
+add_subdirectory(server)
 
 # Say where the headers will be found required by library target
 # Make this PUBLIC so any dependant linking lib will inherit this
 # location (so our dependants will not have to explicitly request this)
-target_include_directories(cs2d_common PUBLIC .)
+# target_include_directories(cs2d_common PUBLIC .)
 
 # variable DATA_PATH para path de archivos de datos (imágenes, sonidos, etc)
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client")

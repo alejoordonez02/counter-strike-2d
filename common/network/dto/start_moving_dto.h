@@ -5,9 +5,9 @@
 #include <utility>
 #include <vector>
 
-#include "common/direction.h"
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
+#include "direction.h"
+#include "dto.h"
+#include "protocol.h"
 
 class StartMovingDTO: public DTO {
 private:
@@ -22,12 +22,12 @@ private:
 
 public:
     explicit StartMovingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
+        DTO(std::move(bytes)) {
         deserialize();
     }
 
     explicit StartMovingDTO(const Direction& d):
-            DTO(DTOSerial::PlayerCommands::START_MOVING), dir(d) {}
+        DTO(DTOSerial::PlayerCommands::START_MOVING), dir(d) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);

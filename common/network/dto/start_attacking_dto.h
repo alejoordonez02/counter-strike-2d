@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
+#include "dto.h"
+#include "protocol.h"
 
 class StartAttackingDTO: public DTO {
 private:
@@ -16,7 +16,7 @@ private:
 
 public:
     explicit StartAttackingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
+        DTO(std::move(bytes)) {
         deserialize();
     }
 

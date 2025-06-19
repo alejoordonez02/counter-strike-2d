@@ -8,14 +8,14 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/dto.h"
-#include "common/network/dtos/aim_dto.h"
-#include "common/network/dtos/snapshot_dto.h"
-#include "common/network/dtos/start_attacking_dto.h"
-#include "common/network/dtos/start_moving_dto.h"
-#include "common/network/dtos/stop_moving_dto.h"
-#include "common/network/protocol.h"
-#include "stop_attacking_dto.h"
+#include "dto/aim_dto.h"
+#include "dto/dto.h"
+#include "dto/snapshot_dto.h"
+#include "dto/start_attacking_dto.h"
+#include "dto/start_moving_dto.h"
+#include "dto/stop_attacking_dto.h"
+#include "dto/stop_moving_dto.h"
+#include "protocol.h"
 
 using namespace DTOSerial::PlayerCommands;
 // using namespace DTOSerial:: otros;

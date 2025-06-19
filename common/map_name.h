@@ -4,12 +4,12 @@
 #include <cstdint>
 
 #include "map_list.h"
-#include "common/network/protocol.h"
+#include "network/protocol.h"
 
 enum class MapName : uint8_t {
-    #define X(name) name = MapSerial::name,
-        MAP_LIST
-    #undef X
+#define X(name) name = MapSerial::name,
+    MAP_LIST
+#undef X
 };
 
 #endif

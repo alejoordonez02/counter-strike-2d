@@ -5,12 +5,12 @@
 #include <utility>
 #include <vector>
 
-#include "common/direction.h"
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
+#include "direction.h"
+#include "dto.h"
+#include "protocol.h"
 
 class AimDTO: public DTO {
-    private:
+private:
     Direction dir;
 
     friend class Aim;
@@ -20,13 +20,13 @@ class AimDTO: public DTO {
         dir = deserialize_dir(i);
     }
 
-    public:
+public:
     explicit AimDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         deserialize();
     }
 
     explicit AimDTO(const Direction& d):
-            DTO(DTOSerial::PlayerCommands::AIM), dir(d) {}
+        DTO(DTOSerial::PlayerCommands::AIM), dir(d) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);

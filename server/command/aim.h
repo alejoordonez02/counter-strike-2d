@@ -14,10 +14,10 @@
  * Aim
  * */
 class Aim: public Command {
-    private:
+private:
     Direction dir;
 
-    public:
+public:
     explicit Aim(const Direction& d): dir(d) {}
 
     explicit Aim(std::unique_ptr<DTO>&& dto_p) {

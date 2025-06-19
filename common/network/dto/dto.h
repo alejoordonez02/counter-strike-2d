@@ -1,15 +1,15 @@
 #ifndef COMMON_NETWORK_DTO_H
 #define COMMON_NETWORK_DTO_H
 
-#include <cstdint>
-#include <utility>
-#include <vector>
-#include <string>
-
 #include <arpa/inet.h>
 
-#include "common/direction.h"
-#include "common/position.h"
+#include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "direction.h"
+#include "position.h"
 
 class DTO {
 protected:
@@ -18,7 +18,7 @@ protected:
     bool _is_serialized;
 
     explicit DTO(std::vector<uint8_t>&& bytes):
-            type(bytes[0]), payload(std::move(bytes)), _is_serialized(true) {}
+        type(bytes[0]), payload(std::move(bytes)), _is_serialized(true) {}
     explicit DTO(const uint8_t type): type(type), _is_serialized(false) {}
 
     virtual void deserialize() = 0;
@@ -44,7 +44,8 @@ protected:
                               const float& y);
     void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
     void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
-    void serialize_string_into(std::vector<uint8_t>& out, const std::string& str);
+    void serialize_string_into(std::vector<uint8_t>& out,
+                               const std::string& str);
 
     // deserialization
 

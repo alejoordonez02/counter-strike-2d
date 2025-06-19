@@ -4,7 +4,7 @@
  *
  * De acuerdo con la GPL v2, este código se mantiene bajo la misma licencia.
  */
-#include "common/network/socket/resolvererror.h"
+#include "resolvererror.h"
 
 #include <arpa/inet.h>
 #include <netdb.h>

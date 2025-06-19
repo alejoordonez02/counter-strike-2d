@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "common/network/socket/socket.h"
+#include "socket/socket.h"
 
 class Connection {
 private:
@@ -24,7 +24,6 @@ public:
      * */
     Connection(const std::string& hostname, const std::string& servname);
 
-    
     void send_msg(const std::vector<uint8_t>& msg);
     std::vector<uint8_t> receive_msg();
     void send_single(const uint8_t b);

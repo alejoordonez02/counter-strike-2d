@@ -1,4 +1,6 @@
-#include "common/network/connection.h"
+#include "connection.h"
+
+#include <arpa/inet.h>
 
 #include <cstdint>
 #include <stdexcept>
@@ -6,9 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include <arpa/inet.h>
-
-#include "common/network/protocol.h"
+#include "protocol.h"
+#include "socket/socket.h"
 
 /*
  * Server connection
@@ -20,8 +21,7 @@ Connection::Connection(Socket&& s): skt(std::move(s)) {}
  * */
 Connection::Connection(const std::string& hostname,
                        const std::string& servname):
-        skt(hostname.c_str(), servname.c_str()) {}
-
+    skt(hostname.c_str(), servname.c_str()) {}
 
 void Connection::send_msg(const std::vector<uint8_t>& msg) {
     if (msg.size() > Message::MaxLen)
@@ -72,10 +72,6 @@ void Connection::destroy_socket() {
     skt.close();
 }
 
-Socket Connection::release_socket() {
-    return std::move(skt);
-}
+Socket Connection::release_socket() { return std::move(skt); }
 
-void Connection::acquire_socket(Socket&& s) {
-    skt = std::move(s);
-}
+void Connection::acquire_socket(Socket&& s) { skt = std::move(s); }

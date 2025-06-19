@@ -1,11 +1,10 @@
 #ifndef SERVER_SERVER_H
 #define SERVER_SERVER_H
 
-#include "server/acceptor.h"
+#include "game_setup.h"
+#include "network/acceptor.h"
 #include "server/client_handler.h"
 #include "server/game_loop.h"
-
-#include "game_setup.h"
 
 class Server {
 private:
@@ -14,7 +13,7 @@ private:
 
 public:
     Server(const std::string& servname):
-            clients(), acceptor(servname, clients) {}
+        clients(), acceptor(servname, clients) {}
 
     void start() {
         acceptor.start();

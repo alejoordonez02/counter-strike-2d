@@ -4,12 +4,12 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
-#include "common/snapshot.h"
+#include "dto.h"
+#include "protocol.h"
+#include "snapshot.h"
 
 class SnapshotDTO: public DTO {
-    public:
+public:
     Snapshot snapshot;
 
     explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
@@ -17,7 +17,7 @@ class SnapshotDTO: public DTO {
     }
 
     explicit SnapshotDTO(const Snapshot& snap):
-            DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
+        DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);

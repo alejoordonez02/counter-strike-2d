@@ -4,11 +4,11 @@
 #include <memory>
 #include <stdexcept>
 
-#include "common/network/connection.h"
-#include "common/network/dto.h"
-#include "common/network/socket/liberror.h"
-#include "common/queue.h"
-#include "common/thread.h"
+#include "connection.h"
+#include "dto/dto.h"
+#include "liberror.h"
+#include "queue.h"
+#include "thread.h"
 
 class Sender: public Thread {
 private:

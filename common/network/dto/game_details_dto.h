@@ -1,12 +1,12 @@
 #ifndef GAME_DETAILS_DTO_H
 #define GAME_DETAILS_DTO_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
-#include "../dto.h"
-#include "../protocol.h"
+#include "dto.h"
+#include "protocol.h"
 
 class GameDetailsDTO: public DTO {
 private:
@@ -22,12 +22,15 @@ private:
     }
 
 public:
-    explicit GameDetailsDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+    explicit GameDetailsDTO(std::vector<uint8_t>&& bytes):
+        DTO(std::move(bytes)) {
         deserialize();
     }
 
-    explicit GameDetailsDTO(const std::string& name, uint8_t n_plys, const std::string& map_name): 
-            DTO(DTOSerial::GAME_DETAILS), name(name), n_players(n_plys), map_name(map_name) {}
+    explicit GameDetailsDTO(const std::string& name, uint8_t n_plys,
+                            const std::string& map_name):
+        DTO(DTOSerial::GAME_DETAILS), name(name), n_players(n_plys),
+        map_name(map_name) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);

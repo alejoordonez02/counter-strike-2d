@@ -1,8 +1,8 @@
 #ifndef COMMON_POSITION_H
 #define COMMON_POSITION_H
 
-#include "common/direction.h"
-#include "common/tuple.h"
+#include "direction.h"
+#include "tuple.h"
 
 struct Position: public Tuple<Position, float> {
     Position(): Tuple(0, 0) {}

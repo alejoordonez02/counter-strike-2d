@@ -17,7 +17,7 @@
 class ClientSession;
 
 class GameMonitor {
-    private:
+private:
     std::map<std::string, std::unique_ptr<GameLoop>> games;
     std::map<std::string, int> player_count;
     std::unordered_set<std::string> player_usernames;
@@ -25,7 +25,7 @@ class GameMonitor {
 
     std::mutex mtx;
 
-    public:
+public:
     GameMonitor(): _is_shutdown(false) {}
 
     std::vector<std::unique_ptr<GameDetailsDTO>> list_games();

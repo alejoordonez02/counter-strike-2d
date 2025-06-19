@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "common/network/dto.h"
-#include "common/network/protocol.h"
+#include "dto.h"
+#include "protocol.h"
 
 class StopAttackingDTO: public DTO {
     // TODO: Solo le cambie el nombre, no tiene logica, es una copia de start

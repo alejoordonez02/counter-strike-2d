@@ -9,4 +9,6 @@ target_sources(cs2d_server
     weapon.cpp
 )
 
-target_include_directories(cs2d_server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(action)
+add_subdirectory(equipment)
+add_subdirectory(physics)

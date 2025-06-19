@@ -8,13 +8,13 @@
 #undef _GNU_SOURCE
 #undef GNU_SOURCE
 
-#include "common/network/socket/liberror.h"
+#include "liberror.h"
+
+#include <errno.h>
 
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
-
-#include <errno.h>
 
 LibError::LibError(int error_code, const char* fmt, ...) noexcept {
     va_list args;

@@ -3,7 +3,7 @@
 
 #include <optional>
 
-#include "server/model/trajectory.h"
+#include "trajectory.h"
 
 class Hitbox {
 protected:

@@ -1,7 +1,7 @@
-#include "common/network/dto.h"
+#include "dto.h"
 
-#include <cstring>
 #include <bit>
+#include <cstring>
 
 const std::vector<uint8_t>& DTO::serialize() {
     if (not _is_serialized) {
@@ -35,12 +35,12 @@ void DTO::serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir) {
     serialize_tuple_into(out, dir.x, dir.y);
 }
 
-void DTO::serialize_string_into(std::vector<uint8_t>& out, const std::string& str) {
+void DTO::serialize_string_into(std::vector<uint8_t>& out,
+                                const std::string& str) {
     out.push_back(static_cast<uint8_t>(str.size() >> 8));
     out.push_back(static_cast<uint8_t>(str.size() & 0xFF));
     out.insert(out.end(), str.begin(), str.end());
 }
-
 
 // deserialization
 
