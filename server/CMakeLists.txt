@@ -2,6 +2,9 @@
 
 target_sources(cs2d_server
     PRIVATE
+    client_handler.cpp
+    game_loop.cpp
+    game_maker.cpp
     main.cpp
 )
 
