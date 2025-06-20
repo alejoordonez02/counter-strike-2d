@@ -5,15 +5,18 @@
 #include <string>
 
 #include "common/network/connection.h"
+#include "config/game_config.h"
 #include "game.h"
 #include "game_maker_error.h"
 
-void GameMaker::create(Connection&& con, const std::string& game_name) {
+void GameMaker::create(Connection&& con, const std::string& game_name,
+                       MapName map) {
     std::unique_lock<std::mutex> lck(m);
     auto it = games.find(game_name);
     if (it != games.end()) throw GameAlreadyExists(game_name);
 
-    auto game = std::make_unique<Game>();
+    GameConfig config = GameConfig::from_yaml("server-config.yaml", map);
+    auto game = std::make_unique<Game>(config);
     game->add_player(std::move(con));
     game->start();
     games[game_name] = std::move(game);
