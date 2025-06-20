@@ -15,6 +15,7 @@ RenderablePlayer::RenderablePlayer(
     load_animation("holding_knife");
     load_animation("holding_rifle");
     load_animation("placing_bomb");
+    animations["death_icon"] = animation_provider->make_animation("death");
     load_animation("idle");
     current_animation = animations["idle"].get();
 }
@@ -32,6 +33,12 @@ void RenderablePlayer::update(const PlayerData& player) {
     this->position.y = player.y;
     this->is_walking = player.is_walking;
     this->is_shooting = player.is_shooting;
+
+    if(player.is_dead){
+        current_animation = animations["death_icon"].get();
+        current_animation->update();
+        return;
+    }
 
     // ahora usa float y resta posiciones correctamente
     facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);

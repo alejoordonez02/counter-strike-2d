@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 
-#define EFFECT_COUNTER_TIME 0.02f
+#define EFFECT_COUNTER_TIME 0.05f
 // ej. 30 fps * 0.2f = 6 => cada 6 ticks hace el flare
 
 RenderableGunEffect::RenderableGunEffect(

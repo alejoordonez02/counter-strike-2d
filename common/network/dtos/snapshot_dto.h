@@ -29,9 +29,14 @@ class SnapshotDTO: public DTO {
         for (const auto& player : snapshot.players) {
             out.push_back(player.player_id);
             out.push_back(player.team_id);
-            out.push_back(player.is_walking);
-            out.push_back(player.is_shooting);
             out.push_back(static_cast<uint8_t>(player.current_weapon));
+            out.push_back(player.has_bomb);
+
+            out.push_back(player.is_shooting);
+            out.push_back(player.was_hurt);
+            out.push_back(player.is_walking);
+            out.push_back(player.is_dead);
+            
             serialize_tuple_into(out, player.x, player.y);
             serialize_tuple_into(out, player.aim_x, player.aim_y);
         }
@@ -48,9 +53,14 @@ class SnapshotDTO: public DTO {
             PlayerData player;
             player.player_id = payload[i++];
             player.team_id = payload[i++];
-            player.is_walking = payload[i++];
-            player.is_shooting = payload[i++];
             player.current_weapon = static_cast<WeaponType>(payload[i++]);
+            player.has_bomb = payload[i++];
+            
+            player.is_shooting = payload[i++];
+            player.was_hurt = payload[i++];
+            player.is_walking = payload[i++];
+            player.is_dead = payload[i++];
+
             Position pos = deserialize_pos(i);
             player.x = pos.x;
             player.y = pos.y;

@@ -95,10 +95,15 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     SDL2pp::Surface knifeslash_surface(DATA_PATH "/assets/gfx/knifeslash.bmp");
     knifeslash_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["knifeslash"] = std::make_shared<SDL2pp::Texture>(renderer, knifeslash_surface);
-    textures["knifeslash"]->SetColorMod(255, 255, 0);
     textures["knifeslash"]->SetAlphaMod(128); // 128 es 50% opacidad
-
+    
     // ==== OTHER ======
+    SDL2pp::Surface decals_surface(DATA_PATH "/assets/gfx/decals.bmp");
+    decals_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["decals"] = std::make_shared<SDL2pp::Texture>(renderer, decals_surface);
+    textures["decals"]->SetColorMod(255, 255, 0);
+    textures["decals"]->SetAlphaMod(128); // 128 es 50% opacidad
+
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
     // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH
     // "/assets/gfx/player/ct1.bmp"); terrorist_1 = SDL2pp::Texture(renderer,

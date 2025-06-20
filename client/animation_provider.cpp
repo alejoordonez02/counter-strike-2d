@@ -32,6 +32,7 @@ void AnimationProvider::load_animations() {
     animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
     animation_prototypes["knifeslash"] = {TextureProvider::get_texture("knifeslash").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
     
+    animation_prototypes["decals"] = {TextureProvider::get_texture("decals").get(), AnimationData{18, 13, false}};
 
     // ====== BACKGROUNDS ======
     animation_prototypes["background_dust"] = {TextureProvider::get_texture("background_dust").get(), AnimationData{1, 0, false, 0}};
@@ -45,6 +46,7 @@ void AnimationProvider::load_animations() {
     animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0, 0, 0, 0.3}};
     animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0, 0, 0, 0.3}};
     animation_prototypes["money"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 7, false, 0, 0, 0, 0.3}};
+    animation_prototypes["death"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 12, false, 0, 0, 0, 0.5}};
     
 
     // ====== HUD NUMBERS ======

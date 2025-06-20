@@ -57,6 +57,7 @@ void mock_server() {
     player3.player_id = 3;
     player3.team_id = 1;
     player3.is_walking = false;
+    player3.is_dead = true;
     player3.current_weapon = WeaponType::M3;
     player3.x = 400;
     player3.y = 300;
