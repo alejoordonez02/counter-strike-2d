@@ -9,7 +9,9 @@ struct AnimationData {
     int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6). Para frames fijos es el numero de frame en la imagen
     bool is_animated;       // true si es una animación, false si es un sprite estático
     int steps;          // velocidad del sprite, cada cuántos frames avanza al siguiente (solo si es animado)
-    int modify_size = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
+    int size_width = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
+    int size_height = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
+    float modify_size = 0;   // si es 0 usa el default, otro valor modifica el tamaño del sprite
 };
 
 class Animation {
@@ -18,11 +20,12 @@ class Animation {
     ~Animation();
     void update();
     void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
-                SDL_RendererFlip& flipType, double rotation_angle = 0.0);
+                SDL_RendererFlip& flipType, double rotation_angle = 0.0, bool is_camera_enabled = true);
     void render_tilling(SDL2pp::Renderer& renderer,
                         const SDL2pp::Point from_position, int columns,
                         int rows);
     void skip_frames(uint8_t frames_to_skip);
+    SDL2pp::Point get_animation_size();
 
 private:
     void advanceFrame();
@@ -41,7 +44,11 @@ private:
     bool is_animated;
 
     /** Size of the sprite (height and width). */
-    int size;
+    int size_width;
+    int size_height;
+
+    // modifica en x e y el tamaño final del sprite
+    float modify_size;
 
     // contador para animaciones
     int elapsed;

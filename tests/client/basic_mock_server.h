@@ -65,6 +65,8 @@ void mock_server() {
     std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(initial_snap);
     snapshots_queue.try_push(std::move(initial_snapshot));
 
+    int counter = 0;
+
     // Loop del server
     while (true) {
         // Obtener el último comando recibido (si hay)
@@ -82,13 +84,26 @@ void mock_server() {
             Direction new_pos = start_moving_dto->get_direction();
             player1.x += new_pos.x * 20;
             player1.y += new_pos.y * 20;
-            player1.is_walking = true;
-            std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
-                      << player1.y << ")" << std::endl;
+            if(new_pos.x != 0 || new_pos.y != 0) {
+                player1.is_walking = true;
+            } else {
+                player1.is_walking = false;
+            }
+
+            // std::cout << "MockServer: Jugador movido a (" << player1.x << ", "
+            //           << player1.y << ")" << std::endl;
 
             // debe crear siempre un nuevo snapshot
             Snapshot snap{};
-            snap.round_number = 1;
+
+            counter++;
+            if (counter == 10) {
+                // Simular que los terroristas ganan cada 100 comandos
+                snap.round_finished = true;
+                snap.game_finished = true;
+            }
+            std::cout << "counter" << counter << std::endl;
+            snap.round_number = counter;
             snap.players.push_back(player1);
             snap.players.push_back(player2);
             snap.players.push_back(player3);

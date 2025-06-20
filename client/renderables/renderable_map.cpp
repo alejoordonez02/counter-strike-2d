@@ -10,9 +10,6 @@ RenderableMap::RenderableMap(
         std::shared_ptr<AnimationProvider> animation_provider):
         map_data(map_data),
         animation_provider(animation_provider) {
-}
-
-void RenderableMap::load_map_info(){
     load_background();
     load_blocks();
 }
@@ -28,8 +25,6 @@ void RenderableMap::load_blocks() {
     for (const auto& block : map_data.blocks) {
         // Crear un RenderableBlock para cada bloque
         blocks.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
-        // carga la data del ultimo bloque
-        blocks.back()->load_block();
     }
 }
 

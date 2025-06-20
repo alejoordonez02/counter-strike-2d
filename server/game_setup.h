@@ -1,22 +1,23 @@
-#ifndef GAME_SETUP_H
-#define GAME_SETUP_H
+#ifndef SERVER_GAME_SETUP_H
+#define SERVER_GAME_SETUP_H
 
-#include "server/client_handler.h"
-#include "server/game_loop.h"
-#include "server/model/equipment.h"
-#include "server/model/map.h"
-#include "server/model/player.h"
-#include "server/model/random.h"
-#include "server/model/weapons.h"
-#include "server/player_handler.h"
+#include "common/maploader.h"
+#include "game_loop.h"
+#include "model/equipment.h"
+#include "model/game.h"
+#include "model/player.h"
+#include "model/random.h"
+#include "model/structure.h"
+#include "model/weapons.h"
 
-#define TICK_RATE 64
+#define TICK_RATE 20
+#define COMMANDS_PER_TICK 30
 #define ROUNDS 15
 #define ROUND_TIME 600
 #define TIME_OUT 10
-#define PLAYER_MAX_VELOCITY 15.0f
-#define PLAYER_ACCELERATION 1000.0f
-#define PLAYER_RADIUS 0.5f
+#define PLAYER_MAX_VELOCITY 90
+#define PLAYER_ACCELERATION 360
+#define PLAYER_RADIUS 10
 #define PLAYER_STARTING_MONEY 800
 #define PLAYER_MAX_HEALTH 100
 
@@ -34,12 +35,34 @@ struct GameConfig {
 };
 
 /*
- * GameSetup usa el parser para leer la config e instanciar el juego. Estos get
- * vendrían a ser los retornos del parser
+ * Map config
  * */
 static inline std::shared_ptr<Map> get_map() {
-    Map map;
-    return std::make_shared<Map>();
+    auto map = std::make_shared<Map>();
+    MapLoader map_loader;
+    MapData map_data =
+        map_loader.loadMapData("tests/client/prueba_mapa_mod.yaml");
+    for (auto b : map_data.blocks)
+        map->add_collidable(
+            std::make_shared<Structure>(Position(b.x, b.y), 32));
+
+    return map;
+}
+
+/*
+ * Game config
+ * */
+static inline float get_rounds() { return ROUNDS; }
+static inline float get_round_time() { return ROUND_TIME; }
+static inline float get_time_out() { return TIME_OUT; }
+
+/*
+ * Player config
+ * */
+static int id = -1;
+static inline int get_player_id() {
+    id++;
+    return id;
 }
 
 static inline Position get_starting_position() {
@@ -52,63 +75,34 @@ static inline std::unique_ptr<Equipment> get_starting_equipment() {
                                        std::make_unique<Knife>(), 0);
 };
 
-static inline int get_tick_rate() { return TICK_RATE; }
-
-static inline float get_rounds() { return ROUNDS; }
-
-static inline float get_round_time() { return ROUND_TIME; }
-
-static inline float get_time_out() { return TIME_OUT; }
-
-static int id = -1;
-static inline int get_player_id() {
-    id++;
-    return id;
-}
-
 static inline float get_player_max_velocity() { return PLAYER_MAX_VELOCITY; }
-
 static inline float get_player_acceleration() { return PLAYER_ACCELERATION; }
-
 static inline float get_player_radius() { return PLAYER_RADIUS; }
-
 static inline int get_player_starting_money() { return PLAYER_STARTING_MONEY; }
-
 static inline int get_player_max_health() { return PLAYER_MAX_HEALTH; }
 
 class GameSetup {
 public:
-    static GameLoop setup(
-            const std::vector<std::unique_ptr<ClientHandler>>& clients) {
-        std::vector<std::unique_ptr<PlayerHandler>> handlers;
-        std::vector<std::shared_ptr<Player>> players;
-        auto map = get_map();
-        for (auto& c : clients) {
-            auto p = std::make_shared<Player>(
-                    get_player_id(), get_starting_position(),
-                    get_starting_equipment(), map, get_player_max_velocity(),
-                    get_player_acceleration(), get_player_radius(),
-                    get_player_starting_money(), get_player_max_health());
+    /*
+     * Game loop config
+     * */
+    static inline int get_tick_rate() { return TICK_RATE; }
+    static inline int get_commands_per_tick() { return COMMANDS_PER_TICK; }
 
-            /*
-             * Map no puede tener un vector de referencias a los players, pues
-             * eśtos están siendo movidos constantemente en distintos vectores a
-             * lo largo del programa
-             * */
-            map->add_collidable(p);
-            /*
-             * Si muevo p acá ya perdí el ownership del puntero como para seguir
-             * pasándolo
-             * */
-            auto h = c->play(p);
-            h->start();
-            handlers.push_back(std::move(h));
-            players.push_back(std::move(p));  // <-- acá
-        }
+    static Game create_game() {
+        return Game(get_map(), get_rounds(), get_round_time(), get_time_out());
+    }
 
-        return GameLoop(std::move(handlers), std::move(players), std::move(map),
-                        get_tick_rate(), get_rounds(), get_round_time(),
-                        get_time_out());
+    // Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
+    //        float max_velocity, float acceleration, float radius, int money,
+    //        int health);
+    static std::shared_ptr<Player> create_player(std::shared_ptr<Map> map) {
+        auto player = std::make_shared<Player>(
+            get_player_id(), get_starting_position(), get_starting_equipment(),
+            map, get_player_max_velocity(), get_player_acceleration(),
+            get_player_radius(), get_player_starting_money(),
+            get_player_max_health());
+        return player;
     }
 };
 

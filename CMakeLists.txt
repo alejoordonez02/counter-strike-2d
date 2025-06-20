@@ -87,9 +87,9 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     # Include FetchContent module
     include(FetchContent)
     
-    set(SDL2PP_WITH_IMAGE YES)
-    # set(SDL2PP_WITH_MIXER YES)
-    # set(SDL2PP_WITH_TTF YES)
+    set(SDL2PP_WITH_IMAGE YES)      #texturas, imagenes, etc
+    # set(SDL2PP_WITH_MIXER YES)    # sonido, música, etc
+    set(SDL2PP_WITH_TTF YES)        # fuentes, tipografías, etc
 
     # Continue with libSDL2pp
     FetchContent_Declare(
@@ -101,8 +101,37 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     FetchContent_MakeAvailable(libSDL2pp)
 endif()
 
-# Find SDL2 package
+# Find SDL2 & yaml-cpp packages
 find_package(SDL2 REQUIRED)
+find_package(yaml-cpp REQUIRED)
+
+# Define static server library for testing
+add_library(cs2d_server_lib
+    STATIC
+    server/client_handler.cpp
+    server/game_loop.cpp
+    server/game_maker.cpp
+    server/model/attack.cpp
+    server/model/game.cpp
+    server/model/player.cpp
+    server/model/player_physics.cpp
+    server/model/random.cpp
+    server/model/weapon.cpp
+    server/lobby_commands/create_game.cpp
+    server/lobby_commands/join_game.cpp
+    server/lobby_commands/list_games.cpp
+)
+
+target_include_directories(cs2d_server_lib
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/server/model
+)
+
+target_link_libraries(cs2d_server_lib
+  PUBLIC
+    cs2d_common
+    yaml-cpp::yaml-cpp
+)
 
 # Program section
 # ---------------
@@ -143,21 +172,14 @@ endif()
 
 if(CS2D_SERVER)
     # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(cs2d_server)
-
-    # Make them depend on cs2d_common lib
+    add_executable(cs2d_server
+      server/main.cpp
+    )
     add_dependencies(cs2d_server cs2d_common)
-
-    # Add source files and enable warnings
-    # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(server)
-    add_subdirectory(server/model)
-    
-
-    set_project_warnings(cs2d_server ${CS2D_MAKE_WARNINGS_AS_ERRORS} FALSE)
-
-    # Link the cs2d_common lib target
-    target_link_libraries(cs2d_server PRIVATE cs2d_common cs2d_server_model)
+    target_link_libraries(cs2d_server
+      PRIVATE
+        cs2d_server_lib
+    )
 endif()
 
 if(CS2D_EDITOR)
@@ -191,48 +213,33 @@ endif()
 
 # Testing section
 # ---------------
-
 if(CS2D_TESTS)
-    # Let's use google test
     include(FetchContent)
     FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
     )
-
-    # For Windows: Prevent overriding the parent project's compiler/linker settings
-    # (borrowed from https://google.github.io/googletest/quickstart-cmake.html)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(googletest)
     include(GoogleTest)
 
-    # target for testing
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
     add_executable(cs2d_tests)
-
-    # HEY!! TODO XXX: I'm assuming that the code under testing is in cs2d_common
-    # Change this if you have to.
     add_dependencies(cs2d_tests cs2d_common)
 
-    # Say where to find the xoz headers
-    # HEY!! TODO XXX: add more subfolders here
-    target_include_directories(cs2d_tests PUBLIC .)
+    add_subdirectory(tests)
 
-    # Add the source files to the cs2d_tests target
-    # HEY!! TODO XXX: add more subfolders here
-    add_subdirectory(tests/)
+    target_include_directories(cs2d_tests
+      PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
-    # Set the compiler warnings to the tests target (but be a little lesser strict)
     set_project_warnings(cs2d_tests ${CS2D_MAKE_WARNINGS_AS_ERRORS} TRUE)
 
-    # Link the cs2d_tests lib target
     target_link_libraries(cs2d_tests
-        PRIVATE # Use PRIVATE if these libs are only for the tests, PUBLIC if cs2d_tests was a library itself
+      PRIVATE
         cs2d_common
-        cs2d_server_model
-        GTest::gmock_main # This includes gmock and gtest and provides a main function
-        # If you have your own main() in tests, you would use:
-        #GTest::gmock
-        #GTest::gtest
+        cs2d_server_lib
+        yaml-cpp::yaml-cpp
+        GTest::gmock_main
     )
 endif()

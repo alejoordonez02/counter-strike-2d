@@ -3,18 +3,17 @@
 
 #include "server/acceptor.h"
 #include "server/client_handler.h"
-#include "server/game_loop.h"
-
-#include "game_setup.h"
+#include "server/game_maker.h"
 
 class Server {
 private:
     std::vector<std::unique_ptr<ClientHandler>> clients;
+    GameMaker game_maker;
     Acceptor acceptor;
 
 public:
     Server(const std::string& servname):
-            clients(), acceptor(servname, clients) {}
+        clients(), acceptor(servname, clients, game_maker) {}
 
     void start() {
         acceptor.start();
@@ -26,10 +25,6 @@ public:
 
         acceptor.stop();
         acceptor.join();
-
-        GameLoop game = GameSetup::setup(clients);
-        game.start();
-        game.join();
     }
 };
 

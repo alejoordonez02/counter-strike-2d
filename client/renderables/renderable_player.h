@@ -13,7 +13,7 @@
 #include "common/snapshot.h"
 
 class RenderablePlayer {
-    private:
+private:
     uint16_t player_id;
     bool is_terrorist;
 
@@ -36,18 +36,24 @@ class RenderablePlayer {
 
     std::shared_ptr<AnimationProvider> animation_provider;
 
-    public:
+public:
     RenderablePlayer(uint16_t player_id,
                      std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(PlayerData& player);
+    /*
+     * toda la data puede ser const, (si no se me queja el linter xd)
+     * */
+    void update(const PlayerData& player);
+
     void render(SDL2pp::Renderer& renderer);
 
     void load_animation(const std::string& animation_name);
 
-    double calculate_facing_angle(int pos_x, int pos_y, int aim_x, int aim_y);
+    double calculate_facing_angle(float pos_x, float pos_y, float aim_x,
+                                  float aim_y);
 
     void skip_frames(uint8_t frames_to_skip);
+
     ~RenderablePlayer();
 };
 

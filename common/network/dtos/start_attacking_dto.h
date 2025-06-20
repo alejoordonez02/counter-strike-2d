@@ -20,7 +20,7 @@ public:
         deserialize();
     }
 
-    StartAttackingDTO(): DTO(DTOSerial::PlayerCommands::ATTACK) {}
+    StartAttackingDTO(): DTO(DTOSerial::PlayerCommands::START_ATTACKING) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
