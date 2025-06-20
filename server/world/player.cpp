@@ -1,7 +1,6 @@
 #include "server/world/player.h"
 
 #include <memory>
-#include <utility>
 
 #include "common/direction.h"
 #include "common/position.h"
@@ -15,15 +14,15 @@ void Player::stop_action() { action = std::make_unique<Idle>(); }
 /*
  * Constructor
  * */
-Player::Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
+Player::Player(int id, Position pos, const Equipment& equipment,
                std::weak_ptr<Map> map, float max_velocity, float acceleration,
                float radius, int money, int max_health):
     Hitbox(pos), id(id), map(map),
     physics(this->pos, max_velocity, acceleration, radius,
             this->map.lock()->get_collidables(), sorted_collidables_idx),
-    action(std::make_unique<Idle>()), dir(), equipment(std::move(equipment)),
-    current(*this->equipment->knife), max_health(max_health),
-    health(max_health), alive(true), kills(0), money(money) {}
+    action(std::make_unique<Idle>()), dir(), equipment(equipment),
+    current(this->equipment.knife), max_health(max_health), health(max_health),
+    alive(true), kills(0), money(money) {}
 
 /*
  * Update
@@ -52,7 +51,7 @@ std::optional<Position> Player::intersect(const Trajectory& t) const {
 }
 
 void Player::get_attacked(int damage) {
-    health -= (1 - equipment->shield) * damage;
+    health -= (1 - equipment.shield) * damage;
     if (health <= 0) alive = false;
 }
 
@@ -72,9 +71,9 @@ void Player::aim(Direction dir) { this->dir = dir; }
 /*
  * Set current weapon
  * */
-void Player::use_primary() { current = *equipment->primary; }
-void Player::use_secondary() { current = *equipment->secondary; }
-void Player::use_knife() { current = *equipment->knife; }
+void Player::use_primary() { current = equipment.primary; }
+void Player::use_secondary() { current = equipment.secondary; }
+void Player::use_knife() { current = equipment.knife; }
 
 /*
  * Buy
@@ -87,26 +86,26 @@ bool Player::pay(const int& cost) {
 
 void Player::buy_primary(Weapon& weapon) {
     if (pay(weapon.get_cost())) {
-        *equipment->primary = weapon;
+        equipment.primary = weapon;
         use_primary();
     }
 }
 
 void Player::buy_secondary(Weapon& weapon) {
     if (pay(weapon.get_cost())) {
-        *equipment->secondary = weapon;
+        equipment.secondary = weapon;
         use_secondary();
     }
 }
 
 void Player::buy_primary_ammo(const int& count) {
-    if (pay(equipment->primary->get_ammo_cost() * count))
-        equipment->primary->load_ammo(count);
+    if (pay(equipment.primary.get_ammo_cost() * count))
+        equipment.primary.load_ammo(count);
 }
 
 void Player::buy_secondary_ammo(const int& count) {
-    if (pay(equipment->secondary->get_ammo_cost() * count))
-        equipment->secondary->load_ammo(count);
+    if (pay(equipment.secondary.get_ammo_cost() * count))
+        equipment.secondary.load_ammo(count);
 }
 
 /*

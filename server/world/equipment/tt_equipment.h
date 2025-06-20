@@ -15,7 +15,7 @@ public:
     TTEquipment():
         Equipment(std::make_unique<Fist>(), std::make_unique<Glock>(),
                   std::make_unique<Knife>(), 0),
-        bomb() {}
+        bomb(10) {}
 };
 
 #endif
