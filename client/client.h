@@ -9,7 +9,6 @@
 #include "common/network/sender.h"
 #include "common/queue.h"
 
-
 class Client {
 private:
     Connection con;
@@ -20,6 +19,8 @@ private:
     Sender sender;
     Receiver receiver;
     InputHandler input_handler;
+
+    void lobby_phase();
 
 public:
     Client(const std::string& hostname, const std::string& servname);
