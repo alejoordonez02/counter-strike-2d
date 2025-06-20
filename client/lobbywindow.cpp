@@ -10,10 +10,6 @@ LobbyWindow::LobbyWindow(const QString& username, QWidget *parent)
     , username(username)
 {
     ui->setupUi(this);
-    setWindowTitle("CS2D Lobby - " + username);
-    
-    ui->matchesList->setIconSize(QSize(32, 32));
-    
     populateMatchesList();
 }
 

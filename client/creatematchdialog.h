@@ -5,6 +5,9 @@
 #include <QFileDialog>
 #include <QFileInfo>
 
+#define MIN_PLAYERS 1
+#define MAX_PLAYERS 20
+
 namespace Ui {
 class CreateMatch;
 }
