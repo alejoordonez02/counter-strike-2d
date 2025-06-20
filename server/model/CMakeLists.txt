@@ -3,6 +3,7 @@
 target_sources(cs2d_server
     PRIVATE
     attack.cpp
+    game.cpp
     player.cpp
     player_physics.cpp
     random.cpp

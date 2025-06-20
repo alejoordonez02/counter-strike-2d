@@ -1,7 +1,6 @@
 #include "server/model/player.h"
 
 #include <memory>
-#include <numeric>
 #include <utility>
 
 #include "common/direction.h"
@@ -10,33 +9,15 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
+/*
+ * Constructor
+ * */
 Player::Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
                std::weak_ptr<Map> map, float max_velocity, float acceleration,
                float radius, int money, int max_health):
-    Hitbox(pos), map(map), id(id),
-    /*
-     * lambda para inicializar other collidables, por ahora me quedo con
-     * pasar self a physics para delegar el filtrado, o con sacar el primer
-     * elemento de sorted idx en physics (hay caso borde medio raro), pero
-     * no me parece muy elegante que digamos
-     * */
-    /* other_collidables([&map, this]() {
-        auto shared_map = map.lock();
-        if (!shared_map)
-            return std::vector<std::shared_ptr<Hitbox>>{};
-
-        const auto& all = shared_map->get_collidables();
-        std::vector<std::shared_ptr<Hitbox>> filtered;
-        filtered.reserve(all.size());
-        for (const auto& ptr : all) {
-            if (ptr.get() != this) {
-                filtered.push_back(ptr);
-            }
-        }
-        return filtered;
-    }()), */
+    Hitbox(pos), id(id), map(map),
     physics(this->pos, max_velocity, acceleration, radius,
-            map.lock()->get_collidables(), sorted_collidables_idx),
+            this->map.lock()->get_collidables(), sorted_collidables_idx),
     action(std::make_unique<Idle>()), dir(), equipment(std::move(equipment)),
     current(*this->equipment->knife), max_health(max_health),
     health(max_health), alive(true), kills(0), money(money) {}
@@ -45,9 +26,7 @@ Player::Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
  * Set current weapon
  * */
 void Player::use_primary() { current = *equipment->primary; }
-
 void Player::use_secondary() { current = *equipment->secondary; }
-
 void Player::use_knife() { current = *equipment->knife; }
 
 /*

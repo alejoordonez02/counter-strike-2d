@@ -24,21 +24,21 @@ private:
 
 public:
     PlayerHandler(Connection&& con, std::shared_ptr<Player> player):
-            con(std::move(con)),
-            receiver(this->con, commands),
-            sender(this->con, snapshots),
-            player(player) {}
+        con(std::move(con)), receiver(this->con, commands),
+        sender(this->con, snapshots), player(player) {}
 
     void start() {
         receiver.start();
         sender.start();
     }
 
+    std::shared_ptr<Player> get_player() { return player; }
+
     void play() {
         std::unique_ptr<DTO> dto;
         if (commands.try_pop(dto)) {
             std::unique_ptr<Command> cmd =
-                    constructor.construct(std::move(dto));
+                constructor.construct(std::move(dto));
             cmd->execute(*player);
         }
     }

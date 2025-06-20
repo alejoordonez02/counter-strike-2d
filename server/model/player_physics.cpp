@@ -13,17 +13,17 @@
  * Esto no va a la config porque es algo más propio del algoritmo de colisiones,
  * no se debería cambiar por fuera del desarrollo del motor de físicas
  * */
-#define MAX_COLLISIONS 5
+#define MAX_COLLISIONS 1
 
+/*
+ * Get distance to a hitbox
+ * */
 float PlayerPhysics::get_distance(const std::shared_ptr<Hitbox>& hitbox) const {
     return pos.get_distance(hitbox->get_position());
 }
 
 /*
- * Esto es muy caro, se hace encima en cada update de Player... pero la otra
- * opción viable (por lo menos que se me ocurra ahora) es rediseñar todo para
- * que Map maneje las colisiones, si el juego anda mal es derecho ir a hacer
- * eso, si no puede esperar hasta que haya tiempo
+ * Sort collidables idx
  * */
 void PlayerPhysics::sort_by_distance_idx(
     const std::vector<std::shared_ptr<Hitbox>>& collidables,
@@ -42,6 +42,9 @@ void PlayerPhysics::sort_by_distance_idx(
     idx = sorted_idx;
 }
 
+/*
+ * Move
+ * */
 void PlayerPhysics::move(float dt) {
     v = std::clamp(v + a * dt, v, max_v);
     Position dest = pos + dir * v * dt;
@@ -59,6 +62,9 @@ void PlayerPhysics::move(float dt) {
     pos = dest;
 }
 
+/*
+ * Constructor
+ * */
 PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
                              float acceleration, float radius,
                              std::vector<std::shared_ptr<Hitbox>>& collidables,
@@ -66,12 +72,18 @@ PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
     pos(pos), dir(), max_v(max_velocity), v(0), a(acceleration), radius(radius),
     moving(false), collidables(collidables), sorted_idx(sorted_idx) {}
 
-bool PlayerPhysics::is_moving() const { return moving; }
-
+/*
+ * Update
+ * */
 void PlayerPhysics::update(float dt) {
     sort_by_distance_idx(collidables, sorted_idx);
     if (moving) move(dt);
 }
+
+/*
+ * Start and stop moving
+ * */
+bool PlayerPhysics::is_moving() const { return moving; }
 
 void PlayerPhysics::start_moving(const Direction& dir) {
     this->dir = dir;
@@ -83,6 +95,9 @@ void PlayerPhysics::stop_moving() {
     moving = false;
 }
 
+/*
+ * Get intersection with a trajectory
+ * */
 std::optional<Position> PlayerPhysics::intersect(const Trajectory& t) const {
     auto closest = t.get_outter_and_inner_closest(pos);
     float distance = pos.get_distance(closest.first);

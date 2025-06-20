@@ -105,11 +105,18 @@ find_package(yaml-cpp REQUIRED)
 # Define static server library for testing
 add_library(cs2d_server_lib
     STATIC
+    server/client_handler.cpp
+    server/game_loop.cpp
+    server/game_maker.cpp
     server/model/attack.cpp
+    server/model/game.cpp
     server/model/player.cpp
     server/model/player_physics.cpp
     server/model/random.cpp
     server/model/weapon.cpp
+    server/lobby_commands/create_game.cpp
+    server/lobby_commands/join_game.cpp
+    server/lobby_commands/list_games.cpp
 )
 
 target_include_directories(cs2d_server_lib

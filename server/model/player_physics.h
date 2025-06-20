@@ -23,8 +23,8 @@ private:
     float get_distance(const std::shared_ptr<Hitbox>& hitbox) const;
 
     void sort_by_distance_idx(
-            const std::vector<std::shared_ptr<Hitbox>>& collidables,
-            std::vector<size_t>& idx) const;
+        const std::vector<std::shared_ptr<Hitbox>>& collidables,
+        std::vector<size_t>& idx) const;
 
     void move(float dt);
 
@@ -35,6 +35,10 @@ public:
                   std::vector<size_t>& sorted_idx);
 
     void update(float dt);
+
+    void set_collidables(std::vector<std::shared_ptr<Hitbox>>& collidables) {
+        this->collidables = collidables;
+    }
 
     bool is_moving() const;
 
