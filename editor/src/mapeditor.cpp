@@ -21,6 +21,7 @@ MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
 void MapEditor::loadMapFromData(const MapDataEditor& data) {
     mapdata= data;
     loadBackground(mapdata.backgroundPath);
+    setTileSize(mapdata.tile_width, mapdata.tile_height);
     setFixedSize(m_background.size());
     update();
 }
@@ -48,7 +49,8 @@ void MapEditor::saveMapData(const QString& filePath) {
 
     YAML::Emitter out;
     out << YAML::BeginMap;
-        
+    out << YAML::Key << "map_name" << YAML::Value << mapdata.mapName.toStdString();
+
     if (!mapdata.backgroundPath.isEmpty()) {
         QString bgPath = mapdata.backgroundPath;
         if (bgPath.contains("../resources/backgrounds/")) {
@@ -59,7 +61,8 @@ void MapEditor::saveMapData(const QString& filePath) {
             out << YAML::Key << "background" << YAML::Value << bgPath.toStdString();
         }
     }
-        
+    out << YAML::Key << "tile_width" << YAML::Value << m_tileWidth;
+    out << YAML::Key << "tile_height" << YAML::Value << m_tileHeight;
     out << YAML::Key << "planting_spots" << YAML::Value << PlantingSpots;
         
     out << YAML::Key << "blocks" << YAML::Value << YAML::BeginSeq;
@@ -91,7 +94,7 @@ void MapEditor::saveMapData(const QString& filePath) {
 }
 
 void MapEditor::loadBackground(const QString &imagePath) {
-    QDir resourcesDir(QCoreApplication::applicationDirPath() + "/../editor");
+    QDir resourcesDir(QCoreApplication::applicationDirPath() + "../resources/backgrounds");
     QString relativePath = resourcesDir.relativeFilePath(imagePath);
     
     mapdata.backgroundPath = relativePath;

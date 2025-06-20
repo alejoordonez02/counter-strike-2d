@@ -6,6 +6,9 @@
 #include "mapeditor.h"
 #include "common/maploader.h"
 
+#define weaponsheetConfigPath "../config/weaponsheet_config.yaml"
+#define tilesheetConfigPath "../config/tilesheet_config.yaml"
+
 namespace Ui {
 class MapEditor;
 }

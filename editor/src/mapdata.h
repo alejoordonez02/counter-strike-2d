@@ -8,7 +8,10 @@
 class MapDataEditor
 {
 public:
+    QString mapName;
     QString backgroundPath;
+    int tile_width;
+    int tile_height;
     int plantingSpots;
     QVector<Block> blocks;
 
