@@ -4,8 +4,9 @@
 #include <chrono>
 #include <memory>
 
-#include "server/world/map.h"
-#include "server/world/player.h"
+#include "map.h"
+#include "player.h"
+#include "player_factory.h"
 
 /*
  * Deltas de tiempo correspondientes a un tick rate constante
@@ -29,6 +30,8 @@ private:
     int tt_won_rounds;
     int ct_won_rounds;
 
+    PlayerFactory player_factory;
+
     bool terrorists_won_round() const;
 
     bool counter_terrorists_won_round() const;
@@ -41,7 +44,7 @@ private:
 
 public:
     World(std::shared_ptr<Map>&& map, int rounds, float round_time,
-          float time_out);
+          float time_out, PlayerFactory&& player_factory);
 
     void update(float dt);
 
