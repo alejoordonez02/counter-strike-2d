@@ -16,13 +16,13 @@ void ClientHandler::run() {
     }
 }
 
-void ClientHandler::handle_create(
-    const std::string& game_name /*, TeamName team */) {
+void ClientHandler::handle_create(const std::string& game_name,
+                                  MapName map /*, TeamName team */) {
     /*
      * Acá un try catch para evitar perder la conexión en caso de que la
      * partida no exista, esté llena, o no tenga lugar en el team elegido
      * */
-    game_maker.create(std::move(con), game_name /*, team */);
+    game_maker.create(std::move(con), game_name, map /*, team */);
     this->stop();
 }
 

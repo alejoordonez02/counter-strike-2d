@@ -4,6 +4,7 @@
 #include <chrono>
 
 #include "common/thread.h"
+#include "config/game_config.h"
 #include "server/player_handler.h"
 #include "server/world/world.h"
 
@@ -22,12 +23,15 @@ private:
 
     void add_pending_players();
 
+    PlayerFactory create_player_factory(std::shared_ptr<Map> map,
+                                        const WorldConfig& config);
+
 public:
     /*
      * Acá estaría bueno poder pasarle la game config para que la use para
      * construirse
      * */
-    Game(/* GameConfig& config */);
+    Game(const GameConfig& config);
 
     void run() override;
 

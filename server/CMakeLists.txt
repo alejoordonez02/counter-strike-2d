@@ -23,6 +23,7 @@ target_sources(cs2d_server_lib
     player_handler.cpp
 )
 
-add_subdirectory(world)
-add_subdirectory(player_commands)
+add_subdirectory(config)
 add_subdirectory(lobby_commands)
+add_subdirectory(player_commands)
+add_subdirectory(world)

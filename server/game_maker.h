@@ -16,7 +16,7 @@ private:
 public:
     GameMaker() = default;
 
-    void create(Connection&& con, const std::string& game_name);
+    void create(Connection&& con, const std::string& game_name, MapName map);
 
     void join(Connection&& con, const std::string& game_name);
 
