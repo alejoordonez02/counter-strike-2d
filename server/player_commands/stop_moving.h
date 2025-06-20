@@ -2,8 +2,8 @@
 #define SERVER_PLAYER_COMMANDS_STOP_MOVING_H
 
 #include "common/network/dtos/stop_moving_dto.h"
-#include "server/model/player.h"
 #include "server/player_commands/command.h"
+#include "server/world/player.h"
 
 /*
  * Stop moving

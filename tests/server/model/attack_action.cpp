@@ -1,7 +1,7 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gtest/gtest.h"
-#include "server/model/map.h"
+#include "server/world/map.h"
 #include "tests/server/model/mocks/mock_attacking_player.h"
 
 class MagicWeapon: public Weapon {
@@ -27,7 +27,7 @@ protected:
         map_weak_ptr = map;
 
         player =
-                std::make_shared<MockAttackingPlayer>(player_pos, map_weak_ptr);
+            std::make_shared<MockAttackingPlayer>(player_pos, map_weak_ptr);
         enemy = std::make_shared<MockAttackingPlayer>(enemy_pos, map_weak_ptr);
         aligned_enemy = std::make_shared<MockAttackingPlayer>(aligned_enemy_pos,
                                                               map_weak_ptr);
@@ -54,7 +54,7 @@ TEST_F(PlayerAttackTest, AttackingWithGoodAimResultsInHitboxGettingAttacked) {
 TEST_F(PlayerAttackTest,
        AttackingWithBadAimDoesNotResultInHitboxGettingAttacked) {
     Direction bad_aim_dir =
-            player_pos.get_direction(enemy->get_position()) + Direction(0, 100);
+        player_pos.get_direction(enemy->get_position()) + Direction(0, 100);
     player->aim(bad_aim_dir);
 
     EXPECT_CALL(*enemy, get_attacked(::testing::_)).Times(0);

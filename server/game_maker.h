@@ -6,12 +6,12 @@
 #include <string>
 
 #include "common/network/connection.h"
-#include "game_loop.h"
+#include "server/game.h"
 
 class GameMaker {
 private:
     std::mutex m;
-    std::map<std::string, std::unique_ptr<GameLoop>> games;
+    std::map<std::string, std::unique_ptr<Game>> games;
 
 public:
     GameMaker() = default;

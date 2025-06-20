@@ -8,8 +8,8 @@
 #include "common/direction.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/start_moving_dto.h"
-#include "server/model/player.h"
 #include "server/player_commands/command.h"
+#include "server/world/player.h"
 
 /*
  * Start moving
@@ -23,7 +23,7 @@ public:
 
     explicit StartMoving(std::unique_ptr<DTO>&& dto_p) {
         if (StartMovingDTO* mov_dto =
-                    dynamic_cast<StartMovingDTO*>(dto_p.get())) {
+                dynamic_cast<StartMovingDTO*>(dto_p.get())) {
             this->dir = std::move(mov_dto->dir);
         } else {
             throw std::runtime_error("DTO is not of type StartMovingDTO");

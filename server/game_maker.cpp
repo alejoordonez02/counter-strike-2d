@@ -5,7 +5,7 @@
 #include <string>
 
 #include "common/network/connection.h"
-#include "game_loop.h"
+#include "game.h"
 #include "game_maker_error.h"
 
 void GameMaker::create(Connection&& con, const std::string& game_name) {
@@ -13,7 +13,7 @@ void GameMaker::create(Connection&& con, const std::string& game_name) {
     auto it = games.find(game_name);
     if (it != games.end()) throw GameAlreadyExists(game_name);
 
-    auto game = std::make_unique<GameLoop>();
+    auto game = std::make_unique<Game>();
     game->add_player(std::move(con));
     game->start();
     games[game_name] = std::move(game);

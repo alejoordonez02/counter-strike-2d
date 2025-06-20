@@ -6,12 +6,8 @@
 #include "common/network/sender.h"
 #include "common/queue.h"
 #include "server/cmd_constructor.h"
-#include "server/model/player.h"
-#include "server/player_commands/command.h"
+#include "server/world/player.h"
 
-/*
- * Manejar la etapa del cliente jugando la partida
- * */
 class PlayerHandler {
 private:
     Connection con;
@@ -23,30 +19,13 @@ private:
     CmdConstructor constructor;
 
 public:
-    PlayerHandler(Connection&& con, std::shared_ptr<Player> player):
-        con(std::move(con)), receiver(this->con, commands),
-        sender(this->con, snapshots), player(player) {}
+    PlayerHandler(Connection&& con, std::shared_ptr<Player> player);
 
-    void start() {
-        receiver.start();
-        sender.start();
-    }
+    void start();
 
-    std::shared_ptr<Player> get_player() { return player; }
+    void play();
 
-    void play() {
-        std::unique_ptr<DTO> dto;
-        if (commands.try_pop(dto)) {
-            std::unique_ptr<Command> cmd =
-                constructor.construct(std::move(dto));
-            cmd->execute(*player);
-        }
-    }
-
-    void send_snapshot(const Snapshot& snapshot) {
-        auto dto = std::make_unique<SnapshotDTO>(snapshot);
-        snapshots.push(std::move(dto));
-    }
+    void send_snapshot(const Snapshot& snapshot);
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "server/model/bomb.h"
+#include "server/world/equipment/bomb.h"
 
 #include "gtest/gtest.h"
 

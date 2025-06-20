@@ -1,9 +1,9 @@
 #ifndef SERVER_SERVER_H
 #define SERVER_SERVER_H
 
-#include "server/acceptor.h"
-#include "server/client_handler.h"
-#include "server/game_maker.h"
+#include "acceptor.h"
+#include "client_handler.h"
+#include "game_maker.h"
 
 class Server {
 private:

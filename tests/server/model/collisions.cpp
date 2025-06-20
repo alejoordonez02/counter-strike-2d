@@ -4,7 +4,7 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gtest/gtest.h"
-#include "server/model/map.h"
+#include "server/world/map.h"
 #include "tests/server/model/mocks/mock_moving_player.h"
 
 class CollisionsTest: public ::testing::Test {
