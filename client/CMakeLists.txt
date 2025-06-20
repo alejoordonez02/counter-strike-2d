@@ -8,6 +8,7 @@ target_sources(cs2d_client
         input_handler.cpp
         render.cpp
         mainwindow.cpp
+        camera.cpp
     PUBLIC
         client.h
         gameloop.h
@@ -16,6 +17,7 @@ target_sources(cs2d_client
         input_handler.h
         render.h
         mainwindow.h
+        camera.h
 )
 
 add_subdirectory(renderables)

@@ -18,7 +18,7 @@ MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
     setMouseTracking(true);
 }
 
-void MapEditor::loadMapFromData(const MapData& data) {
+void MapEditor::loadMapFromData(const MapDataEditor& data) {
     mapdata= data;
     loadBackground(mapdata.backgroundPath);
     setFixedSize(m_background.size());
@@ -181,7 +181,7 @@ void MapEditor::placeTile(const QPoint& position, const QString& texturePath, co
 }
 
 
-MapData MapEditor::getMapData(){
+MapDataEditor MapEditor::getMapData(){
     return mapdata;
 }
 

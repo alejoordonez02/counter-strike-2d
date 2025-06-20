@@ -1,0 +1,84 @@
+#include "server/model/player_physics.h"
+
+#include <algorithm>
+#include <numeric>
+#include <optional>
+#include <vector>
+
+#include "common/position.h"
+#include "server/model/hitbox.h"
+#include "server/model/trajectory.h"
+
+float PlayerPhysics::get_distance(const std::shared_ptr<Hitbox>& hitbox) const {
+    return pos.get_distance(hitbox->get_position());
+}
+
+/*
+ * Esto es muy caro, se hace encima en cada update de Player... pero la otra
+ * opción viable (por lo menos que se me ocurra ahora) es rediseñar todo para
+ * que Map maneje las colisiones, si el juego anda mal es derecho ir a hacer
+ * eso, si no puede esperar hasta que haya tiempo
+ * */
+void PlayerPhysics::sort_by_distance_idx(
+    const std::vector<std::shared_ptr<Hitbox>>& collidables,
+    std::vector<size_t>& idx) const {
+    if (collidables.size() == 0) return;
+
+    std::vector<size_t> sorted_idx(collidables.size());
+    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);
+    std::sort(sorted_idx.begin(), sorted_idx.end(),
+              [&collidables, this](size_t i, size_t j) {
+                  return get_distance(collidables[i]) <
+                         get_distance(collidables[j]);
+              });
+
+    sorted_idx.erase(sorted_idx.begin());  // skip self
+    idx = sorted_idx;
+}
+
+void PlayerPhysics::move(float dt) {
+    v = std::clamp(v + a * dt, v, max_v);
+    Position dest = pos + dir * v * dt;
+    Trajectory t(pos + dir * radius / 2 /* tolerate */, dest, radius);
+    for (size_t i : sorted_idx) {
+        auto c = collidables[i];
+        if (auto x = c->intersect(t)) {
+            dest = *x + x->get_direction(dest) * radius;
+            break;
+        }
+    }
+
+    pos = dest;
+}
+
+PlayerPhysics::PlayerPhysics(Position& pos, float max_velocity,
+                             float acceleration, float radius,
+                             std::vector<std::shared_ptr<Hitbox>>& collidables,
+                             std::vector<size_t>& sorted_idx):
+    pos(pos), dir(), max_v(max_velocity), v(0), a(acceleration), radius(radius),
+    moving(false), collidables(collidables), sorted_idx(sorted_idx) {}
+
+bool PlayerPhysics::is_moving() const { return moving; }
+
+void PlayerPhysics::update(float dt) {
+    sort_by_distance_idx(collidables, sorted_idx);
+    if (moving) move(dt);
+}
+
+void PlayerPhysics::start_moving(const Direction& dir) {
+    this->dir = dir;
+    moving = true;
+}
+
+void PlayerPhysics::stop_moving() {
+    v = 0;
+    moving = false;
+}
+
+std::optional<Position> PlayerPhysics::intersect(const Trajectory& t) const {
+    auto closest = t.get_outter_and_inner_closest(pos);
+    float distance = pos.get_distance(closest.first);
+    if (distance > radius) return std::nullopt;
+    auto intersection = pos + pos.get_direction(closest.second) * radius;
+    return intersection;
+}

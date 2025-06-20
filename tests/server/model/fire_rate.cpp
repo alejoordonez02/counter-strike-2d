@@ -3,15 +3,15 @@
 #include "server/model/weapon.h"
 
 class RapidWeapon: public Weapon {
-    public:
+public:
     RapidWeapon(float fire_rate): Weapon(100, 100, 100, 100, fire_rate, 0, 0) {}
 };
 
 class FatHitbox: public Hitbox {
-    private:
+private:
     Position dummy_pos{0, 0};
 
-    public:
+public:
     FatHitbox(): Hitbox(dummy_pos) {}
 
     MOCK_METHOD(void, get_attacked, (int), (override));
@@ -23,9 +23,9 @@ class FatHitbox: public Hitbox {
 };
 
 class FireRateTest: public ::testing::Test {
-    protected:
-    FatHitbox hitbox;
-    std::vector<std::reference_wrapper<Hitbox>> collidables{hitbox};
+protected:
+    std::shared_ptr<FatHitbox> hitbox = std::make_shared<FatHitbox>();
+    std::vector<std::shared_ptr<Hitbox>> collidables{hitbox};
     std::vector<size_t> idx{0};
     float fire_rate = 1;
     RapidWeapon weapon{fire_rate};
@@ -36,21 +36,21 @@ class FireRateTest: public ::testing::Test {
 };
 
 TEST_F(FireRateTest, WeaponsCanNotAttackImmediatelyAfterBeingEquipped) {
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(0);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(0);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
 }
 
 TEST_F(FireRateTest, WeaponsCanAttackAfterFireRateDelayEndsOnceEquipped) {
     weapon.update(1);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_));
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_));
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
 }
 
 TEST_F(FireRateTest, RepeatedlyAttackingDoesNotAffectFireRate) {
     weapon.update(1);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(1);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(1);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
@@ -59,7 +59,7 @@ TEST_F(FireRateTest, RepeatedlyAttackingDoesNotAffectFireRate) {
 TEST_F(FireRateTest, WeaponFireDelayRestartsAfterAttacking) {
     weapon.update(1);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(1);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(1);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
 }
@@ -67,14 +67,14 @@ TEST_F(FireRateTest, WeaponFireDelayRestartsAfterAttacking) {
 TEST_F(FireRateTest, WeaponCannotAttackIfUpdateIsLessThanFireRate) {
     weapon.update(0.5f);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(0);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(0);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
 }
 
 TEST_F(FireRateTest, WeaponCanNotAttackMultipleTimesIfEnoughTimeAccumulates) {
     weapon.update(3);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(1);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(1);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
@@ -85,13 +85,13 @@ TEST_F(FireRateTest, WeaponCanAttackAfterMultipleSmallUpdates) {
     weapon.update(0.3f);
     weapon.update(0.4f);
 
-    EXPECT_CALL(hitbox, get_attacked(::testing::_)).Times(1);
+    EXPECT_CALL(*hitbox, get_attacked(::testing::_)).Times(1);
     weapon.attack(dummy_origin, dummy_dir, collidables, idx);
 }
 
 TEST_F(FireRateTest, WeaponDoesNotFailIfNoCollidables) {
     weapon.update(1);
-    std::vector<std::reference_wrapper<Hitbox>> empty_collidables;
+    std::vector<std::shared_ptr<Hitbox>> empty_collidables;
     std::vector<size_t> empty_idx;
 
     weapon.attack(dummy_origin, dummy_dir, empty_collidables, empty_idx);

@@ -45,7 +45,9 @@ class RenderablePlayer {
 
     void load_animation(const std::string& animation_name);
 
-    double calculate_facing_angle(int16_t x, int16_t y);
+    double calculate_facing_angle(int pos_x, int pos_y, int aim_x, int aim_y);
+
+    void skip_frames(uint8_t frames_to_skip);
     ~RenderablePlayer();
 };
 

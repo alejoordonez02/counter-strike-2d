@@ -10,8 +10,8 @@
 #include "common/thread.h"
 
 class InputHandler: public Thread {
-    private:
-    Queue<std::shared_ptr<DTO>>& commands_queue;
+private:
+    Queue<std::unique_ptr<DTO>>& commands_queue;
     std::atomic<bool> is_alive = true;
 
     void handle_key_down(const SDL_Event& event);
@@ -27,8 +27,10 @@ class InputHandler: public Thread {
 
     void send_attack();
 
-    public:
-    explicit InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);
+    void send_aim();
+
+public:
+    explicit InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue);
 
     bool alive_status();
 

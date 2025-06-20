@@ -5,7 +5,7 @@
 #include <QVector>
 #include "block.h"
 
-class MapData
+class MapDataEditor
 {
 public:
     QString backgroundPath;

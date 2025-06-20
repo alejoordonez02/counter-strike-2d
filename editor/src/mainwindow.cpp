@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MapEditor),
     m_tilesheetEditor(new SheetEditor(this)),
     m_weaponsheetEditor(new SheetEditor(this)),
-    m_mapEditor(new MapEditor(this))
+    m_mapEditor(new MapEditor(this)),
+    m_mapLoader()
 {
     ui->setupUi(this);
     setupUI();
@@ -42,10 +43,10 @@ void MainWindow::setupUI() {
 }
 
 void MainWindow::loadConfigurations() {
-    QString weaponsheetConfigPath = "../config/weaponsheet_config.yaml";
+    QString weaponsheetConfigPath = "config/weaponsheet_config.yaml";
     m_weaponsheetEditor->loadsheet(weaponsheetConfigPath);
 
-    QString tilesheetConfigPath = "../config/tilesheet_config.yaml";
+    QString tilesheetConfigPath = "config/tilesheet_config.yaml";
     m_tilesheetEditor->loadsheet(tilesheetConfigPath);
 }
 
@@ -71,17 +72,38 @@ void MainWindow::on_LoadButton_clicked()
         "YAML Files (*.yaml *.yml)"
     );
 
+    
     if (!filePath.isEmpty()) {
         try {
-            MapData data = m_mapLoader->loadMapData(filePath);
+            std::string filePathString = filePath.toStdString();
+            MapData data_struct = m_mapLoader.loadMapData(filePathString);
+            MapDataEditor data = convertToMapData(data_struct);
             m_mapEditor->loadMapFromData(data);
-            
             
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", 
                 QString("Error loading map:\n%1").arg(e.what()));
         }
     }
+}
+
+MapDataEditor MainWindow::convertToMapData(MapData data_struct){
+    MapDataEditor data;
+    data.backgroundPath = QString::fromStdString(data_struct.background);
+    data.plantingSpots = data_struct.plantingSpots;
+
+    for (const auto& block_data : data_struct.blocks) {
+        Block block;
+        block.setPosition(QPoint(
+            block_data.x,
+            block_data.y
+        ));
+        block.setTexture(QString::fromStdString(block_data.texture));
+        block.setType(QString::fromStdString(block_data.type));
+        data.addBlock(block);
+    }
+
+    return data;
 }
 
 void MainWindow::on_LoadBackgroundButton_clicked()

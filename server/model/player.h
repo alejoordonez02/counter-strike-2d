@@ -5,6 +5,7 @@
 
 #include "common/direction.h"
 #include "common/position.h"
+#include "common/snapshot.h"
 #include "server/model/action_strategy.h"
 #include "server/model/attack.h"
 #include "server/model/equipment.h"
@@ -13,20 +14,26 @@
 #include "server/model/player_physics.h"
 #include "server/model/weapon.h"
 
-#define PLAYER_VELOCITY 1.0
-#define PLAYER_ACCELERATION 1.0
-#define PLAYER_RADIUS 1.0
-#define PLAYER_MONEY 500
-#define PLAYER_MAX_HEALTH 100
+class Player : public Hitbox {
+protected:
+    std::weak_ptr<Map> map;  // o shared_ptr& ?
 
-class Player {
-    private:
-    Direction dir;
-    int health;
-    bool alive;
+private:
+    int id;
+    /*
+     * Esta es una alternativa para excluir self de los collidables del mapa. El
+     * problema es el ownership, con weak_ptr no es trivial y shared está mal
+     * std::vector<std::shared_ptr<Hitbox>> other_collidables;
+     * */
+    std::vector<size_t> sorted_collidables_idx;
     PlayerPhysics physics;
     std::unique_ptr<ActionStrategy> action;
-
+    Direction dir;
+    std::unique_ptr<Equipment> equipment;
+    Weapon& current;
+    int max_health;
+    int health;
+    bool alive;
     int kills;
     int money;
 
@@ -34,77 +41,69 @@ class Player {
 
     void stop_action() { action = std::make_unique<Idle>(); }
 
-    protected:
-    Position pos;
-    Map& map;
-    Equipment equipment;
-    Weapon& current;
+public:
+    Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
+           std::weak_ptr<Map> map, float max_velocity, float acceleration,
+           float radius, int money, int health);
 
-    friend class Game;
-    PlayerPhysics& get_physics() { return physics; }
-
-    virtual void teleport_to_spawn() = 0;
-
-    public:
-    Player(Position pos, Equipment&& equipment, Map& map);
-
-    /*
-     * Update
-     * */
     void update(float dt) {
-        if (!alive)
-            return;
+        if (!alive) return;
 
-        current.update(dt);
         physics.update(dt);
+        current.update(dt);
         action->update(dt);
     }
 
-    /*
-     * Restart/respawn
-     * */
+    virtual void teleport_to_spawn() {}
+
+    PlayerData get_data() const {
+        PlayerData data;
+        data.player_id = id;
+        data.x = pos.x;
+        data.y = pos.y;
+        data.aim_x = dir.x;
+        data.aim_y = dir.y;
+        data.is_walking = physics.is_moving();
+        data.is_dead = alive;
+        return data;
+    }
+
     void restart() {
         teleport_to_spawn();
-        health = PLAYER_MAX_HEALTH;
+        health = max_health;
         alive = true;
     }
 
-    /*
-     * Alive?
-     * */
     bool is_alive() { return alive; }
 
-    /*
-     * Move
-     * */
+    std::optional<Position> intersect(const Trajectory& t) const override {
+        if (!alive) return std::nullopt;
+        return physics.intersect(t);
+    }
+
+    void get_attacked(int damage) override {
+        alive -= (1 - equipment->shield) * damage;
+        if (health <= 0) alive = false;
+    }
+
     virtual void start_moving(Direction dir) { physics.start_moving(dir); }
 
     void stop_moving() { physics.stop_moving(); }
 
-    /*
-     * Attack
-     * */
     virtual void start_attacking() {
-        action = std::make_unique<Attack>(physics, pos, dir, current, map);
+        action = std::make_unique<Attack>(pos, dir, current,
+                                          map.lock()->get_collidables(),
+                                          sorted_collidables_idx);
     }
 
     void stop_attacking() { stop_action(); }
 
-    /*
-     * Aim
-     * */
     void aim(Direction dir) { this->dir = dir; }
 
-    /*
-     * Set current weapon
-     * */
     void use_primary();
     void use_secondary();
     void use_knife();
 
-    /*
-     * Buy
-     * */
     void buy_primary(Weapon& weapon);
     void buy_secondary(Weapon& weapon);
     void buy_primary_ammo(const int& count);
@@ -122,9 +121,6 @@ class Player {
     virtual void defuse_bomb() {}
     virtual void stop_defusing() {}
 
-    /*
-     * Destructor
-     * */
     virtual ~Player() = default;
 };
 
