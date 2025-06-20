@@ -1,4 +1,5 @@
 #include "lobbywindow.h"
+#include "creatematchdialog.h"
 #include "ui_Lobby.h"
 #include <QMessageBox>
 #include <QListWidgetItem>
@@ -24,8 +25,8 @@ LobbyWindow::~LobbyWindow()
 void LobbyWindow::populateMatchesList()
 {
     ui->matchesList->clear();
-    
-    // Hardcodeo algunas partidas para que se vean
+    // aca tendria que recibir las partidas del servidor y cargarlas
+    // Hardcodeo algunas partidas para que se vean 
     QList<QStringList> matches = {
         // Formato: Nombre, Mapa, Jugadores actuales, Jugadores máximos
         {"Competitive Match", "de_dust2", "4", "10"},
@@ -43,9 +44,7 @@ void LobbyWindow::populateMatchesList()
                               .arg(match[3]); // Jugadores máximos
         
         QListWidgetItem* item = new QListWidgetItem(matchText, ui->matchesList);
-        
-        // Guardar datos adicionales en el item (opcional)
-        item->setData(Qt::UserRole, match[0]); // Guardar nombre como dato extra
+        item->setData(Qt::UserRole, match[0]);
     }
 }
 
@@ -57,7 +56,7 @@ void LobbyWindow::on_refreshButton_clicked()
 }
 
 void LobbyWindow::on_joinMatchButton_clicked()
-{
+{   
     QListWidgetItem* selected = ui->matchesList->currentItem();
     if (!selected) {
         QMessageBox::warning(this, "Error", "Please select a match first");
@@ -71,13 +70,47 @@ void LobbyWindow::on_joinMatchButton_clicked()
 
 void LobbyWindow::on_createMatchButton_clicked()
 {
-    QMessageBox::information(this, "Create Match", 
-        QString("%1 is creating a new match").arg(username));
+    CreateMatchDialog dialog(username, this);
     
-    // aca tengo que enviar el comando de crear partida al servidor
-    QListWidgetItem* newItem = new QListWidgetItem(
-        QString("New Match by %1\nMap: de_dust2\nPlayers: 1/10").arg(username),
-        ui->matchesList
-    );
-    newItem->setData(Qt::UserRole, QString("New Match by %1").arg(username));
+    if (dialog.exec() == QDialog::Accepted) {
+        QString matchName = dialog.getMatchName();
+        QString configPath = dialog.getConfigPath();
+        int maxPlayers = dialog.getMaxPlayers();
+        
+        // Validar campos
+        if (matchName.isEmpty()) {
+            QMessageBox::warning(this, "Error", "Match name cannot be empty");
+            return;
+        }
+        
+        if (configPath.isEmpty()) {
+            QMessageBox::warning(this, "Error", "You must select a configuration file");
+            return;
+        }
+        
+        // Enviar comando al servidor
+        try {
+            // Aquí iría tu lógica para enviar el comando al servidor
+            // Por ejemplo:
+            // client->sendCreateMatchCommand(matchName, configPath, maxPlayers);
+            
+            // Añadir a la lista local (simulación)
+            QListWidgetItem* newItem = new QListWidgetItem(
+                QString("%1\nMap: %2\nPlayers: 1/%3")
+                    .arg(matchName)
+                    .arg(QFileInfo(configPath).baseName())
+                    .arg(maxPlayers),
+                ui->matchesList
+            );
+            
+            newItem->setData(Qt::UserRole, matchName);
+            
+            QMessageBox::information(this, "Success", 
+                QString("Match '%1' created successfully!").arg(matchName));
+            
+        } catch (const std::exception& e) {
+            QMessageBox::critical(this, "Error", 
+                QString("Failed to create match: %1").arg(e.what()));
+        }
+    }
 }

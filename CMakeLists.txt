@@ -71,6 +71,8 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
         ${CMAKE_CURRENT_SOURCE_DIR}/editor/src/MapEditor.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/client/ClientInterface.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/client/Lobby.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/client/CreateMatch.ui
+        
     )
     qt5_add_resources(RESOURCES 
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/resources.qrc

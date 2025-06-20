@@ -9,6 +9,7 @@ target_sources(cs2d_client
         render.cpp
         mainwindow.cpp
         lobbywindow.cpp
+        creatematchdialog.cpp
         camera.cpp
     PUBLIC
         client.h
@@ -19,6 +20,7 @@ target_sources(cs2d_client
         render.h
         mainwindow.h
         lobbywindow.h
+        creatematchdialog.h
         camera.h
 )
 

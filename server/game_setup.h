@@ -20,6 +20,19 @@
 #define PLAYER_STARTING_MONEY 800
 #define PLAYER_MAX_HEALTH 100
 
+struct GameConfig {
+    // Configuración general del juego
+    int tick_rate = 64;
+    int rounds = 15;
+    int round_time = 600;  // en segundos
+    int time_out = 10;     // en segundos
+    float player_max_velocity = 15.0f;
+    float player_acceleration = 1000.0f;
+    float player_radius = 0.5f;
+    int player_starting_money = 800;
+    int player_max_health = 100;
+};
+
 /*
  * GameSetup usa el parser para leer la config e instanciar el juego. Estos get
  * vendrían a ser los retornos del parser
