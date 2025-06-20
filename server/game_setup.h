@@ -2,13 +2,12 @@
 #define SERVER_GAME_SETUP_H
 
 #include "common/maploader.h"
-#include "game_loop.h"
-#include "model/equipment.h"
-#include "model/game.h"
-#include "model/player.h"
-#include "model/random.h"
-#include "model/structure.h"
-#include "model/weapons.h"
+#include "world/equipment/equipment.h"
+#include "world/equipment/weapons.h"
+#include "world/physics/structure.h"
+#include "world/player.h"
+#include "world/random.h"
+#include "world/world.h"
 
 #define TICK_RATE 20
 #define COMMANDS_PER_TICK 30
@@ -76,8 +75,8 @@ public:
     static inline int get_tick_rate() { return TICK_RATE; }
     static inline int get_commands_per_tick() { return COMMANDS_PER_TICK; }
 
-    static Game create_game() {
-        return Game(get_map(), get_rounds(), get_round_time(), get_time_out());
+    static World create_game() {
+        return World(get_map(), get_rounds(), get_round_time(), get_time_out());
     }
 
     // Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,

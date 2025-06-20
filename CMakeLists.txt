@@ -16,7 +16,7 @@ project(cs2d
     VERSION 1.0
     HOMEPAGE_URL "https://github.com/alejoordonez02/counter-strike-2d"
     LANGUAGES CXX
-    )
+)
 
 option(CS2D_TESTS "Enable / disable tests." ON)
 option(CS2D_CLIENT "Enable / disable client program." ON)
@@ -26,14 +26,20 @@ option(CS2D_MAKE_WARNINGS_AS_ERRORS "Enable / disable warnings as errors." ON)
 
 message(CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 
-# Define target: lib common between client, server and editor programs
-# HEY TODO XXX: change the name to something that you like
+find_package(yaml-cpp REQUIRED)
+
 add_library(cs2d_common STATIC)
+add_subdirectory(common)
+target_link_libraries(cs2d_common PUBLIC yaml-cpp::yaml-cpp)
 
-# add the source files that make the lib
-# HEY!! TODO XXX: add more subfolders here
-add_subdirectory(common/)
-
+if(CS2D_SERVER)
+    add_subdirectory(server)
+    add_executable(cs2d_server server/main.cpp)
+    target_link_libraries(cs2d_server
+      PRIVATE
+        cs2d_server_lib
+    )
+endif()
 
 # set compiler warnings to the targets
 include(cmake/CompilerWarnings.cmake)
@@ -64,7 +70,6 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     find_package(SDL2_mixer REQUIRED)
     find_package(SDL2_ttf REQUIRED)
     find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui)
-    find_package(yaml-cpp REQUIRED)
 
     # UI files
     qt5_wrap_ui(UI_HEADERS 
@@ -100,35 +105,6 @@ endif()
 
 # Find SDL2 & yaml-cpp packages
 find_package(SDL2 REQUIRED)
-find_package(yaml-cpp REQUIRED)
-
-# Define static server library for testing
-add_library(cs2d_server_lib
-    STATIC
-    server/client_handler.cpp
-    server/game_loop.cpp
-    server/game_maker.cpp
-    server/model/attack.cpp
-    server/model/game.cpp
-    server/model/player.cpp
-    server/model/player_physics.cpp
-    server/model/random.cpp
-    server/model/weapon.cpp
-    server/lobby_commands/create_game.cpp
-    server/lobby_commands/join_game.cpp
-    server/lobby_commands/list_games.cpp
-)
-
-target_include_directories(cs2d_server_lib
-  PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/server/model
-)
-
-target_link_libraries(cs2d_server_lib
-  PUBLIC
-    cs2d_common
-    yaml-cpp::yaml-cpp
-)
 
 # Program section
 # ---------------
@@ -165,18 +141,6 @@ if(CS2D_CLIENT)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         target_compile_options(cs2d_client PRIVATE -fPIC)
     endif()
-endif()
-
-if(CS2D_SERVER)
-    # HEY!! TODO XXX: Change the name of the executable to the one you like!
-    add_executable(cs2d_server
-      server/main.cpp
-    )
-    add_dependencies(cs2d_server cs2d_common)
-    target_link_libraries(cs2d_server
-      PRIVATE
-        cs2d_server_lib
-    )
 endif()
 
 if(CS2D_EDITOR)

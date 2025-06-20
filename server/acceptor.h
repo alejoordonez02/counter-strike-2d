@@ -5,11 +5,11 @@
 #include <utility>
 #include <vector>
 
+#include "client_handler.h"
 #include "common/network/connection.h"
 #include "common/network/socket/socket.h"
 #include "common/thread.h"
-#include "server/client_handler.h"
-#include "server/game_maker.h"
+#include "game_maker.h"
 
 #define CLOSE_BOTH_STREAMS 2
 

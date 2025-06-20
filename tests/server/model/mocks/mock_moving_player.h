@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "server/model/equipment.h"
-#include "server/model/map.h"
-#include "server/model/player.h"
-#include "server/model/weapons.h"
+#include "server/world/equipment/equipment.h"
+#include "server/world/equipment/weapons.h"
+#include "server/world/map.h"
+#include "server/world/player.h"
 
 class MovingPlayer: public Player {
     static inline int default_id = 0;
@@ -25,9 +25,9 @@ class MovingPlayer: public Player {
 public:
     MovingPlayer(Position& pos, std::weak_ptr<Map> map,
                  float radius = default_radius):
-            Player(default_id, pos, get_default_equipment(), map,
-                   default_max_velocity, default_acceleration, radius,
-                   default_money, default_max_health) {}
+        Player(default_id, pos, get_default_equipment(), map,
+               default_max_velocity, default_acceleration, radius,
+               default_money, default_max_health) {}
 
     void teleport_to_spawn() override {}
 };
