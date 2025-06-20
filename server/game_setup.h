@@ -44,12 +44,6 @@ static inline float get_round_time() { return ROUND_TIME; }
 static inline float get_time_out() { return TIME_OUT; }
 
 /*
- * Game loop config
- * */
-static inline int get_tick_rate() { return TICK_RATE; }
-static inline int get_commands_per_tick() { return COMMANDS_PER_TICK; }
-
-/*
  * Player config
  * */
 static int id = -1;
@@ -76,20 +70,23 @@ static inline int get_player_max_health() { return PLAYER_MAX_HEALTH; }
 
 class GameSetup {
 public:
-    static std::unique_ptr<GameLoop> create_game() {
-        Game game(get_map(), get_rounds(), get_round_time(), get_time_out());
-        auto game_loop = std::make_unique<GameLoop>(
-            std::move(game), get_tick_rate(), get_commands_per_tick());
-        return game_loop;
+    /*
+     * Game loop config
+     * */
+    static inline int get_tick_rate() { return TICK_RATE; }
+    static inline int get_commands_per_tick() { return COMMANDS_PER_TICK; }
+
+    static Game create_game() {
+        return Game(get_map(), get_rounds(), get_round_time(), get_time_out());
     }
 
     // Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
     //        float max_velocity, float acceleration, float radius, int money,
     //        int health);
-    static std::shared_ptr<Player> create_player() {
+    static std::shared_ptr<Player> create_player(std::shared_ptr<Map> map) {
         auto player = std::make_shared<Player>(
             get_player_id(), get_starting_position(), get_starting_equipment(),
-            get_player_max_velocity(), get_player_acceleration(),
+            map, get_player_max_velocity(), get_player_acceleration(),
             get_player_radius(), get_player_starting_money(),
             get_player_max_health());
         return player;
