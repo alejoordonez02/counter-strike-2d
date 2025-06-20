@@ -18,7 +18,8 @@ public:
 
     void run() override;
 
-    void handle_create(const std::string& game_name /*, TeamName team */);
+    void handle_create(const std::string& game_name,
+                       MapName map /*, TeamName team */);
 
     void handle_join(const std::string& game_name);
 
