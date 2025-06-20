@@ -27,7 +27,7 @@ public:
     }
 
     explicit StartMovingDTO(const Direction& d):
-            DTO(DTOSerial::PlayerCommands::MOVE), dir(d) {}
+            DTO(DTOSerial::PlayerCommands::START_MOVING), dir(d) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);

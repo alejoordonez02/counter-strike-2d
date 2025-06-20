@@ -9,10 +9,10 @@
 
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
-#include "server/player_commands/aim.h"
 #include "server/player_commands/command.h"
 #include "server/player_commands/start_attacking.h"
 #include "server/player_commands/start_moving.h"
+#include "server/player_commands/stop_moving.h"
 
 using namespace DTOSerial::PlayerCommands;
 
@@ -26,10 +26,26 @@ private:
 public:
     CmdConstructor() {
         maker_map = {
-                {MOVE,
-                 [](auto&& dto_p) { return std::make_unique<StartMoving>(std::move(dto_p)); }},
-                {ATTACK,
-                 [](auto&& dto_p) { return std::make_unique<StartAttacking>(std::move(dto_p)); }},
+                /* {AIM,
+                 [](auto&& dto_p) {
+                     return std::make_unique<Aim>(std::move(dto_p));
+                 }}, */
+                {START_MOVING,
+                 [](auto&& dto_p) {
+                     return std::make_unique<StartMoving>(std::move(dto_p));
+                 }},
+                {STOP_MOVING,
+                 [](auto&& /* dto_p */) {
+                     return std::make_unique<StopMoving>();
+                 }},
+                {START_ATTACKING,
+                 [](auto&& dto_p) {
+                     return std::make_unique<StartAttacking>(std::move(dto_p));
+                 }},
+                /* {STOP_ATTACKING,
+                 [](auto&& dto_p) {
+                     return std::make_unique<StopAttacking>(std::move(dto_p));
+                 }}, */
                 // ...
         };
     }

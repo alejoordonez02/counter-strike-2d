@@ -6,8 +6,8 @@
 #include "common/map_list.h"
 
 namespace Message {
-constexpr int LenBytes = 2; // vamos a mandar algo mas grande que 255 bytes?
-constexpr int MaxLen = 256; // <= 65535
+constexpr int LenBytes = 2;  // vamos a mandar algo mas grande que 255 bytes?
+constexpr int MaxLen = 256;  // <= 65535
 };  // namespace Message
 
 namespace LobbySerial {
@@ -25,11 +25,11 @@ constexpr uint8_t EXIT_SERVER = 0x45; // E - 69
 
 namespace MapSerial {
 enum : uint8_t {
-    #define X(name) name,
-        MAP_LIST
-    #undef X
+#define X(name) name,
+    MAP_LIST
+#undef X
 };
-}; // namespace MapSerial
+};  // namespace MapSerial
 
 namespace GameSerial {
 enum : uint8_t {
@@ -39,16 +39,18 @@ enum : uint8_t {
 }; // namespace GameSerial
 
 namespace DTOSerial {
-constexpr uint8_t GAME_DETAILS = 0x47; // G - 71
-    namespace PlayerCommands {
-    constexpr uint8_t AIM = 0xD7; // × - 215
-    constexpr uint8_t MOVE = 0x6D;    // m - 109
-    constexpr uint8_t ATTACK = 0x61;  // a - 97
-    constexpr uint8_t SNAPSHOT = 0x53; // S - 83
-    };  // namespace PlayerCommands
-    namespace GameState {
-        // TODO: Snapshot
-    }
+constexpr uint8_t GAME_DETAILS = 0x47;  // G - 71
+namespace PlayerCommands {
+constexpr uint8_t AIM = 0xD7;           // × - 215
+constexpr uint8_t START_MOVING = 0x6D;  // m - 109
+constexpr uint8_t STOP_MOVING = 0x6E;
+constexpr uint8_t START_ATTACKING = 0x61;  // a - 97
+constexpr uint8_t STOP_ATTACKING = 0x62;
+constexpr uint8_t SNAPSHOT = 0x53;  // S - 83
+};  // namespace PlayerCommands
+namespace GameState {
+// TODO: Snapshot
+}
 };  // namespace DTOSerial
 
 #endif
