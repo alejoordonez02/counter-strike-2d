@@ -28,7 +28,7 @@ void RenderableGunEffect::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableGunEffect::update(const SDL2pp::Point& position, double facing_angle, 
+void RenderableGunEffect::update(const SDL2pp::Point& player_position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
 
     if(!is_shooting || weapon_type == WeaponType::None) {
@@ -47,19 +47,19 @@ void RenderableGunEffect::update(const SDL2pp::Point& position, double facing_an
         effect_timer = 0;
     }
 
-
-    // NOTE: Para que el arma quede alineada con el eje X
-    // ya que en SDL, 0 grados es es hacia la derecha
-    this->facing_angle = facing_angle;
-    double radians = (this->facing_angle + 90) * M_PI / 180.0;
-    double offset = -10;        // TODO: Hardcodeado segun tamaño textura
-    this->position.x = position.x + std::cos(radians) * offset;
-    this->position.y = position.y + std::sin(radians) * offset;
-
-
     if(current_animation == nullptr) {
         return;
     }
+    // NOTE: Para que el arma quede alineada con el eje X
+    SDL2pp::Point texture_size = current_animation->get_animation_size();
+    this->facing_angle = facing_angle + 90;
+    double radians = (this->facing_angle) * M_PI / 180.0;
+    double offset = -50;        // TODO: Hardcodeado segun tamaño textura
+    this->position.x = player_position.x - texture_size.GetX()/4 + std::cos(radians) * offset;
+    this->position.y = player_position.y - texture_size.GetY()/4 + std::sin(radians) * offset;
+
+    std::cout << "this->facing_angle. effect" << this->facing_angle << std::endl;
+
     current_animation->update();
 }
 

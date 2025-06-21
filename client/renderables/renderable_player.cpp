@@ -15,8 +15,8 @@ RenderablePlayer::RenderablePlayer(
     load_animation("holding_knife");
     load_animation("holding_rifle");
     load_animation("placing_bomb");
-    animations["death_icon"] = animation_provider->make_animation("death");
     load_animation("idle");
+    animations["death_icon"] = animation_provider->make_animation("death");
     current_animation = animations["idle"].get();
 }
 
@@ -34,6 +34,7 @@ void RenderablePlayer::update(const PlayerData& player) {
     this->is_walking = player.is_walking;
     this->is_shooting = player.is_shooting;
 
+    std::cout << "player.is_dead=" << player.is_dead << std::endl;
     if(player.is_dead){
         current_animation = animations["death_icon"].get();
         current_animation->update();
@@ -41,8 +42,10 @@ void RenderablePlayer::update(const PlayerData& player) {
     }
 
     // ahora usa float y resta posiciones correctamente
-    facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
+    this->facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
     current_weapon = player.current_weapon;
+
+    std::cout << "this->facing_angle. player" << this->facing_angle << std::endl;
 
     // siempre actualiza las piernas
     legs.update(this->position, this->facing_angle, is_walking); 
@@ -90,7 +93,7 @@ double RenderablePlayer::calculate_facing_angle(float pos_x, float pos_y,
     (void)pos_x;
     (void)pos_y;
     double angle = std::atan2(aim_y, aim_x) * 180.0 / M_PI;
-    return angle + 90.0;  // según tu alineación
+    return angle + 90.0;  // según alineacion del jugador
 }
 
 void RenderablePlayer::skip_frames(uint8_t frames_to_skip) {
