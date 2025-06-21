@@ -53,11 +53,12 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
     }
 }
 
-// Sensibilidad mínima para el scroll de arma
-constexpr int kWeaponScrollThreshold = 1;
-static int weapon_scroll_accum = 0;
 
 void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
+    // Sensibilidad mínima para el scroll de arma
+    const int kWeaponScrollThreshold = 1;
+    static int weapon_scroll_accum = 0;
+
     // Acumula el desplazamiento de la rueda
     weapon_scroll_accum += event.wheel.y;
     if (std::abs(weapon_scroll_accum) >= kWeaponScrollThreshold) {
@@ -65,7 +66,7 @@ void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
         int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
         std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
         commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
-        weapon_scroll_accum = 0; // Reinicia el acumulador
+        weapon_scroll_accum = 0;
     }
 }
 
@@ -124,20 +125,30 @@ void InputHandler::send_attack() {
     prev_left = is_attacking;
 }
 
+
 void InputHandler::send_aim() {
+    // sensibilidad mínima para el aim
+    const int kAimThreshold = 90;
+    static int aim_accum_x = 0, aim_accum_y = 0;
+    
     static int last_dx = INT32_MAX, last_dy = INT32_MAX;
     SDL2pp::Point mouse_pos;
     SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
     Camera::revert_center_point(mouse_pos);
     
-    /*
-     * checkear q no se vaya a volver a mandar la misma dir, quizás innecesario
-     * siendo que hay cooldown...
-     * */
-    if (mouse_pos.x != last_dx || mouse_pos.y != last_dy) {
-        commands_queue.try_push(std::make_unique<AimDTO>(Direction(mouse_pos.x, mouse_pos.y)));
-        last_dx = mouse_pos.x;
-        last_dy = mouse_pos.y;
+    int dx = mouse_pos.x;
+    int dy = mouse_pos.y;
+
+    aim_accum_x += std::abs(dx - last_dx);
+    aim_accum_y += std::abs(dy - last_dy);
+
+    if (aim_accum_x >= kAimThreshold || aim_accum_y >= kAimThreshold) {
+        std::cout << "LOG: Enviando comando de apuntar a: (" << dx << ", " << dy << ")" << std::endl;
+        commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
+        last_dx = dx;
+        last_dy = dy;
+        aim_accum_x = 0;
+        aim_accum_y = 0;
     }
 }
 
