@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#define EFFECT_COUNTER_TIME 0.05f
+#define EFFECT_COUNTER_TIME 0.1f
 // ej. 30 fps * 0.2f = 6 => cada 6 ticks hace el flare
 
 RenderableGunEffect::RenderableGunEffect(
@@ -68,12 +68,17 @@ void RenderableGunEffect::update(const Position& player_position, const Position
 }
 
 void RenderableGunEffect::render_line(SDL2pp::Renderer& renderer) {
+    // calcular punto de inicio de la línea
+    // NOTE: Valor hardcodeado en base al tamaño de la textura
+    SDL2pp::Point start = SDL2pp::Point(position.x + 25, position.y + 25);
+    
+    // calcular punto final de la línea
     float length = 200.0f; // largo de la línea
     SDL2pp::Point end_point;
-    end_point.x = gun_position.x + aim_position.x * length;
-    end_point.y = gun_position.y + aim_position.y * length;
+    end_point.x = start.x + aim_position.x * length;
+    end_point.y = start.y + aim_position.y * length;
 
-    SDL2pp::Point start = SDL2pp::Point(gun_position.x, gun_position.y);
+    // modificar los puntos para que estén centrados en la camara
     Camera::modify_center_point(start);
     Camera::modify_center_point(end_point);
     renderer.SetDrawColor(255, 255, 0, 128); // Amarillo
