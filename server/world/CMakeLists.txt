@@ -4,6 +4,9 @@ target_sources(cs2d_server_lib
     PRIVATE
     map.cpp
     player.cpp
+    terrorist.cpp
+    counter_terrorist.cpp
+    player_factory.cpp
     random.cpp
     world.cpp
 )

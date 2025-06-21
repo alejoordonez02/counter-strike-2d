@@ -24,13 +24,14 @@ public:
             case (uint8_t)CREATE_GAME: {
                 auto* dto = dynamic_cast<CreateGameDTO*>(dto_p.get());
                 if (!dto) throw std::runtime_error("Bad DTO for CREATE_GAME");
-                return std::make_unique<CreateGameCommand>(dto->get_game_name(),
-                                                           dto->get_map());
+                return std::make_unique<CreateGameCommand>(
+                    dto->get_game_name(), dto->get_map(), dto->get_team());
             }
             case (uint8_t)JOIN_GAME: {
                 auto* dto = dynamic_cast<JoinGameDTO*>(dto_p.get());
                 if (!dto) throw std::runtime_error("Bad DTO for JOIN_GAME");
-                return std::make_unique<JoinGameCommand>(dto->get_game_name());
+                return std::make_unique<JoinGameCommand>(dto->get_game_name(),
+                                                         dto->get_team());
             }
             default:
                 throw std::runtime_error("Unknown lobby command type");

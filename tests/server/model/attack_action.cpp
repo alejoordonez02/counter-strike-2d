@@ -11,6 +11,10 @@ public:
 
 class PlayerAttackTest: public ::testing::Test {
 protected:
+    std::vector<std::shared_ptr<Hitbox>> collidables;
+    std::vector<Structure> bomb_site;
+    std::vector<Position> tt_spawn;
+    std::vector<Position> ct_spawn;
     std::shared_ptr<Map> map;
     std::weak_ptr<Map> map_weak_ptr;
 
@@ -23,7 +27,9 @@ protected:
     std::shared_ptr<MockAttackingPlayer> aligned_enemy;
 
     void SetUp() override {
-        map = std::make_shared<Map>();
+        map = std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
         map_weak_ptr = map;
 
         player =

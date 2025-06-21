@@ -6,18 +6,21 @@
 
 #include "server/world/equipment/bomb.h"
 #include "server/world/physics/hitbox.h"
+#include "server/world/physics/structure.h"
 
 class Map {
 private:
-    /*
-     * Comparte los ptrs con Game y con los PlayerHandler
-     * */
     std::vector<std::shared_ptr<Hitbox>> collidables;
-    std::unique_ptr<Bomb> bomb;
-    Position bomb_site;
+    std::vector<Structure> bomb_site;
+    std::vector<Position> tt_spawn;
+    std::vector<Position> ct_spawn;
+    std::optional<Bomb> bomb;
 
 public:
-    Map();
+    Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
+        const std::vector<Structure>& bomb_site,
+        const std::vector<Position>& tt_spawn,
+        const std::vector<Position>& ct_spawn);
 
     void update(float dt);
 
@@ -31,7 +34,7 @@ public:
 
     std::vector<std::shared_ptr<Hitbox>>& get_collidables();
 
-    void plant_bomb(std::unique_ptr<Bomb> bomb, const Position& pos);
+    void plant_bomb(std::optional<Bomb> bomb, const Position& pos);
 
     bool bomb_has_exploded() const;
 

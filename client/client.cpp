@@ -12,6 +12,7 @@
 #include "common/network/dtos/create_game_dto.h"
 #include "common/network/dtos/join_game_dto.h"
 #include "common/network/dtos/list_games_dto.h"
+#include "common/team_name.h"
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
@@ -36,19 +37,31 @@ void Client::lobby_phase() {
             case 2: {
                 std::string name;
                 int map_idx;
+                int team_idx;
                 std::cout << "Nombre de la partida: ";
                 std::cin >> name;
                 std::cout << "Mapa (0..N): ";
                 std::cin >> map_idx;
+                std::cout << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
+                std::cin >> team_idx;
                 commands.try_push(std::make_unique<CreateGameDTO>(
-                    name, static_cast<MapName>(map_idx)));
+                    name,
+                    static_cast<MapName>(map_idx),
+                    static_cast<TeamName>(team_idx)
+                ));
                 return;  // salimos del lobby para entrar al game loop
             }
             case 3: {
                 std::string name;
+                int team_idx;
                 std::cout << "Nombre de la partida: ";
                 std::cin >> name;
-                commands.try_push(std::make_unique<JoinGameDTO>(name));
+                std::cout << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
+                std::cin >> team_idx;
+                commands.try_push(std::make_unique<JoinGameDTO>(
+                    name,
+                    static_cast<TeamName>(team_idx)
+                ));
                 return;
             }
             default:

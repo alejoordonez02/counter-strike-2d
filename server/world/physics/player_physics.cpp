@@ -10,7 +10,7 @@
 #include "server/world/physics/trajectory.h"
 
 namespace PlayerPhysicsConstant {
-constexpr int max_collisions = 1;
+constexpr int max_collisions = 5;
 }
 
 /*

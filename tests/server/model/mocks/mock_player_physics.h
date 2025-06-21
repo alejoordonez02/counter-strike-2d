@@ -7,10 +7,10 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gmock/gmock.h"
-#include "server/model/hitbox.h"
-#include "server/model/map.h"
-#include "server/model/player_physics.h"
-#include "server/model/trajectory.h"
+#include "server/world/map.h"
+#include "server/world/physics/hitbox.h"
+#include "server/world/physics/player_physics.h"
+#include "server/world/physics/trajectory.h"
 
 class MockPlayerPhysics: public PlayerPhysics {
 private:
@@ -20,7 +20,9 @@ private:
     }
 
     static std::shared_ptr<Map> default_map() {
-        return std::make_shared<Map>();
+        return std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
     }
 
     static float default_max_velocity() { return 1.0f; }
@@ -32,11 +34,11 @@ private:
 public:
     MockPlayerPhysics(Position& pos, float max_v = 1.0f, float accel = 1.0f,
                       float r = 1.0f, std::weak_ptr<Map> map = default_map()):
-            PlayerPhysics(pos, max_v, accel, r, map) {}
+        PlayerPhysics(pos, max_v, accel, r, map) {}
 
     MockPlayerPhysics(Position& pos, std::weak_ptr<Map> map):
-            PlayerPhysics(pos, default_max_velocity(), default_acceleration(),
-                          default_radius(), map) {}
+        PlayerPhysics(pos, default_max_velocity(), default_acceleration(),
+                      default_radius(), map) {}
 
     MOCK_METHOD(void, update, (float dt), ());
 

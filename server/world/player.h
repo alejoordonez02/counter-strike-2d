@@ -23,7 +23,7 @@ private:
     PlayerPhysics physics;
     std::unique_ptr<ActionStrategy> action;
     Direction dir;
-    std::unique_ptr<Equipment> equipment;
+    Equipment equipment;
     Weapon& current;
     int max_health;
     int health;
@@ -38,7 +38,7 @@ private:
     virtual void teleport_to_spawn() {}  // = 0;
 
 public:
-    Player(int id, Position pos, std::unique_ptr<Equipment>&& equipment,
+    Player(int id, Position pos, const Equipment& equipment,
            std::weak_ptr<Map> map, float max_velocity, float acceleration,
            float radius, int money, int health);
 

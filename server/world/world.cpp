@@ -56,10 +56,10 @@ void World::update_rounds(float dt) {
  * Constructor
  * */
 World::World(std::shared_ptr<Map>&& map, int rounds, float round_time,
-             float time_out, PlayerFactory&& player_factory):
+             float time_out, const PlayerFactory& player_factory):
     map(std::move(map)), rounds(rounds), round_time(round_time),
     time_out(time_out), round_ongoing(false), ended(false), tt_won_rounds(0),
-    ct_won_rounds(0), player_factory(std::move(player_factory)) {}
+    ct_won_rounds(0), player_factory(player_factory) {}
 
 /*
  * Update world
@@ -83,12 +83,8 @@ void World::update(float dt) {
 /*
  * Add a player
  * */
-std::shared_ptr<Player> World::add_player() {
-    /*
-     * se me ocurren un par de condiciones para las cuales usar players.size()
-     * para el id no es una buena idea... después lo cambio
-     * */
-    auto p = player_factory(players.size());
+std::shared_ptr<Player> World::add_player(TeamName team) {
+    auto p = player_factory.create(players.size(), team);
     map->add_collidable(p);
     players.push_back(p);
     return p;

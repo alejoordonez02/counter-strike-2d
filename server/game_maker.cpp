@@ -10,19 +10,20 @@
 #include "game_maker_error.h"
 
 void GameMaker::create(Connection&& con, const std::string& game_name,
-                       MapName map) {
+                       MapName map, TeamName team) {
     std::unique_lock<std::mutex> lck(m);
     auto it = games.find(game_name);
     if (it != games.end()) throw GameAlreadyExists(game_name);
 
     GameConfig config = GameConfig::from_yaml("server-config.yaml", map);
     auto game = std::make_unique<Game>(config);
-    game->add_player(std::move(con));
+    game->add_player(std::move(con), team);
     game->start();
     games[game_name] = std::move(game);
 }
 
-void GameMaker::join(Connection&& con, const std::string& game_name) {
+void GameMaker::join(Connection&& con, const std::string& game_name,
+                     TeamName team) {
     std::unique_lock<std::mutex> lck(m);
     auto it = games.find(game_name);
     if (it == games.end()) throw GameNotFound(game_name);
@@ -34,7 +35,7 @@ void GameMaker::join(Connection&& con, const std::string& game_name) {
      * GameIsFull(game_name)
      * */
 
-    game->add_player(std::move(con));
+    game->add_player(std::move(con), team);
 }
 
 void GameMaker::list() {}
