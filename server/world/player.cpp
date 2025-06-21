@@ -1,5 +1,6 @@
 #include "server/world/player.h"
 
+#include <iostream>
 #include <memory>
 
 #include "common/direction.h"
@@ -21,8 +22,8 @@ Player::Player(int id, Position pos, const Equipment& equipment,
     physics(this->pos, max_velocity, acceleration, radius,
             this->map.lock()->get_collidables(), sorted_collidables_idx),
     action(std::make_unique<Idle>()), dir(), equipment(equipment),
-    current(this->equipment.knife), max_health(max_health), health(max_health),
-    alive(true), kills(0), money(money) {}
+    current(this->equipment.primary), max_health(max_health),
+    health(max_health), alive(true), kills(0), money(money) {}
 
 /*
  * Update
@@ -59,6 +60,7 @@ void Player::start_moving(Direction dir) { physics.start_moving(dir); }
 void Player::stop_moving() { physics.stop_moving(); }
 
 void Player::start_attacking() {
+    std::cout << "Player: start_attacking\n";
     action = std::make_unique<Attack>(pos, dir, current,
                                       map.lock()->get_collidables(),
                                       sorted_collidables_idx);

@@ -4,7 +4,6 @@
 #include <chrono>
 
 #include "common/thread.h"
-#include "config/game_config.h"
 #include "server/player_handler.h"
 #include "server/world/world.h"
 
@@ -21,16 +20,10 @@ private:
     Clock::duration tick_duration;
     int commands_per_tick;
 
-    World create_world(const GameConfig& config);
-
     void add_pending_players();
 
 public:
-    /*
-     * Acá estaría bueno poder pasarle la game config para que la use para
-     * construirse
-     * */
-    Game(const GameConfig& config);
+    Game(World&& world, int tick_rate, int commands_per_tick);
 
     void run() override;
 

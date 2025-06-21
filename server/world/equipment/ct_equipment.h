@@ -10,7 +10,7 @@
  * */
 class CTEquipment: public Equipment {
 public:
-    CTEquipment(): Equipment(Fist(), Glock(), 0) {}
+    CTEquipment(): Equipment(Ak47(), Glock(), 0) {}
 };
 
 #endif

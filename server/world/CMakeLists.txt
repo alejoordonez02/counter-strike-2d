@@ -1,4 +1,4 @@
-# server/model/CMakeLists.txt
+# server/world/CMakeLists.txt
 
 target_sources(cs2d_server_lib
     PRIVATE
@@ -6,7 +6,6 @@ target_sources(cs2d_server_lib
     player.cpp
     terrorist.cpp
     counter_terrorist.cpp
-    player_factory.cpp
     random.cpp
     world.cpp
 )

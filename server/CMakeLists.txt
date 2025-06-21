@@ -24,6 +24,7 @@ target_sources(cs2d_server_lib
 )
 
 add_subdirectory(config)
+add_subdirectory(factory)
 add_subdirectory(lobby_commands)
 add_subdirectory(player_commands)
 add_subdirectory(world)

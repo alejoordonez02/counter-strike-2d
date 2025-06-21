@@ -3,9 +3,9 @@
 #include <memory>
 #include <utility>
 
+#include "factory/player_factory.h"
 #include "map.h"
 #include "player.h"
-#include "player_factory.h"
 
 /*
  * Check if any team won the round

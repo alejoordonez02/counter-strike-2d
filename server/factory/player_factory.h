@@ -4,16 +4,16 @@
 #include <memory>
 
 #include "common/team_name.h"
-#include "player.h"
-#include "server/config/world_config.h"
-#include "server/world/map.h"
+#include "config/player_config.h"
+#include "world/map.h"
+#include "world/player.h"
 
 class PlayerFactory {
     std::shared_ptr<Map> map;
-    WorldConfig config;
+    PlayerConfig config;
 
 public:
-    PlayerFactory(std::shared_ptr<Map> map, const WorldConfig& config);
+    PlayerFactory(std::shared_ptr<Map> map, const PlayerConfig& config);
 
     std::shared_ptr<Player> create(int id, TeamName team) const;
 };
