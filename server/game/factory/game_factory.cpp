@@ -1,7 +1,7 @@
 #include "game_factory.h"
 
-#include "config/game_config.h"
-#include "game.h"
+#include "server/game/config/game_config.h"
+#include "server/game/game.h"
 #include "world_factory.h"
 
 std::unique_ptr<Game> GameFactory::create(const GameConfig& config) {

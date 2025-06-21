@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "common/team_name.h"
-#include "config/player_config.h"
+#include "server/game/config/player_config.h"
 #include "server/game/world/map.h"
 #include "server/game/world/player.h"
 
