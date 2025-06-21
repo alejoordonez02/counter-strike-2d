@@ -5,11 +5,11 @@
 #include <string>
 #include <unordered_map>
 
-#include "SDL2pp/Point.hh"
 #include "SDL2pp/Renderer.hh"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "common/maploader.h"
+#include "common/position.h"
 
 class RenderableBlock {
     private:

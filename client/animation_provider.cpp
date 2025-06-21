@@ -7,26 +7,34 @@ AnimationProvider::AnimationProvider(){
 }
 
 void AnimationProvider::load_animations() {
-// ====== PLAYERS =======
-    animation_prototypes["terrorist_1_idle"] = {
-            TextureProvider::get_texture("terrorist_1").get(),
-            AnimationData{2, 1, false, 1, 0}};
-    animation_prototypes["terrorist_2_idle"] = {
-            TextureProvider::get_texture("terrorist_2").get(),
-            AnimationData{2, 1, false, 1, 0}};
-    animation_prototypes["terrorist_3_idle"] = {
-            TextureProvider::get_texture("terrorist_3").get(),
-            AnimationData{2, 1, false, 1, 0}};
-    animation_prototypes["terrorist_4_idle"] = {
-            TextureProvider::get_texture("terrorist_4").get(),
-            AnimationData{2, 1, false, 1, 0}};
-    animation_prototypes["terrorist_1_shooting"] = {
-            TextureProvider::get_texture("terrorist_4").get(),
-            AnimationData{2, 3, false, 1, 0}};
-    animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(),
-                                    AnimationData{4, 8, true, 5, 0}};
+    // ====== PLAYERS =======
+    animation_prototypes["terrorist_1_holding_knife"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 0, false}};
+    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
+    animation_prototypes["terrorist_1_placing_bomb"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 2, false}};
+    animation_prototypes["terrorist_1_holding_pistol"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 3, false}};
+    animation_prototypes["terrorist_1_holding_rifle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 5, false}};
+    
+    animation_prototypes["terrorist_2_idle"] = {TextureProvider::get_texture("terrorist_2").get(), AnimationData{2, 1, false, 1}};
+    animation_prototypes["terrorist_3_idle"] = {TextureProvider::get_texture("terrorist_3").get(), AnimationData{2, 1, false, 1}};
+    animation_prototypes["terrorist_4_idle"] = {TextureProvider::get_texture("terrorist_4").get(), AnimationData{2, 1, false, 1}};
 
-// ====== BACKGROUNDS ======
+    animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(), AnimationData{4, 8, true, 5, 0}};
+
+    // ====== GUNS ======
+    animation_prototypes["bomb"] = {TextureProvider::get_texture("bomb").get(), AnimationData{1, 0, false}};
+    animation_prototypes["knife"] = {TextureProvider::get_texture("knife").get(), AnimationData{1, 0, false}};
+    animation_prototypes["glock"] = {TextureProvider::get_texture("glock").get(), AnimationData{1, 0, false}};
+    animation_prototypes["ak47"] = {TextureProvider::get_texture("ak47").get(), AnimationData{1, 0, false}};
+    animation_prototypes["m3"] = {TextureProvider::get_texture("m3").get(), AnimationData{1, 0, false}};
+    animation_prototypes["awp"] = {TextureProvider::get_texture("awp").get(), AnimationData{1, 0, false}};
+    
+    // ====== EFFECTS ======
+    animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
+    animation_prototypes["knifeslash"] = {TextureProvider::get_texture("knifeslash").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
+    
+    animation_prototypes["decals"] = {TextureProvider::get_texture("decals").get(), AnimationData{18, 13, false}};
+
+    // ====== BACKGROUNDS ======
     animation_prototypes["background_dust"] = {TextureProvider::get_texture("background_dust").get(), AnimationData{1, 0, false, 0}};
     animation_prototypes["background_sand1"] = {TextureProvider::get_texture("background_sand1").get(), AnimationData{1, 0, false, 0}};
     animation_prototypes["background_aztec"] = {TextureProvider::get_texture("background_aztec").get(), AnimationData{1, 0, false, 0}};
@@ -38,6 +46,7 @@ void AnimationProvider::load_animations() {
     animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0, 0, 0, 0.3}};
     animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0, 0, 0, 0.3}};
     animation_prototypes["money"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 7, false, 0, 0, 0, 0.3}};
+    animation_prototypes["death"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 12, false, 0, 0, 0, 0.5}};
     
 
     // ====== HUD NUMBERS ======

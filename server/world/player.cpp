@@ -119,6 +119,6 @@ PlayerData Player::get_data() const {
     data.aim_x = dir.x;
     data.aim_y = dir.y;
     data.is_walking = physics.is_moving();
-    data.is_dead = alive;
+    data.is_dead = !alive;
     return data;
 }
