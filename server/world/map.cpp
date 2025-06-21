@@ -8,7 +8,12 @@
 
 #define BOMB_SITE_RADIUS 10
 
-Map::Map(): collidables(0), bomb() {}
+Map::Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
+         const std::vector<Structure>& bomb_site,
+         const std::vector<Position>& tt_spawn,
+         const std::vector<Position>& ct_spawn):
+    collidables(collidables), bomb_site(bomb_site), tt_spawn(tt_spawn),
+    ct_spawn(ct_spawn), bomb(std::nullopt) {}
 
 /*
  * Update
@@ -20,13 +25,13 @@ void Map::update(float dt) {
 /*
  * Restart
  * */
-void Map::restart() { bomb = nullptr; }
+void Map::restart() { bomb = std::nullopt; }
 
 /*
- * Sites
+ * Sites TODO: WIP
  * */
-// Position Map::get_tt_spawn() const {}
-// Position Map::get_ct_spawn() const {}
+Position Map::get_tt_spawn() const { return tt_spawn[0]; }
+Position Map::get_ct_spawn() const { return ct_spawn[0]; }
 
 /*
  * Collidables
@@ -42,11 +47,11 @@ std::vector<std::shared_ptr<Hitbox>>& Map::get_collidables() {
 /*
  * Bomb
  * */
-void Map::plant_bomb(std::unique_ptr<Bomb> bomb, const Position& pos) {
-    if (bomb_site.get_distance(pos) < BOMB_SITE_RADIUS) {
-        this->bomb = std::move(bomb);
+void Map::plant_bomb(std::optional<Bomb> bomb, const Position& pos) {
+    /* if (bomb_site.get_distance(pos) < BOMB_SITE_RADIUS) {
+        this->bomb = bomb;
         bomb->plant();
-    }
+    } */
 }
 
 bool Map::bomb_has_exploded() const {
