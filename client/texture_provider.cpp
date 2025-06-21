@@ -58,30 +58,55 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     
     
     // ==== GUNS ======
-    SDL2pp::Surface bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb.bmp");
+    SDL2pp::Surface held_bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb.bmp");
+    held_bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_bomb"] = std::make_shared<SDL2pp::Texture>(renderer, held_bomb_surface);
+
+    SDL2pp::Surface held_knife_surface(DATA_PATH "/assets/gfx/weapons/knife.bmp");
+    held_knife_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_knife"] = std::make_shared<SDL2pp::Texture>(renderer, held_knife_surface);
+
+    SDL2pp::Surface held_glock_surface(DATA_PATH "/assets/gfx/weapons/glock.bmp");
+    held_glock_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_glock"] = std::make_shared<SDL2pp::Texture>(renderer, held_glock_surface);
+    
+    SDL2pp::Surface held_ak47_surface(DATA_PATH "/assets/gfx/weapons/ak47.bmp");
+    held_ak47_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_ak47"] = std::make_shared<SDL2pp::Texture>(renderer, held_ak47_surface);
+    
+    SDL2pp::Surface held_m3_surface(DATA_PATH "/assets/gfx/weapons/m3.bmp");
+    held_m3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_m3"] = std::make_shared<SDL2pp::Texture>(renderer, held_m3_surface);
+
+    SDL2pp::Surface held_awp_surface(DATA_PATH "/assets/gfx/weapons/awp.bmp");
+    held_awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["held_awp"] = std::make_shared<SDL2pp::Texture>(renderer, held_awp_surface);
+
+
+    SDL2pp::Surface bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb_d.bmp");
     bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["bomb"] = std::make_shared<SDL2pp::Texture>(renderer, bomb_surface);
 
-    SDL2pp::Surface knife_surface(DATA_PATH "/assets/gfx/weapons/knife.bmp");
-    knife_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
-    textures["knife"] = std::make_shared<SDL2pp::Texture>(renderer, knife_surface);
-
-    SDL2pp::Surface glock_surface(DATA_PATH "/assets/gfx/weapons/glock.bmp");
+    SDL2pp::Surface glock_surface(DATA_PATH "/assets/gfx/weapons/glock_d.bmp");
     glock_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["glock"] = std::make_shared<SDL2pp::Texture>(renderer, glock_surface);
     
-    SDL2pp::Surface ak47_surface(DATA_PATH "/assets/gfx/weapons/ak47.bmp");
+    SDL2pp::Surface ak47_surface(DATA_PATH "/assets/gfx/weapons/ak47_d.bmp");
     ak47_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["ak47"] = std::make_shared<SDL2pp::Texture>(renderer, ak47_surface);
     
-    SDL2pp::Surface m3_surface(DATA_PATH "/assets/gfx/weapons/m3.bmp");
+    SDL2pp::Surface m3_surface(DATA_PATH "/assets/gfx/weapons/m3_d.bmp");
     m3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["m3"] = std::make_shared<SDL2pp::Texture>(renderer, m3_surface);
 
-    SDL2pp::Surface awp_surface(DATA_PATH "/assets/gfx/weapons/awp.bmp");
+    SDL2pp::Surface awp_surface(DATA_PATH "/assets/gfx/weapons/awp_d.bmp");
     awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
+    
 
+    SDL2pp::Surface tilesheet_2_surface(DATA_PATH "/../resources/weapons/tilesheet_2.png");
+    tilesheet_2_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
+    textures["tilesheet_2"] = std::make_shared<SDL2pp::Texture>(renderer, tilesheet_2_surface);
 
     // ==== EFFECTS ======
     // modular color a uno amarillo

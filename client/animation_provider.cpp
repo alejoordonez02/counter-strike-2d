@@ -21,13 +21,19 @@ void AnimationProvider::load_animations() {
     animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(), AnimationData{4, 8, true, 5, 0}};
 
     // ====== GUNS ======
-    animation_prototypes["bomb"] = {TextureProvider::get_texture("bomb").get(), AnimationData{1, 0, false}};
-    animation_prototypes["knife"] = {TextureProvider::get_texture("knife").get(), AnimationData{1, 0, false}};
-    animation_prototypes["glock"] = {TextureProvider::get_texture("glock").get(), AnimationData{1, 0, false}};
-    animation_prototypes["ak47"] = {TextureProvider::get_texture("ak47").get(), AnimationData{1, 0, false}};
-    animation_prototypes["m3"] = {TextureProvider::get_texture("m3").get(), AnimationData{1, 0, false}};
-    animation_prototypes["awp"] = {TextureProvider::get_texture("awp").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_bomb"] = {TextureProvider::get_texture("held_bomb").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_knife"] = {TextureProvider::get_texture("held_knife").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_glock"] = {TextureProvider::get_texture("held_glock").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_ak47"] = {TextureProvider::get_texture("held_ak47").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_m3"] = {TextureProvider::get_texture("held_m3").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_awp"] = {TextureProvider::get_texture("held_awp").get(), AnimationData{1, 0, false}};
     
+    animation_prototypes["bomb"] = {TextureProvider::get_texture("bomb").get(), AnimationData{1, 0, false}};
+    animation_prototypes["glock"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 0, false}};
+    animation_prototypes["ak47"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 1, false}};
+    animation_prototypes["m3"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 2, false}};
+    animation_prototypes["awp"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 3, false}};
+
     // ====== EFFECTS ======
     animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
     animation_prototypes["knifeslash"] = {TextureProvider::get_texture("knifeslash").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
