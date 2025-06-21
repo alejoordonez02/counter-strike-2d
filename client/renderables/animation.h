@@ -3,12 +3,13 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "common/position.h"
 
 struct AnimationData {
     int columns;        // cantidad de columnas de la imagen (ej. terrorista tiene 2)
     int frames;         // cantidad de frames de la animación (ej. terrorista tiene 6). Para frames fijos es el numero de frame en la imagen
     bool is_animated;       // true si es una animación, false si es un sprite estático
-    int steps;          // velocidad del sprite, cada cuántos frames avanza al siguiente (solo si es animado)
+    int steps = 0;          // velocidad del sprite, cada cuántos frames avanza al siguiente (solo si es animado)
     int size_width = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
     int size_height = 0;    // si es 0 usa el tamaño de la textura original, otro valor modifica el tamaño del sprite
     float modify_size = 0;   // si es 0 usa el default, otro valor modifica el tamaño del sprite
@@ -19,13 +20,17 @@ class Animation {
     Animation(SDL2pp::Texture& texture, const AnimationData& data);
     ~Animation();
     void update();
-    void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
+    void render(SDL2pp::Renderer& renderer, const Position& position,
                 SDL_RendererFlip& flipType, double rotation_angle = 0.0, bool is_camera_enabled = true);
     void render_tilling(SDL2pp::Renderer& renderer,
                         const SDL2pp::Point from_position, int columns,
                         int rows);
+    void start_fadeout();
+    bool update_fadeout();
     void skip_frames(uint8_t frames_to_skip);
-    SDL2pp::Point get_animation_size();
+    void reset();
+    Position get_animation_size();
+    bool is_fading_out = false;
 
 private:
     void advanceFrame();
@@ -53,6 +58,10 @@ private:
     // contador para animaciones
     int elapsed;
     int step;
+
+    // para fadeout
+    int fadeout_counter = 0;
+    int fadeout_alpha = 255;
 };
 
 #endif

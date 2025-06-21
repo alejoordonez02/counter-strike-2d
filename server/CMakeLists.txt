@@ -2,10 +2,7 @@
 
 set(SERVER_SOURCES
     client_handler.cpp
-    game.cpp
-    game_maker.cpp
     main.cpp
-    player_handler.cpp
 )
 
 add_library(cs2d_server_lib)
@@ -17,13 +14,8 @@ target_include_directories(cs2d_server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_sources(cs2d_server_lib
     PRIVATE
     client_handler.cpp
-    game.cpp
-    game_maker.cpp
     main.cpp
-    player_handler.cpp
 )
 
-add_subdirectory(config)
+add_subdirectory(game)
 add_subdirectory(lobby_commands)
-add_subdirectory(player_commands)
-add_subdirectory(world)

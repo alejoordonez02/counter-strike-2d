@@ -21,7 +21,7 @@ class RenderableNumbers {
     public:
     RenderableNumbers(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void render(SDL2pp::Renderer& renderer, const SDL2pp::Point& number_position, bool is_camera_enabled);
+    void render(SDL2pp::Renderer& renderer, const Position& number_position, bool is_camera_enabled);
 
     void load_numbers();
 
@@ -29,7 +29,7 @@ class RenderableNumbers {
 
     void update_string(const std::string& str);
 
-    SDL2pp::Point get_animation_size();
+    Position get_animation_size();
 
     ~RenderableNumbers();
 };

@@ -4,8 +4,6 @@
 
 #include "common/network/dtos/snapshot_dto.h"
 
-// Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / 70;
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::unique_ptr<DTO>>& commands, int user_player_id,
@@ -63,7 +61,7 @@ void GameLoop::debug_get_fps(uint32_t& fps_timer, int& frame_count) {
     uint32_t now = SDL_GetTicks();
     // si pasó 1 segundo imprime los frames y resetea contador
     if (now - fps_timer >= 1000) {
-        std::cout << "FPS: " << frame_count << std::endl;
+        // std::cout << "FPS: " << frame_count << std::endl;
         frame_count = 0;
         fps_timer = now;
     }

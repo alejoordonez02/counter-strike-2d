@@ -9,11 +9,12 @@
 #include "common/direction.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/aim_dto.h"
+#include "common/network/dtos/change_weapon_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_attacking_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
-#include "input_handler.h"
+#include "client/camera.h"
 
 InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -52,15 +53,29 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
     }
 }
 
+
+void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
+    // Sensibilidad mínima para el scroll de arma
+    const int kWeaponScrollThreshold = 1;
+    static int weapon_scroll_accum = 0;
+
+    // Acumula el desplazamiento de la rueda
+    weapon_scroll_accum += event.wheel.y;
+    if (std::abs(weapon_scroll_accum) >= kWeaponScrollThreshold) {
+        // determina el tipo de arma a cambiar (ejemplo: 1="next" o -1="prev")
+        int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
+        std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
+        weapon_scroll_accum = 0;
+    }
+}
+
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
 void InputHandler::send_direction() {
     static bool was_moving = false;
     Direction dir(0, 0);
 
-    /*
-     * wasd pls jsajjasjaj
-     * */
     if (key_states[SDLK_w]) {
         dir.y -= 1;
     }
@@ -110,24 +125,30 @@ void InputHandler::send_attack() {
     prev_left = is_attacking;
 }
 
-void InputHandler::send_aim() {
-    static int last_dx = INT32_MAX, last_dy = INT32_MAX;
-    int mx, my;
-    SDL_GetMouseState(&mx, &my);
-    SDL_Window* win = SDL_GetMouseFocus();
-    int w = 0, h = 0;
-    if (win) SDL_GetWindowSize(win, &w, &h);
 
-    int dx = mx - w / 2;
-    int dy = my - h / 2;
-    /*
-     * checkear q no se vaya a volver a mandar la misma dir, quizás innecesario
-     * siendo que hay cooldown...
-     * */
-    if (dx != last_dx || dy != last_dy) {
+void InputHandler::send_aim() {
+    // sensibilidad mínima para el aim
+    const int kAimThreshold = 90;
+    static int aim_accum_x = 0, aim_accum_y = 0;
+    
+    static int last_dx = INT32_MAX, last_dy = INT32_MAX;
+    SDL2pp::Point mouse_pos;
+    SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
+    Camera::revert_center_point(mouse_pos);
+    
+    int dx = mouse_pos.x;
+    int dy = mouse_pos.y;
+
+    aim_accum_x += std::abs(dx - last_dx);
+    aim_accum_y += std::abs(dy - last_dy);
+
+    if (aim_accum_x >= kAimThreshold || aim_accum_y >= kAimThreshold) {
+        // std::cout << "LOG: Enviando comando de apuntar a: (" << dx << ", " << dy << ")" << std::endl;
         commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
         last_dx = dx;
         last_dy = dy;
+        aim_accum_x = 0;
+        aim_accum_y = 0;
     }
 }
 
@@ -162,6 +183,9 @@ bool InputHandler::handle_events() {
                 break;
             case SDL_MOUSEBUTTONUP:
                 handle_mouse_up(event);
+                break;
+            case SDL_MOUSEWHEEL:
+                handle_mouse_wheel(event);
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Saliendo del input handler..." << std::endl;

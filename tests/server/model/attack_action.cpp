@@ -1,7 +1,7 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gtest/gtest.h"
-#include "server/world/map.h"
+#include "server/game/world/map.h"
 #include "tests/server/model/mocks/mock_attacking_player.h"
 
 class MagicWeapon: public Weapon {

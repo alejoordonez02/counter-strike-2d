@@ -1,7 +1,7 @@
 #ifndef SERVER_LOBBY_COMMANDS_LIST_GAMES_H
 #define SERVER_LOBBY_COMMANDS_LIST_GAMES_H
 
-#include "server/lobby_commands/lobby_command.h"
+#include "lobby_command.h"
 
 class ClientHandler;
 

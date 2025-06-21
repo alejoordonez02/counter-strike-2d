@@ -5,12 +5,13 @@
 #include <string>
 #include <unordered_map>
 
-#include "SDL2pp/Point.hh"
 #include "SDL2pp/Renderer.hh"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "client/renderables/renderable_legs.h"
+#include "client/renderables/renderable_gun.h"
 #include "common/snapshot.h"
+#include "common/position.h"
 
 class RenderablePlayer {
 private:
@@ -18,7 +19,7 @@ private:
     bool is_terrorist;
 
     // Coordenadas del jugador: x,y
-    SDL2pp::Point position;
+    Position position;
 
     double facing_angle;
 
@@ -28,8 +29,13 @@ private:
     bool is_walking;
     bool is_dead;
 
+    int fadeout_counter = 0;
+    int fadeout_alpha = 255;
+    bool is_fading_out = false;
+
     WeaponType current_weapon;
     RenderableLegs legs;
+    RenderableGun gun;
 
     Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;

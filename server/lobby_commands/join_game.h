@@ -4,7 +4,7 @@
 #include <string>
 
 #include "common/team_name.h"
-#include "server/lobby_commands/lobby_command.h"
+#include "lobby_command.h"
 
 class ClientHandler;
 

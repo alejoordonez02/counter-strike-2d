@@ -21,14 +21,6 @@ std::unordered_map<std::string, std::shared_ptr<SDL2pp::Texture>>
 TextureProvider::TextureProvider() {}
 
 void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
-    // pointer(
-    //         renderer,
-    //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
-    //             .SetColorKey(true,
-    //             SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0,
-    //             255)) // Magenta
-    //     ),
-
     // ==== PLAYERS ======
     textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(
             renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
@@ -65,14 +57,65 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["hud_nums"] = std::make_shared<SDL2pp::Texture>(renderer, hud_numbers_surface);
     
     
+    // ==== GUNS ======
+    SDL2pp::Surface bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb.bmp");
+    bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["bomb"] = std::make_shared<SDL2pp::Texture>(renderer, bomb_surface);
+
+    SDL2pp::Surface knife_surface(DATA_PATH "/assets/gfx/weapons/knife.bmp");
+    knife_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["knife"] = std::make_shared<SDL2pp::Texture>(renderer, knife_surface);
+
+    SDL2pp::Surface glock_surface(DATA_PATH "/assets/gfx/weapons/glock.bmp");
+    glock_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["glock"] = std::make_shared<SDL2pp::Texture>(renderer, glock_surface);
+    
+    SDL2pp::Surface ak47_surface(DATA_PATH "/assets/gfx/weapons/ak47.bmp");
+    ak47_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["ak47"] = std::make_shared<SDL2pp::Texture>(renderer, ak47_surface);
+    
+    SDL2pp::Surface m3_surface(DATA_PATH "/assets/gfx/weapons/m3.bmp");
+    m3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["m3"] = std::make_shared<SDL2pp::Texture>(renderer, m3_surface);
+
+    SDL2pp::Surface awp_surface(DATA_PATH "/assets/gfx/weapons/awp.bmp");
+    awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
 
 
+    // ==== EFFECTS ======
+    // modular color a uno amarillo
 
+    SDL2pp::Surface flare3_surface(DATA_PATH "/assets/gfx/flare3.bmp");
+    flare3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, flare3_surface);
+    textures["flare3"]->SetColorMod(255, 255, 0);
+    textures["flare3"]->SetAlphaMod(128); // 128 es 50% opacidad
+    
+    SDL2pp::Surface knifeslash_surface(DATA_PATH "/assets/gfx/knifeslash.bmp");
+    knifeslash_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["knifeslash"] = std::make_shared<SDL2pp::Texture>(renderer, knifeslash_surface);
+    textures["knifeslash"]->SetAlphaMod(128); // 128 es 50% opacidad
+    
     // ==== OTHER ======
+    SDL2pp::Surface decals_surface(DATA_PATH "/assets/gfx/decals.bmp");
+    decals_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
+    textures["decals"] = std::make_shared<SDL2pp::Texture>(renderer, decals_surface);
+    textures["decals"]->SetColorMod(255, 255, 0);
+    textures["decals"]->SetAlphaMod(128); // 128 es 50% opacidad
+
     // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
     // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH
     // "/assets/gfx/player/ct1.bmp"); terrorist_1 = SDL2pp::Texture(renderer,
     // DATA_PATH "/assets/gfx/player/t1.bmp");
+
+    // pointer(
+    //         renderer,
+    //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
+    //             .SetColorKey(true,
+    //             SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0,
+    //             255)) // Magenta
+    //     ),
 }
 
 std::shared_ptr<SDL2pp::Texture> TextureProvider::get_texture(

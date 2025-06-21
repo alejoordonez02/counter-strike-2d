@@ -1,10 +1,10 @@
-#include "server/lobby_commands/create_game.h"
+#include "create_game.h"
 
 #include <string>
 
 #include "common/map_name.h"
+#include "lobby_command.h"
 #include "server/client_handler.h"
-#include "server/lobby_commands/lobby_command.h"
 
 CreateGameCommand::CreateGameCommand(const std::string& game_name,
                                      MapName map_name, TeamName team):

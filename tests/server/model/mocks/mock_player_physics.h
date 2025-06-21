@@ -7,10 +7,10 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gmock/gmock.h"
-#include "server/world/map.h"
-#include "server/world/physics/hitbox.h"
-#include "server/world/physics/player_physics.h"
-#include "server/world/physics/trajectory.h"
+#include "server/game/world/map.h"
+#include "server/game/world/physics/hitbox.h"
+#include "server/game/world/physics/player_physics.h"
+#include "server/game/world/physics/trajectory.h"
 
 class MockPlayerPhysics: public PlayerPhysics {
 private:
