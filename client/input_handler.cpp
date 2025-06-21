@@ -143,7 +143,7 @@ void InputHandler::send_aim() {
     aim_accum_y += std::abs(dy - last_dy);
 
     if (aim_accum_x >= kAimThreshold || aim_accum_y >= kAimThreshold) {
-        std::cout << "LOG: Enviando comando de apuntar a: (" << dx << ", " << dy << ")" << std::endl;
+        // std::cout << "LOG: Enviando comando de apuntar a: (" << dx << ", " << dy << ")" << std::endl;
         commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
         last_dx = dx;
         last_dy = dy;

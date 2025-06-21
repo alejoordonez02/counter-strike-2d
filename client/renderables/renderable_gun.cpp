@@ -27,7 +27,7 @@ void RenderableGun::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableGun::update(const SDL2pp::Point& player_position, const SDL2pp::Point& aim_position, double facing_angle, 
+void RenderableGun::update(const Position& player_position, const Position& aim_position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
     if(weapon_type == WeaponType::None) {
         current_animation = nullptr;

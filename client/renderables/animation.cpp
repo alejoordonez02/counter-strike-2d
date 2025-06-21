@@ -25,9 +25,9 @@ Animation::Animation(SDL2pp::Texture& texture, const AnimationData& data):
 Animation::~Animation() {
 }
 
-SDL2pp::Point Animation::get_animation_size() {
+Position Animation::get_animation_size() {
     // devuelve el tamaño del sprite, no de la textura completa
-    return SDL2pp::Point(size_width * modify_size, size_height * modify_size);
+    return Position(size_width * modify_size, size_height * modify_size);
 }
 
 
@@ -66,13 +66,14 @@ void Animation::reset() {
     this->current_frame = 0;
 }
 
-void Animation::render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
+void Animation::render(SDL2pp::Renderer& renderer, const Position& position,
                        SDL_RendererFlip& flipType, double rotation_angle, bool is_camera_enabled) {
+    SDL2pp::Point point(position.x, position.y);
     int frameX = (this->current_frame % columns) * size_width;
     int frameY = (this->current_frame / columns) * size_height;
 
     SDL2pp::Rect src = SDL2pp::Rect(frameX, frameY, size_width, size_height);
-    SDL2pp::Rect dst = SDL2pp::Rect(position.x, position.y, size_width * modify_size, size_height * modify_size);
+    SDL2pp::Rect dst = SDL2pp::Rect(point.x, point.y, size_width * modify_size, size_height * modify_size);
 
     // se modifica su posición para que este centrado en la cámara
     if(is_camera_enabled){

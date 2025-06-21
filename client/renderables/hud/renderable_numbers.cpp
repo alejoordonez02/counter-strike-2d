@@ -40,7 +40,7 @@ void RenderableNumbers::update_string(const std::string& str) {
     }
 }
 
-SDL2pp::Point RenderableNumbers::get_animation_size(){
+Position RenderableNumbers::get_animation_size(){
     if (animations.empty()) {
         throw std::runtime_error("No animations loaded");
     }
@@ -49,8 +49,8 @@ SDL2pp::Point RenderableNumbers::get_animation_size(){
 }
 
 
-void RenderableNumbers::render(SDL2pp::Renderer& renderer, const SDL2pp::Point& numbers_position, bool is_camera_enabled) {
-    SDL2pp::Point number_animation_size = get_animation_size();
+void RenderableNumbers::render(SDL2pp::Renderer& renderer, const Position& numbers_position, bool is_camera_enabled) {
+    Position number_animation_size = get_animation_size();
     int x = numbers_position.x;
     int y = numbers_position.y;
     int spacing_between_digits = number_animation_size.x / 4;
@@ -58,7 +58,7 @@ void RenderableNumbers::render(SDL2pp::Renderer& renderer, const SDL2pp::Point& 
 
     for (const auto& digit : digits) {
         if (animations.count(digit)) {
-            animations[digit]->render(renderer, SDL2pp::Point(x, y), flip, 0, is_camera_enabled);
+            animations[digit]->render(renderer, Position(x, y), flip, 0, is_camera_enabled);
             // next digit position
             x += number_animation_size.x + spacing_between_digits;
         }

@@ -21,7 +21,7 @@ void RenderableBlock::render(SDL2pp::Renderer& renderer) {
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     if (block) {
-        block->render(renderer, SDL2pp::Point(block_data.x, block_data.y), flip, 0);
+        block->render(renderer, Position(block_data.x, block_data.y), flip, 0);
     }
 }
 

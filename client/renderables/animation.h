@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2pp/SDL2pp.hh>
+#include "common/position.h"
 
 struct AnimationData {
     int columns;        // cantidad de columnas de la imagen (ej. terrorista tiene 2)
@@ -19,14 +20,14 @@ class Animation {
     Animation(SDL2pp::Texture& texture, const AnimationData& data);
     ~Animation();
     void update();
-    void render(SDL2pp::Renderer& renderer, const SDL2pp::Point position,
+    void render(SDL2pp::Renderer& renderer, const Position& position,
                 SDL_RendererFlip& flipType, double rotation_angle = 0.0, bool is_camera_enabled = true);
     void render_tilling(SDL2pp::Renderer& renderer,
                         const SDL2pp::Point from_position, int columns,
                         int rows);
     void skip_frames(uint8_t frames_to_skip);
     void reset();
-    SDL2pp::Point get_animation_size();
+    Position get_animation_size();
 
 private:
     void advanceFrame();

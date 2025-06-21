@@ -5,15 +5,16 @@
 #include <string>
 #include <unordered_map>
 
-#include "snapshot.h"
+#include "common/snapshot.h"
+#include "common/position.h"
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
 
 class RenderableGunEffect {
     private:
-    SDL2pp::Point position;
-    SDL2pp::Point gun_position;
-    SDL2pp::Point aim_position;
+    Position position;
+    Position gun_position;
+    Position aim_position;
     double facing_angle;
 
     Animation* current_animation;
@@ -28,7 +29,7 @@ class RenderableGunEffect {
     public:
     explicit RenderableGunEffect(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const SDL2pp::Point& player_position, const SDL2pp::Point& gun_position, const SDL2pp::Point& aim_position, double facing_angle, WeaponType weapon_type, bool is_shooting);
+    void update(const Position& player_position, const Position& gun_position, const Position& aim_position, double facing_angle, WeaponType weapon_type, bool is_shooting);
     void render_line(SDL2pp::Renderer& renderer);
     void render(SDL2pp::Renderer& renderer);
 

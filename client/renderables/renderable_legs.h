@@ -7,10 +7,11 @@
 
 #include "client/animation_provider.h"
 #include "client/renderables/animation.h"
+#include "common/position.h"
 
 class RenderableLegs {
     private:
-    SDL2pp::Point position;
+    Position position;
     double facing_angle;
 
     Animation* current_animation;
@@ -24,7 +25,7 @@ class RenderableLegs {
     explicit RenderableLegs(
             std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const SDL2pp::Point& position, double facing_angle, bool is_walking);
+    void update(const Position& position, double facing_angle, bool is_walking);
     void render(SDL2pp::Renderer& renderer);
 
     void skip_frames(uint8_t frames_to_skip);
