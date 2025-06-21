@@ -1,5 +1,6 @@
 #include "client/renderables/renderable_player.h"
 #include "client/animation_provider.h"
+#include "common/snapshot.h"
 
 #include <utility>
 
@@ -34,6 +35,7 @@ void RenderablePlayer::update(const PlayerData& player) {
 
     if(player.is_dead){
         current_animation = animations["death_icon"].get();
+        current_animation->start_fadeout();
         current_animation->update();
         return;
     }
@@ -64,13 +66,17 @@ void RenderablePlayer::update(const PlayerData& player) {
 }
 
 void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
+    // NOTE: el orden de renderizado indica como un sprite "pisa" a otro
+    
     double angle = this->facing_angle;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-    // el orden de renderizado indica como un sprite "pisa" a otro
+    if (current_animation->is_fading_out && !current_animation->update_fadeout()) {
+        // si está en fadeout, no lo renderiza
+        return;
+    }
     legs.render(renderer);
     current_animation->render(renderer, position, flip, angle);
-
     gun.render(renderer);
     
 }

@@ -25,9 +25,12 @@ class Animation {
     void render_tilling(SDL2pp::Renderer& renderer,
                         const SDL2pp::Point from_position, int columns,
                         int rows);
+    void start_fadeout();
+    bool update_fadeout();
     void skip_frames(uint8_t frames_to_skip);
     void reset();
     Position get_animation_size();
+    bool is_fading_out = false;
 
 private:
     void advanceFrame();
@@ -55,6 +58,10 @@ private:
     // contador para animaciones
     int elapsed;
     int step;
+
+    // para fadeout
+    int fadeout_counter = 0;
+    int fadeout_alpha = 255;
 };
 
 #endif

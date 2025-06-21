@@ -29,6 +29,10 @@ private:
     bool is_walking;
     bool is_dead;
 
+    int fadeout_counter = 0;
+    int fadeout_alpha = 255;
+    bool is_fading_out = false;
+
     WeaponType current_weapon;
     RenderableLegs legs;
     RenderableGun gun;

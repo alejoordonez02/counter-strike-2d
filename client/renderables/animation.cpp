@@ -80,9 +80,18 @@ void Animation::render(SDL2pp::Renderer& renderer, const Position& position,
         Camera::modify_center_rectangle(dst);
     }
 
+    // transparencia. Permite que la animación se desvanezca
+    // si no se está haciendo fadeout, se usa el alpha original
+    Uint8 old_alpha;
+    old_alpha = texture.GetAlphaMod();
+    texture.SetAlphaMod(fadeout_alpha);
+
     renderer.Copy(texture, src, dst, rotation_angle,
                   SDL2pp::NullOpt,  // rotation center - not needed
                   flipType);
+
+    // restaurar el alpha original
+    texture.SetAlphaMod(old_alpha);
 }
 
 /**
@@ -111,4 +120,23 @@ void Animation::render_tilling(SDL2pp::Renderer& renderer, const SDL2pp::Point f
             renderer.Copy(texture, src, dst);
         }
     }
+}
+
+void Animation::start_fadeout() {
+    // Solo inicia el fadeout si está completamente visible
+    if (fadeout_alpha < 255){
+        return;
+    }
+    is_fading_out = true;
+    fadeout_counter = 0;
+    fadeout_alpha = 255;
+}
+
+bool Animation::update_fadeout() {
+    if (fadeout_alpha <= 0) return false;
+
+    fadeout_counter++;
+    // velocidad de fadeout
+    fadeout_alpha = std::max(0, 255 - fadeout_counter * 8);
+    return true; // sigue visible
 }
