@@ -14,6 +14,7 @@
 RenderableGunEffect::RenderableGunEffect(
         std::shared_ptr<AnimationProvider> animation_provider):
         position(0, 0),
+        gun_position(0, 0),
         facing_angle(0),
         current_animation(nullptr),
         animation_provider(animation_provider),
@@ -30,9 +31,9 @@ void RenderableGunEffect::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableGunEffect::update(const SDL2pp::Point& player_position, double facing_angle, 
+void RenderableGunEffect::update(const SDL2pp::Point& player_position, const SDL2pp::Point& gun_position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
-
+    this->gun_position = gun_position;
     if(!is_shooting || weapon_type == WeaponType::None) {
         current_animation = nullptr;
         effect_timer = 0;
@@ -64,10 +65,16 @@ void RenderableGunEffect::update(const SDL2pp::Point& player_position, double fa
 }
 
 void RenderableGunEffect::render_line(SDL2pp::Renderer& renderer) {
+    // NOTE: Se podria cambiar para que tome a partir del aim, pero al no ser absoluto
+    // es mejor que tome la posicion del mouse
     int mouse_x = 0, mouse_y = 0;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    renderer.SetDrawColor(255, 255, 0, 128); // Amarillo
-    SDL_RenderDrawLine(renderer.Get(), position.x, position.y, mouse_x, mouse_y);
+    SDL2pp::Point modified_position = gun_position;
+    modified_position.x += 10;
+    modified_position.y += 10;
+    Camera::modify_center_point(modified_position);
+    renderer.SetDrawColor(255, 255, 0, 10); // Amarillo
+    SDL_RenderDrawLine(renderer.Get(), modified_position.x, modified_position.y, mouse_x, mouse_y);
     renderer.SetDrawColor(0, 0, 0, 0); // Restaurar color de fondo
 }
 
@@ -77,11 +84,10 @@ void RenderableGunEffect::render(SDL2pp::Renderer& renderer) {
     if(current_animation == nullptr) {
         return;
     }
-    // Si el efecto actual es flare3, dibujar la línea amarilla desde el efecto hasta el mouse
-    // if (current_animation == animations["flare3"].get()) {
-    //     render_line(renderer);
-    // }
-    Camera::debug_point(renderer, position);
+    // Si el efecto actual es flare3, dibujar la línea amarilla hasta el mouse
+    if (current_animation == animations["flare3"].get()) {
+        render_line(renderer);
+    }
     
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     current_animation->render(renderer, position, flip, this->facing_angle);

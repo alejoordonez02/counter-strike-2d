@@ -1,10 +1,8 @@
 #include "client/renderables/renderable_player.h"
-#include "client/camera.h"
-
-#include <utility>
-
 #include "client/animation_provider.h"
 #include "common/snapshot.h"
+
+#include <utility>
 
 RenderablePlayer::RenderablePlayer(
     uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider):
@@ -74,7 +72,6 @@ void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
     legs.render(renderer);
     current_animation->render(renderer, position, flip, angle);
 
-    Camera::debug_point(renderer, position);
     gun.render(renderer);
     
 }

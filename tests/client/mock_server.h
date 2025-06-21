@@ -106,7 +106,7 @@ public:
         int x = 0;
         int y = 0;
         for (auto& c : clients) {
-            auto p = get_player(map, Position(x += 100, y));
+            auto p = get_player(map, Position(x += 100, y += 100));
             map->add_collidable(p);
             auto h = c->play(p);
             h->start();

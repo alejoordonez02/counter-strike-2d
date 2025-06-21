@@ -1,6 +1,5 @@
 #include "client/renderables/renderable_gun.h"
 #include "client/animation_provider.h"
-#include "client/camera.h"
 
 #include <memory>
 #include <string>
@@ -58,7 +57,7 @@ void RenderableGun::update(const SDL2pp::Point& player_position, double facing_a
     this->position.y = player_position.y + std::sin(radians) * offset;
     
     // actualiza la animacion del efecto del disparo
-    gun_effect.update(player_position, this->facing_angle, weapon_type, is_shooting);
+    gun_effect.update(player_position, position, this->facing_angle, weapon_type, is_shooting);
 
     if(current_animation == nullptr) {
         return;
@@ -71,8 +70,6 @@ void RenderableGun::render(SDL2pp::Renderer& renderer) {
     if(current_animation == nullptr) {
         return;
     }
-
-    Camera::debug_point(renderer, position);
 
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     current_animation->render(renderer, position, flip, this->facing_angle);
