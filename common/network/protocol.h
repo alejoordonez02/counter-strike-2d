@@ -10,16 +10,6 @@ constexpr int LenBytes = 2;  // vamos a mandar algo mas grande que 255 bytes?
 constexpr int MaxLen = 256;  // <= 65535
 };  // namespace Message
 
-namespace LobbySerial {
-constexpr uint8_t CHANGE_USERNAME = 0x55;  // U - 85
-constexpr uint8_t LIST_GAMES = 0x4C;       // L - 76
-constexpr uint8_t CREATE_GAME = 0x43;      // C - 67
-constexpr uint8_t JOIN_GAME = 0x4A;        // J - 74
-constexpr uint8_t SUCCESS = 0x53;          // S - 83
-constexpr uint8_t FAILURE = 0x46;          // F - 70
-constexpr uint8_t EXIT_SERVER = 0x45;      // E - 69
-};  // namespace LobbySerial
-
 namespace MapSerial {
 enum : uint8_t {
 #define X(name) name,
@@ -39,6 +29,15 @@ constexpr uint8_t STOP_ATTACKING = 0x62;
 constexpr uint8_t SNAPSHOT = 0x53;  // S - 83
 constexpr uint8_t CHANGE_WEAPON = 0x57;  // W - 87
 };  // namespace PlayerCommands
+namespace LobbyCommands {
+constexpr uint8_t CHANGE_USERNAME = 0x55;  // U - 85
+constexpr uint8_t LIST_GAMES = 0x4C;       // L - 76
+constexpr uint8_t CREATE_GAME = 0x43;      // C - 67
+constexpr uint8_t JOIN_GAME = 0x4A;        // J - 74
+constexpr uint8_t SUCCESS = 0x53;          // S - 83
+constexpr uint8_t FAILURE = 0x46;          // F - 70
+constexpr uint8_t EXIT_SERVER = 0x45;      // E - 69
+};  // namespace LobbyCommands
 namespace GameState {
 // TODO: Snapshot
 }

@@ -7,17 +7,17 @@
 
 #include "common/direction.h"
 #include "common/network/dtos/aim_dto.h"
-#include "server/model/player.h"
 #include "server/player_commands/command.h"
+#include "server/world/player.h"
 
 /*
  * Aim
  * */
 class Aim: public Command {
-    private:
+private:
     Direction dir;
 
-    public:
+public:
     explicit Aim(const Direction& d): dir(d) {}
 
     explicit Aim(std::unique_ptr<DTO>&& dto_p) {

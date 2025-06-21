@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "server/model/weapon.h"
+#include "server/world/equipment/weapon.h"
 
 class RapidWeapon: public Weapon {
 public:
@@ -17,7 +17,7 @@ public:
     MOCK_METHOD(void, get_attacked, (int), (override));
 
     std::optional<Position> intersect(
-            const Trajectory& /* t */) const override {
+        const Trajectory& /* t */) const override {
         return dummy_pos;
     }
 };

@@ -1,13 +1,13 @@
 #ifndef SERVER_PLAYER_COMMANDS_COMMAND_H
 #define SERVER_PLAYER_COMMANDS_COMMAND_H
 
-#include "server/model/player.h"
+#include "server/world/player.h"
 
 class Command {
-    protected:
+protected:
     Command() = default;
 
-    public:
+public:
     virtual void execute(Player& p) const = 0;
 
     Command(const Command&) = delete;

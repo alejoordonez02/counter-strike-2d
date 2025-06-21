@@ -2,22 +2,28 @@
 #define SERVER_CLIENT_HANDLER_H
 
 #include "common/network/connection.h"
-#include "server/player_handler.h"
+#include "common/thread.h"
+#include "server/game_maker.h"
+#include "server/lobby_command_constructor.h"
 
-/*
- * Manejar la etapa previa a la partida, por ahora sólo tiene el método play
- * para arrancar a jugar con el PlayerHandler
- * */
-class ClientHandler {
+class ClientHandler: public Thread {
 private:
     Connection con;
+    GameMaker& game_maker;
+    DTOConstructor dto_ctr;
+    LobbyCmdConstructor cmd_ctr;
 
 public:
-    ClientHandler(Connection&& con): con(std::move(con)) {}
+    ClientHandler(Connection&& con, GameMaker& game_maker);
 
-    std::unique_ptr<PlayerHandler> play(std::shared_ptr<Player> player) {
-        return std::make_unique<PlayerHandler>(std::move(con), player);
-    }
+    void run() override;
+
+    void handle_create(const std::string& game_name, MapName map,
+                       TeamName team);
+
+    void handle_join(const std::string& game_name, TeamName team);
+
+    void handle_list();
 };
 
 #endif

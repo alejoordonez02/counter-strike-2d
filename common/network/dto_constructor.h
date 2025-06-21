@@ -15,9 +15,13 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
 #include "common/network/protocol.h"
+#include "create_game_dto.h"
+#include "join_game_dto.h"
+#include "list_games_dto.h"
 #include "stop_attacking_dto.h"
 
 using namespace DTOSerial::PlayerCommands;
+using namespace DTOSerial::LobbyCommands;
 // using namespace DTOSerial:: otros;
 
 using DTOMaker = std::function<std::unique_ptr<DTO>(std::vector<uint8_t>&&)>;
@@ -48,6 +52,18 @@ public:
             {STOP_ATTACKING,
              [](auto&& bytes) {
                  return std::make_unique<StopAttackingDTO>(std::move(bytes));
+             }},
+            {CREATE_GAME,
+             [](auto&& bytes) {
+                 return std::make_unique<CreateGameDTO>(std::move(bytes));
+             }},
+            {JOIN_GAME,
+             [](auto&& bytes) {
+                 return std::make_unique<JoinGameDTO>(std::move(bytes));
+             }},
+            {LIST_GAMES,
+             [](auto&& bytes) {
+                 return std::make_unique<ListGamesDTO>(std::move(bytes));
              }},
             {SNAPSHOT,
              [](auto&& bytes) {
