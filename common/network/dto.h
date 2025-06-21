@@ -45,6 +45,7 @@ protected:
     void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
     void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
     void serialize_string_into(std::vector<uint8_t>& out, const std::string& str);
+    void serialize_uint16_into(std::vector<uint8_t>& out, uint16_t n);
 
     // deserialization
 
@@ -52,6 +53,7 @@ protected:
     Position deserialize_pos_from(std::vector<uint8_t>::iterator& in);
     Direction deserialize_dir_from(std::vector<uint8_t>::iterator& in);
     std::string deserialize_string_from(std::vector<uint8_t>::iterator& in);
+    uint16_t deserialize_uint16_from(std::vector<uint8_t>::iterator& in);
 };
 
 #endif

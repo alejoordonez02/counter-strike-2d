@@ -36,9 +36,15 @@ void DTO::serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir) {
 }
 
 void DTO::serialize_string_into(std::vector<uint8_t>& out, const std::string& str) {
-    out.push_back(static_cast<uint8_t>(str.size() >> 8));
-    out.push_back(static_cast<uint8_t>(str.size() & 0xFF));
+    serialize_uint16_into(out, str.size());
     out.insert(out.end(), str.begin(), str.end());
+}
+
+void DTO::serialize_uint16_into(std::vector<uint8_t>& out, uint16_t n) {
+    uint16_t n_be = htons(n);
+    std::vector<uint8_t> bytes(sizeof(n_be));
+    std::memcpy(bytes.data(), &n_be, sizeof(n_be));
+    out.insert(out.end(), bytes.begin(), bytes.end());
 }
 
 
@@ -65,12 +71,17 @@ Direction DTO::deserialize_dir_from(std::vector<uint8_t>::iterator& in) {
 }
 
 std::string DTO::deserialize_string_from(std::vector<uint8_t>::iterator& in) {
-    uint16_t str_size = 0;
-    std::memcpy(&str_size, &*in, sizeof(str_size));
-    str_size = ntohs(str_size);
-    in += sizeof(str_size);
+    uint16_t str_size = deserialize_uint16_from(in);
     std::string str(str_size, '0');
     std::memcpy(str.data(), &*in, str_size);
     in += str_size;
     return str;
+}
+
+uint16_t DTO::deserialize_uint16_from(std::vector<uint8_t>::iterator& in) {
+    uint16_t n = 0;
+    std::memcpy(&n, &*in, sizeof(n));
+    n = ntohs(n);
+    in += sizeof(n);
+    return n;
 }
