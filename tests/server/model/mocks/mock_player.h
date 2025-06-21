@@ -6,10 +6,10 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gmock/gmock.h"
-#include "server/world/equipment/equipment.h"
-#include "server/world/equipment/weapons.h"
-#include "server/world/map.h"
-#include "server/world/player.h"
+#include "server/game/world/equipment/equipment.h"
+#include "server/game/world/equipment/weapons.h"
+#include "server/game/world/map.h"
+#include "server/game/world/player.h"
 
 class MockPlayer: public Player {
 private:

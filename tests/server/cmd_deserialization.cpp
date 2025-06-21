@@ -7,8 +7,8 @@
 #include "common/network/protocol.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "server/cmd_constructor.h"
-#include "server/player_commands/command.h"
+#include "server/game/player_commands/player_cmd_constructor.h"
+#include "server/game/player_commands/player_command.h"
 #include "tests/server/model/mocks/mock_player.h"
 
 namespace {
@@ -24,9 +24,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorth) {
                                       0x00};  // 1
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_moving(Direction(0, 1)));
     cmd_p->execute(p);
@@ -44,9 +44,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthEast) {
                                       0xf3};  // 1/sqrt(2)
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_moving(Direction(1 / std::sqrt(2), 1 / std::sqrt(2))));
     cmd_p->execute(p);
@@ -64,9 +64,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandEast) {
                                       0x00};  // 0
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_moving(Direction(1, 0)));
     cmd_p->execute(p);
@@ -84,9 +84,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthEast) {
                                       0xf3};  // -1/sqrt(2)
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p,
                 start_moving(Direction(1 / std::sqrt(2), -1 / std::sqrt(2))));
@@ -105,9 +105,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouth) {
                                       0x00};  // -1
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_moving(Direction(0, -1)));
     cmd_p->execute(p);
@@ -125,9 +125,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandSouthWest) {
                                       0xf3};  // -1/sqrt(2)
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p,
                 start_moving(Direction(-1 / std::sqrt(2), -1 / std::sqrt(2))));
@@ -146,9 +146,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandWest) {
                                       0x00};  // 0
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_moving(Direction(-1, 0)));
     cmd_p->execute(p);
@@ -166,9 +166,9 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthWest) {
                                       0xf3};  // 1/sqrt(2)
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartMovingDTO>(std::move(bytes));
+        std::make_unique<StartMovingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p,
                 start_moving(Direction(-1 / std::sqrt(2), 1 / std::sqrt(2))));
@@ -177,20 +177,20 @@ TEST(CmdDeserializationTest, DeserializeValidMoveCommandNorthWest) {
 
 TEST(CmdDeserializationTest, DeserializeValidAttackCommandWithPositionXPiYPi) {
     std::vector<uint8_t> srlzd_cmd = {
-            DTOSerial::PlayerCommands::START_ATTACKING,
-            0x40,
-            0x49,
-            0x0f,
-            0xdb,  // ~pi
-            0x40,
-            0x49,
-            0x0f,
-            0xdb};  // ~pi
+        DTOSerial::PlayerCommands::START_ATTACKING,
+        0x40,
+        0x49,
+        0x0f,
+        0xdb,  // ~pi
+        0x40,
+        0x49,
+        0x0f,
+        0xdb};  // ~pi
     std::vector<uint8_t> bytes = srlzd_cmd;
     std::unique_ptr<DTO> dto_p =
-            std::make_unique<StartAttackingDTO>(std::move(bytes));
+        std::make_unique<StartAttackingDTO>(std::move(bytes));
     std::unique_ptr<Command> cmd_p =
-            CmdConstructor().construct(std::move(dto_p));
+        CmdConstructor().construct(std::move(dto_p));
     MockPlayer p;
     EXPECT_CALL(p, start_attacking());
     cmd_p->execute(p);

@@ -2,9 +2,10 @@
 #define SERVER_CLIENT_HANDLER_H
 
 #include "common/network/connection.h"
+#include "common/network/dto_constructor.h"
 #include "common/thread.h"
-#include "server/game_maker.h"
-#include "server/lobby_command_constructor.h"
+#include "game/game_maker.h"
+#include "lobby_commands/lobby_cmd_constructor.h"
 
 class ClientHandler: public Thread {
 private:
