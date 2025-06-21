@@ -6,7 +6,7 @@ struct WeaponConfig {
     int ammo;
     float accuracy;
     float range;
-    float fire_delay;
+    float fire_rate;
     int cost;
     int ammo_cost;
 };

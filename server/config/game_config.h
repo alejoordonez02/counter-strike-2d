@@ -9,17 +9,24 @@
 #include "common/map_name.h"
 #include "common/maploader.h"
 #include "loop_config.h"
+#include "player_config.h"
 #include "weapon_config.h"
 #include "world_config.h"
 
 class GameConfig {
+private:
+    void load_loop_config(YAML::Node config);
+    MapData load_map_config(MapName map_name);
+    void load_world_config(YAML::Node config, MapName map);
+    PlayerConfig load_player_config(YAML::Node config);
+    std::map<std::string, WeaponConfig> load_weapon_configs(YAML::Node config);
+
 public:
     LoopConfig loop;
-    WorldConfig world;
     MapData map;
-    std::map<std::string, WeaponConfig> weapons;
+    WorldConfig world;
 
-    static GameConfig from_yaml(const std::string& path, MapName map);
+    GameConfig(const std::string& path, MapName map);
 };
 
 #endif

@@ -8,12 +8,15 @@
 #include "common/map_name.h"
 #include "common/network/connection.h"
 #include "common/team_name.h"
-#include "server/game.h"
+#include "factory/game_factory.h"
+#include "game.h"
 
 class GameMaker {
 private:
     std::mutex m;
     std::map<std::string, std::unique_ptr<Game>> games;
+
+    GameFactory game_factory;
 
 public:
     GameMaker() = default;

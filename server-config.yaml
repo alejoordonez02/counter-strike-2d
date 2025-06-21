@@ -1,4 +1,4 @@
-server:
+loop:
   tick_rate: 60
   commands_per_tick: 30
 
@@ -6,58 +6,61 @@ world:
   rounds: 15
   round_time: 600
   time_out: 10
-  player_max_velocity: 90
-  player_acceleration: 360
-  player_radius: 10
-  player_starting_money: 800
-  player_max_health: 100
 
-weapons:
-  Knife:
-    damage: 20
-    ammo: 30
-    accuracy: 0.8
-    range: 1
-    fire_delay: 0.5
-    cost: 0
-    ammo_cost: 0
-  Glock:
-    damage: 20
-    ammo: 30
-    accuracy: 0.8
-    range: 30
-    fire_delay: 0.25
-    cost: 700
-    ammo_cost: 1
-  Ak47:
-    damage: 30
-    ammo: 30
-    accuracy: 0.8
-    range: 1200
-    fire_delay: 0.16
-    cost: 2500
-    ammo_cost: 1
-  M3:
-    damage: 20
-    ammo: 30
-    accuracy: 0.5
-    range: 10
-    fire_delay: 0.1
-    cost: 1200
-    ammo_cost: 1
-  Awp:
-    damage: 100
-    ammo: 30
-    accuracy: 1
-    range: 100
-    fire_delay: 0.3
-    cost: 3500
-    ammo_cost: 1
-  Bomb:
-    damage: 500
-    ammo: 1
-    accuracy: 1
-    range: 10
-    fire_delay: 0
-    cost: 0
-    ammo_cost: 0
+  player:
+    max_velocity: 90
+    acceleration: 360
+    radius: 10
+    starting_money: 800
+    max_health: 100
+  
+  weapons:
+    Knife:
+      damage: 25
+      ammo: 1000
+      accuracy: 1
+      range: 10
+      fire_rate: 1
+      cost: 0
+      ammo_cost: 0
+    Glock:
+      damage: 20
+      ammo: 30
+      accuracy: 0.8
+      range: 960
+      fire_rate: 2
+      cost: 700
+      ammo_cost: 1
+    Ak47:
+      damage: 27
+      ammo: 30
+      accuracy: 0.9
+      range: 1280
+      fire_rate: 3
+      cost: 2500
+      ammo_cost: 1
+    M3:
+      damage: 70
+      ammo: 30
+      accuracy: 0.5
+      range: 320
+      fire_rate: 0.5
+      cost: 1200
+      ammo_cost: 1
+    Awp:
+      damage: 100
+      ammo: 30
+      accuracy: 1
+      range: 3200
+      fire_rate: 0.2
+      cost: 3500
+      ammo_cost: 1
+    Bomb:
+      damage: 100
+      ammo: 1
+      accuracy: 1
+      range: 10
+      fire_rate: 0
+      cost: 0
+      ammo_cost: 0
+  

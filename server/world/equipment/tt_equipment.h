@@ -11,7 +11,7 @@
 class TTEquipment: public Equipment {
 private:
 public:
-    TTEquipment(): Equipment(Fist(), Glock(), 0) {}
+    TTEquipment(): Equipment(Ak47(), Glock(), 0) {}
 };
 
 #endif

@@ -5,9 +5,9 @@
 #include <memory>
 
 #include "common/team_name.h"
+#include "factory/player_factory.h"
 #include "map.h"
 #include "player.h"
-#include "player_factory.h"
 
 /*
  * Deltas de tiempo correspondientes a un tick rate constante, de éste forma
