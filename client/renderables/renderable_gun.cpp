@@ -56,8 +56,6 @@ void RenderableGun::update(const SDL2pp::Point& player_position, double facing_a
     this->position.x = player_position.x + std::cos(radians) * offset;
     this->position.y = player_position.y + std::sin(radians) * offset;
     
-    std::cout << "this->facing_angle. gun" << this->facing_angle << std::endl;
-    
     // actualiza la animacion del efecto del disparo
     gun_effect.update(player_position, this->facing_angle, weapon_type, is_shooting);
 

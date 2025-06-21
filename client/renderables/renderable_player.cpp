@@ -34,7 +34,6 @@ void RenderablePlayer::update(const PlayerData& player) {
     this->is_walking = player.is_walking;
     this->is_shooting = player.is_shooting;
 
-    std::cout << "player.is_dead=" << player.is_dead << std::endl;
     if(player.is_dead){
         current_animation = animations["death_icon"].get();
         current_animation->update();
@@ -44,8 +43,6 @@ void RenderablePlayer::update(const PlayerData& player) {
     // ahora usa float y resta posiciones correctamente
     this->facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
     current_weapon = player.current_weapon;
-
-    std::cout << "this->facing_angle. player" << this->facing_angle << std::endl;
 
     // siempre actualiza las piernas
     legs.update(this->position, this->facing_angle, is_walking); 

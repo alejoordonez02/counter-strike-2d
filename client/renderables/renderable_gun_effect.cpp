@@ -58,8 +58,6 @@ void RenderableGunEffect::update(const SDL2pp::Point& player_position, double fa
     this->position.x = player_position.x - texture_size.GetX()/4 + std::cos(radians) * offset;
     this->position.y = player_position.y - texture_size.GetY()/4 + std::sin(radians) * offset;
 
-    std::cout << "this->facing_angle. effect" << this->facing_angle << std::endl;
-
     current_animation->update();
 }
 
