@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
                 &w, &MainWindow::connectToServer,
                 [&](const QString& host, const QString& port, const QString& username) {
                     try {
-                        std::cout << username.toStdString() << "Connecting to " << host.toStdString()
+                        std::cout << username.toStdString() << "Connecting to Lobby"
                                   << ":" << port.toStdString() << std::endl;
                         auto client = std::make_unique<Client>(
                                 host.toStdString(), port.toStdString());

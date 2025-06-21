@@ -23,24 +23,28 @@ void LobbyWindow::populateMatchesList()
     ui->matchesList->clear();
     // aca tendria que recibir las partidas del servidor y cargarlas
     // Hardcodeo algunas partidas para que se vean 
-    QList<QStringList> matches = {
-        // Formato: Nombre, Mapa, Jugadores actuales, Jugadores máximos
-        {"Competitive Match", "de_dust2", "4", "10"},
-        {"Casual Game", "cs_italy", "6", "12"},
-        {"Tournament Practice", "de_inferno", "8", "10"},
-        {"New Players Only", "de_mirage", "2", "10"},
-        {"Headshot Only", "de_nuke", "5", "8"}
+    QList<MatchInfo> matches = {
+        MatchInfo("Competitive Match", "de_dust2", 4, 10),
+        MatchInfo("Casual Game", "cs_italy", 6, 12),
+        MatchInfo("Tournament Practice", "de_inferno", 10, 10),
+        MatchInfo("New Players Only", "de_mirage", 2, 10),
+        MatchInfo("Headshot Only", "de_nuke", 5, 8)
     };
     
     for (const auto& match : matches) {
         QString matchText = QString("%1\nMap: %2\nPlayers: %3/%4")
-                              .arg(match[0])  // Nombre
-                              .arg(match[1])  // Mapa
-                              .arg(match[2])  // Jugadores actuales
-                              .arg(match[3]); // Jugadores máximos
+                          .arg(match.name)
+                          .arg(match.map)
+                          .arg(match.currentPlayers)
+                          .arg(match.maxPlayers);
         
         QListWidgetItem* item = new QListWidgetItem(matchText, ui->matchesList);
-        item->setData(Qt::UserRole, match[0]);
+        item->setData(Qt::UserRole, QVariant::fromValue(match));
+        
+        if (match.currentPlayers >= match.maxPlayers) {
+            item->setForeground(Qt::red);
+            item->setToolTip("Esta partida está llena");
+        }
     }
 }
 
@@ -58,10 +62,42 @@ void LobbyWindow::on_joinMatchButton_clicked()
         QMessageBox::warning(this, "Error", "Please select a match first");
         return;
     }
-    //aca tengo que enviar el comando de unirme a partida al servidor
-    QString matchName = selected->data(Qt::UserRole).toString();
-    QMessageBox::information(this, "Joining Match", 
-        QString("%1 is joining match: %2").arg(username).arg(matchName));
+    MatchInfo matchInfo = selected->data(Qt::UserRole).value<MatchInfo>();
+
+    if (matchInfo.currentPlayers >= matchInfo.maxPlayers) {
+        QMessageBox::warning(this, "Match Full",
+            QString("Cannot join '%1'\nThe match is full (%2/%3 players)")
+                .arg(matchInfo.name)
+                .arg(matchInfo.currentPlayers)
+                .arg(matchInfo.maxPlayers));
+        return;
+    }
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm Join",
+        QString("Do you want to join '%1'?\nMap: %2\nPlayers: %3/%4")
+            .arg(matchInfo.name)
+            .arg(matchInfo.map)
+            .arg(matchInfo.currentPlayers)
+            .arg(matchInfo.maxPlayers),
+        QMessageBox::Yes | QMessageBox::No);
+
+    if (reply != QMessageBox::Yes) {
+        return;
+    }
+
+    try {
+        // aca el cliente tiene que enviar el comando de unirme al servidor
+        
+        QMessageBox::information(this, "Success", 
+            QString("Joining match '%1'...").arg(matchInfo.name));
+        
+        // aca podria cerrar el lobby y abrir la pantalla de juego
+        
+    } catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error",
+            QString("Failed to join match: %1").arg(e.what()));
+    }
 }
 
 void LobbyWindow::on_createMatchButton_clicked()

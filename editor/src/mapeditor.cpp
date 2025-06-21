@@ -12,7 +12,7 @@
 #include <QCoreApplication>
 
 MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
-    m_tileWidth(32), m_tileHeight(32)
+    m_tileWidth(DEFAULT_TILE_WIDTH), m_tileHeight(DEFAULT_TILE_HEIGHT)
 {
     setAcceptDrops(true);
     setMouseTracking(true);

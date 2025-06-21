@@ -6,7 +6,7 @@
 #include <QFileInfo>
 
 SheetEditor::SheetEditor(QWidget *parent) : QWidget(parent),
-    m_tileWidth(32), m_tileHeight(32)
+    m_tileWidth(DEFAULT_TILE_WIDTH), m_tileHeight(DEFAULT_TILE_HEIGHT)
 {
     setMouseTracking(true);
 }
@@ -67,10 +67,8 @@ void SheetEditor::mousePressEvent(QMouseEvent* event) {
             drag->setMimeData(mimeData);
             drag->setPixmap(getSelectedTile());
             
-            m_isDragging = true;
             QApplication::setOverrideCursor(Qt::ClosedHandCursor);
             drag->exec(Qt::CopyAction);
-            m_isDragging = false;
             
             QApplication::restoreOverrideCursor();
             
