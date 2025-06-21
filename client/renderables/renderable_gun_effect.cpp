@@ -21,7 +21,7 @@ RenderableGunEffect::RenderableGunEffect(
     // load_animation("fragments");
     
     // por default no tiene armas
-    current_animation = animations["flare3"].get();
+    current_animation = nullptr;
 }
 
 void RenderableGunEffect::load_animation(const std::string& animation_name) {
@@ -54,7 +54,7 @@ void RenderableGunEffect::update(const SDL2pp::Point& player_position, double fa
     SDL2pp::Point texture_size = current_animation->get_animation_size();
     this->facing_angle = facing_angle + 90;
     double radians = (this->facing_angle) * M_PI / 180.0;
-    double offset = -50;        // TODO: Hardcodeado segun tamaño textura
+    double offset = texture_size.GetX()/2;
     this->position.x = player_position.x - texture_size.GetX()/4 + std::cos(radians) * offset;
     this->position.y = player_position.y - texture_size.GetY()/4 + std::sin(radians) * offset;
 
