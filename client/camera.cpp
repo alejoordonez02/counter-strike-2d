@@ -16,6 +16,24 @@ void Camera::set_screen_size(const SDL2pp::Point& size) {
     screen_size = size;
 }
 
+void Camera::modify_center_rectangle(SDL2pp::Point& rect) {
+    // centra el rectángulo en la pantalla usando el offset de la cámara
+    rect.x -= camera_offset.x;
+    rect.y -= camera_offset.y;
+
+}
+
+// funcion utilitaria, dibuja una pequeña cruz roja para identificar un punto
+void Camera::debug_point(SDL2pp::Renderer& renderer, const SDL2pp::Point& position) {
+    // Dibuja una cruz roja en la posición del jugador
+    SDL2pp::Point new_point = position;
+    Camera::modify_center_rectangle(new_point);
+    renderer.SetDrawColor(255, 0, 0, 255); // Rojo
+    int size = 6;
+    SDL_RenderDrawLine(renderer.Get(), new_point.x - size, new_point.y, new_point.x + size, new_point.y);
+    SDL_RenderDrawLine(renderer.Get(), new_point.x, new_point.y - size, new_point.x, new_point.y + size);
+    renderer.SetDrawColor(0, 0, 0, 0);
+}
 
 void Camera::modify_center_rectangle(SDL2pp::Rect& rect) {
     // centra el rectángulo en la pantalla usando el offset de la cámara

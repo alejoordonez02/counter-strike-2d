@@ -1,4 +1,5 @@
 #include "client/renderables/renderable_player.h"
+#include "client/camera.h"
 
 #include <utility>
 
@@ -72,7 +73,10 @@ void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
     // el orden de renderizado indica como un sprite "pisa" a otro
     legs.render(renderer);
     current_animation->render(renderer, position, flip, angle);
+
+    Camera::debug_point(renderer, position);
     gun.render(renderer);
+    
 }
 
 /*

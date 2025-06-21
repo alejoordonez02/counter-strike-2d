@@ -1,6 +1,7 @@
 #include "client/renderables/renderable_gun_effect.h"
 #include "client/animation_provider.h"
 #include "client/gameloop.h"
+#include "client/camera.h"
 
 #include <memory>
 #include <string>
@@ -77,9 +78,11 @@ void RenderableGunEffect::render(SDL2pp::Renderer& renderer) {
         return;
     }
     // Si el efecto actual es flare3, dibujar la línea amarilla desde el efecto hasta el mouse
-    if (current_animation == animations["flare3"].get()) {
-        render_line(renderer);
-    }
+    // if (current_animation == animations["flare3"].get()) {
+    //     render_line(renderer);
+    // }
+    Camera::debug_point(renderer, position);
+    
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     current_animation->render(renderer, position, flip, this->facing_angle);
 }

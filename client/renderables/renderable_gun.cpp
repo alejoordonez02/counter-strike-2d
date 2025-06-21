@@ -1,5 +1,6 @@
 #include "client/renderables/renderable_gun.h"
 #include "client/animation_provider.h"
+#include "client/camera.h"
 
 #include <memory>
 #include <string>
@@ -70,6 +71,9 @@ void RenderableGun::render(SDL2pp::Renderer& renderer) {
     if(current_animation == nullptr) {
         return;
     }
+
+    Camera::debug_point(renderer, position);
+
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     current_animation->render(renderer, position, flip, this->facing_angle);
     gun_effect.render(renderer);
