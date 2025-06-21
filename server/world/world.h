@@ -20,9 +20,47 @@ using Ms = std::chrono::milliseconds;
 constexpr float DT(Duration(Ms(1000) / constant_tick_rate).count());
 }  // namespace WorldTiming
 
+class Team {
+private:
+    std::vector<std::unique_ptr<Player>> players;
+    int rounds_won;
+
+    PlayerFactory player_factory;
+
+    void switch_players(Team& other) {
+        std::vector<std::unique_ptr<Player>> tmp;
+        tmp = std::move(other.players);
+        other.players = std::move(players);
+        players = std::move(tmp);
+    }
+
+    void swicth_rounds_won(Team& other) {
+        int tmp;
+        tmp = other.rounds_won;
+        other.rounds_won = rounds_won;
+        rounds_won = tmp;
+    }
+
+public:
+    std::shared_ptr<Player> add_player() {}
+
+    virtual bool won_round() = 0;
+
+    Team& switch_sides(Team& other) {
+        switch_players(other);
+        swicth_rounds_won(other);
+        return *this;
+    }
+};
+
+class Terorirsts: public Team {};
+
+class CounterTerrorists: public Team {};
+
 class World {
 private:
-    std::vector<std::shared_ptr<Player>> players;
+    std::unique_ptr<Team> team1;
+    std::unique_ptr<Team> team2;
     std::shared_ptr<Map> map;
     int rounds;
     Timer round_time;
