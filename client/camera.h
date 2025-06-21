@@ -24,7 +24,9 @@ class Camera {
     static void set_screen_size(const SDL2pp::Point& size);
     static void modify_center_point(SDL2pp::Point& rect);
     static void modify_center_rectangle(SDL2pp::Rect& rect);
-    static void debug_point(SDL2pp::Renderer& renderer, const SDL2pp::Point& position);
+    static void revert_center_point(SDL2pp::Point& rect);
+    static void debug_point(SDL2pp::Renderer& renderer,
+                            const SDL2pp::Point& position);
 };
 
 #endif

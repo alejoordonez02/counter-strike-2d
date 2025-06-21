@@ -14,7 +14,7 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_attacking_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
-#include "input_handler.h"
+#include "client/camera.h"
 
 InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -75,9 +75,6 @@ void InputHandler::send_direction() {
     static bool was_moving = false;
     Direction dir(0, 0);
 
-    /*
-     * wasd pls jsajjasjaj
-     * */
     if (key_states[SDLK_w]) {
         dir.y -= 1;
     }
@@ -129,22 +126,18 @@ void InputHandler::send_attack() {
 
 void InputHandler::send_aim() {
     static int last_dx = INT32_MAX, last_dy = INT32_MAX;
-    int mx, my;
-    SDL_GetMouseState(&mx, &my);
-    SDL_Window* win = SDL_GetMouseFocus();
-    int w = 0, h = 0;
-    if (win) SDL_GetWindowSize(win, &w, &h);
-
-    int dx = mx - w / 2;
-    int dy = my - h / 2;
+    SDL2pp::Point mouse_pos;
+    SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
+    Camera::revert_center_point(mouse_pos);
+    
     /*
      * checkear q no se vaya a volver a mandar la misma dir, quizás innecesario
      * siendo que hay cooldown...
      * */
-    if (dx != last_dx || dy != last_dy) {
-        commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
-        last_dx = dx;
-        last_dy = dy;
+    if (mouse_pos.x != last_dx || mouse_pos.y != last_dy) {
+        commands_queue.try_push(std::make_unique<AimDTO>(Direction(mouse_pos.x, mouse_pos.y)));
+        last_dx = mouse_pos.x;
+        last_dy = mouse_pos.y;
     }
 }
 
