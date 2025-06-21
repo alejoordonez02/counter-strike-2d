@@ -21,7 +21,7 @@ protected:
             type(bytes[0]), payload(std::move(bytes)), _is_serialized(true) {}
     explicit DTO(const uint8_t type): type(type), _is_serialized(false) {}
 
-    virtual void deserialize() = 0;
+    virtual void deserialize_from(std::vector<uint8_t>::iterator&) = 0;
 
 public:
     uint8_t get_type() const { return type; }
@@ -48,10 +48,10 @@ protected:
 
     // deserialization
 
-    float deserialize_float(int& i);
-    Position deserialize_pos(int& i);
-    Direction deserialize_dir(int& i);
-    std::string deserialize_string(int& i);
+    float deserialize_float_from(std::vector<uint8_t>::iterator& in);
+    Position deserialize_pos_from(std::vector<uint8_t>::iterator& in);
+    Direction deserialize_dir_from(std::vector<uint8_t>::iterator& in);
+    std::string deserialize_string_from(std::vector<uint8_t>::iterator& in);
 };
 
 #endif

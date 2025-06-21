@@ -44,32 +44,33 @@ void DTO::serialize_string_into(std::vector<uint8_t>& out, const std::string& st
 
 // deserialization
 
-float DTO::deserialize_float(int& i) {
+float DTO::deserialize_float_from(std::vector<uint8_t>::iterator& in) {
     uint32_t dsrlzd_n;
-    std::memcpy(&dsrlzd_n, payload.data() + i, sizeof(dsrlzd_n));
-    i += sizeof(dsrlzd_n);
+    std::memcpy(&dsrlzd_n, &*in, sizeof(dsrlzd_n));
+    in += sizeof(dsrlzd_n);
     dsrlzd_n = ntohl(dsrlzd_n);
     return std::bit_cast<float>(dsrlzd_n);
 }
 
-Position DTO::deserialize_pos(int& i) {
-    float x = deserialize_float(i);
-    float y = deserialize_float(i);
+Position DTO::deserialize_pos_from(std::vector<uint8_t>::iterator& in) {
+    float x = deserialize_float_from(in);
+    float y = deserialize_float_from(in);
     return Position(x, y);
 }
 
-Direction DTO::deserialize_dir(int& i) {
-    float x = deserialize_float(i);
-    float y = deserialize_float(i);
+Direction DTO::deserialize_dir_from(std::vector<uint8_t>::iterator& in) {
+    float x = deserialize_float_from(in);
+    float y = deserialize_float_from(in);
     return Direction(x, y);
 }
 
-std::string DTO::deserialize_string(int& i) {
-    uint16_t fb = static_cast<uint16_t>(payload[i++]) << 8;
-    uint16_t sb = static_cast<uint16_t>(payload[i++]);
-    uint16_t size = ntohs(fb | sb);
-    std::string str(size, '0');
-    std::memcpy(str.data(), payload.data() + i, size);
-    i += size;
+std::string DTO::deserialize_string_from(std::vector<uint8_t>::iterator& in) {
+    uint16_t str_size = 0;
+    std::memcpy(&str_size, &*in, sizeof(str_size));
+    str_size = ntohs(str_size);
+    in += sizeof(str_size);
+    std::string str(str_size, '0');
+    std::memcpy(str.data(), &*in, str_size);
+    in += str_size;
     return str;
 }
