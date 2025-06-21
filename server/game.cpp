@@ -1,19 +1,53 @@
 #include "game.h"
 
+#include <stdexcept>
+
 #include "common/network/connection.h"
-#include "world/equipment/equipment.h"
-#include "world/equipment/weapons.h"
 #include "world/physics/structure.h"
 #include "world/player_factory.h"
-#include "world/random.h"
 #include "world/world.h"
 
 /*
+ * Ésto probablemente termine quedando en algún World creator, no me estaría
+ * logrando decidir en cuanto a ésta responsabilidad, algunas opciones me
+ * desacoplan una cosa y me acoplan otra y así
+ * */
+World Game::create_world(const GameConfig& config) {
+    std::vector<std::shared_ptr<Hitbox>> collidables;
+    std::vector<Structure> bomb_site;
+    std::vector<Position> tt_spawn;
+    std::vector<Position> ct_spawn;
+    for (const auto& block : config.map.blocks) {
+        if (block.type == "Solid")
+            collidables.push_back(
+                std::make_shared<Structure>(Position(block.x, block.y), 32));
+
+        else if (block.type == "Plantable")
+            bomb_site.push_back(Structure(Position(block.x, block.y), 32));
+
+        else if (block.type == "TSpawn")
+            tt_spawn.push_back(Position(block.x, block.y));
+
+        else if (block.type == "CtSpawn")
+            ct_spawn.push_back(Position(block.x, block.y));
+    }
+
+    if (tt_spawn.empty())
+        throw std::runtime_error("Config error: no tt spawn in config file");
+    if (ct_spawn.empty())
+        throw std::runtime_error("Config error: no ct spawn in config file");
+
+    auto map =
+        std::make_shared<Map>(collidables, bomb_site, tt_spawn, ct_spawn);
+    return World(std::move(map), config.world.rounds, config.world.round_time,
+                 config.world.time_out, PlayerFactory(map, config.world));
+}
+
+/*
  * Add pending players
- * Ojo! acá hay race condition
  * */
 void Game::add_pending_players() {
-    std::vector<Connection> tmp;
+    std::vector<std::pair<Connection, TeamName>> tmp;
 
     {
         std::unique_lock<std::mutex> lck(m);
@@ -22,59 +56,19 @@ void Game::add_pending_players() {
         pending.clear();
     }
 
-    for (auto& con : tmp) {
-        std::shared_ptr<Player> p = world.add_player();
-        auto h = std::make_unique<PlayerHandler>(std::move(con), p);
+    for (auto& t : tmp) {
+        std::shared_ptr<Player> p = world.add_player(t.second);
+        auto h = std::make_unique<PlayerHandler>(std::move(t.first), p);
         h->start();
         players.push_back(std::move(h));
     }
 }
 
 /*
- * éstas funciones son temp, ahora las estoy usando porque no me quiero poner a
- * codear terrorists y counter terrorists, pero en realidad esas dos clases no
- * reciben por parámetro el equipment ni la posición inicial, si no que tienen
- * lógica para inicializar esos atributos. Esto vuela (el factory se queda no)
- * */
-static inline Position get_starting_position() {
-    return Position(Random::get(-30, 30), Random::get(-30, 30));
-}
-
-static inline std::unique_ptr<Equipment> get_starting_equipment() {
-    return std::make_unique<Equipment>(std::make_unique<Fist>(),
-                                       std::make_unique<Glock>(),
-                                       std::make_unique<Knife>(), 0);
-};
-
-PlayerFactory Game::create_player_factory(std::shared_ptr<Map> map,
-                                          const WorldConfig& config) {
-    return [map, config](int id) {
-        // Aquí podés definir la lógica de posición, equipamiento, etc.
-        Position pos = get_starting_position();
-        auto equipment = get_starting_equipment();
-        return std::make_shared<Player>(
-            id, pos, std::move(equipment), map, config.player_max_velocity,
-            config.player_acceleration, config.player_radius,
-            config.player_starting_money, config.player_max_health);
-    };
-}
-
-/*
  * Constructor
  * */
 Game::Game(const GameConfig& config):
-    world([&config, this] {
-        auto map = std::make_shared<Map>();
-        for (const auto& block : config.map.blocks)
-            if (block.type == "Solid")
-                map->add_collidable(std::make_shared<Structure>(
-                    Position(block.x, block.y), 32));
-
-        PlayerFactory factory = create_player_factory(map, config.world);
-        return World(std::move(map), config.world.rounds,
-                     config.world.round_time, config.world.time_out,
-                     std::move(factory));
-    }()),
+    world(create_world(config)),
     tick_duration(Ms(1000) / config.loop.tick_rate),
     commands_per_tick(config.loop.commands_per_tick) {}
 
@@ -107,7 +101,7 @@ void Game::run() {
 /*
  * Add new player
  * */
-void Game::add_player(Connection&& con) {
+void Game::add_player(Connection&& con, TeamName team) {
     std::unique_lock<std::mutex> lck(m);
-    pending.push_back(std::move(con));
+    pending.push_back(std::make_pair(std::move(con), team));
 }

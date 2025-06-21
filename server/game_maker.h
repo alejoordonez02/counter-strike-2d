@@ -5,7 +5,9 @@
 #include <mutex>
 #include <string>
 
+#include "common/map_name.h"
 #include "common/network/connection.h"
+#include "common/team_name.h"
 #include "server/game.h"
 
 class GameMaker {
@@ -16,9 +18,10 @@ private:
 public:
     GameMaker() = default;
 
-    void create(Connection&& con, const std::string& game_name, MapName map);
+    void create(Connection&& con, const std::string& game_name, MapName map,
+                TeamName team);
 
-    void join(Connection&& con, const std::string& game_name);
+    void join(Connection&& con, const std::string& game_name, TeamName team);
 
     void list();
 };

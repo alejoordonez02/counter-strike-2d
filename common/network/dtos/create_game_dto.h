@@ -7,11 +7,13 @@
 #include "common/map_name.h"
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
+#include "common/team_name.h"
 
 class CreateGameDTO: public DTO {
 private:
     std::string game_name;
     MapName map;
+    TeamName team;
 
     void deserialize() override {
         int i = 1;
@@ -19,6 +21,7 @@ private:
         game_name.assign(payload.begin() + i, payload.begin() + i + len);
         i += len;
         map = static_cast<MapName>(payload[i++]);
+        team = static_cast<TeamName>(payload[i++]);
     }
 
 public:
@@ -27,18 +30,20 @@ public:
         deserialize();
     }
 
-    CreateGameDTO(const std::string& gn, MapName m):
-        DTO(DTOSerial::LobbyCommands::CREATE_GAME), game_name(gn), map(m) {}
+    CreateGameDTO(const std::string& gn, MapName m, TeamName t):
+        DTO(DTOSerial::LobbyCommands::CREATE_GAME), game_name(gn), map(m), team(t) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
         out.push_back(static_cast<uint8_t>(game_name.size()));
         out.insert(out.end(), game_name.begin(), game_name.end());
         out.push_back(static_cast<uint8_t>(map));
+        out.push_back(static_cast<uint8_t>(team));
     }
 
     const std::string& get_game_name() const { return game_name; }
     MapName get_map() const { return map; }
+    TeamName get_team() const { return team; }
 };
 
 #endif

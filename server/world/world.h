@@ -4,12 +4,14 @@
 #include <chrono>
 #include <memory>
 
+#include "common/team_name.h"
 #include "map.h"
 #include "player.h"
 #include "player_factory.h"
 
 /*
- * Deltas de tiempo correspondientes a un tick rate constante
+ * Deltas de tiempo correspondientes a un tick rate constante, de éste forma
+ * queda desacoplada la noción de tiempo en World del tick rate del server
  * */
 namespace WorldTiming {
 constexpr int constant_tick_rate = 60;
@@ -44,11 +46,11 @@ private:
 
 public:
     World(std::shared_ptr<Map>&& map, int rounds, float round_time,
-          float time_out, PlayerFactory&& player_factory);
+          float time_out, const PlayerFactory& player_factory);
 
     void update(float dt);
 
-    std::shared_ptr<Player> add_player();
+    std::shared_ptr<Player> add_player(TeamName team);
 
     Snapshot get_snapshot();
 
