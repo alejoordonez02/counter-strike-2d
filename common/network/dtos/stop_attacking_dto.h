@@ -12,14 +12,19 @@ class StopAttackingDTO: public DTO {
     // TODO: Solo le cambie el nombre, no tiene logica, es una copia de start
     // attacking
 private:
-    friend class StartAttacking;
+    friend class StopAttacking;
 
-    void deserialize() override {}
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+    }
 
 public:
     explicit StopAttackingDTO(std::vector<uint8_t>&& bytes):
-        DTO(std::move(bytes)) {
-        deserialize();
+        DTO(std::move(bytes)) {}
+
+    explicit StopAttackingDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::STOP_ATTACKING) {
+        deserialize_from(in);
     }
 
     StopAttackingDTO(): DTO(DTOSerial::PlayerCommands::STOP_ATTACKING) {}

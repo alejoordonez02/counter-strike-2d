@@ -11,15 +11,20 @@ class JoinGameDTO: public DTO {
 private:
     std::string game_name;
 
-    void deserialize() override {
-        int i = 1;
-        uint8_t len = payload[i++];
-        game_name.assign(payload.begin() + i, payload.begin() + i + len);
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        game_name = deserialize_string_from(in);
     }
 
 public:
     explicit JoinGameDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
-        deserialize();
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit JoinGameDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::LobbyCommands::JOIN_GAME) {
+        deserialize_from(in);
     }
 
     explicit JoinGameDTO(const std::string& gn):
@@ -27,11 +32,12 @@ public:
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        out.push_back(static_cast<uint8_t>(game_name.size()));
-        out.insert(out.end(), game_name.begin(), game_name.end());
+        serialize_string_into(out, game_name);
     }
 
     const std::string& get_game_name() const { return game_name; }
+
+    ~JoinGameDTO() = default;
 };
 
 #endif

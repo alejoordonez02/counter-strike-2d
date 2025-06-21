@@ -9,11 +9,42 @@
 #include "common/snapshot.h"
 
 class SnapshotDTO: public DTO {
-    public:
+private:
+    // Snapshot snapshot;
+
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        // Deserializar campos snapshot
+        in++;  // skip 1st byte (DTO type)
+        snapshot.round_number = *in++;
+        size_t num_players = *in++;
+        snapshot.players.clear();
+        snapshot.players.reserve(num_players);
+        for (size_t j = 0; j < num_players; ++j) {
+            PlayerData player;
+            player.player_id = *in++;
+            player.team_id = *in++;
+            player.is_walking = *in++;
+            Position pos = deserialize_pos_from(in);
+            player.x = pos.x;
+            player.y = pos.y;
+            Position aim = deserialize_pos_from(in);
+            player.aim_x = aim.x;
+            player.aim_y = aim.y;
+            snapshot.players.push_back(player);
+        }
+    }
+
+public:
     Snapshot snapshot;
 
     explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
-        deserialize();
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit SnapshotDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::SNAPSHOT) {
+        deserialize_from(in);
     }
 
     explicit SnapshotDTO(const Snapshot& snap):
@@ -32,28 +63,6 @@ class SnapshotDTO: public DTO {
             out.push_back(player.is_walking);
             serialize_tuple_into(out, player.x, player.y);
             serialize_tuple_into(out, player.aim_x, player.aim_y);
-        }
-    }
-
-    void deserialize() override {
-        // Deserializar campos snapshot
-        int i = 1;  // Start after type byte
-        snapshot.round_number = payload[i++];
-        size_t num_players = payload[i++];
-        snapshot.players.clear();
-        snapshot.players.reserve(num_players);
-        for (size_t j = 0; j < num_players; ++j) {
-            PlayerData player;
-            player.player_id = payload[i++];
-            player.team_id = payload[i++];
-            player.is_walking = payload[i++];
-            Position pos = deserialize_pos(i);
-            player.x = pos.x;
-            player.y = pos.y;
-            Position aim = deserialize_pos(i);
-            player.aim_x = aim.x;
-            player.aim_y = aim.y;
-            snapshot.players.push_back(player);
         }
     }
 
