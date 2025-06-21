@@ -23,5 +23,7 @@ std::pair<Position, Position> Trajectory::get_outter_and_inner_closest(
     float t = std::clamp((pos - origin).dot(direction) / length, 0.f, 1.f);
     auto inner = eval(t);
     auto dir = inner.get_direction(pos);
+    if (inner.get_distance(pos) < width) dir = origin.get_direction(destine);
+
     return std::make_pair(inner + dir * width, inner);
 }
