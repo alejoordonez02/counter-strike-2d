@@ -1,22 +1,17 @@
 #ifndef SERVER_MODEL_EQUIPMENT_H
 #define SERVER_MODEL_EQUIPMENT_H
 
-#include <memory>
-#include <utility>
-
 #include "server/world/equipment/weapon.h"
+#include "server/world/equipment/weapons.h"
 
 struct Equipment {
-    std::unique_ptr<Weapon> primary;
-    std::unique_ptr<Weapon> secondary;
-    std::unique_ptr<Weapon> knife;
+    Weapon primary;
+    Weapon secondary;
+    Knife knife;
     float shield;
 
-    Equipment(std::unique_ptr<Weapon>&& primary,
-              std::unique_ptr<Weapon>&& secondary,
-              std::unique_ptr<Weapon>&& knife, const float& shield):
-        primary(std::move(primary)), secondary(std::move(secondary)),
-        knife(std::move(knife)), shield(shield) {}
+    Equipment(const Weapon& primary, const Weapon& secondary, float shield):
+        primary(primary), secondary(secondary), knife(), shield(shield) {}
 };
 
 #endif

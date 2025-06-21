@@ -7,10 +7,9 @@
 #include "server/lobby_commands/lobby_command.h"
 
 CreateGameCommand::CreateGameCommand(const std::string& game_name,
-                                     MapName map_name):
-    game_name(std::move(game_name)),
-    map_name(map_name) {}
+                                     MapName map_name, TeamName team):
+    game_name(game_name), map_name(map_name), team(team) {}
 
 void CreateGameCommand::execute(ClientHandler& handler) {
-    handler.handle_create(game_name, map_name);
+    handler.handle_create(game_name, map_name, team);
 }

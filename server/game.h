@@ -15,16 +15,15 @@ using Ms = std::chrono::milliseconds;
 class Game: public Thread {
 private:
     std::mutex m;
-    std::vector<Connection> pending;
+    std::vector<std::pair<Connection, TeamName>> pending;
     std::vector<std::unique_ptr<PlayerHandler>> players;
     World world;
     Clock::duration tick_duration;
     int commands_per_tick;
 
-    void add_pending_players();
+    World create_world(const GameConfig& config);
 
-    PlayerFactory create_player_factory(std::shared_ptr<Map> map,
-                                        const WorldConfig& config);
+    void add_pending_players();
 
 public:
     /*
@@ -35,7 +34,7 @@ public:
 
     void run() override;
 
-    void add_player(Connection&& con);
+    void add_player(Connection&& con, TeamName team);
 };
 
 #endif

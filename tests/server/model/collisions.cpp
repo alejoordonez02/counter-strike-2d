@@ -21,7 +21,11 @@ protected:
         EXPECT_NEAR(pos.y, other.y, 1e-7);
     }
 
-    void SetUp() override { map = std::make_shared<Map>(); }
+    void SetUp() override {
+        map = std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
+    }
 };
 
 TEST_F(CollisionsTest, PlayerCanWalkFreelyIfThereAreNotAnyObstacles) {

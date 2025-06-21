@@ -16,10 +16,8 @@ class MovingPlayer: public Player {
     static inline int default_money = 500;
     static inline int default_max_health = 100;
 
-    static inline std::unique_ptr<Equipment> get_default_equipment() {
-        return std::make_unique<Equipment>(std::make_unique<Fist>(),
-                                           std::make_unique<Glock>(),
-                                           std::make_unique<Knife>(), 0);
+    static inline Equipment get_default_equipment() {
+        return Equipment(Fist(), Glock(), 0);
     }
 
 public:

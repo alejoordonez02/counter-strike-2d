@@ -7,7 +7,6 @@
 #include "common/position.h"
 #include "gmock/gmock.h"
 #include "server/world/equipment/equipment.h"
-#include "server/world/equipment/weapon.h"
 #include "server/world/equipment/weapons.h"
 #include "server/world/map.h"
 #include "server/world/player.h"
@@ -23,13 +22,13 @@ private:
     static inline int default_max_health = 100;
 
     static inline std::shared_ptr<Map> get_default_map() {
-        return std::make_shared<Map>();
+        return std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
     }
 
-    static inline std::unique_ptr<Equipment> get_default_equipment() {
-        return std::make_unique<Equipment>(std::make_unique<Fist>(),
-                                           std::make_unique<Glock>(),
-                                           std::make_unique<Knife>(), 0);
+    static inline Equipment get_default_equipment() {
+        return Equipment(Glock(), Ak47(), 0);
     }
 
 public:
@@ -46,8 +45,6 @@ public:
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
-    /* MOCK_METHOD(std::optional<Position>, intersect, (const Trajectory& t),
-                (const)); */
     MOCK_METHOD(void, use_primary, (), ());
     MOCK_METHOD(void, use_secondary, (), ());
     MOCK_METHOD(void, use_knife, (), ());
