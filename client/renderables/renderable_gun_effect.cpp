@@ -3,8 +3,7 @@
 #include "client/gameloop.h"
 #include "client/camera.h"
 
-#include "common/position.h"
-
+#include <random>
 #include <memory>
 #include <string>
 #include <utility>
@@ -68,22 +67,41 @@ void RenderableGunEffect::update(const Position& player_position, const Position
 }
 
 void RenderableGunEffect::render_line(SDL2pp::Renderer& renderer) {
-    // calcular punto de inicio de la línea
-    // NOTE: Valor hardcodeado en base al tamaño de la textura
-    SDL2pp::Point start = SDL2pp::Point(position.x + 25, position.y + 25);
-    
-    // calcular punto final de la línea
-    float length = 200.0f; // largo de la línea
+    // Un solo valor random base
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> base_dist(0.0f, 1.0f);
+    float base = base_dist(gen);
+
+    // Derivar los valores a partir de base
+    float length = 10.0f + base * 50.0f;         // 10 a 60
+    int thickness = 1 + static_cast<int>(base * 3); // 1 a 4
+    int alpha = 64 + static_cast<int>(base * 191);  // 64 a 255
+
+    // calcular posicion de inicio y fin de la línea
+    SDL2pp::Point start(position.x + 25, position.y + 25);
     SDL2pp::Point end_point;
     end_point.x = start.x + aim_position.x * length;
     end_point.y = start.y + aim_position.y * length;
 
-    // modificar los puntos para que estén centrados en la camara
+    // ajustar segun la camara
     Camera::modify_center_point(start);
     Camera::modify_center_point(end_point);
-    renderer.SetDrawColor(255, 255, 0, 128); // Amarillo
-    SDL_RenderDrawLine(renderer.Get(), start.x, start.y, end_point.x, end_point.y);
-    renderer.SetDrawColor(0, 0, 0, 0); // Restaurar color de fondo
+
+    SDL_SetRenderDrawBlendMode(renderer.Get(), SDL_BLENDMODE_BLEND);
+    renderer.SetDrawColor(255, 255, 0, alpha);
+
+    // simular grosor de la línea con varias lineas
+    if (thickness <= 1) {
+        SDL_RenderDrawLine(renderer.Get(), start.x, start.y, end_point.x, end_point.y);
+    } else {
+        for (int i = -thickness / 2; i <= thickness / 2; ++i) {
+            SDL_RenderDrawLine(renderer.Get(),
+                start.x + i, start.y + i,
+                end_point.x + i, end_point.y + i);
+        }
+    }
+    renderer.SetDrawColor(0, 0, 0, 0);
 }
 
 
