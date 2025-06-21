@@ -21,12 +21,16 @@ class RenderableGunEffect {
 
     int effect_timer;
 
+    // Guarda la última posición del arma para dibujar la línea
+    SDL2pp::Point last_gun_pos = SDL2pp::Point(0, 0);
+
     void load_animation(const std::string& animation_name);
 
     public:
     explicit RenderableGunEffect(std::shared_ptr<AnimationProvider> animation_provider);
 
     void update(const SDL2pp::Point& position, double facing_angle, WeaponType weapon_type, bool is_shooting);
+    void render_line(SDL2pp::Renderer& renderer);
     void render(SDL2pp::Renderer& renderer);
 
     void skip_frames(uint8_t frames_to_skip);
