@@ -1,6 +1,6 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "server/world/equipment/weapon.h"
+#include "server/game/world/equipment/weapon.h"
 
 class RapidWeapon: public Weapon {
 public:

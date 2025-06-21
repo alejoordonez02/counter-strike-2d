@@ -1,8 +1,8 @@
 #include "client_handler.h"
 
 #include "common/network/connection.h"
-#include "server/game_maker.h"
-#include "server/lobby_command_constructor.h"
+#include "game/game_maker.h"
+#include "lobby_commands/lobby_cmd_constructor.h"
 
 ClientHandler::ClientHandler(Connection&& con, GameMaker& game_maker):
     con(std::move(con)), game_maker(game_maker) {}

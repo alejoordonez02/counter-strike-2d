@@ -3,7 +3,7 @@
 
 #include "acceptor.h"
 #include "client_handler.h"
-#include "game_maker.h"
+#include "game/game_maker.h"
 
 class Server {
 private:
