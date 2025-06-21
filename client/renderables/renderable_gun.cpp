@@ -27,7 +27,7 @@ void RenderableGun::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableGun::update(const SDL2pp::Point& player_position, double facing_angle, 
+void RenderableGun::update(const SDL2pp::Point& player_position, const SDL2pp::Point& aim_position, double facing_angle, 
                            WeaponType weapon_type, bool is_shooting) {
     if(weapon_type == WeaponType::None) {
         current_animation = nullptr;
@@ -57,7 +57,7 @@ void RenderableGun::update(const SDL2pp::Point& player_position, double facing_a
     this->position.y = player_position.y + std::sin(radians) * offset;
     
     // actualiza la animacion del efecto del disparo
-    gun_effect.update(player_position, position, this->facing_angle, weapon_type, is_shooting);
+    gun_effect.update(player_position, position, aim_position, this->facing_angle, weapon_type, is_shooting);
 
     if(current_animation == nullptr) {
         return;

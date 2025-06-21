@@ -26,7 +26,7 @@ class RenderableGun {
     public:
     explicit RenderableGun(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const SDL2pp::Point& position, double facing_angle, WeaponType weapon_type, bool is_shooting);
+    void update(const SDL2pp::Point& position, const SDL2pp::Point& aim_position, double facing_angle, WeaponType weapon_type, bool is_shooting);
     void render(SDL2pp::Renderer& renderer);
 
     void skip_frames(uint8_t frames_to_skip);

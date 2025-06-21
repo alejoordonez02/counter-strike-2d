@@ -59,7 +59,7 @@ void RenderablePlayer::update(const PlayerData& player) {
         current_animation = animations["holding_rifle"].get();
     }
     // renderizar siempre el arma
-    gun.update(this->position, this->facing_angle, this->current_weapon, this->is_shooting);
+    gun.update(this->position, SDL2pp::Point(player.aim_x, player.aim_y), this->facing_angle, this->current_weapon, this->is_shooting);
     
     current_animation->update();
 }

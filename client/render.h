@@ -15,6 +15,9 @@
 #include "client/renderables/map/renderable_map.h"
 #include "client/hud_manager.h"
 
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
+
 class Render {
     private:
     SDL2pp::SDL sdl;
