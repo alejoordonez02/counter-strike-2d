@@ -9,6 +9,7 @@
 #include "common/direction.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/aim_dto.h"
+#include "common/network/dtos/change_weapon_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/stop_attacking_dto.h"
@@ -49,6 +50,22 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
         mouse_states["mouse_left"] = false;
     } else if (event.button.button == SDL_BUTTON_RIGHT) {
         mouse_states["mouse_right"] = false;
+    }
+}
+
+// Sensibilidad mínima para el scroll de arma
+constexpr int kWeaponScrollThreshold = 1;
+static int weapon_scroll_accum = 0;
+
+void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
+    // Acumula el desplazamiento de la rueda
+    weapon_scroll_accum += event.wheel.y;
+    if (std::abs(weapon_scroll_accum) >= kWeaponScrollThreshold) {
+        // determina el tipo de arma a cambiar (ejemplo: 1="next" o -1="prev")
+        int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
+        std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
+        weapon_scroll_accum = 0; // Reinicia el acumulador
     }
 }
 
@@ -162,6 +179,9 @@ bool InputHandler::handle_events() {
                 break;
             case SDL_MOUSEBUTTONUP:
                 handle_mouse_up(event);
+                break;
+            case SDL_MOUSEWHEEL:
+                handle_mouse_wheel(event);
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Saliendo del input handler..." << std::endl;
