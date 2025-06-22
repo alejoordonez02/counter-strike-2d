@@ -36,11 +36,10 @@ public:
 
     void plant_bomb(std::optional<Bomb> bomb, const Position& pos);
 
-    bool bomb_has_exploded() const;
-
-    bool bomb_is_planted() const;
-
-    bool bomb_is_defused() const;
+    BombState get_bomb_state() {
+        if (!bomb) return BombState::NOT_PLANTED;
+        return bomb->get_state();
+    }
 };
 
 #endif

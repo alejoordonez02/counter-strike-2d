@@ -11,8 +11,13 @@ public:
     CounterTerrorist(int id, std::weak_ptr<Map> map, float max_velocity,
                      float acceleration, float radius, int money, int health);
 
+    void switch_side() override {}
+
     void defuse_bomb() override;
     void stop_defusing() override;
+
+    void plant_bomb() override {}
+    void stop_planting() override {}
 };
 
 #endif

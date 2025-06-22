@@ -8,11 +8,9 @@
 #include "map.h"
 #include "player.h"
 #include "server/game/factory/player_factory.h"
+#include "team/counter_terrorists.h"
+#include "team/terrorists.h"
 
-/*
- * Deltas de tiempo correspondientes a un tick rate constante, de éste forma
- * queda desacoplada la noción de tiempo en World del tick rate del server
- * */
 namespace WorldTiming {
 constexpr int constant_tick_rate = 60;
 using Duration = std::chrono::duration<float>;
@@ -22,39 +20,35 @@ constexpr float DT(Duration(Ms(1000) / constant_tick_rate).count());
 
 class World {
 private:
-    std::vector<std::shared_ptr<Player>> players;
+    Terrorists tt_team;
+    CounterTerrorists ct_team;
     std::shared_ptr<Map> map;
+    int id_gen;
+    int max_rounds;
     int rounds;
     Timer round_time;
     float time_out;
     bool round_ongoing;
     bool ended;
-    int tt_won_rounds;
-    int ct_won_rounds;
 
     PlayerFactory player_factory;
 
-    bool terrorists_won_round() const;
-
-    bool counter_terrorists_won_round() const;
-
     void start_round();
-
-    void sum_round(int& team_won_rounds);
 
     void update_rounds(float dt);
 
 public:
-    World(std::shared_ptr<Map>&& map, int rounds, float round_time,
-          float time_out, const PlayerFactory& player_factory);
+    World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
+          float time_out, /* int max_terrorists, int max_counter_terrorists, */
+          const PlayerFactory& player_factory);
 
     void update(float dt);
 
     std::shared_ptr<Player> add_player(TeamName team);
 
-    Snapshot get_snapshot();
-
     bool has_ended() const;
+
+    Snapshot get_snapshot();
 };
 
 #endif

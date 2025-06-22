@@ -28,8 +28,14 @@ public:
         Player(default_id, pos, get_default_equipment(), map,
                default_max_velocity, default_acceleration, radius,
                default_money, default_max_health) {}
+
+    MOCK_METHOD(void, teleport_to_spawn, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
-    void teleport_to_spawn() override {}
+    MOCK_METHOD(void, switch_side, (), (override));
+    MOCK_METHOD(void, plant_bomb, (), (override));
+    MOCK_METHOD(void, stop_planting, (), (override));
+    MOCK_METHOD(void, defuse_bomb, (), (override));
+    MOCK_METHOD(void, stop_defusing, (), (override));
 };
 
 #endif
