@@ -24,10 +24,8 @@ void MainWindow::on_startButton_clicked()
     }
     
     QMessageBox::information(this, "Connection", 
-        QString("Connecting to server as %2").arg(username));
-    LobbyWindow *lobbyWindow = new LobbyWindow(username);
-    lobbyWindow->setAttribute(Qt::WA_DeleteOnClose); 
-    lobbyWindow->show();
+        QString("Connecting to lobby as %2").arg(username));
 
+    emit connectToLobby();
     this->close();
 }

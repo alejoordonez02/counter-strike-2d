@@ -93,7 +93,7 @@ void MainWindow::on_LoadButton_clicked()
 MapDataEditor MainWindow::convertToMapData(MapData data_struct){
     MapDataEditor data;
     data.mapName = QString::fromStdString(data_struct.mapName);
-    data.backgroundPath = QString::fromStdString(data_struct.background);
+    data.background = QString::fromStdString(data_struct.background);
     data.tile_width = data_struct.width;
     data.tile_height = data_struct.height;
     data.plantingSpots = data_struct.plantingSpots;

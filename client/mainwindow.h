@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
     signals:
-        void connectToServer(const QString& host, const QString& port, const QString& username);
+        void connectToLobby();
         void showError(const QString& message);
     private slots:
         void on_startButton_clicked();

@@ -4,11 +4,13 @@
 #include <QMessageBox>
 #include <QListWidgetItem>
 
-LobbyWindow::LobbyWindow(const QString& username, QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::Lobby)
-    , username(username)
+LobbyWindow::LobbyWindow(QWidget *parent) : 
+    QMainWindow(parent),
+    ui(new Ui::Lobby),
+    map_idx(0),
+    team_idx(0)
 {
+
     ui->setupUi(this);
     populateMatchesList();
 }
@@ -20,6 +22,7 @@ LobbyWindow::~LobbyWindow()
 
 void LobbyWindow::populateMatchesList()
 {
+    emit requestListGames();
     ui->matchesList->clear();
     // aca tendria que recibir las partidas del servidor y cargarlas
     // Hardcodeo algunas partidas para que se vean 
@@ -66,7 +69,8 @@ void LobbyWindow::on_joinMatchButton_clicked()
 
     if (matchInfo.currentPlayers >= matchInfo.maxPlayers) {
         QMessageBox::warning(this, "Match Full",
-            QString("Cannot join '%1'\nThe match is full (%2/%3 players)")
+            QString("User %1 Cannot join '%2'\nThe match is full (%3/%4 players)")
+                .arg(username)
                 .arg(matchInfo.name)
                 .arg(matchInfo.currentPlayers)
                 .arg(matchInfo.maxPlayers));
@@ -87,13 +91,10 @@ void LobbyWindow::on_joinMatchButton_clicked()
     }
 
     try {
-        // aca el cliente tiene que enviar el comando de unirme al servidor
-        
         QMessageBox::information(this, "Success", 
             QString("Joining match '%1'...").arg(matchInfo.name));
-        
-        // aca podria cerrar el lobby y abrir la pantalla de juego
-        
+        //envio la senial que tiene lo necesari para crear el dto de JoinGame
+        emit requestJoinGame(matchInfo.name, team_idx);
     } catch (const std::exception& e) {
         QMessageBox::critical(this, "Error",
             QString("Failed to join match: %1").arg(e.what()));
@@ -103,11 +104,16 @@ void LobbyWindow::on_joinMatchButton_clicked()
 void LobbyWindow::on_createMatchButton_clicked()
 {
     CreateMatchDialog dialog(username, this);
-    
+
+    QListWidgetItem* selected = ui->matchesList->currentItem();
+    if (!selected) {
+        QMessageBox::warning(this, "Error", "Please select a match first");
+        return;
+    }
+    MatchInfo matchInfo = selected->data(Qt::UserRole).value<MatchInfo>();
     if (dialog.exec() == QDialog::Accepted) {
         QString matchName = dialog.getMatchName();
         QString configPath = dialog.getConfigPath();
-        int maxPlayers = dialog.getMaxPlayers();
         
         // Validar campos
         if (matchName.isEmpty()) {
@@ -122,23 +128,8 @@ void LobbyWindow::on_createMatchButton_clicked()
         
         // Enviar comando al servidor
         try {
-            // Aquí iría tu lógica para enviar el comando al servidor
-            // Por ejemplo:
-            // client->sendCreateMatchCommand(matchName, configPath, maxPlayers);
-            
-            // Añadir a la lista local (simulación)
-            QListWidgetItem* newItem = new QListWidgetItem(
-                QString("%1\nMap: %2\nPlayers: 1/%3")
-                    .arg(matchName)
-                    .arg(QFileInfo(configPath).baseName())
-                    .arg(maxPlayers),
-                ui->matchesList
-            );
-            
-            newItem->setData(Qt::UserRole, matchName);
-            
-            QMessageBox::information(this, "Success", 
-                QString("Match '%1' created successfully!").arg(matchName));
+            //envio la senial que tiene lo necesari para crear el dto de CreateGame
+            emit requestCreateGame(matchInfo.name, map_idx, team_idx);
             
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", 

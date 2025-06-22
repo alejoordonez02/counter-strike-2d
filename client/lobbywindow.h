@@ -25,8 +25,13 @@ class LobbyWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LobbyWindow(const QString& username, QWidget *parent = nullptr);
+    explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
+signals:
+    void requestJoinGame(const QString& username, int teamIdx);
+    void requestCreateGame(const QString& username,int mapIdx, int teamIdx);
+    void requestListGames();
+
 private slots:
     void on_refreshButton_clicked();
     void on_joinMatchButton_clicked();
@@ -35,6 +40,8 @@ private:
     void populateMatchesList();
     Ui::Lobby *ui;
     QString username;
+    int map_idx;
+    int team_idx;
 };
 
 #endif // LOBBYWINDOW_H

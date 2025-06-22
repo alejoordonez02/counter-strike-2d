@@ -1,4 +1,4 @@
-tilesheet: "../resources/weapons.bmp"
+tilesheet: "resources/weapons.bmp"
 tile_width: 32
 tile_height: 32
 rows: 1
@@ -7,17 +7,17 @@ blocks:
   # Fila 0 (y=0)
   - x: 0
     y: 0
-    texture: "../resources/weapons/glock.png"
+    texture: "resources/weapons/glock.png"
     type: "DropedGlock"
   - x: 1
     y: 0
-    texture: "../resources/weapons/ak47.png"
+    texture: "resources/weapons/ak47.png"
     type: "DropedAk47"
   - x: 2
     y: 0
-    texture: "../resources/weapons/m4.png"
+    texture: "resources/weapons/m4.png"
     type: "DropedM4"
   - x: 3
     y: 0
-    texture: "../resources/weapons/awp.png"
+    texture: "resources/weapons/awp.png"
     type: "DropedAwp"

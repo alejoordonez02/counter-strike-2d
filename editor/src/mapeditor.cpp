@@ -20,8 +20,7 @@ MapEditor::MapEditor(QWidget *parent) : QWidget(parent),
 
 void MapEditor::loadMapFromData(const MapDataEditor& data) {
     mapdata= data;
-    loadBackground(mapdata.backgroundPath);
-    setTileSize(mapdata.tile_width, mapdata.tile_height);
+    loadBackground(mapdata.getBackgroundPath());
     setFixedSize(m_background.size());
     update();
 }
@@ -50,19 +49,12 @@ void MapEditor::saveMapData(const QString& filePath) {
     YAML::Emitter out;
     out << YAML::BeginMap;
     out << YAML::Key << "map_name" << YAML::Value << mapdata.mapName.toStdString();
-
-    if (!mapdata.backgroundPath.isEmpty()) {
-        QString bgPath = mapdata.backgroundPath;
-        if (bgPath.contains("../resources/backgrounds/")) {
-            bgPath = "../resources/backgrounds/" + bgPath.section("../resources/backgrounds/", -1);
-            out << YAML::Key << "background";
-            out << YAML::DoubleQuoted << bgPath.toStdString();
-        } else {
-            out << YAML::Key << "background" << YAML::Value << bgPath.toStdString();
-        }
+    if (!mapdata.background.isEmpty()) {
+        QString bgPath = mapdata.background;
+        out << YAML::Key << "background" << YAML::Value << bgPath.toStdString();
     }
     out << YAML::Key << "tile_width" << YAML::Value << m_tileWidth;
-    out << YAML::Key << "tile_height" << YAML::Value << m_tileHeight;
+    out << YAML::Key << "tile_height" << YAML::Value << m_tileHeight;   
     out << YAML::Key << "planting_spots" << YAML::Value << PlantingSpots;
         
     out << YAML::Key << "blocks" << YAML::Value << YAML::BeginSeq;
@@ -71,15 +63,10 @@ void MapEditor::saveMapData(const QString& filePath) {
         out << YAML::Key << "x" << YAML::Value << block.getPosition().x();
         out << YAML::Key << "y" << YAML::Value << block.getPosition().y();
         out << YAML::Key << "type" << YAML::Value << block.getTypeString().toStdString();
+            
+        QString tex = block.getTexture();
+        out << YAML::Key << "texture" << YAML::Value << tex.toStdString();
 
-        QString texPath = block.getTexturePath();
-        if (texPath.contains("../resources/tiles/")) {
-            texPath = "../resources/tiles/" + texPath.section("../resources/tiles/", -1);
-            out << YAML::Key << "texture";
-            out << YAML::DoubleQuoted << texPath.toStdString();
-        } else {
-            out << YAML::Key << "texture" << YAML::Value << texPath.toStdString();
-        }
         
         out << YAML::EndMap;
     }
@@ -94,10 +81,8 @@ void MapEditor::saveMapData(const QString& filePath) {
 }
 
 void MapEditor::loadBackground(const QString &imagePath) {
-    QDir resourcesDir(QCoreApplication::applicationDirPath() + "../resources/backgrounds");
-    QString relativePath = resourcesDir.relativeFilePath(imagePath);
-    
-    mapdata.backgroundPath = relativePath;
+    QFileInfo fileInfo(imagePath);
+    mapdata.background = fileInfo.baseName();
     if (m_background.load(imagePath) && !m_background.isNull()) {
         QSize imageSize = m_background.size();
         
