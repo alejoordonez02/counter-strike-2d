@@ -33,12 +33,10 @@ void RenderableMap::load_background() {
 void RenderableMap::load_blocks() {
     // mostrar el nombre de los blockes por consola
     for (const auto& block : map_data.blocks) {
-        // NOTE: tal vez aca se pueda eliminar, y que la info
-        // de los dropeables venga desde el inicio de parte del server en el snapshot
         if (block.type.rfind("Droped", 0) == 0) {
             // si el tipo empieza con "Droped", es un arma caída
             // ej. DropedGlock, DropedAwp, ...
-            droped_weapons.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
+            // no hacer nada, ya que estos datos se obtienen de las snapshots
             continue;
         }
         // Crear un RenderableBlock para cada bloque
@@ -49,7 +47,7 @@ void RenderableMap::load_blocks() {
 
 void RenderableMap::update(Snapshot& snapshot) {
     // actualizar dropeables. Vaciar droped_weapons antes de agregar nuevos
-    // TODO: No muy eficiente pero sirve
+    // NOTE: No muy eficiente pero sirve
     droped_weapons.clear();
     for (const auto& weapon : snapshot.weapons_on_floor) {
         BlockData block;
