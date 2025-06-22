@@ -1,40 +1,38 @@
 #ifndef CLIENT_RENDER_H
 #define CLIENT_RENDER_H
 
-#include <memory>
-#include <unordered_map>
-
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Window.hh>
+#include <memory>
+#include <unordered_map>
 
 #include "client/animation_provider.h"
-#include "client/renderables/renderable_player.h"
-#include "common/network/dtos/snapshot_dto.h"
-#include "common/maploader.h"
-#include "client/renderables/map/renderable_map.h"
 #include "client/hud_manager.h"
+#include "client/renderables/map/renderable_map.h"
+#include "client/renderables/renderable_player.h"
+#include "common/maploader.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
 class Render {
-    private:
+private:
     SDL2pp::SDL sdl;
     SDL2pp::Window window;
     SDL2pp::Renderer renderer;
 
-    int user_player_id;
     const MapData& map_data;
-    
+
     std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>>
-            players_renderables;
+        players_renderables;
     std::shared_ptr<AnimationProvider> animation_provider;
     std::unique_ptr<RenderableMap> renderable_map;
     std::unique_ptr<HUDManager> hud_manager;
 
-    public:
-    Render(int user_player_id, const MapData& map_data);
+public:
+    Render(const MapData& map_data);
     ~Render();
 
     void run();

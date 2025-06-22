@@ -6,8 +6,8 @@
 #include "actions/action_strategy.h"
 #include "actions/attack.h"
 #include "common/direction.h"
-#include "common/position.h"
 #include "common/network/dtos/snapshot_dto.h"
+#include "common/position.h"
 #include "equipment/equipment.h"
 #include "equipment/weapon.h"
 #include "map.h"
@@ -77,6 +77,8 @@ public:
 
     virtual void defuse_bomb() = 0;
     virtual void stop_defusing() = 0;
+
+    YourPlayerData get_special_data() const;
 
     PlayerData get_data() const;
 
