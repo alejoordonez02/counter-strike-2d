@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
-#include "lobbywindow.h"
 
 namespace Ui {
 class ClientInterface;
@@ -17,13 +16,12 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
     signals:
-        void connectToLobby();
+        void connectToLobby(const QString& host, const QString& serv);
         void showError(const QString& message);
     private slots:
         void on_startButton_clicked();
     private:
         Ui::ClientInterface *ui;
-        LobbyWindow *lobbyWindow;
 
 };
 

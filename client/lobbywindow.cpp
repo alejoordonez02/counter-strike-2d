@@ -106,10 +106,6 @@ void LobbyWindow::on_createMatchButton_clicked()
     CreateMatchDialog dialog(username, this);
 
     QListWidgetItem* selected = ui->matchesList->currentItem();
-    if (!selected) {
-        QMessageBox::warning(this, "Error", "Please select a match first");
-        return;
-    }
     MatchInfo matchInfo = selected->data(Qt::UserRole).value<MatchInfo>();
     if (dialog.exec() == QDialog::Accepted) {
         QString matchName = dialog.getMatchName();

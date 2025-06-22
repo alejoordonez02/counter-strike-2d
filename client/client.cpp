@@ -15,7 +15,7 @@
 #include "common/team_name.h"
 #include <QEventLoop>
 #include <QMessageBox>
-#include "mainwindow.h"
+#include "lobbywindow.h"
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
@@ -25,83 +25,44 @@ void Client::lobby_phase() {
     using namespace DTOSerial::LobbyCommands;
 
     try {
-        // Variables para controlar el estado del lobby
-        struct LobbyResult {
-            bool completed = false;
-            std::string matchName;
-            TeamName team;
-        } result;
 
-        MainWindow mainWindow;
-        mainWindow.show();
+        std::unique_ptr<LobbyWindow> lobbyWindow = std::make_unique<LobbyWindow>();
+        lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-        // Event loop principal que esperará hasta que se complete el lobby
-        QEventLoop mainLoop;
+        QEventLoop lobbyLoop;
 
-        QObject::connect(&mainWindow, &MainWindow::connectToLobby, [&]() {
-            mainWindow.close();
-            std::unique_ptr<LobbyWindow> lobbyWindow = std::make_unique<LobbyWindow>();
-            lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
+            commands.try_push(std::make_unique<ListGamesDTO>());
+        });
 
-            QEventLoop lobbyLoop;
-
-            QObject::connect(lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
-                commands.try_push(std::make_unique<ListGamesDTO>());
-            });
-
-            // Conexión para crear partida
-            QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
-                [&](const QString& name, int mapIdx, int teamIdx) {
-                    commands.try_push(std::make_unique<CreateGameDTO>(
-                        name.toStdString(),
-                        static_cast<MapName>(mapIdx),
-                        static_cast<TeamName>(teamIdx)
-                    ));
-                    result = {true, name.toStdString(), static_cast<TeamName>(teamIdx)};
-                    lobbyLoop.quit();
-                });
-
-            // Conexión para unirse a partida
-            QObject::connect(lobbyWindow.get(), &LobbyWindow::requestJoinGame,
-                [&](const QString& name, int teamIdx) {
-                    commands.try_push(std::make_unique<JoinGameDTO>(
-                        name.toStdString(),
-                        static_cast<TeamName>(teamIdx)
-                    ));
-                    result = {true, name.toStdString(), static_cast<TeamName>(teamIdx)};
-                    lobbyLoop.quit();
-                });
-
-            // Si se cierra la ventana sin acción
-            QObject::connect(lobbyWindow.get(), &LobbyWindow::destroyed, [&]() {
-                if (!result.completed) {
-                    QMessageBox::information(&mainWindow, "Información", "Saliendo del lobby");
-                }
+        // Conexión para crear partida
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
+            [&](const QString& name, int mapIdx, int teamIdx) {
+                commands.try_push(std::make_unique<CreateGameDTO>(
+                    name.toStdString(),
+                    static_cast<MapName>(mapIdx),
+                    static_cast<TeamName>(teamIdx)
+                ));
                 lobbyLoop.quit();
             });
 
-            lobbyWindow->show();
-            lobbyLoop.exec(); // Bloquea aquí hasta quit() del lobbyLoop
-            lobbyWindow->close();
-            // Si se completó una acción, salir del loop principal
-            if (result.completed) {
-                mainLoop.quit();
-            }
-        });
+        // Conexión para unirse a partida
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestJoinGame,
+            [&](const QString& name, int teamIdx) {
+                commands.try_push(std::make_unique<JoinGameDTO>(
+                    name.toStdString(),
+                    static_cast<TeamName>(teamIdx)
+                ));
+                lobbyLoop.quit();
+            });
 
-        // Bloquea aquí hasta que se complete una acción o se cierre la aplicación
-        mainLoop.exec();
-
-        if (!result.completed) {
-            throw std::runtime_error("User disconnected");
-        }
-
-        // Aquí puedes usar result.matchName y result.team para continuar
-        // con la lógica del juego
-
+        lobbyWindow->show();
+        lobbyLoop.exec(); 
+        lobbyWindow->close();
+    
 
     } catch (const std::exception& e) {
-        QMessageBox::critical(nullptr, "Error", QString("Error crítico: %1").arg(e.what()));
+        QMessageBox::critical(nullptr, "Error", QString("Critical error: %1").arg(e.what()));
     }
 }
 

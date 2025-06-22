@@ -41,12 +41,22 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="usernameInput">
+        <widget class="QLineEdit" name="hostInput">
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 150);</string>
          </property>
          <property name="placeholderText">
-          <string>Username</string>
+          <string>Host</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="servInput">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 150);</string>
+         </property>
+         <property name="placeholderText">
+          <string>Servname</string>
          </property>
         </widget>
        </item>

@@ -2,16 +2,21 @@
 #include <iostream>
 
 #include "client/client.h"
-
 #include "mainwindow.h"
+#include <QEventLoop>
 
 int main(int argc, char** argv) {
     QApplication a(argc, argv);
-    if (argc == 4) {
-        // ONLY FOR DEVELOPMENT: se inicia cliente con los argumentos pasados,
-        // saltea el lobby
-        Client client(argv[1], argv[2]);
-        client.run(std::stoi(argv[3]));
-    }
+    MainWindow mainWindow;
+    mainWindow.show();
+    QEventLoop mainLoop;
+
+    QObject::connect(&mainWindow, &MainWindow::connectToLobby, [&](const QString& host,const QString& serv) {
+        mainWindow.close();
+        Client client(host.toStdString(), serv.toStdString());
+        client.run(0);
+    });
+
+    mainLoop.quit();
     return a.exec();
 }

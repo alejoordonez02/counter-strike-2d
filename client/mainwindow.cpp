@@ -16,16 +16,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startButton_clicked()
 {
-    QString username = ui->usernameInput->text();
+    QString host = ui->hostInput->text();
+    QString serv = ui->servInput->text();
     
-    if(username.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please insert a username ");
+    if(serv.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Please insert a serv ");
+        return;
+    }
+
+    if(host.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Please insert a host ");
         return;
     }
     
     QMessageBox::information(this, "Connection", 
-        QString("Connecting to lobby as %2").arg(username));
+        QString("Connecting to %1:%2").arg(host).arg(serv));
 
-    emit connectToLobby();
+    emit connectToLobby(host, serv);
     this->close();
 }
