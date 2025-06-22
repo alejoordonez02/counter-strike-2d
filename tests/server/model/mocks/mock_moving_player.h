@@ -1,6 +1,8 @@
 #ifndef MOVING_PLAYER_H
 #define MOVING_PLAYER_H
 
+#include <gmock/gmock.h>
+
 #include <memory>
 
 #include "server/game/world/equipment/equipment.h"
@@ -27,7 +29,12 @@ public:
                default_max_velocity, default_acceleration, radius,
                default_money, default_max_health) {}
 
-    void teleport_to_spawn() override {}
+    MOCK_METHOD(void, teleport_to_spawn, (), (override));
+    MOCK_METHOD(void, switch_side, (), (override));
+    MOCK_METHOD(void, plant_bomb, (), (override));
+    MOCK_METHOD(void, stop_planting, (), (override));
+    MOCK_METHOD(void, defuse_bomb, (), (override));
+    MOCK_METHOD(void, stop_defusing, (), (override));
 };
 
 #endif
