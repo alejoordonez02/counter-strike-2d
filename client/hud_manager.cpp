@@ -29,16 +29,6 @@ void HUDManager::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
     hud_hp.update(snapshot.user_data.player_hp);
     hud_money.update(snapshot.user_data.total_money);
 
-    // pointer
-    int user_id = snapshot.user_data.player_id;
-    // buscar el jugador por id en el vector
-    auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
-        [user_id](const PlayerData& p) { return p.player_id == user_id; });
-    if (it == snapshot.players.end()) {
-        // si no existe, no actualizamos el puntero
-        return;
-    }
-
     bool user_is_attacking = get_user_is_shooting(snapshot);
     pointer.update(user_is_attacking);
 
