@@ -4,6 +4,7 @@
 
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
+#include <algorithm>
 
 HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
@@ -30,11 +31,32 @@ void HUDManager::update(const Snapshot& snapshot, uint32_t& fps_timer) {
 
     // pointer
     int user_id = snapshot.user_data.player_id;
-    bool user_is_attacking = snapshot.players[user_id].is_shooting;
+    // buscar el jugador por id en el vector
+    auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
+        [user_id](const PlayerData& p) { return p.player_id == user_id; });
+    if (it == snapshot.players.end()) {
+        // si no existe, no actualizamos el puntero
+        return;
+    }
+
+    bool user_is_attacking = get_user_is_shooting(snapshot);
     pointer.update(user_is_attacking);
 
     // fps counter
     calculate_fps(fps_timer);
+}
+
+bool HUDManager::get_user_is_shooting(const Snapshot& snapshot) {
+    // busca el jugador actual en el snapshot 
+    // para obtener su estado de is_shooting
+    int user_id = snapshot.user_data.player_id;
+    auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
+        [user_id](const PlayerData& p) { return p.player_id == user_id; });
+    if (it != snapshot.players.end()) {
+        return it->is_shooting;
+    }
+    // Si no se encuentra, devolver false
+    return false;
 }
 
 

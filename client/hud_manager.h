@@ -38,6 +38,8 @@ class HUDManager {
 
     void update(const Snapshot& snapshot, uint32_t& fps_timer);
 
+    bool get_user_is_shooting(const Snapshot& snapshot);
+
     void render(SDL2pp::Renderer& renderer);
 
     void show_terrorist_won(SDL2pp::Renderer& renderer);
