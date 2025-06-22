@@ -25,7 +25,7 @@ public:
 
     void play();
 
-    void send_snapshot(const SnapshotDTO& snapshot);
+    void send_snapshot(SnapshotDTO& snapshot);
 };
 
 #endif
