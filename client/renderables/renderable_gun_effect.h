@@ -7,7 +7,7 @@
 
 #include "common/snapshot.h"
 #include "common/position.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 
 class RenderableGunEffect {

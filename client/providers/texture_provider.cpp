@@ -1,4 +1,4 @@
-#include "client/texture_provider.h"
+#include "client/providers/texture_provider.h"
 
 #include <memory>
 #include "texture_provider.h"

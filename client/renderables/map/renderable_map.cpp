@@ -1,5 +1,5 @@
 #include "client/renderables/map/renderable_map.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include <utility>
 
 

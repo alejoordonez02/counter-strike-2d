@@ -7,7 +7,7 @@
 
 #include "SDL2pp/Point.hh"
 #include "SDL2pp/Renderer.hh"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 
 class RenderableNumbers {

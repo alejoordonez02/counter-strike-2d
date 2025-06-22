@@ -1,5 +1,5 @@
 #include "client/renderables/renderable_gun.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 
 #include <memory>
 #include <string>

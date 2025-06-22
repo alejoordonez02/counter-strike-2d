@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "SDL2pp/Renderer.hh"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "client/renderables/renderable_legs.h"
 #include "client/renderables/renderable_gun.h"

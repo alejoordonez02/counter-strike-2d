@@ -1,5 +1,5 @@
 #include "client/renderables/renderable_player.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "common/snapshot.h"
 
 #include <utility>

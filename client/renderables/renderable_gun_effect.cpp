@@ -1,5 +1,5 @@
 #include "client/renderables/renderable_gun_effect.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/gameloop.h"
 #include "client/camera.h"
 

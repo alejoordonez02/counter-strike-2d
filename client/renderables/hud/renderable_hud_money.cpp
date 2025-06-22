@@ -1,7 +1,7 @@
 #include "client/renderables/hud/renderable_hud_money.h"
 
 #include <utility>
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "renderable_numbers.h"
 
 RenderableHUDMoney::RenderableHUDMoney(std::shared_ptr<AnimationProvider> animation_provider)

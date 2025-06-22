@@ -8,7 +8,7 @@
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Window.hh>
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/renderable_player.h"
 #include "common/snapshot.h"
 #include "common/maploader.h"

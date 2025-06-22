@@ -2,8 +2,8 @@
 
 #include <utility>
 
-#include "client/animation_provider.h"
-#include "client/texture_provider.h"
+#include "client/providers/animation_provider.h"
+#include "client/providers/texture_provider.h"
 #include "client/camera.h"
 #include "render.h"
 
