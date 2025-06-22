@@ -26,7 +26,7 @@ Render::Render(int user_player_id, const MapData& map_data):
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(Snapshot snapshot) {
+void Render::update(SnapshotDTO snapshot) {
     // TODO: actualizar dropeables
 
     // actualizar jugadores

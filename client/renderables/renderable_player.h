@@ -10,7 +10,7 @@
 #include "client/renderables/animation.h"
 #include "client/renderables/renderable_legs.h"
 #include "client/renderables/renderable_gun.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "common/position.h"
 
 class RenderablePlayer {

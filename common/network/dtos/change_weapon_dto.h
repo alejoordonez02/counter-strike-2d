@@ -6,27 +6,61 @@
 
 class ChangeWeaponDTO: public DTO {
 private:
-    int weapon_type;
+    uint8_t weapon_type;
 
-    void deserialize() override {}
+    // friend class ChangeWeapon;
 
-public:
-    explicit ChangeWeaponDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
-        deserialize();
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        weapon_type = *in++;
     }
 
-    explicit ChangeWeaponDTO(int weapon_type): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(weapon_type) {}
+public:
+    explicit ChangeWeaponDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
 
-    ChangeWeaponDTO(): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(0) {}
+    explicit ChangeWeaponDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON) {
+        deserialize_from(in);
+    }
+
+    explicit ChangeWeaponDTO(uint8_t w_type):
+            DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON),
+            weapon_type(w_type) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        out.push_back(static_cast<uint8_t>(weapon_type));
+        out.push_back(weapon_type);
     }
 
     ~ChangeWeaponDTO() = default;
 };
 
-
 #endif
+
+
+// class ChangeWeaponDTO: public DTO {
+// private:
+//     int weapon_type;
+
+//     void deserialize() override {}
+
+// public:
+//     explicit ChangeWeaponDTO(std::vector<uint8_t>&& bytes):
+//             DTO(std::move(bytes)) {
+//         deserialize();
+//     }
+
+//     explicit ChangeWeaponDTO(int weapon_type): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(weapon_type) {}
+
+//     ChangeWeaponDTO(): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(0) {}
+
+//     void serialize_into(std::vector<uint8_t>& out) override {
+//         out.push_back(type);
+//         out.push_back(static_cast<uint8_t>(weapon_type));
+//     }
+
+//     ~ChangeWeaponDTO() = default;
+// };

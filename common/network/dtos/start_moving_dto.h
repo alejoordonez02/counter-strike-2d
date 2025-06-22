@@ -15,15 +15,21 @@ private:
 
     friend class StartMoving;
 
-    void deserialize() override {
-        int i = 1;  // skip 1st byte (DTO type)
-        dir = deserialize_dir(i);
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        dir = deserialize_dir_from(in);
     }
 
 public:
     explicit StartMovingDTO(std::vector<uint8_t>&& bytes):
             DTO(std::move(bytes)) {
-        deserialize();
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit StartMovingDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::START_MOVING) {
+        deserialize_from(in);
     }
 
     explicit StartMovingDTO(const Direction& d):

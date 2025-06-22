@@ -7,7 +7,7 @@
 #include "actions/attack.h"
 #include "common/direction.h"
 #include "common/position.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "equipment/equipment.h"
 #include "equipment/weapon.h"
 #include "map.h"
@@ -36,7 +36,7 @@ private:
 
     void stop_action();
 
-    virtual void teleport_to_spawn() {}  // = 0;
+    virtual void teleport_to_spawn() = 0;
 
 public:
     Player(int id, Position pos, const Equipment& equipment,
@@ -44,6 +44,8 @@ public:
            float radius, int money, int health);
 
     void update(float dt);
+
+    virtual void switch_side() = 0;
 
     void restart();
 
@@ -70,11 +72,11 @@ public:
     void buy_primary_ammo(const int& count);
     void buy_secondary_ammo(const int& count);
 
-    virtual void plant_bomb() {}
-    virtual void stop_planting() {}
+    virtual void plant_bomb() = 0;
+    virtual void stop_planting() = 0;
 
-    virtual void defuse_bomb() {}
-    virtual void stop_defusing() {}
+    virtual void defuse_bomb() = 0;
+    virtual void stop_defusing() = 0;
 
     PlayerData get_data() const;
 

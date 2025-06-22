@@ -8,11 +8,17 @@
 
 class ListGamesDTO: public DTO {
 private:
-    void deserialize() override {}
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+    }
 
 public:
-    explicit ListGamesDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
-        deserialize();
+    explicit ListGamesDTO(std::vector<uint8_t>&& bytes):
+            DTO(std::move(bytes)) {}
+
+    explicit ListGamesDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::LobbyCommands::LIST_GAMES) {
+        deserialize_from(in);
     }
 
     ListGamesDTO(): DTO(DTOSerial::LobbyCommands::LIST_GAMES) {}
@@ -20,6 +26,8 @@ public:
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
     }
+
+    ~ListGamesDTO() = default;
 };
 
 #endif

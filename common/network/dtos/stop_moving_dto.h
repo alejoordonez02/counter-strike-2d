@@ -14,12 +14,17 @@ class StopMovingDTO: public DTO {
 private:
     friend class StopMoving;
 
-    void deserialize() override {}
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+    }
 
 public:
     explicit StopMovingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {
-        deserialize();
+            DTO(std::move(bytes)) {}
+
+    explicit StopMovingDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::STOP_MOVING) {
+        deserialize_from(in);
     }
 
     explicit StopMovingDTO(): DTO(DTOSerial::PlayerCommands::STOP_MOVING) {}

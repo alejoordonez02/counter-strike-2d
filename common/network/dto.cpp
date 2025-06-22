@@ -36,40 +36,67 @@ void DTO::serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir) {
 }
 
 void DTO::serialize_string_into(std::vector<uint8_t>& out, const std::string& str) {
-    out.push_back(static_cast<uint8_t>(str.size() >> 8));
-    out.push_back(static_cast<uint8_t>(str.size() & 0xFF));
+    serialize_uint16_into(out, str.size());
     out.insert(out.end(), str.begin(), str.end());
+}
+
+void DTO::serialize_uint16_into(std::vector<uint8_t>& out, uint16_t n) {
+    uint16_t n_be = htons(n);
+    std::vector<uint8_t> bytes(sizeof(n_be));
+    std::memcpy(bytes.data(), &n_be, sizeof(n_be));
+    out.insert(out.end(), bytes.begin(), bytes.end());
+}
+
+void DTO::serialize_int_into(std::vector<uint8_t>& out, int n) {
+    int n_be = htonl(n);
+    std::vector<uint8_t> bytes(sizeof(n_be));
+    std::memcpy(bytes.data(), &n_be, sizeof(n_be));
+    out.insert(out.end(), bytes.begin(), bytes.end());
 }
 
 
 // deserialization
 
-float DTO::deserialize_float(int& i) {
+float DTO::deserialize_float_from(std::vector<uint8_t>::iterator& in) {
     uint32_t dsrlzd_n;
-    std::memcpy(&dsrlzd_n, payload.data() + i, sizeof(dsrlzd_n));
-    i += sizeof(dsrlzd_n);
+    std::memcpy(&dsrlzd_n, &*in, sizeof(dsrlzd_n));
+    in += sizeof(dsrlzd_n);
     dsrlzd_n = ntohl(dsrlzd_n);
     return std::bit_cast<float>(dsrlzd_n);
 }
 
-Position DTO::deserialize_pos(int& i) {
-    float x = deserialize_float(i);
-    float y = deserialize_float(i);
+Position DTO::deserialize_pos_from(std::vector<uint8_t>::iterator& in) {
+    float x = deserialize_float_from(in);
+    float y = deserialize_float_from(in);
     return Position(x, y);
 }
 
-Direction DTO::deserialize_dir(int& i) {
-    float x = deserialize_float(i);
-    float y = deserialize_float(i);
+Direction DTO::deserialize_dir_from(std::vector<uint8_t>::iterator& in) {
+    float x = deserialize_float_from(in);
+    float y = deserialize_float_from(in);
     return Direction(x, y);
 }
 
-std::string DTO::deserialize_string(int& i) {
-    uint16_t fb = static_cast<uint16_t>(payload[i++]) << 8;
-    uint16_t sb = static_cast<uint16_t>(payload[i++]);
-    uint16_t size = ntohs(fb | sb);
-    std::string str(size, '0');
-    std::memcpy(str.data(), payload.data() + i, size);
-    i += size;
+std::string DTO::deserialize_string_from(std::vector<uint8_t>::iterator& in) {
+    uint16_t str_size = deserialize_uint16_from(in);
+    std::string str(str_size, '0');
+    std::memcpy(str.data(), &*in, str_size);
+    in += str_size;
     return str;
+}
+
+uint16_t DTO::deserialize_uint16_from(std::vector<uint8_t>::iterator& in) {
+    uint16_t n = 0;
+    std::memcpy(&n, &*in, sizeof(n));
+    n = ntohs(n);
+    in += sizeof(n);
+    return n;
+}
+
+int DTO::deserialize_int_from(std::vector<uint8_t>::iterator& in) {
+    int n = 0;
+    std::memcpy(&n, &*in, sizeof(n));
+    n = ntohl(n);
+    in += sizeof(n);
+    return n;
 }

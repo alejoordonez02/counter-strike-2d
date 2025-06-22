@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include "factory/player_factory.h"
@@ -8,58 +9,31 @@
 #include "player.h"
 
 /*
- * Check if any team won the round
+ * Constructor
  * */
-bool World::terrorists_won_round() const {
-    return map->bomb_has_exploded();
-
-    /* bool all_alive;
-    for (auto& p : players) all_alive &= p->is_alive();
-    return all_alive; */
-}
-
-bool World::counter_terrorists_won_round() const {
-    return map->bomb_is_defused();
-
-    /* bool all_alive;
-    for (auto& p : players) all_alive &= p->is_alive();
-    return all_alive; */
-}
+World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
+             float time_out, const PlayerFactory& player_factory):
+    map(std::move(map)), max_rounds(max_rounds), round_time(round_time),
+    time_out(time_out), round_ongoing(false), ended(false),
+    player_factory(player_factory) {}
 
 /*
  * Update rounds
  * */
 void World::start_round() {
-    for (auto& p : players) p->restart();
+    tt_team.restart();
+    ct_team.restart();
     map->restart();
     round_time.restart();
-}
-
-void World::sum_round(int& team_won_rounds) {
-    team_won_rounds++;
-    if (tt_won_rounds + ct_won_rounds >= rounds) ended = true;
-
-    start_round();
 }
 
 void World::update_rounds(float dt) {
     round_time.update(dt);
 
-    if (terrorists_won_round())
-        return sum_round(tt_won_rounds);
-
-    else if (round_time.is_done() || counter_terrorists_won_round())
-        return sum_round(ct_won_rounds);
+    if (tt_team.lost_round(map->get_bomb_state(), round_time) ||
+        ct_team.lost_round(map->get_bomb_state(), round_time))
+        rounds++;
 }
-
-/*
- * Constructor
- * */
-World::World(std::shared_ptr<Map>&& map, int rounds, float round_time,
-             float time_out, const PlayerFactory& player_factory):
-    map(std::move(map)), rounds(rounds), round_time(round_time),
-    time_out(time_out), round_ongoing(false), ended(false), tt_won_rounds(0),
-    ct_won_rounds(0), player_factory(player_factory) {}
 
 /*
  * Update world
@@ -74,7 +48,8 @@ void World::update(float dt) {
     }
 
     for (int i = 0; i < updates; i++) {
-        for (auto& p : players) p->update(dt);
+        tt_team.update(dt);
+        ct_team.update(dt);
         map->update(dt);
         update_rounds(dt);
     }
@@ -84,9 +59,19 @@ void World::update(float dt) {
  * Add a player
  * */
 std::shared_ptr<Player> World::add_player(TeamName team) {
-    auto p = player_factory.create(players.size(), team);
+    std::shared_ptr<Player> p;
+    switch (team) {
+        case TeamName::TERRORIST:
+            p = tt_team.add_player(id_gen++, player_factory);
+            break;
+        case TeamName::COUNTER_TERRORIST:
+            p = ct_team.add_player(id_gen++, player_factory);
+            break;
+        default:
+            throw std::runtime_error("World error: team does not exist");
+    }
+
     map->add_collidable(p);
-    players.push_back(p);
     return p;
 }
 
@@ -98,15 +83,16 @@ bool World::has_ended() const { return ended; }
 /*
  * Get a snapshot of the current state of the world
  * */
-Snapshot World::get_snapshot() {
-    Snapshot snapshot;
+SnapshotDTO World::get_snapshot() {
+    SnapshotDTO snapshot;
     snapshot.round_finished = !round_ongoing;
     snapshot.game_finished = ended;
     snapshot.initial_phase = true;  // ?
-    snapshot.round_number = tt_won_rounds + ct_won_rounds;
-    snapshot.terrorists_score = tt_won_rounds;
-    snapshot.counter_terrorists_score = ct_won_rounds;
-    for (auto& p : players) snapshot.players.push_back(p->get_data());
+    snapshot.round_number = rounds;
+    snapshot.terrorists_score = tt_team.get_won_rounds();
+    snapshot.counter_terrorists_score = ct_team.get_won_rounds();
+    tt_team.push_player_data(snapshot.players);
+    ct_team.push_player_data(snapshot.players);
 
     return snapshot;
 }

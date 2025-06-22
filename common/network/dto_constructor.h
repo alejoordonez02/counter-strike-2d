@@ -67,7 +67,7 @@ public:
              }},
             {SNAPSHOT,
              [](auto&& bytes) {
-                 return std::make_unique<SnapshotDTO>(std::move(bytes));
+                 return std::make_unique<SnapshotDTOB>(std::move(bytes));
              }},
             // ...
         };
