@@ -12,18 +12,6 @@ target_sources(cs2d_client
         creatematchdialog.cpp
         camera.cpp
         hud_manager.cpp
-    PUBLIC
-        client.h
-        gameloop.h
-        texture_provider.h
-        animation_provider.h
-        input_handler.h
-        render.h
-        mainwindow.h
-        lobbywindow.h
-        creatematchdialog.h
-        camera.h
-        hud_manager.h
 )
 
 add_subdirectory(renderables)
