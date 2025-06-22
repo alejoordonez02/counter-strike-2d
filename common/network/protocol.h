@@ -39,7 +39,7 @@ constexpr uint8_t FAILURE = 0x46;          // F - 70
 constexpr uint8_t EXIT_SERVER = 0x45;      // E - 69
 };  // namespace LobbyCommands
 namespace GameState {
-// TODO: Snapshot
+// TODO: SnapshotDTO
 }
 };  // namespace DTOSerial
 

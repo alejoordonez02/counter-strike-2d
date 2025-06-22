@@ -1,16 +1,84 @@
 #ifndef COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 #define COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 
+#include <cstdint>
 #include <utility>
 #include <vector>
 
+#include <sys/types.h>
+
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
-#include "common/snapshot.h"
 
-class SnapshotDTO: public DTO {
+#define MAX_PLAYER_NAME 32
+
+enum class WeaponType { None, Bomb, Knife, Glock, AK47, M3, AWP };
+
+// armas en el suelo
+struct WeaponDTO {
+    uint32_t weapon_id;
+
+    WeaponType type;
+    int16_t x;
+    int16_t y;
+};
+
+struct YourPlayerData {
+    uint16_t player_id;
+    uint16_t player_hp;
+    
+    uint total_money = 0;
+
+    // estadisticas
+    uint8_t rounds_won = 0;
+    uint8_t total_kills = 0;
+};
+
+struct PlayerData {
+    uint8_t player_id;
+    char player_name[MAX_PLAYER_NAME];
+    uint8_t team_id;  // 0 para terroristas, 1 para counter
+
+    // Armas
+    // Para poder ser visualizada por otros jugadores
+    WeaponType current_weapon;  
+    bool has_bomb;
+
+    // animaciones y sonidos
+    bool is_shooting;
+    bool was_hurt;
+    bool is_walking;
+    bool is_dead;
+
+    // coordenadas del jugador
+    float x;
+    float y;
+
+    // coordenadas del mouse
+    float aim_x;
+    float aim_y;
+};
+
+struct SnapshotDTO {
+    bool round_finished = false;
+    bool game_finished = false;
+    bool initial_phase = true;
+
+    // medido en segundos
+    uint time_left = 60 * 5;
+
+    uint8_t round_number = 0;
+    uint8_t terrorists_score = 0;
+    uint8_t counter_terrorists_score = 0;
+
+    YourPlayerData user_data;
+    std::vector<PlayerData> players;
+    std::vector<WeaponDTO> weapons_on_floor;
+};
+
+class SnapshotDTOB: public DTO {
 private:
-    // Snapshot snapshot;
+    // SnapshotDTO snapshot;
 
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         // Deserializar campos snapshot
@@ -40,19 +108,19 @@ private:
     }
 
 public:
-    Snapshot snapshot;
+    SnapshotDTO snapshot;
 
-    explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+    explicit SnapshotDTOB(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);
     }
 
-    explicit SnapshotDTO(std::vector<uint8_t>::iterator& in):
+    explicit SnapshotDTOB(std::vector<uint8_t>::iterator& in):
             DTO(DTOSerial::PlayerCommands::SNAPSHOT) {
         deserialize_from(in);
     }
 
-    explicit SnapshotDTO(const Snapshot& snap):
+    explicit SnapshotDTOB(const SnapshotDTO& snap):
             DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
@@ -78,7 +146,7 @@ public:
         }
     }
 
-    ~SnapshotDTO() = default;
+    ~SnapshotDTOB() = default;
 };
 
 #endif

@@ -83,8 +83,8 @@ bool World::has_ended() const { return ended; }
 /*
  * Get a snapshot of the current state of the world
  * */
-Snapshot World::get_snapshot() {
-    Snapshot snapshot;
+SnapshotDTO World::get_snapshot() {
+    SnapshotDTO snapshot;
     snapshot.round_finished = !round_ongoing;
     snapshot.game_finished = ended;
     snapshot.initial_phase = true;  // ?

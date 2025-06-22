@@ -48,7 +48,7 @@ public:
 
     bool has_ended() const;
 
-    Snapshot get_snapshot();
+    SnapshotDTO get_snapshot();
 };
 
 #endif
