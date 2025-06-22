@@ -34,8 +34,6 @@ class RenderableMap {
 
     void load_blocks();
 
-    bool exists_droped_weapon(WeaponType type, int x, int y);
-
     ~RenderableMap();
 };
 

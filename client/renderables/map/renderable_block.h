@@ -13,7 +13,7 @@
 
 class RenderableBlock {
     private:
-    const BlockData& block_data;
+    BlockData block_data;
     std::shared_ptr<AnimationProvider> animation_provider;
 
     std::unique_ptr<Animation> block;

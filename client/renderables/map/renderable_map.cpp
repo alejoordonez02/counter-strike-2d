@@ -46,28 +46,17 @@ void RenderableMap::load_blocks() {
     }
 }
 
-// bool RenderableMap::exists_droped_weapon(WeaponType type, int x, int y) {
-//     for (const auto& weapon : droped_weapons) {
-//         if (weapon->get_type() == type && weapon->get_x() == x && weapon->get_y() == y) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
-
 
 void RenderableMap::update(Snapshot& snapshot) {
     // actualizar dropeables. Vaciar droped_weapons antes de agregar nuevos
+    // TODO: No muy eficiente pero sirve
     droped_weapons.clear();
     for (const auto& weapon : snapshot.weapons_on_floor) {
-        // // TODO: No muy eficiente pero sirve
-        // if (!exists_droped_weapon(weapon.type, weapon.x, weapon.y)) {
-            BlockData block;
-            block.x = weapon.x;
-            block.y = weapon.y;
-            block.texture = weapon_type_to_string(weapon.type);
-            droped_weapons.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
-        // }
+        BlockData block;
+        block.x = weapon.x;
+        block.y = weapon.y;
+        block.texture = weapon_type_to_string(weapon.type);
+        droped_weapons.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
     }
 }
 
