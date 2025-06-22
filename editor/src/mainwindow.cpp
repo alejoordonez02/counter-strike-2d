@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSize>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,8 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_weaponsheetEditor(new SheetEditor(this)),
     m_mapEditor(new MapEditor(this)),
     m_mapLoader()
-{
+{   
+    
     ui->setupUi(this);
+    ui->scrollArea->setWidgetResizable(false);
+    ui->scrollAreaWidgetContents->setMinimumSize(DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER , DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER); 
+    ui->scrollArea->horizontalScrollBar()->setRange(-DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER, DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER- ui->scrollArea->width());
+    ui->scrollArea->verticalScrollBar()->setRange(-DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER, DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER- ui->scrollArea->height());
     setupUI();
     loadConfigurations();
     connectSignals();

@@ -6,6 +6,7 @@
 #include "mapeditor.h"
 #include "common/maploader.h"
 
+#define SCROLL_AREA_SIZE_MULTIPLIER 80
 #define weaponsheetConfigPath "../config/weaponsheet_config.yaml"
 #define tilesheetConfigPath "../config/tilesheet_config.yaml"
 
