@@ -113,6 +113,16 @@ void Player::buy_secondary_ammo(const int& count) {
 /*
  * Get snapshot of the current state of the player
  * */
+YourPlayerData Player::get_special_data() const {
+    YourPlayerData data;
+    data.player_id = id;
+    data.player_hp = health;
+    data.total_money = money;
+    data.rounds_won = 0;  // ésto lo sabe World!
+    data.total_kills = kills;
+    return data;
+}
+
 PlayerData Player::get_data() const {
     PlayerData data;
     data.player_id = id;

@@ -4,12 +4,11 @@
 
 #include "common/network/dtos/snapshot_dto.h"
 
-
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-                   Queue<std::unique_ptr<DTO>>& commands, int user_player_id,
+                   Queue<std::unique_ptr<DTO>>& commands,
                    const MapData& map_data):
-    render(user_player_id, map_data), snapshots_queue(snapshots),
-    commands_queue(commands), input_handler(commands) {
+    render(map_data), snapshots_queue(snapshots), commands_queue(commands),
+    input_handler(commands) {
     input_handler.start();
 }
 
