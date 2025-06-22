@@ -22,16 +22,17 @@ TextureProvider::TextureProvider() {}
 
 void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     // ==== PLAYERS ======
-    textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
-    textures["terrorist_2"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/player/t2.bmp");
-    textures["terrorist_3"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/player/t3.bmp");
-    textures["terrorist_4"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/player/t4.bmp");
-    textures["legs"] = std::make_shared<SDL2pp::Texture>(
-            renderer, DATA_PATH "/assets/gfx/player/legs.bmp");
+    textures["terrorist_1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t1.bmp");
+    textures["terrorist_2"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t2.bmp");
+    textures["terrorist_3"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t3.bmp");
+    textures["terrorist_4"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/t4.bmp");
+        
+    textures["counter_terrorist_1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/ct1.bmp");
+    textures["counter_terrorist_2"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/ct2.bmp");
+    textures["counter_terrorist_3"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/ct3.bmp");
+    textures["counter_terrorist_4"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/ct4.bmp");
+
+    textures["legs"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/player/legs.bmp");
             
     // ==== BACKGROUNDS ======
     textures["background_sand1"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/backgrounds/sand1.jpg");

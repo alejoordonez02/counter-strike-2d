@@ -8,17 +8,26 @@ AnimationProvider::AnimationProvider(){
 
 void AnimationProvider::load_animations() {
     // ====== PLAYERS =======
-    animation_prototypes["terrorist_1_holding_knife"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 0, false}};
-    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
-    animation_prototypes["terrorist_1_placing_bomb"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 2, false}};
-    animation_prototypes["terrorist_1_holding_pistol"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 3, false}};
-    animation_prototypes["terrorist_1_holding_rifle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 5, false}};
-    
-    animation_prototypes["terrorist_2_idle"] = {TextureProvider::get_texture("terrorist_2").get(), AnimationData{2, 1, false, 1}};
-    animation_prototypes["terrorist_3_idle"] = {TextureProvider::get_texture("terrorist_3").get(), AnimationData{2, 1, false, 1}};
-    animation_prototypes["terrorist_4_idle"] = {TextureProvider::get_texture("terrorist_4").get(), AnimationData{2, 1, false, 1}};
-
+    // Terrorists
+    for (int i = 1; i <= 4; ++i) {
+        std::string base = "terrorist_" + std::to_string(i);
+        animation_prototypes[base + "_holding_knife"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 0, false}};
+        animation_prototypes[base + "_idle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 1, false}};
+        animation_prototypes[base + "_placing_bomb"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 2, false}};
+        animation_prototypes[base + "_holding_pistol"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 3, false}};
+        animation_prototypes[base + "_holding_rifle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 5, false}};
+    }
+    // Counter-Terrorists
+    for (int i = 1; i <= 4; ++i) {
+        std::string base = "counter_terrorist_" + std::to_string(i);
+        animation_prototypes[base + "_holding_knife"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 0, false}};
+        animation_prototypes[base + "_idle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 1, false}};
+        animation_prototypes[base + "_placing_bomb"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 2, false}};
+        animation_prototypes[base + "_holding_pistol"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 3, false}};
+        animation_prototypes[base + "_holding_rifle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 5, false}};
+    }
     animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(), AnimationData{4, 8, true, 5, 0}};
+
 
     // ====== GUNS ======
     animation_prototypes["held_bomb"] = {TextureProvider::get_texture("held_bomb").get(), AnimationData{1, 0, false}};
