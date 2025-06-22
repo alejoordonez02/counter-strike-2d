@@ -13,9 +13,9 @@
  * */
 World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
              float time_out, const PlayerFactory& player_factory):
-    map(std::move(map)), max_rounds(max_rounds), round_time(round_time),
-    time_out(time_out), round_ongoing(false), ended(false),
-    player_factory(player_factory) {}
+    map(std::move(map)), id_gen(0), max_rounds(max_rounds),
+    round_time(round_time), time_out(time_out), round_ongoing(false),
+    ended(false), player_factory(player_factory) {}
 
 /*
  * Update rounds
