@@ -5,6 +5,9 @@
 #include <QPixmap>
 #include <QApplication>
 
+#define DEFAULT_TILE_WIDTH 32
+#define DEFAULT_TILE_HEIGHT 32
+
 class SheetEditor : public QWidget
 {
     Q_OBJECT
@@ -26,7 +29,6 @@ protected:
 private:
     QPixmap m_tilesheet;
     QPoint m_selectedTilePos;
-    bool m_isDragging;
     int m_tileWidth;
     int m_tileHeight;
     SheetData sheetdata;

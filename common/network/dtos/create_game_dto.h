@@ -15,19 +15,23 @@ private:
     MapName map;
     TeamName team;
 
-    void deserialize() override {
-        int i = 1;
-        uint8_t len = payload[i++];
-        game_name.assign(payload.begin() + i, payload.begin() + i + len);
-        i += len;
-        map = static_cast<MapName>(payload[i++]);
-        team = static_cast<TeamName>(payload[i++]);
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        game_name = deserialize_string_from(in);
+        map = static_cast<MapName>(*in++);
+        team = static_cast<TeamName>(*in++);
     }
 
 public:
     explicit CreateGameDTO(std::vector<uint8_t>&& bytes):
-        DTO(std::move(bytes)) {
-        deserialize();
+            DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit CreateGameDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::LobbyCommands::CREATE_GAME) {
+        deserialize_from(in);
     }
 
     CreateGameDTO(const std::string& gn, MapName m, TeamName t):
@@ -35,8 +39,7 @@ public:
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        out.push_back(static_cast<uint8_t>(game_name.size()));
-        out.insert(out.end(), game_name.begin(), game_name.end());
+        serialize_string_into(out, game_name);
         out.push_back(static_cast<uint8_t>(map));
         out.push_back(static_cast<uint8_t>(team));
     }
@@ -44,6 +47,8 @@ public:
     const std::string& get_game_name() const { return game_name; }
     MapName get_map() const { return map; }
     TeamName get_team() const { return team; }
+
+    ~CreateGameDTO() = default;
 };
 
 #endif

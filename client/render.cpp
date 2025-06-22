@@ -7,14 +7,11 @@
 #include "client/camera.h"
 #include "render.h"
 
-
-Render::Render(int user_player_id, const MapData& map_data):
-        sdl(SDL_INIT_VIDEO),
-        window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
-               SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
-        renderer(window, -1, SDL_RENDERER_ACCELERATED),
-        user_player_id(user_player_id),
-        map_data(map_data) {
+Render::Render(const MapData& map_data):
+    sdl(SDL_INIT_VIDEO), window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
+                                SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
+                                WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
+    renderer(window, -1, SDL_RENDERER_ACCELERATED), map_data(map_data) {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 
@@ -22,18 +19,20 @@ Render::Render(int user_player_id, const MapData& map_data):
     TextureProvider::load_textures(renderer);
     animation_provider = std::make_shared<AnimationProvider>();
     // cargar renderizables principales
-    renderable_map = std::make_unique<RenderableMap>(map_data, animation_provider);
+    renderable_map =
+        std::make_unique<RenderableMap>(map_data, animation_provider);
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(Snapshot snapshot, uint32_t& fps_timer) {
+void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
     // actualizar dropeables
     renderable_map->update(snapshot);
 
     // actualizar jugadores
+    int my_id = snapshot.user_data.player_id;
     for (auto& jugador : snapshot.players) {
         // si es el jugador actual actualiza el offset de la camara
-        if (jugador.player_id == user_player_id) {
+        if (jugador.player_id == my_id) {
             Camera::set_center(jugador.x, jugador.y);
             Camera::set_screen_size(renderer.GetOutputSize());
         }
@@ -48,9 +47,9 @@ void Render::update(Snapshot snapshot, uint32_t& fps_timer) {
                       << std::endl;
             // si no existe, crearlo
             auto renderable_player = std::make_unique<RenderablePlayer>(
-                    jugador.player_id, animation_provider);
+                jugador.player_id, animation_provider);
             players_renderables[jugador.player_id] =
-                    std::move(renderable_player);
+                std::move(renderable_player);
         }
     }
 
@@ -58,13 +57,13 @@ void Render::update(Snapshot snapshot, uint32_t& fps_timer) {
     hud_manager->update(snapshot, fps_timer);
 }
 
-
 void Render::skip_frames(uint8_t frames) {
-    if(frames == 0) {
+    if (frames == 0) {
         return;
     }
     // se salta los frames que no se renderizan
-    std::cout << "LOG: Debe saltearse " << (int)frames << " frames." << std::endl;
+    std::cout << "LOG: Debe saltearse " << (int)frames << " frames."
+              << std::endl;
     for (auto& [id, renderable_player] : players_renderables) {
         renderable_player->skip_frames(frames);
     }
@@ -89,7 +88,6 @@ void Render::render() {
     // mostrar la ventana
     renderer.Present();
 }
-
 
 Render::~Render() {
     // Limpiar los renderables de jugadores

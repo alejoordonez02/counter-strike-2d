@@ -17,7 +17,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void HUDManager::update(const Snapshot& snapshot, uint32_t& fps_timer) {
+void HUDManager::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;
 
@@ -46,7 +46,7 @@ void HUDManager::update(const Snapshot& snapshot, uint32_t& fps_timer) {
     calculate_fps(fps_timer);
 }
 
-bool HUDManager::get_user_is_shooting(const Snapshot& snapshot) {
+bool HUDManager::get_user_is_shooting(const SnapshotDTO& snapshot) {
     // busca el jugador actual en el snapshot 
     // para obtener su estado de is_shooting
     int user_id = snapshot.user_data.player_id;

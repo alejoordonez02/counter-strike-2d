@@ -1,0 +1,10 @@
+tick_rate: 60
+commands_per_tick: 30
+rounds: 15
+round_time: 600
+time_out: 10
+player_max_velocity: 90
+player_acceleration: 360
+player_radius: 10
+player_starting_money: 800
+player_max_health: 100

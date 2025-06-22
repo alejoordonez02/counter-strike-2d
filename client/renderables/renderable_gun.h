@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "common/position.h"
 #include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"

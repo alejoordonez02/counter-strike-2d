@@ -1,4 +1,7 @@
+map_name: Nuke
 background: nuke
+tile_width: 32
+tile_height: 32
 planting_spots: 5
 blocks:
   - x: 96

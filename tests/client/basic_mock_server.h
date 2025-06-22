@@ -11,7 +11,7 @@
 #include "common/network/receiver.h"
 #include "common/network/sender.h"
 #include "common/queue.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 void mock_server() {
     // 1. Crear socket de escucha en localhost:7878
@@ -62,12 +62,12 @@ void mock_server() {
     player3.x = 400;
     player3.y = 300;
 
-    Snapshot initial_snap{};
+    SnapshotDTO initial_snap{};
     initial_snap.round_number = 0;
     initial_snap.players.push_back(player1);
     initial_snap.players.push_back(player2);
     initial_snap.players.push_back(player3);
-    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTO>(initial_snap);
+    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTOB>(initial_snap);
     snapshots_queue.try_push(std::move(initial_snapshot));
 
     int counter = 0;
@@ -116,7 +116,7 @@ void mock_server() {
             }
             
             // debe crear siempre un nuevo snapshot
-            Snapshot snap{};
+            SnapshotDTO snap{};
 
             counter++;
             if (counter == 10) {
@@ -132,7 +132,7 @@ void mock_server() {
 
             // Empaquetar el snapshot en un DTO y enviarlo al cliente
             std::unique_ptr<DTO> snapshot_dto =
-                    std::make_unique<SnapshotDTO>(snap);
+                    std::make_unique<SnapshotDTOB>(snap);
             snapshots_queue.try_push(std::move(snapshot_dto));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));

@@ -5,18 +5,17 @@
 
 #include "client/input_handler.h"
 #include "client/render.h"
-#include "common/network/dto.h"
-#include "common/queue.h"
-#include "common/snapshot.h"
 #include "common/maploader.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/snapshot_dto.h"
+#include "common/queue.h"
 
 const static int FRAME_RATE = 40;
 // Va con milisegundos ya que utilizo el timer de SDL
 const static int RATE = 1000 / FRAME_RATE;
 
-
 class GameLoop {
-    private:
+private:
     Render render;
 
     bool is_running = true;
@@ -26,9 +25,9 @@ class GameLoop {
 
     InputHandler input_handler;
 
-    public:
+public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::unique_ptr<DTO>>& commands, int user_player_id, const MapData& map_data);
+             Queue<std::unique_ptr<DTO>>& commands, const MapData& map_data);
     void run();
 
     void debug_get_fps(uint32_t& fps_timer, int& frame_count);
@@ -37,7 +36,7 @@ class GameLoop {
 
     // void handle_frame_timing(uint32_t& t1);
 
-    Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
+    SnapshotDTO get_snapshot_from_queue(SnapshotDTO last_snapshot);
 };
 
 #endif  // GAMELOOP_H

@@ -11,7 +11,7 @@
 #include "client/renderables/animation.h"
 #include "client/renderables/map/renderable_block.h"
 #include "common/maploader.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 
 class RenderableMap {
@@ -28,7 +28,7 @@ class RenderableMap {
 
     void load_background();
 
-    void update(Snapshot& snapshot);
+    void update(SnapshotDTO& snapshot);
 
     void render(SDL2pp::Renderer& renderer);
 

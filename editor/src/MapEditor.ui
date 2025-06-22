@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>CS2D Map Editor</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -179,7 +179,7 @@
                 <string>Save</string>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset>
                  <normaloff>:/icons/icons/save.svg</normaloff>:/icons/icons/save.svg</iconset>
                </property>
                <property name="iconSize">
@@ -214,7 +214,7 @@
                 <string>Load</string>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset>
                  <normaloff>:/icons/icons/upload.svg</normaloff>:/icons/icons/upload.svg</iconset>
                </property>
                <property name="iconSize">
@@ -249,7 +249,7 @@
                 <string>Background</string>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset>
                  <normaloff>:/icons/icons/edit-2.svg</normaloff>:/icons/icons/edit-2.svg</iconset>
                </property>
                <property name="iconSize">
@@ -282,7 +282,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>294</width>
+               <width>208</width>
                <height>68</height>
               </rect>
              </property>
@@ -314,8 +314,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>294</width>
-               <height>361</height>
+               <width>208</width>
+               <height>357</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -403,7 +403,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>426</width>
+            <width>510</width>
             <height>562</height>
            </rect>
           </property>

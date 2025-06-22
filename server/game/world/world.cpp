@@ -13,9 +13,9 @@
  * */
 World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
              float time_out, const PlayerFactory& player_factory):
-    map(std::move(map)), max_rounds(max_rounds), round_time(round_time),
-    time_out(time_out), round_ongoing(false), ended(false),
-    player_factory(player_factory) {}
+    map(std::move(map)), id_gen(0), max_rounds(max_rounds),
+    round_time(round_time), time_out(time_out), round_ongoing(false),
+    ended(false), player_factory(player_factory) {}
 
 /*
  * Update rounds
@@ -83,8 +83,8 @@ bool World::has_ended() const { return ended; }
 /*
  * Get a snapshot of the current state of the world
  * */
-Snapshot World::get_snapshot() {
-    Snapshot snapshot;
+SnapshotDTO World::get_snapshot() {
+    SnapshotDTO snapshot;
     snapshot.round_finished = !round_ongoing;
     snapshot.game_finished = ended;
     snapshot.initial_phase = true;  // ?

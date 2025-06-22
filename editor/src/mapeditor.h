@@ -6,6 +6,9 @@
 #include <yaml-cpp/yaml.h>
 #include "mapdata.h"
 
+#define DEFAULT_TILE_WIDTH 32
+#define DEFAULT_TILE_HEIGHT 32
+
 class MapEditor : public QWidget
 {
     Q_OBJECT
@@ -31,6 +34,7 @@ public:
     void setCurrentTile(const QString& texturePath, const QString& typeString);
 
 private:
+
     QPoint m_dragStartPos;
     QPixmap m_background;
     QHash<QString, QPixmap> textureCache;

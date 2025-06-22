@@ -25,7 +25,8 @@ void PlayerHandler::play() {
     }
 }
 
-void PlayerHandler::send_snapshot(const Snapshot& snapshot) {
-    auto dto = std::make_unique<SnapshotDTO>(snapshot);
+void PlayerHandler::send_snapshot(SnapshotDTO& snapshot) {
+    snapshot.user_data = player->get_special_data();
+    auto dto = std::make_unique<SnapshotDTOB>(snapshot);
     snapshots.push(std::move(dto));
 }

@@ -1,6 +1,6 @@
 #include "client/renderables/renderable_player.h"
 #include "client/providers/animation_provider.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 #include <utility>
 

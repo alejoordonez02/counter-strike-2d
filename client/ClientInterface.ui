@@ -6,31 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>363</width>
-    <height>433</height>
+    <width>600</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CS2D Client</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QFrame" name="mainFrame">
       <property name="styleSheet">
        <string notr="true">#mainFrame{
-	
-	border-image: url(:/images/images/cs2d.bmp);
+    border-image: url(:/images/images/cs2d.bmp);
+    padding: 10px;
 }</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -41,56 +35,47 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>50</height>
+           <height>30</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="usernameInput">
+        <widget class="QLineEdit" name="hostInput">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 150);</string>
+         </property>
          <property name="placeholderText">
-          <string>Username</string>
+          <string>Host</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="serverAddressInput">
+        <widget class="QLineEdit" name="servInput">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 150);</string>
+         </property>
          <property name="placeholderText">
-          <string>Server address (ex: localhost:8080)</string>
+          <string>Servname</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>114</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="startButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgba(70, 130, 180, 200);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+QPushButton:hover {
+    background-color: rgba(100, 160, 220, 200);
+}</string>
+         </property>
          <property name="text">
           <string>Iniciar</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="joinMatchButton">
-         <property name="text">
-          <string>Unirse a Partida</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="createMatchButton">
-         <property name="text">
-          <string>Crear Partida</string>
          </property>
         </widget>
        </item>
@@ -105,7 +90,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>50</height>
+           <height>30</height>
           </size>
          </property>
         </spacer>
