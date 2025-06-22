@@ -94,5 +94,11 @@ Snapshot World::get_snapshot() {
     tt_team.push_player_data(snapshot.players);
     ct_team.push_player_data(snapshot.players);
 
+    // TODO: Eliminar. Lo dejo asi para que se vea en el mapa y 
+    // se sepa que esta disponible para usar
+    snapshot.weapons_on_floor.push_back({WeaponType::AK47, 224, 228});
+    snapshot.weapons_on_floor.push_back({WeaponType::Glock, 128, 96});
+    snapshot.weapons_on_floor.push_back({WeaponType::Bomb, 100, 196});
+
     return snapshot;
 }
