@@ -6,8 +6,13 @@
 #include "world/world.h"
 
 /*
- * Add pending players
+ * Add players
  * */
+void Game::add_player(Connection&& con, TeamName team) {
+    std::unique_lock<std::mutex> lck(m);
+    pending.push_back(std::make_pair(std::move(con), team));
+}
+
 void Game::add_pending_players() {
     std::vector<std::pair<Connection, TeamName>> tmp;
 
@@ -57,12 +62,4 @@ void Game::run() {
             t1 += tick_duration;
         }
     }
-}
-
-/*
- * Add new player
- * */
-void Game::add_player(Connection&& con, TeamName team) {
-    std::unique_lock<std::mutex> lck(m);
-    pending.push_back(std::make_pair(std::move(con), team));
 }
