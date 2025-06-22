@@ -1,18 +1,21 @@
 #include "block.h"
 
-Block::Block() : m_position(0, 0), m_texturePath(""), m_type(Common) {}
+Block::Block() : m_position(0, 0), m_texture(""), m_type(Common) {}
 
-Block::Block(const QPoint& position, const QString& texturePath, Type type) :
+Block::Block(const QPoint& position, const QString& texture, Type type) :
     m_position(position),
-    m_texturePath(texturePath),
+    m_texture(texture),
     m_type(type) {}
 
 QPoint Block::getPosition() const {
     return m_position;
 }
+QString Block::getTexture() const {
+    return m_texture;
+}
 
 QString Block::getTexturePath() const {
-    return m_texturePath;
+    return TEXTURE_PREFIX + m_texture + TEXTURE_SUFFIX;
 }
 
 Block::Type Block::getType() const {
@@ -38,8 +41,8 @@ void Block::setPosition(const QPoint& position) {
     m_position = position;
 }
 
-void Block::setTexture(const QString& texturePath) {
-    m_texturePath = texturePath;
+void Block::setTexture(const QString& texture) {
+    m_texture = texture;
 }
 
 void Block::setType(const QString& typeString) {

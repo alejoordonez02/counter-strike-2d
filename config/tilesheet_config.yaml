@@ -1,4 +1,6 @@
 tilesheet: "resources/embrador.bmp"
+tile_width: 32
+tile_height: 32
 rows: 12
 cols: 8
 blocks:

@@ -19,8 +19,10 @@ MapData MapLoader::loadMapData(const std::string& filePath) {
     MapData data;
     try {
         YAML::Node config = YAML::LoadFile(filePath);
-
+        data.mapName = config["map_name"].as<std::string>();
         data.background = config["background"].as<std::string>();
+        data.width = config["tile_width"].as<int>();
+        data.height = config["tile_height"].as<int>();
         data.plantingSpots = config["planting_spots"].as<int>();
         if (config["blocks"]) {
             parseBlocks(config["blocks"], data);
@@ -49,7 +51,7 @@ void MapLoader::parseBlocks(const YAML::Node& blocksNode, MapData& data) {
 }
 
 bool MapLoader::validateMapData(const MapData& data) {
-    if (data.background.empty()){ //|| !std::filesystem::exists(data.background)) {
+    if (data.background.empty()){ 
         return false;
     }
 

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Lobby</class>
+ <widget class="QMainWindow" name="Lobby">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>521</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CS2D Client Lobby</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="matchesFrame">
+      <property name="styleSheet">
+       <string notr="true">#matchesFrame {
+    background-color: rgba(40, 40, 40, 200);
+    border-radius: 5px;
+    padding: 10px;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="matchesLabel">
+         <property name="styleSheet">
+          <string notr="true">color: white;
+font-weight: bold;
+font-size: 16px;</string>
+         </property>
+         <property name="text">
+          <string>Match List</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="matchesList">
+         <property name="styleSheet">
+          <string notr="true">QListWidget {
+    background-color: rgba(60, 60, 60, 150);
+    color: white;
+    border: 1px solid rgba(100, 100, 100, 100);
+    border-radius: 3px;
+}
+QListWidget::item {
+    padding: 5px;
+    border-bottom: 1px solid rgba(100, 100, 100, 50);
+}
+QListWidget::item:hover {
+    background-color: rgba(80, 80, 80, 200);
+}
+QListWidget::item:selected {
+    background-color: rgba(70, 130, 180, 200);
+}</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="refreshButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgba(70, 130, 180, 200);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+QPushButton:hover {
+    background-color: rgba(100, 160, 220, 200);
+}</string>
+         </property>
+         <property name="text">
+          <string>Refresh Matches</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="createMatchButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgba(178, 34, 34, 200);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+QPushButton:hover {
+    background-color: rgba(220, 20, 60, 200);
+}</string>
+         </property>
+         <property name="text">
+          <string>Create Match</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="joinMatchButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: rgba(34, 139, 34, 200);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+QPushButton:hover {
+    background-color: rgba(50, 205, 50, 200);
+}</string>
+         </property>
+         <property name="text">
+          <string>Join Match</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
