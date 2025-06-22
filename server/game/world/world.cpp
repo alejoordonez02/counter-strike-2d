@@ -27,12 +27,19 @@ void World::start_round() {
     round_time.restart();
 }
 
+void World::sum_won_round(Team& team) {
+    team.sum_won_round();
+    start_round();
+}
+
 void World::update_rounds(float dt) {
     round_time.update(dt);
 
-    if (tt_team.lost_round(map->get_bomb_state(), round_time) ||
-        ct_team.lost_round(map->get_bomb_state(), round_time))
-        rounds++;
+    if (tt_team.lost_round(map->get_bomb_state(), round_time))
+        sum_won_round(ct_team);
+
+    if (ct_team.lost_round(map->get_bomb_state(), round_time))
+        sum_won_round(tt_team);
 }
 
 /*

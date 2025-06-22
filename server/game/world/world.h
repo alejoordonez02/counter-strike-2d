@@ -35,6 +35,8 @@ private:
 
     void start_round();
 
+    void sum_won_round(Team& team);
+
     void update_rounds(float dt);
 
 public:
