@@ -47,6 +47,13 @@ void DTO::serialize_uint16_into(std::vector<uint8_t>& out, uint16_t n) {
     out.insert(out.end(), bytes.begin(), bytes.end());
 }
 
+void DTO::serialize_int_into(std::vector<uint8_t>& out, int n) {
+    int n_be = htonl(n);
+    std::vector<uint8_t> bytes(sizeof(n_be));
+    std::memcpy(bytes.data(), &n_be, sizeof(n_be));
+    out.insert(out.end(), bytes.begin(), bytes.end());
+}
+
 
 // deserialization
 
@@ -82,6 +89,14 @@ uint16_t DTO::deserialize_uint16_from(std::vector<uint8_t>::iterator& in) {
     uint16_t n = 0;
     std::memcpy(&n, &*in, sizeof(n));
     n = ntohs(n);
+    in += sizeof(n);
+    return n;
+}
+
+int DTO::deserialize_int_from(std::vector<uint8_t>::iterator& in) {
+    int n = 0;
+    std::memcpy(&n, &*in, sizeof(n));
+    n = ntohl(n);
     in += sizeof(n);
     return n;
 }
