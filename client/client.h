@@ -20,11 +20,12 @@ private:
     Receiver receiver;
     InputHandler input_handler;
 
-    void lobby_phase();
+    void lobby_phase(
+        int i = 0);  // i != 0 no abre la interfaz de lobby (para testear)
 
 public:
     Client(const std::string& hostname, const std::string& servname);
-    void run();
+    void run(int i = 0);  // igual a arriba
 };
 
 #endif

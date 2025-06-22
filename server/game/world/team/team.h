@@ -25,6 +25,8 @@ public:
 
     void restart();
 
+    void sum_won_round();
+
     int get_won_rounds();
 
     virtual bool lost_round(const BombState& bomb, const Timer& round_time) = 0;
