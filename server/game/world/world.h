@@ -27,7 +27,7 @@ private:
     int max_rounds;
     int rounds;
     Timer round_time;
-    float time_out;
+    Timer time_out;
     bool round_ongoing;
     bool ended;
 

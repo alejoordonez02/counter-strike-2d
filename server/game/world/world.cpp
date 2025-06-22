@@ -21,6 +21,7 @@ World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
  * Update rounds
  * */
 void World::start_round() {
+    time_out.restart();
     tt_team.restart();
     ct_team.restart();
     map->restart();
@@ -47,6 +48,8 @@ void World::update_rounds(float dt) {
  * */
 void World::update(float dt) {
     if (ended) return;
+    time_out.update(dt);
+    if (!time_out.is_done()) return;
 
     int updates = 1;
     if (dt > WorldTiming::DT) {
