@@ -7,7 +7,7 @@
 #include "actions/attack.h"
 #include "common/direction.h"
 #include "common/position.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "equipment/equipment.h"
 #include "equipment/weapon.h"
 #include "map.h"

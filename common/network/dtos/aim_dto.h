@@ -15,14 +15,20 @@ class AimDTO: public DTO {
 
     friend class Aim;
 
-    void deserialize() override {
-        int i = 1;  // skip 1st byte (DTO type)
-        dir = deserialize_dir(i);
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        dir = deserialize_dir_from(in);
     }
 
     public:
     explicit AimDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
-        deserialize();
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit AimDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PlayerCommands::AIM) {
+        deserialize_from(in);
     }
 
     explicit AimDTO(const Direction& d):

@@ -5,7 +5,7 @@
 #include <SDL2pp/SDLTTF.hh>
 #include <SDL2pp/Renderer.hh>
 
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "client/renderables/hud/renderable_hud_health.h"
 #include "client/renderables/hud/renderable_hud_timer.h"
 #include "client/renderables/hud/renderable_hud_money.h"
@@ -16,7 +16,7 @@ class HUDManager {
     SDL2pp::Font font;
 
     bool show_text;
-    Snapshot snapshot;
+    SnapshotDTO snapshot;
 
     RenderableHUDHealth hud_hp;
     RenderableHUDTimer hud_timer;
@@ -26,7 +26,7 @@ class HUDManager {
     public:
     HUDManager(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const Snapshot& snapshot);
+    void update(const SnapshotDTO& snapshot);
 
     void render(SDL2pp::Renderer& renderer);
 

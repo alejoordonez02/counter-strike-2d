@@ -13,16 +13,16 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
     input_handler.start();
 }
 
-Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
+SnapshotDTO GameLoop::get_snapshot_from_queue(SnapshotDTO last_snapshot) {
     std::unique_ptr<DTO> dto_ptr;
-    SnapshotDTO* snapshot_dto = nullptr;
+    SnapshotDTOB* snapshot_dto = nullptr;
 
     if (snapshots_queue.try_pop(dto_ptr)) {
         if (!dto_ptr) {
             throw std::runtime_error(
                 "Received a null DTO from the snapshots queue.");
         }
-        snapshot_dto = dynamic_cast<SnapshotDTO*>(dto_ptr.get());
+        snapshot_dto = dynamic_cast<SnapshotDTOB*>(dto_ptr.get());
     }
     if (snapshot_dto) {
         return snapshot_dto->snapshot;
@@ -33,7 +33,7 @@ Snapshot GameLoop::get_snapshot_from_queue(Snapshot last_snapshot) {
 }
 
 void GameLoop::run() {
-    Snapshot last_snapshot;
+    SnapshotDTO last_snapshot;
     uint32_t frameStart = SDL_GetTicks();
 
     // FPS tracking

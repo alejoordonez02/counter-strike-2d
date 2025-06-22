@@ -10,7 +10,7 @@
 
 #include "client/animation_provider.h"
 #include "client/renderables/renderable_player.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "common/maploader.h"
 #include "client/renderables/map/renderable_map.h"
 #include "client/hud_manager.h"
@@ -39,7 +39,7 @@ class Render {
 
     void run();
 
-    void update(Snapshot snapshot);
+    void update(SnapshotDTO snapshot);
 
     // void skip_frames(uint8_t frames);
 

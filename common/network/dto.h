@@ -21,7 +21,7 @@ protected:
             type(bytes[0]), payload(std::move(bytes)), _is_serialized(true) {}
     explicit DTO(const uint8_t type): type(type), _is_serialized(false) {}
 
-    virtual void deserialize() = 0;
+    virtual void deserialize_from(std::vector<uint8_t>::iterator&) = 0;
 
 public:
     uint8_t get_type() const { return type; }
@@ -45,13 +45,17 @@ protected:
     void serialize_pos_into(std::vector<uint8_t>& out, const Position& pos);
     void serialize_dir_into(std::vector<uint8_t>& out, const Direction& dir);
     void serialize_string_into(std::vector<uint8_t>& out, const std::string& str);
+    void serialize_uint16_into(std::vector<uint8_t>& out, uint16_t n);
+    void serialize_int_into(std::vector<uint8_t>& out, int n);
 
     // deserialization
 
-    float deserialize_float(int& i);
-    Position deserialize_pos(int& i);
-    Direction deserialize_dir(int& i);
-    std::string deserialize_string(int& i);
+    float deserialize_float_from(std::vector<uint8_t>::iterator& in);
+    Position deserialize_pos_from(std::vector<uint8_t>::iterator& in);
+    Direction deserialize_dir_from(std::vector<uint8_t>::iterator& in);
+    std::string deserialize_string_from(std::vector<uint8_t>::iterator& in);
+    uint16_t deserialize_uint16_from(std::vector<uint8_t>::iterator& in);
+    int deserialize_int_from(std::vector<uint8_t>::iterator& in);
 };
 
 #endif

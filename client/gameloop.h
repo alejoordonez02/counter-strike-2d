@@ -7,7 +7,7 @@
 #include "client/render.h"
 #include "common/network/dto.h"
 #include "common/queue.h"
-#include "common/snapshot.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "common/maploader.h"
 
 const static int FRAME_RATE = 70;
@@ -37,7 +37,7 @@ class GameLoop {
 
     // void handle_frame_timing(uint32_t& t1);
 
-    Snapshot get_snapshot_from_queue(Snapshot last_snapshot);
+    SnapshotDTO get_snapshot_from_queue(SnapshotDTO last_snapshot);
 };
 
 #endif  // GAMELOOP_H

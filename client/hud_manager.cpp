@@ -15,7 +15,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void HUDManager::update(const Snapshot& snapshot) {
+void HUDManager::update(const SnapshotDTO& snapshot) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;
 
