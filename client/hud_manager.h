@@ -18,6 +18,10 @@ class HUDManager {
 
     bool show_text;
     Snapshot snapshot;
+    
+    // fps
+    int frame_count = 0;
+    int last_fps = 0;
 
     RenderableHUDHealth hud_hp;
     RenderableHUDTimer hud_timer;
@@ -25,15 +29,20 @@ class HUDManager {
 
     RenderablePointer pointer;
 
+    void calculate_fps(uint32_t& fps_timer);
+    void show_fps(SDL2pp::Renderer& renderer);
+
 
     public:
     HUDManager(std::shared_ptr<AnimationProvider> animation_provider);
 
-    void update(const Snapshot& snapshot);
+    void update(const Snapshot& snapshot, uint32_t& fps_timer);
 
     void render(SDL2pp::Renderer& renderer);
 
     void show_terrorist_won(SDL2pp::Renderer& renderer);
+
+    
 };
 
 #endif

@@ -39,9 +39,9 @@ class Render {
 
     void run();
 
-    void update(Snapshot snapshot);
+    void update(Snapshot snapshot, uint32_t& fps_timer);
 
-    // void skip_frames(uint8_t frames);
+    void calculate_fps(uint32_t& fps_timer);
 
     void skip_frames(uint8_t frames);
 

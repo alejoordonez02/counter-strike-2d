@@ -10,7 +10,7 @@
 #include "common/snapshot.h"
 #include "common/maploader.h"
 
-const static int FRAME_RATE = 70;
+const static int FRAME_RATE = 40;
 // Va con milisegundos ya que utilizo el timer de SDL
 const static int RATE = 1000 / FRAME_RATE;
 

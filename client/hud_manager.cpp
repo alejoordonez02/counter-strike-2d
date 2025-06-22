@@ -16,7 +16,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void HUDManager::update(const Snapshot& snapshot) {
+void HUDManager::update(const Snapshot& snapshot, uint32_t& fps_timer) {
     this->snapshot = snapshot;
     show_text = snapshot.round_number >= 50 ? true : false;
 
@@ -32,6 +32,9 @@ void HUDManager::update(const Snapshot& snapshot) {
     int user_id = snapshot.user_data.player_id;
     bool user_is_attacking = snapshot.players[user_id].is_shooting;
     pointer.update(user_is_attacking);
+
+    // fps counter
+    calculate_fps(fps_timer);
 }
 
 
@@ -41,14 +44,47 @@ void HUDManager::render(SDL2pp::Renderer& renderer) {
     hud_hp.render(renderer);
     hud_timer.render(renderer);
     hud_money.render(renderer);
+    
 
-    if(!show_text){
-        return;
+    if(show_text){
+        show_terrorist_won(renderer);
     }
 
-    show_terrorist_won(renderer);
+    show_fps(renderer);
 }
 
+void HUDManager::show_fps(SDL2pp::Renderer& renderer) {
+    // mostrar fps en la esquina superior izquierda
+    std::string last_fps_string = "FPS: " + std::to_string(last_fps);
+    SDL2pp::Surface text_surface = font.RenderText_Blended(last_fps_string, SDL_Color{255,255,255,255});
+    SDL2pp::Texture text_texture(renderer, text_surface);
+
+    int text_w = text_texture.GetWidth();
+    int text_h = text_texture.GetHeight();
+    int padding = 10;
+
+    SDL2pp::Rect dst(padding, padding, text_w, text_h);
+    // SDL2pp::Rect box(dst.x - padding/2, dst.y - padding/3, dst.w + padding, dst.h + padding);
+
+    renderer.SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+    renderer.SetDrawColor(0, 0, 0, 128); // fondo semitransparente
+    // renderer.FillRect(box);
+
+    renderer.Copy(text_texture, SDL2pp::NullOpt, dst);
+}
+
+
+void HUDManager::calculate_fps(uint32_t& fps_timer) {
+    frame_count++;  // contar frame renderizado
+
+    uint32_t now = SDL_GetTicks();
+    // si pasó 1 segundo imprime los frames y resetea contador
+    if (now - fps_timer >= 1000) {
+        last_fps = frame_count;
+        frame_count = 0;
+        fps_timer = now;
+    }
+}
 
 
 void HUDManager::show_terrorist_won(SDL2pp::Renderer& renderer) {

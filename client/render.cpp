@@ -26,7 +26,7 @@ Render::Render(int user_player_id, const MapData& map_data):
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(Snapshot snapshot) {
+void Render::update(Snapshot snapshot, uint32_t& fps_timer) {
     // actualizar dropeables
     renderable_map->update(snapshot);
 
@@ -55,7 +55,7 @@ void Render::update(Snapshot snapshot) {
     }
 
     // actualizar textos
-    hud_manager->update(snapshot);
+    hud_manager->update(snapshot, fps_timer);
 }
 
 
