@@ -5,10 +5,10 @@
 
 #include <memory>
 
-#include "server/world/equipment/equipment.h"
-#include "server/world/equipment/weapons.h"
-#include "server/world/map.h"
-#include "server/world/player.h"
+#include "server/game/world/equipment/equipment.h"
+#include "server/game/world/equipment/weapons.h"
+#include "server/game/world/map.h"
+#include "server/game/world/player.h"
 
 class MockAttackingPlayer: public Player {
     static inline int default_id = 0;
@@ -28,8 +28,14 @@ public:
         Player(default_id, pos, get_default_equipment(), map,
                default_max_velocity, default_acceleration, radius,
                default_money, default_max_health) {}
+
+    MOCK_METHOD(void, teleport_to_spawn, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
-    void teleport_to_spawn() override {}
+    MOCK_METHOD(void, switch_side, (), (override));
+    MOCK_METHOD(void, plant_bomb, (), (override));
+    MOCK_METHOD(void, stop_planting, (), (override));
+    MOCK_METHOD(void, defuse_bomb, (), (override));
+    MOCK_METHOD(void, stop_defusing, (), (override));
 };
 
 #endif

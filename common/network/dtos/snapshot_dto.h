@@ -23,7 +23,12 @@ private:
             PlayerData player;
             player.player_id = *in++;
             player.team_id = *in++;
+            player.current_weapon = static_cast<WeaponType>(*in++);
+            player.has_bomb = *in++;
+            player.is_shooting = *in++;
+            player.was_hurt = *in++;
             player.is_walking = *in++;
+            player.is_dead = *in++;
             Position pos = deserialize_pos_from(in);
             player.x = pos.x;
             player.y = pos.y;
@@ -60,7 +65,14 @@ public:
         for (const auto& player : snapshot.players) {
             out.push_back(player.player_id);
             out.push_back(player.team_id);
+            out.push_back(static_cast<uint8_t>(player.current_weapon));
+            out.push_back(player.has_bomb);
+
+            out.push_back(player.is_shooting);
+            out.push_back(player.was_hurt);
             out.push_back(player.is_walking);
+            out.push_back(player.is_dead);
+            
             serialize_tuple_into(out, player.x, player.y);
             serialize_tuple_into(out, player.aim_x, player.aim_y);
         }

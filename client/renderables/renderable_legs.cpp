@@ -17,12 +17,16 @@ RenderableLegs::RenderableLegs(
 }
 
 void RenderableLegs::load_animation(const std::string& animation_name) {
-    animations[animation_name] =
-            std::move(animation_provider->make_animation(animation_name));
+    animations[animation_name] = animation_provider->make_animation(animation_name);
 }
 
-void RenderableLegs::update(const SDL2pp::Point& position,
-                            double facing_angle) {
+void RenderableLegs::update(const Position& position, double facing_angle, bool is_walking) {
+    // Si no esta caminando ir al frame 0
+    if(!is_walking){
+        current_animation->reset();
+        return;
+    }
+    
     this->facing_angle = facing_angle;
 
     // NOTE: Para que las piernas queden alineadas

@@ -1,12 +1,14 @@
 #ifndef MOVING_PLAYER_H
 #define MOVING_PLAYER_H
 
+#include <gmock/gmock.h>
+
 #include <memory>
 
-#include "server/world/equipment/equipment.h"
-#include "server/world/equipment/weapons.h"
-#include "server/world/map.h"
-#include "server/world/player.h"
+#include "server/game/world/equipment/equipment.h"
+#include "server/game/world/equipment/weapons.h"
+#include "server/game/world/map.h"
+#include "server/game/world/player.h"
 
 class MovingPlayer: public Player {
     static inline int default_id = 0;
@@ -27,7 +29,12 @@ public:
                default_max_velocity, default_acceleration, radius,
                default_money, default_max_health) {}
 
-    void teleport_to_spawn() override {}
+    MOCK_METHOD(void, teleport_to_spawn, (), (override));
+    MOCK_METHOD(void, switch_side, (), (override));
+    MOCK_METHOD(void, plant_bomb, (), (override));
+    MOCK_METHOD(void, stop_planting, (), (override));
+    MOCK_METHOD(void, defuse_bomb, (), (override));
+    MOCK_METHOD(void, stop_defusing, (), (override));
 };
 
 #endif

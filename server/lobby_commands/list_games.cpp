@@ -1,7 +1,7 @@
-#include "server/lobby_commands/list_games.h"
+#include "list_games.h"
 
+#include "lobby_command.h"
 #include "server/client_handler.h"
-#include "server/lobby_commands/lobby_command.h"
 
 ListGamesCommand::ListGamesCommand() {}
 
