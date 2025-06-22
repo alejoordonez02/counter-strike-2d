@@ -27,7 +27,8 @@ Render::Render(int user_player_id, const MapData& map_data):
 }
 
 void Render::update(Snapshot snapshot) {
-    // TODO: actualizar dropeables
+    // actualizar dropeables
+    renderable_map->update(snapshot);
 
     // actualizar jugadores
     for (auto& jugador : snapshot.players) {
@@ -81,8 +82,6 @@ void Render::render() {
         // renderizar cada jugador
         renderable_player->render(renderer);
     }
-
-    // TODO: renderizar dropeables
 
     // mostrar textos en pantalla
     hud_manager->render(renderer);

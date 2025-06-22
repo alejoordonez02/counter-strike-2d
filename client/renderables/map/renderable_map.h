@@ -11,6 +11,7 @@
 #include "client/renderables/animation.h"
 #include "client/renderables/map/renderable_block.h"
 #include "common/maploader.h"
+#include "common/snapshot.h"
 
 
 class RenderableMap {
@@ -19,12 +20,15 @@ class RenderableMap {
     std::shared_ptr<AnimationProvider> animation_provider;
 
     std::vector<std::unique_ptr<RenderableBlock>> blocks;
+    std::vector<std::unique_ptr<RenderableBlock>> droped_weapons;
     std::unique_ptr<Animation> background;
 
     public:
     RenderableMap(const MapData& map_data, std::shared_ptr<AnimationProvider> animation_provider);
 
     void load_background();
+
+    void update(Snapshot& snapshot);
 
     void render(SDL2pp::Renderer& renderer);
 
