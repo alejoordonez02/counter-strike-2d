@@ -8,6 +8,7 @@ target_sources(cs2d_client
         renderable_legs.cpp
         renderable_gun.cpp
         renderable_gun_effect.cpp
+        renderable_pointer.cpp
     PUBLIC
         animation.h
         animation.h
@@ -15,6 +16,7 @@ target_sources(cs2d_client
         renderable_legs.h
         renderable_gun.h
         renderable_gun_effect.h
+        renderable_pointer.h
 )
 
 add_subdirectory(hud)

@@ -10,7 +10,8 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         show_text(false),
         hud_hp(animation_provider),
         hud_timer(animation_provider),
-        hud_money(animation_provider)
+        hud_money(animation_provider),
+        pointer(animation_provider)
          {
 }
 
@@ -21,17 +22,22 @@ void HUDManager::update(const Snapshot& snapshot) {
 
     int time = snapshot.time_left; //60 * 5;
     std::string time_string = std::to_string(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + std::to_string(time % 60);
-    // static uint16_t hp = 100;
-    // static int money = 12345;
 
     // update hud elements
     hud_timer.update(time_string);
     hud_hp.update(snapshot.user_data.player_hp);
     hud_money.update(snapshot.user_data.total_money);
+
+    // pointer
+    int user_id = snapshot.user_data.player_id;
+    bool user_is_attacking = snapshot.players[user_id].is_shooting;
+    pointer.update(user_is_attacking);
 }
 
 
 void HUDManager::render(SDL2pp::Renderer& renderer) {
+    pointer.render(renderer);
+    
     hud_hp.render(renderer);
     hud_timer.render(renderer);
     hud_money.render(renderer);
@@ -41,7 +47,6 @@ void HUDManager::render(SDL2pp::Renderer& renderer) {
     }
 
     show_terrorist_won(renderer);
-
 }
 
 

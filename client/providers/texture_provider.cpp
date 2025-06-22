@@ -103,18 +103,16 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
     
-
+    // NOTE: uso el que hizo Marcos ya que estan mas cuadradas las armas
     SDL2pp::Surface tilesheet_2_surface(DATA_PATH "/../resources/weapons/tilesheet_2.png");
     tilesheet_2_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
     textures["tilesheet_2"] = std::make_shared<SDL2pp::Texture>(renderer, tilesheet_2_surface);
 
     // ==== EFFECTS ======
-    // modular color a uno amarillo
-
     SDL2pp::Surface flare3_surface(DATA_PATH "/assets/gfx/flare3.bmp");
     flare3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, flare3_surface);
-    textures["flare3"]->SetColorMod(255, 255, 0);
+    textures["flare3"]->SetColorMod(255, 255, 0);  // modular color a uno amarillo
     textures["flare3"]->SetAlphaMod(128); // 128 es 50% opacidad
     
     SDL2pp::Surface knifeslash_surface(DATA_PATH "/assets/gfx/knifeslash.bmp");
@@ -129,18 +127,9 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["decals"]->SetColorMod(255, 255, 0);
     textures["decals"]->SetAlphaMod(128); // 128 es 50% opacidad
 
-    // pointer = SDL2pp::Texture(renderer, DATA_PATH "/assets/gfx/pointer.png");
-    // counter_terrorist_1 = SDL2pp::Texture(renderer, DATA_PATH
-    // "/assets/gfx/player/ct1.bmp"); terrorist_1 = SDL2pp::Texture(renderer,
-    // DATA_PATH "/assets/gfx/player/t1.bmp");
-
-    // pointer(
-    //         renderer,
-    //         SDL2pp::Surface(DATA_PATH "/assets/gfx/pointer.bmp")
-    //             .SetColorKey(true,
-    //             SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0,
-    //             255)) // Magenta
-    //     ),
+    SDL2pp::Surface pointer_surface(DATA_PATH "/assets/gfx/pointer.bmp");
+    pointer_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 0, 255));
+    textures["pointer"] = std::make_shared<SDL2pp::Texture>(renderer, pointer_surface);
 }
 
 std::shared_ptr<SDL2pp::Texture> TextureProvider::get_texture(

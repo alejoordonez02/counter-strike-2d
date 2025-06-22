@@ -68,6 +68,12 @@ void AnimationProvider::load_animations() {
     animation_prototypes["9"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 9, false, 0, 0, 66, 0.3}};
     animation_prototypes[":"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 10, false, 0, 0, 66, 0.3}};
     animation_prototypes["|"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 11, false, 0, 0, 66, 0.3}};
+    
+    // ====== HUD NUMBERS ======
+    animation_prototypes["green_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 0, false, 0, 0, 0, 0.5}};
+    animation_prototypes["red_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 1, false, 0, 0, 0, 0.5}};
+
+
 
     // ======= TILES / BLOCKS ========
     // ======= DUST BLOCKS ========
