@@ -40,6 +40,15 @@ class SnapshotDTO: public DTO {
             serialize_tuple_into(out, player.x, player.y);
             serialize_tuple_into(out, player.aim_x, player.aim_y);
         }
+
+        // armas en el suelo
+        out.push_back(snapshot.weapons_on_floor.size());
+        for (const auto& weapon : snapshot.weapons_on_floor) {
+            out.push_back(static_cast<uint8_t>(weapon.type));
+            serialize_tuple_into(out, weapon.x, weapon.y);
+        }
+
+
     }
 
     void deserialize() override {
@@ -68,6 +77,19 @@ class SnapshotDTO: public DTO {
             player.aim_x = aim.x;
             player.aim_y = aim.y;
             snapshot.players.push_back(player);
+        }
+
+        // armas en el suelo
+        size_t num_weapons_on_floor = payload[i++];
+        snapshot.weapons_on_floor.clear();
+        snapshot.weapons_on_floor.reserve(num_weapons_on_floor);
+        for (size_t j = 0; j < num_weapons_on_floor; ++j) {
+            WeaponDTO weapon;
+            weapon.type = static_cast<WeaponType>(payload[i++]);
+            Position pos = deserialize_pos(i);
+            weapon.x = pos.x;
+            weapon.y = pos.y;
+            snapshot.weapons_on_floor.push_back(weapon);
         }
     }
 

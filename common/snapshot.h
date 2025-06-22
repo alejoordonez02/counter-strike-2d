@@ -12,8 +12,6 @@ enum class WeaponType { None, Bomb, Knife, Glock, AK47, M3, AWP };
 
 // armas en el suelo
 struct WeaponDTO {
-    uint32_t weapon_id;
-
     WeaponType type;
     int16_t x;
     int16_t y;
