@@ -5,7 +5,7 @@ loop:
 world:
   rounds: 15
   round_time: 600
-  time_out: 10
+  time_out: 5
 
   player:
     max_velocity: 90

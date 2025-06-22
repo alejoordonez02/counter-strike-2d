@@ -21,18 +21,26 @@ World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
  * Update rounds
  * */
 void World::start_round() {
+    time_out.restart();
     tt_team.restart();
     ct_team.restart();
     map->restart();
     round_time.restart();
 }
 
+void World::sum_won_round(Team& team) {
+    team.sum_won_round();
+    start_round();
+}
+
 void World::update_rounds(float dt) {
     round_time.update(dt);
 
-    if (tt_team.lost_round(map->get_bomb_state(), round_time) ||
-        ct_team.lost_round(map->get_bomb_state(), round_time))
-        rounds++;
+    if (tt_team.lost_round(map->get_bomb_state(), round_time))
+        sum_won_round(ct_team);
+
+    if (ct_team.lost_round(map->get_bomb_state(), round_time))
+        sum_won_round(tt_team);
 }
 
 /*
@@ -40,6 +48,8 @@ void World::update_rounds(float dt) {
  * */
 void World::update(float dt) {
     if (ended) return;
+    time_out.update(dt);
+    if (!time_out.is_done()) return;
 
     int updates = 1;
     if (dt > WorldTiming::DT) {

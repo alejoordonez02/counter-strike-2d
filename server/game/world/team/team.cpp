@@ -18,6 +18,8 @@ void Team::restart() {
     for (auto& p : players) p->restart();
 }
 
+void Team::sum_won_round() { won_rounds++; }
+
 int Team::get_won_rounds() { return won_rounds; }
 
 void Team::switch_sides(Team& other) {
