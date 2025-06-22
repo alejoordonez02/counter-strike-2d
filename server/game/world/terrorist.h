@@ -14,8 +14,13 @@ public:
               float acceleration, float radius, int money, int health,
               std::optional<Bomb> bomb);
 
+    void switch_side() override {}
+
     void plant_bomb() override;
     void stop_planting() override;
+
+    void defuse_bomb() override {}
+    void stop_defusing() override {}
 };
 
 #endif

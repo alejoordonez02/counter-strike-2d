@@ -54,18 +54,3 @@ void Map::plant_bomb(std::optional<Bomb> bomb, const Position& pos) {
         bomb->plant();
     } */
 }
-
-bool Map::bomb_has_exploded() const {
-    if (!bomb) return false;
-    return bomb->has_exploded();
-}
-
-bool Map::bomb_is_planted() const {
-    if (!bomb) return false;
-    return bomb->is_defused();
-}
-
-bool Map::bomb_is_defused() const {
-    if (!bomb) return false;
-    return bomb->is_defused();
-}

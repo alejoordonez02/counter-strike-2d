@@ -17,6 +17,8 @@ public:
 
     void plant();
 
+    BombState get_state() { return state; }
+
     void defuse();
 
     bool is_planted() const;

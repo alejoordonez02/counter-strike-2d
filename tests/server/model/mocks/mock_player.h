@@ -42,6 +42,7 @@ public:
                get_default_map(), default_max_velocity, default_acceleration,
                default_radius, default_money, default_max_health) {}
 
+    MOCK_METHOD(void, switch_side, (), (override));
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
@@ -53,6 +54,10 @@ public:
     MOCK_METHOD(void, buy_primary_ammo, (const int& count), ());
     MOCK_METHOD(void, buy_secondary_ammo, (const int& count), ());
     MOCK_METHOD(void, teleport_to_spawn, (), (override));
+    MOCK_METHOD(void, plant_bomb, (), (override));
+    MOCK_METHOD(void, stop_planting, (), (override));
+    MOCK_METHOD(void, defuse_bomb, (), (override));
+    MOCK_METHOD(void, stop_defusing, (), (override));
 
     virtual ~MockPlayer() = default;
 };
