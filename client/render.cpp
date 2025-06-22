@@ -7,8 +7,6 @@
 #include "client/camera.h"
 #include "render.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
 
 Render::Render(int user_player_id, const MapData& map_data):
         sdl(SDL_INIT_VIDEO),

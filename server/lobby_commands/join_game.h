@@ -3,15 +3,17 @@
 
 #include <string>
 
-#include "server/lobby_commands/lobby_command.h"
+#include "common/team_name.h"
+#include "lobby_command.h"
 
 class ClientHandler;
 
 class JoinGameCommand: public LobbyCommand {
     std::string game_name;
+    TeamName team;
 
 public:
-    explicit JoinGameCommand(const std::string& game_name);
+    explicit JoinGameCommand(const std::string& game_name, TeamName team);
     void execute(ClientHandler& handler) override;
 };
 

@@ -1,15 +1,21 @@
 # server/CMakeLists.txt
 
-target_sources(cs2d_server
-    PRIVATE
+set(SERVER_SOURCES
     client_handler.cpp
-    game_loop.cpp
-    game_maker.cpp
     main.cpp
 )
 
-add_subdirectory(model)
-add_subdirectory(player_commands)
-add_subdirectory(lobby_commands)
+add_library(cs2d_server_lib)
 
-target_include_directories(cs2d_server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(cs2d_server_lib PUBLIC cs2d_common)
+
+target_include_directories(cs2d_server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_sources(cs2d_server_lib
+    PRIVATE
+    client_handler.cpp
+    main.cpp
+)
+
+add_subdirectory(game)
+add_subdirectory(lobby_commands)

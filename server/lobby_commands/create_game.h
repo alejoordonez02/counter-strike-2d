@@ -4,16 +4,19 @@
 #include <string>
 
 #include "common/map_name.h"
-#include "server/lobby_commands/lobby_command.h"
+#include "common/team_name.h"
+#include "lobby_command.h"
 
 class ClientHandler;
 
 class CreateGameCommand: public LobbyCommand {
     std::string game_name;
     MapName map_name;
+    TeamName team;
 
 public:
-    CreateGameCommand(const std::string& game_name, MapName map_name);
+    CreateGameCommand(const std::string& game_name, MapName map_name,
+                      TeamName team);
     void execute(ClientHandler& handler) override;
 };
 

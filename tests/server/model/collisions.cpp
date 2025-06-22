@@ -4,7 +4,7 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gtest/gtest.h"
-#include "server/model/map.h"
+#include "server/game/world/map.h"
 #include "tests/server/model/mocks/mock_moving_player.h"
 
 class CollisionsTest: public ::testing::Test {
@@ -21,7 +21,11 @@ protected:
         EXPECT_NEAR(pos.y, other.y, 1e-7);
     }
 
-    void SetUp() override { map = std::make_shared<Map>(); }
+    void SetUp() override {
+        map = std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
+    }
 };
 
 TEST_F(CollisionsTest, PlayerCanWalkFreelyIfThereAreNotAnyObstacles) {

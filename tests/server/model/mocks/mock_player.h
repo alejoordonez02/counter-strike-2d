@@ -6,11 +6,10 @@
 #include "common/direction.h"
 #include "common/position.h"
 #include "gmock/gmock.h"
-#include "server/model/equipment.h"
-#include "server/model/map.h"
-#include "server/model/player.h"
-#include "server/model/weapon.h"
-#include "server/model/weapons.h"
+#include "server/game/world/equipment/equipment.h"
+#include "server/game/world/equipment/weapons.h"
+#include "server/game/world/map.h"
+#include "server/game/world/player.h"
 
 class MockPlayer: public Player {
 private:
@@ -23,32 +22,29 @@ private:
     static inline int default_max_health = 100;
 
     static inline std::shared_ptr<Map> get_default_map() {
-        return std::make_shared<Map>();
+        return std::make_shared<Map>(
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
     }
 
-    static inline std::unique_ptr<Equipment> get_default_equipment() {
-        return std::make_unique<Equipment>(std::make_unique<Fist>(),
-                                           std::make_unique<Glock>(),
-                                           std::make_unique<Knife>(), 0);
+    static inline Equipment get_default_equipment() {
+        return Equipment(Glock(), Ak47(), 0);
     }
 
 public:
     MockPlayer(Position& pos, std::weak_ptr<Map> map):
-            Player(default_id, pos, get_default_equipment(), map,
-                   default_max_velocity, default_acceleration, default_radius,
-                   default_money, default_max_health) {}
+        Player(default_id, pos, get_default_equipment(), map,
+               default_max_velocity, default_acceleration, default_radius,
+               default_money, default_max_health) {}
 
     MockPlayer():
-            Player(default_id, default_pos_val, get_default_equipment(),
-                   get_default_map(), default_max_velocity,
-                   default_acceleration, default_radius, default_money,
-                   default_max_health) {}
+        Player(default_id, default_pos_val, get_default_equipment(),
+               get_default_map(), default_max_velocity, default_acceleration,
+               default_radius, default_money, default_max_health) {}
 
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
     MOCK_METHOD(void, get_attacked, (int damage), (override));
-    /* MOCK_METHOD(std::optional<Position>, intersect, (const Trajectory& t),
-                (const)); */
     MOCK_METHOD(void, use_primary, (), ());
     MOCK_METHOD(void, use_secondary, (), ());
     MOCK_METHOD(void, use_knife, (), ());
