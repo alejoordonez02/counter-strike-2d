@@ -13,6 +13,9 @@
 #include "common/network/dtos/join_game_dto.h"
 #include "common/network/dtos/list_games_dto.h"
 #include "common/team_name.h"
+#include <QEventLoop>
+#include <QMessageBox>
+#include "lobbywindow.h"
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
@@ -20,53 +23,46 @@ Client::Client(const std::string& hostname, const std::string& servname):
 
 void Client::lobby_phase() {
     using namespace DTOSerial::LobbyCommands;
-    while (true) {
-        std::cout << "\n=== LOBBY MENU ===\n"
-                  << "1) Listar partidas\n"
-                  << "2) Crear partida\n"
-                  << "3) Unirse a partida\n"
-                  << "Elija una opción: ";
-        int opt;
-        if (!(std::cin >> opt)) std::exit(1);
 
-        switch (opt) {
-            case 1: {
-                commands.try_push(std::make_unique<ListGamesDTO>());
-                break;
-            }
-            case 2: {
-                std::string name;
-                int map_idx;
-                int team_idx;
-                std::cout << "Nombre de la partida: ";
-                std::cin >> name;
-                std::cout << "Mapa (0..N): ";
-                std::cin >> map_idx;
-                std::cout << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
-                std::cin >> team_idx;
+    try {
+
+        std::unique_ptr<LobbyWindow> lobbyWindow = std::make_unique<LobbyWindow>();
+        lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
+
+        QEventLoop lobbyLoop;
+
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
+            commands.try_push(std::make_unique<ListGamesDTO>());
+        });
+
+        // Conexión para crear partida
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
+            [&](const QString& name, int mapIdx, int teamIdx) {
                 commands.try_push(std::make_unique<CreateGameDTO>(
-                    name,
-                    static_cast<MapName>(map_idx),
-                    static_cast<TeamName>(team_idx)
+                    name.toStdString(),
+                    static_cast<MapName>(mapIdx),
+                    static_cast<TeamName>(teamIdx)
                 ));
-                return;  // salimos del lobby para entrar al game loop
-            }
-            case 3: {
-                std::string name;
-                int team_idx;
-                std::cout << "Nombre de la partida: ";
-                std::cin >> name;
-                std::cout << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
-                std::cin >> team_idx;
+                lobbyLoop.quit();
+            });
+
+        // Conexión para unirse a partida
+        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestJoinGame,
+            [&](const QString& name, int teamIdx) {
                 commands.try_push(std::make_unique<JoinGameDTO>(
-                    name,
-                    static_cast<TeamName>(team_idx)
+                    name.toStdString(),
+                    static_cast<TeamName>(teamIdx)
                 ));
-                return;
-            }
-            default:
-                std::cout << "Opción inválida\n";
-        }
+                lobbyLoop.quit();
+            });
+
+        lobbyWindow->show();
+        lobbyLoop.exec(); 
+        lobbyWindow->close();
+    
+
+    } catch (const std::exception& e) {
+        QMessageBox::critical(nullptr, "Error", QString("Critical error: %1").arg(e.what()));
     }
 }
 

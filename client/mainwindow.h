@@ -1,4 +1,8 @@
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
+
 #include <QMainWindow>
+#include <QListWidgetItem>
 
 namespace Ui {
 class ClientInterface;
@@ -12,15 +16,13 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
     signals:
-        void connectToServer(const QString& host, const QString& port);
+        void connectToLobby(const QString& host, const QString& serv);
         void showError(const QString& message);
     private slots:
         void on_startButton_clicked();
-        void on_joinMatchButton_clicked();
-        void on_createMatchButton_clicked();
-
     private:
         Ui::ClientInterface *ui;
-        std::string host_;
-        std::string port_;
+
 };
+
+#endif

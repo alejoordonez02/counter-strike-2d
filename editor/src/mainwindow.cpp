@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSize>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,8 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_weaponsheetEditor(new SheetEditor(this)),
     m_mapEditor(new MapEditor(this)),
     m_mapLoader()
-{
+{   
+    
     ui->setupUi(this);
+    ui->scrollArea->setWidgetResizable(false);
+    ui->scrollAreaWidgetContents->setMinimumSize(DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER , DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER); 
+    ui->scrollArea->horizontalScrollBar()->setRange(-DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER, DEFAULT_TILE_WIDTH * SCROLL_AREA_SIZE_MULTIPLIER- ui->scrollArea->width());
+    ui->scrollArea->verticalScrollBar()->setRange(-DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER, DEFAULT_TILE_HEIGHT * SCROLL_AREA_SIZE_MULTIPLIER- ui->scrollArea->height());
     setupUI();
     loadConfigurations();
     connectSignals();
@@ -43,10 +49,7 @@ void MainWindow::setupUI() {
 }
 
 void MainWindow::loadConfigurations() {
-    QString weaponsheetConfigPath = "config/weaponsheet_config.yaml";
     m_weaponsheetEditor->loadsheet(weaponsheetConfigPath);
-
-    QString tilesheetConfigPath = "config/tilesheet_config.yaml";
     m_tilesheetEditor->loadsheet(tilesheetConfigPath);
 }
 
@@ -89,7 +92,10 @@ void MainWindow::on_LoadButton_clicked()
 
 MapDataEditor MainWindow::convertToMapData(MapData data_struct){
     MapDataEditor data;
-    data.backgroundPath = QString::fromStdString(data_struct.background);
+    data.mapName = QString::fromStdString(data_struct.mapName);
+    data.background = QString::fromStdString(data_struct.background);
+    data.tile_width = data_struct.width;
+    data.tile_height = data_struct.height;
     data.plantingSpots = data_struct.plantingSpots;
 
     for (const auto& block_data : data_struct.blocks) {
@@ -117,6 +123,7 @@ void MainWindow::on_LoadBackgroundButton_clicked()
 
     if (!filePath.isEmpty()) {
         try {
+
             m_mapEditor->loadBackground(filePath);
             
             
@@ -150,8 +157,8 @@ void MainWindow::on_SaveButton_clicked()
                                 .replace("\n", "<br>"); 
             
             QMessageBox::critical(this, 
-                                "Error al guardar el mapa",
-                                QString("<html><b>No se pudo guardar el mapa:</b><br><br>%1</html>")
+                                "Error saving map",
+                                QString("<html><b>Map could not be saved:</b><br><br>%1</html>")
                                     .arg(errorMessage));
         }
     }

@@ -1,5 +1,5 @@
 map_name: Nuke
-background: nuke
+background: "nuke"
 tile_width: 32
 tile_height: 32
 planting_spots: 2
@@ -7,560 +7,560 @@ blocks:
   - x: 96
     y: 224
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 128
     y: 224
     type: Solid
-    texture: woodenbox5
+    texture: "woodenbox5"
   - x: 160
     y: 224
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 96
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 128
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 160
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 192
     y: 224
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 192
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 96
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 128
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 160
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 192
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 64
     y: 256
     type: Solid
-    texture: solid2
+    texture: "solid2"
   - x: 64
     y: 224
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 64
     y: 192
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 64
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 96
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 128
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 160
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 192
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 128
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 224
     type: Plantable
-    texture: siteb
+    texture: "siteb"
   - x: 96
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 128
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 160
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 192
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 224
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 224
     y: 256
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 224
     y: 224
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 224
     y: 192
     type: Common
-    texture: sandgrass1
+    texture: "sandgrass1"
   - x: 64
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 64
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 224
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 256
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 160
     y: 320
     type: CtSpawn
-    texture: ctspawn
+    texture: "ctspawn"
   - x: 192
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 224
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 160
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 192
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 288
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 224
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 288
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 288
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 288
     y: 256
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 128
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 96
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 288
     y: 224
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 288
     y: 192
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 96
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 256
     y: 192
     type: TSpawn
-    texture: tspawn
+    texture: "tspawn"
   - x: 64
     y: 352
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 64
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 128
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 160
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 224
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 256
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 192
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 96
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 288
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 384
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 352
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 320
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 320
     y: 256
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 224
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 192
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 320
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 288
     y: 160
     type: Solid
-    texture: solid7
+    texture: "solid7"
   - x: 32
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 32
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 352
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 352
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 320
     type: Solid
-    texture: woodenbox1
+    texture: "woodenbox1"
   - x: 416
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 256
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 224
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 224
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 192
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 160
     type: Plantable
-    texture: sitea
+    texture: "sitea"
   - x: 448
     y: 160
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 128
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 128
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 256
     type: Common
-    texture: sandpath4
+    texture: "sandpath4"
   - x: 384
     y: 224
     type: Common
-    texture: sandpath4
+    texture: "sandpath4"
   - x: 384
     y: 192
     type: Common
-    texture: sandpath4
+    texture: "sandpath4"
   - x: 384
     y: 160
     type: Common
-    texture: sandpath4
+    texture: "sandpath4"
   - x: 384
     y: 128
     type: Common
-    texture: sandpath4
+    texture: "sandpath4"
   - x: 352
     y: 256
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 480
     y: 256
     type: Common
-    texture: sandpath2
+    texture: "sandpath2"
   - x: 480
     y: 224
     type: Common
-    texture: sandpath2
+    texture: "sandpath2"
   - x: 480
     y: 192
     type: Common
-    texture: sandpath2
+    texture: "sandpath2"
   - x: 480
     y: 160
     type: Common
-    texture: sandpath2
+    texture: "sandpath2"
   - x: 480
     y: 128
     type: Common
-    texture: sandpath2
+    texture: "sandpath2"
   - x: 416
     y: 96
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 96
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 416
     y: 352
     type: Common
-    texture: sandgravel1
+    texture: "sandgravel1"
   - x: 448
     y: 352
     type: Common
-    texture: sandgravel2
+    texture: "sandgravel2"
   - x: 416
     y: 384
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 416
     y: 416
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 448
     y: 416
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 448
     y: 384
     type: Common
-    texture: gravel3
+    texture: "gravel3"
   - x: 416
     y: 448
     type: Common
-    texture: sandgravel3
+    texture: "sandgravel3"
   - x: 448
     y: 448
     type: Common
-    texture: sandgravel4
+    texture: "sandgravel4"
   - x: 384
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 416
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 448
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 384
     y: 384
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 448
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 416
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 384
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 352
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 320
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 288
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 480
     y: 96
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 32
     y: 256
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 0
     y: 256
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 0
     y: 288
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 0
     y: 320
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 0
     y: 352
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 32
     y: 352
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 352
     y: 352
     type: Solid
-    texture: solid1
+    texture: "solid1"
   - x: 384
     y: 96
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 352
     y: 96
     type: Solid
-    texture: woodenbox1
+    texture: "woodenbox1"
   - x: 352
     y: 64
     type: Solid
-    texture: woodenbox1
+    texture: "woodenbox1"
   - x: 384
     y: 64
     type: Solid
-    texture: woodenbox5
+    texture: "woodenbox5"
   - x: 480
     y: 64
     type: Solid
-    texture: woodenbox5
+    texture: "woodenbox5"
   - x: 512
     y: 64
     type: Solid
-    texture: woodenbox1
+    texture: "woodenbox1"
   - x: 512
     y: 96
     type: Solid
-    texture: woodenbox1
+    texture: "woodenbox1"
   - x: 416
     y: 64
     type: Common
-    texture: sand1
+    texture: "sand1"
   - x: 448
     y: 64
     type: Common
-    texture: sand1
+    texture: "sand1"

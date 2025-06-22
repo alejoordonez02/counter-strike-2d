@@ -5,6 +5,9 @@
 #include <QPoint>
 #include <QString>
 
+#define TEXTURE_PREFIX "resources/tiles/"
+#define TEXTURE_SUFFIX ".png"
+
 class Block {
 public:
     enum Type {
@@ -20,20 +23,21 @@ public:
     };
 
     Block();
-    Block(const QPoint& position, const QString& texturePath, Type type = Common);
+    Block(const QPoint& position, const QString& texture, Type type = Common);
 
     QPoint getPosition() const;
+    QString getTexture() const;
     QString getTexturePath() const;
     Type getType() const;
     QString getTypeString() const; 
 
     void setPosition(const QPoint& position);
-    void setTexture(const QString& texturePath);
+    void setTexture(const QString& texture);
     void setType(const QString& typeString);
     static Type stringToType(const QString& typeString);
 private:
     QPoint m_position;
-    QString m_texturePath;
+    QString m_texture;
     Type m_type;
 };
 
