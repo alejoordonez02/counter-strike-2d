@@ -6,13 +6,13 @@
 
 #include "server/game/world/random.h"
 
-Weapon::Weapon(int damage, float accuracy, float range, float fire_rate,
-               int cost, int ammo_cost, int ammo, int max_loaded_ammo,
-               float reload_time):
-    damage(damage), accuracy(accuracy), range(range), fire_delay(1 / fire_rate),
-    cost(cost), ammo_cost(ammo_cost), ammo(ammo - max_loaded_ammo),
-    max_loaded_ammo(max_loaded_ammo), loaded_ammo(max_loaded_ammo),
-    reload_time(reload_time) {}
+Weapon::Weapon(WeaponName name, int damage, float accuracy, float range,
+               float fire_rate, int cost, int ammo_cost, int ammo,
+               int max_loaded_ammo, float reload_time):
+    name(name), damage(damage), accuracy(accuracy), range(range),
+    fire_delay(1 / fire_rate), cost(cost), ammo_cost(ammo_cost),
+    ammo(ammo - max_loaded_ammo), max_loaded_ammo(max_loaded_ammo),
+    loaded_ammo(max_loaded_ammo), reload_time(reload_time) {}
 
 void Weapon::attack(Position origin, Direction direction,
                     std::vector<std::shared_ptr<Hitbox>>& collidables,
@@ -43,3 +43,13 @@ int Weapon::get_cost() const { return cost; }
 int Weapon::get_ammo_cost() const { return ammo_cost; }
 
 float Weapon::get_reload_time() { return reload_time; }
+
+PrivateWeaponDTO Weapon::get_private_data() const {
+    PrivateWeaponDTO data;
+    data.name = name;
+    data.total_ammo = ammo + loaded_ammo;
+    data.loaded_ammo = loaded_ammo;
+    return data;
+}
+
+WeaponName Weapon::get_data() const { return name; }
