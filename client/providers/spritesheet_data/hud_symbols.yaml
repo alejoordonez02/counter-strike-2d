@@ -1,7 +1,7 @@
 texture_name: hud_symbols
+columns: 13
 sprite_data:
   - name: heart
-    columns: 13
     frames: 0
     is_animated: false
     steps: 0
@@ -9,7 +9,6 @@ sprite_data:
     size_height: 0
     modify_size: 0.3
   - name: shield
-    columns: 13
     frames: 1
     is_animated: false
     steps: 0
@@ -17,7 +16,6 @@ sprite_data:
     size_height: 0
     modify_size: 0.3
   - name: money
-    columns: 13
     frames: 7
     is_animated: false
     steps: 0
@@ -25,7 +23,6 @@ sprite_data:
     size_height: 0
     modify_size: 0.3
   - name: clock
-    columns: 13
     frames: 2
     is_animated: false
     steps: 0
@@ -33,7 +30,6 @@ sprite_data:
     size_height: 0
     modify_size: 0.3
   - name: death
-    columns: 13
     frames: 12
     is_animated: false
     steps: 0

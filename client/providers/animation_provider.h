@@ -29,7 +29,7 @@ class AnimationProvider {
     public:
     AnimationProvider();
     void load_animation_yaml(const std::string& yaml_path);
-    AnimationData parse_animation_data(const YAML::Node& node);
+    AnimationData parse_animation_data(const YAML::Node& node, int columns_of_sprite_sheet);
     std::unique_ptr<Animation> make_animation(
         const std::string& animation_name);
 
