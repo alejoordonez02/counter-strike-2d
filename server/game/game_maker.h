@@ -24,10 +24,9 @@ public:
     void create(Connection&& con, const std::string& game_name, MapName map,
                 TeamName team);
 
-    std::vector<std::string> join(Connection&& con,
-                                  const std::string& game_name, TeamName team);
+    void join(Connection&& con, const std::string& game_name, TeamName team);
 
-    void list();
+    std::vector<std::string> list();
 };
 
 #endif
