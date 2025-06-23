@@ -1,0 +1,289 @@
+texture_name: embrador_tiles
+columns: 8
+sprite_data:
+  - name: ctspawn
+    frames: 69
+    is_animated: false
+  - name: floor1
+    frames: 72
+    is_animated: false
+  - name: floor2
+    frames: 73
+    is_animated: false
+  - name: floor3
+    frames: 74
+    is_animated: false
+  - name: floor4
+    frames: 75
+    is_animated: false
+  - name: floor5
+    frames: 76
+    is_animated: false
+  - name: floor6
+    frames: 77
+    is_animated: false
+  - name: floor7
+    frames: 78
+    is_animated: false
+  - name: floor8
+    frames: 79
+    is_animated: false
+  - name: floor9
+    frames: 80
+    is_animated: false
+  - name: floor10
+    frames: 81
+    is_animated: false
+  - name: floor11
+    frames: 82
+    is_animated: false
+  - name: floor12
+    frames: 83
+    is_animated: false
+  - name: floor13
+    frames: 84
+    is_animated: false
+  - name: floor14
+    frames: 85
+    is_animated: false
+  - name: floor15
+    frames: 86
+    is_animated: false
+  - name: floor16
+    frames: 87
+    is_animated: false
+  - name: floor17
+    frames: 88
+    is_animated: false
+  - name: floor18
+    frames: 89
+    is_animated: false
+  - name: floor19
+    frames: 90
+    is_animated: false
+  - name: floor20
+    frames: 91
+    is_animated: false
+  - name: floor21
+    frames: 92
+    is_animated: false
+  - name: floor22
+    frames: 93
+    is_animated: false
+  - name: grass0
+    frames: 19
+    is_animated: false
+  - name: grass1
+    frames: 22
+    is_animated: false
+  - name: grass2
+    frames: 23
+    is_animated: false
+  - name: grass3
+    frames: 39
+    is_animated: false
+  - name: grass4
+    frames: 48
+    is_animated: false
+  - name: grass5
+    frames: 49
+    is_animated: false
+  - name: grass6
+    frames: 50
+    is_animated: false
+  - name: grass7
+    frames: 51
+    is_animated: false
+  - name: grass8
+    frames: 52
+    is_animated: false
+  - name: grass9
+    frames: 53
+    is_animated: false
+  - name: grass10
+    frames: 54
+    is_animated: false
+  - name: grass11
+    frames: 56
+    is_animated: false
+  - name: grass12
+    frames: 57
+    is_animated: false
+  - name: grass13
+    frames: 60
+    is_animated: false
+  - name: grass14
+    frames: 61
+    is_animated: false
+  - name: gravel1
+    frames: 32
+    is_animated: false
+  - name: gravel2
+    frames: 33
+    is_animated: false
+  - name: gravel3
+    frames: 34
+    is_animated: false
+  - name: path1
+    frames: 40
+    is_animated: false
+  - name: path2
+    frames: 41
+    is_animated: false
+  - name: path3
+    frames: 42
+    is_animated: false
+  - name: path4
+    frames: 43
+    is_animated: false
+  - name: path5
+    frames: 44
+    is_animated: false
+  - name: path6
+    frames: 45
+    is_animated: false
+  - name: path7
+    frames: 46
+    is_animated: false
+  - name: plantspot1
+    frames: 68
+    is_animated: false
+  - name: plantspot2
+    frames: 69
+    is_animated: false
+  - name: purple
+    frames: 0
+    is_animated: false
+  - name: sand0
+    frames: 8
+    is_animated: false
+  - name: sand1
+    frames: 9
+    is_animated: false
+  - name: sand2
+    frames: 10
+    is_animated: false
+  - name: sand3
+    frames: 11
+    is_animated: false
+  - name: sand4
+    frames: 12
+    is_animated: false
+  - name: sand5
+    frames: 13
+    is_animated: false
+  - name: sand6
+    frames: 14
+    is_animated: false
+  - name: sand7
+    frames: 15
+    is_animated: false
+  - name: sand8
+    frames: 16
+    is_animated: false
+  - name: sand9
+    frames: 24
+    is_animated: false
+  - name: sand10
+    frames: 48
+    is_animated: false
+  - name: sand11
+    frames: 48
+    is_animated: false
+  - name: sand12
+    frames: 48
+    is_animated: false
+  - name: sand13
+    frames: 48
+    is_animated: false
+  - name: sandpath1
+    frames: 40
+    is_animated: false
+  - name: sandpath2
+    frames: 41
+    is_animated: false
+  - name: sandpath3
+    frames: 42
+    is_animated: false
+  - name: sandpath4
+    frames: 43
+    is_animated: false
+  - name: sandgrass1
+    frames: 24
+    is_animated: false
+  - name: sandgrass2
+    frames: 25
+    is_animated: false
+  - name: sandgrass3
+    frames: 26
+    is_animated: false
+  - name: sandgrass4
+    frames: 27
+    is_animated: false
+  - name: sandgravel1
+    frames: 28
+    is_animated: false
+  - name: sandgravel2
+    frames: 29
+    is_animated: false
+  - name: sandgravel3
+    frames: 30
+    is_animated: false
+  - name: sandgravel4
+    frames: 31
+    is_animated: false
+  - name: sitea
+    frames: 70
+    is_animated: false
+  - name: siteb
+    frames: 71
+    is_animated: false
+  - name: solid1
+    frames: 1
+    is_animated: false
+  - name: solid2
+    frames: 2
+    is_animated: false
+  - name: solid3
+    frames: 3
+    is_animated: false
+  - name: solid4
+    frames: 4
+    is_animated: false
+  - name: solid5
+    frames: 5
+    is_animated: false
+  - name: solid6
+    frames: 6
+    is_animated: false
+  - name: solid7
+    frames: 7
+    is_animated: false
+  - name: solid8
+    frames: 8
+    is_animated: false
+  - name: solid9
+    frames: 9
+    is_animated: false
+  - name: tspawn
+    frames: 68
+    is_animated: false
+  - name: woodenbox1
+    frames: 20
+    is_animated: false
+  - name: woodenbox2
+    frames: 57
+    is_animated: false
+  - name: woodenbox3
+    frames: 58
+    is_animated: false
+  - name: woodenbox4
+    frames: 64
+    is_animated: false
+  - name: woodenbox5
+    frames: 65
+    is_animated: false
+  - name: woodenbox6
+    frames: 66
+    is_animated: false
+
