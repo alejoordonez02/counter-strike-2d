@@ -23,13 +23,14 @@ constexpr uint8_t GAME_DETAILS = 0x47;  // G - 71
 constexpr uint8_t SNAPSHOT = 0x53;  // S - 83
 constexpr uint8_t PLAYER_PRIVATE = 0x49;  // I - 73
 constexpr uint8_t PLAYER = 0x50;  // P - 80
+constexpr uint8_t WEAPON = 0x57;  // W - 87
 namespace PlayerCommands {
 constexpr uint8_t AIM = 0xD7;           // × - 215
 constexpr uint8_t START_MOVING = 0x6D;  // m - 109
 constexpr uint8_t STOP_MOVING = 0x6E;  // n - 110
 constexpr uint8_t START_ATTACKING = 0x61;  // a - 97
 constexpr uint8_t STOP_ATTACKING = 0x62;  // b - 98
-constexpr uint8_t CHANGE_WEAPON = 0x57;  // W - 87
+constexpr uint8_t CHANGE_WEAPON = 0x77;  // w - 119
 };  // namespace PlayerCommands
 namespace LobbyCommands {
 constexpr uint8_t CHANGE_USERNAME = 0x55;  // U - 85
