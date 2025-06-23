@@ -1,33 +1,33 @@
 #ifndef COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 #define COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 
+#include <sys/types.h>
+
 #include <cstdint>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include <sys/types.h>
 
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
 
 #define MAX_PLAYER_NAME 32
 
-enum class WeaponType : uint8_t { None, Bomb, Knife, Glock, AK47, M3, AWP };
+enum class WeaponName : uint8_t { NONE, BOMB, KNIFE, GLOCK, AK47, M3, AWP };
 
-enum class EquipmentType : uint8_t { Primary, Secondary, Knife, Bomb};
+enum class EquipmentType : uint8_t { PRIMARY, SECONDARY, KNIFE, BOMB };
 
 // armas en el suelo
 class WeaponDTO: public DTO {
 public:
-    WeaponType w_type;
+    WeaponName w_type;
     int16_t x;
     int16_t y;
-    
+
 private:
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         in++;  // skip 1st byte (DTO type)
-        w_type = static_cast<WeaponType>(*in++);
+        w_type = static_cast<WeaponName>(*in++);
         Position pos = deserialize_pos_from(in);
         x = pos.x;
         y = pos.y;
@@ -40,7 +40,7 @@ public:
     }
 
     explicit WeaponDTO(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::WEAPON) {
+        DTO(DTOSerial::WEAPON) {
         deserialize_from(in);
     }
 
@@ -54,7 +54,7 @@ public:
 
     WeaponDTO(const WeaponDTO&) = delete;
     WeaponDTO& operator=(const WeaponDTO&) = delete;
-    
+
     WeaponDTO(WeaponDTO&&) = default;
     WeaponDTO& operator=(WeaponDTO&&) = default;
 
@@ -65,7 +65,7 @@ class PrivatePlayerDTO: public DTO {
 public:
     uint8_t player_id = 0;
     uint8_t player_hp = 100;
-    
+
     uint total_money = 0;
 
     // estadisticas
@@ -83,13 +83,14 @@ private:
     }
 
 public:
-    explicit PrivatePlayerDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+    explicit PrivatePlayerDTO(std::vector<uint8_t>&& bytes):
+        DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);
     }
 
     explicit PrivatePlayerDTO(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::PLAYER_PRIVATE) {
+        DTO(DTOSerial::PLAYER_PRIVATE) {
         deserialize_from(in);
     }
 
@@ -106,7 +107,7 @@ public:
 
     PrivatePlayerDTO(const PrivatePlayerDTO&) = delete;
     PrivatePlayerDTO& operator=(const PrivatePlayerDTO&) = delete;
-    
+
     PrivatePlayerDTO(PrivatePlayerDTO&&) = default;
     PrivatePlayerDTO& operator=(PrivatePlayerDTO&&) = default;
 
@@ -121,7 +122,7 @@ public:
 
     // Armas
     // Para poder ser visualizada por otros jugadores
-    WeaponType current_weapon;  
+    WeaponName current_weapon;
     bool has_bomb;
 
     // animaciones y sonidos
@@ -144,7 +145,7 @@ private:
         player_id = *in++;
         // player_name = deserialize_string_from(in);
         team_id = *in++;
-        current_weapon = static_cast<WeaponType>(*in++);
+        current_weapon = static_cast<WeaponName>(*in++);
         has_bomb = *in++;
         is_shooting = *in++;
         was_hurt = *in++;
@@ -165,7 +166,7 @@ public:
     }
 
     explicit PlayerDTO(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::PLAYER) {
+        DTO(DTOSerial::PLAYER) {
         deserialize_from(in);
     }
 
@@ -182,14 +183,14 @@ public:
         out.push_back(was_hurt);
         out.push_back(is_walking);
         out.push_back(is_dead);
-        
+
         serialize_tuple_into(out, x, y);
         serialize_tuple_into(out, aim_x, aim_y);
     }
 
     PlayerDTO(const PlayerDTO&) = delete;
     PlayerDTO& operator=(const PlayerDTO&) = delete;
-    
+
     PlayerDTO(PlayerDTO&&) = default;
     PlayerDTO& operator=(PlayerDTO&&) = default;
 
@@ -237,7 +238,7 @@ public:
     }
 
     explicit SnapshotDTO(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::SNAPSHOT) {
+        DTO(DTOSerial::SNAPSHOT) {
         deserialize_from(in);
     }
 
@@ -262,7 +263,7 @@ public:
 
     SnapshotDTO(const SnapshotDTO&) = delete;
     SnapshotDTO& operator=(const SnapshotDTO&) = delete;
-    
+
     SnapshotDTO(SnapshotDTO&&) = default;
     SnapshotDTO& operator=(SnapshotDTO&&) = default;
 

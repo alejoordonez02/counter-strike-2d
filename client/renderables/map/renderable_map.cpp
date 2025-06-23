@@ -1,25 +1,34 @@
 #include "client/renderables/map/renderable_map.h"
-#include "client/providers/animation_provider.h"
+
 #include <utility>
 
-std::string weapon_type_to_string(WeaponType type) {
-    switch(type) {
-        case WeaponType::None:  return "none";
-        case WeaponType::Bomb:  return "bomb";
-        case WeaponType::Knife: return "knife";
-        case WeaponType::Glock: return "glock";
-        case WeaponType::AK47:  return "ak47";
-        case WeaponType::M3:    return "m3";
-        case WeaponType::AWP:   return "awp";
-        default:                return "unknown";
+#include "client/providers/animation_provider.h"
+
+std::string weapon_type_to_string(WeaponName type) {
+    switch (type) {
+        case WeaponName::NONE:
+            return "none";
+        case WeaponName::BOMB:
+            return "bomb";
+        case WeaponName::KNIFE:
+            return "knife";
+        case WeaponName::GLOCK:
+            return "glock";
+        case WeaponName::AK47:
+            return "ak47";
+        case WeaponName::M3:
+            return "m3";
+        case WeaponName::AWP:
+            return "awp";
+        default:
+            return "unknown";
     }
 }
 
 RenderableMap::RenderableMap(
-        const MapData& map_data,
-        std::shared_ptr<AnimationProvider> animation_provider):
-        map_data(map_data),
-        animation_provider(animation_provider) {
+    const MapData& map_data,
+    std::shared_ptr<AnimationProvider> animation_provider):
+    map_data(map_data), animation_provider(animation_provider) {
     load_background();
     load_blocks();
 }
@@ -40,10 +49,10 @@ void RenderableMap::load_blocks() {
             continue;
         }
         // Crear un RenderableBlock para cada bloque
-        blocks.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
+        blocks.emplace_back(
+            std::make_unique<RenderableBlock>(block, animation_provider));
     }
 }
-
 
 void RenderableMap::update(const SnapshotDTO& snapshot) {
     // actualizar dropeables. Vaciar droped_weapons antes de agregar nuevos
@@ -54,10 +63,10 @@ void RenderableMap::update(const SnapshotDTO& snapshot) {
         block.x = weapon.x;
         block.y = weapon.y;
         block.texture = weapon_type_to_string(weapon.w_type);
-        droped_weapons.emplace_back(std::make_unique<RenderableBlock>(block, animation_provider));
+        droped_weapons.emplace_back(
+            std::make_unique<RenderableBlock>(block, animation_provider));
     }
 }
-
 
 void RenderableMap::render(SDL2pp::Renderer& renderer) {
     // TODO: Hardcodeado el mosaico

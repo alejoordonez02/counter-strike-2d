@@ -133,22 +133,22 @@ void InputHandler::send_change_weapon() {
         std::cout << "LOG: Enviando comando de cambio a arma bomba."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Bomb));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::BOMB));
     } else if (key_states[SDLK_k]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Knife));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::KNIFE));
     } else if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma primaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Primary));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::PRIMARY));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Secondary));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::SECONDARY));
     }
 }
 

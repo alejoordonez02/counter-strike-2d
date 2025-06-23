@@ -11,7 +11,6 @@
 #include "common/network/receiver.h"
 #include "common/network/sender.h"
 #include "common/queue.h"
-#include "common/network/dtos/snapshot_dto.h"
 
 void mock_server() {
     // 1. Crear socket de escucha en localhost:7878
@@ -39,15 +38,14 @@ void mock_server() {
     player1.player_id = 1;
     player1.team_id = 0;
     player1.is_walking = false;
-    player1.current_weapon = WeaponType::AK47;
-
+    player1.current_weapon = WeaponName::AK47;
 
     PlayerDTO player2{};
     player2.player_id = 2;
     player2.team_id = 1;
     player2.is_walking = false;
     player2.is_shooting = true;
-    player2.current_weapon = WeaponType::Glock;
+    player2.current_weapon = WeaponName::Glock;
     player2.x = 200;
     player2.y = 200;
     player2.aim_x = 400;
@@ -58,7 +56,7 @@ void mock_server() {
     player3.team_id = 1;
     player3.is_walking = false;
     player3.is_dead = true;
-    player3.current_weapon = WeaponType::M3;
+    player3.current_weapon = WeaponName::M3;
     player3.x = 400;
     player3.y = 300;
 
@@ -78,42 +76,53 @@ void mock_server() {
         if (commands_queue.try_pop(dto_ptr)) {
             std::cout << "MockServer: Recibido comando tipo: "
                       << int(dto_ptr->get_type()) << std::endl;
-            if(dto_ptr->get_type() == DTOSerial::PlayerCommands::START_MOVING){
-                StartMovingDTO* start_moving_dto = dynamic_cast<StartMovingDTO*>(dto_ptr.get());
+            if (dto_ptr->get_type() ==
+                DTOSerial::PlayerCommands::START_MOVING) {
+                StartMovingDTO* start_moving_dto =
+                    dynamic_cast<StartMovingDTO*>(dto_ptr.get());
                 Direction new_pos = start_moving_dto->get_direction();
                 // Procesar el comando de movimiento
                 player1.x += new_pos.x * 20;
                 player1.y += new_pos.y * 20;
                 player1.is_walking = true;
-            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::STOP_MOVING) {
+            } else if (dto_ptr->get_type() ==
+                       DTOSerial::PlayerCommands::STOP_MOVING) {
                 // Procesar el comando de detener movimiento
                 player1.is_walking = false;
-            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::START_ATTACKING) {
+            } else if (dto_ptr->get_type() ==
+                       DTOSerial::PlayerCommands::START_ATTACKING) {
                 // Procesar el comando de empezar a atacar
-                StartAttackingDTO* start_attacking_dto = dynamic_cast<StartAttackingDTO*>(dto_ptr.get());
+                StartAttackingDTO* start_attacking_dto =
+                    dynamic_cast<StartAttackingDTO*>(dto_ptr.get());
                 if (start_attacking_dto) {
                     player1.is_shooting = true;
-                    player1.current_weapon = WeaponType::M3;
-                    std::cout << "start attacking " << player1.is_shooting << std::endl;
+                    player1.current_weapon = WeaponName::M3;
+                    std::cout << "start attacking " << player1.is_shooting
+                              << std::endl;
                 }
-            } else if (dto_ptr->get_type() == DTOSerial::PlayerCommands::STOP_ATTACKING) {
+            } else if (dto_ptr->get_type() ==
+                       DTOSerial::PlayerCommands::STOP_ATTACKING) {
                 // Procesar el comando de detener ataque
-                StopAttackingDTO* stop_attacking_dto = dynamic_cast<StopAttackingDTO*>(dto_ptr.get());
+                StopAttackingDTO* stop_attacking_dto =
+                    dynamic_cast<StopAttackingDTO*>(dto_ptr.get());
                 if (stop_attacking_dto) {
                     player1.is_shooting = false;
-                    player1.current_weapon = WeaponType::Knife;
-                    std::cout << "stop attacking " << player1.is_shooting << std::endl;
+                    player1.current_weapon = WeaponName::Knife;
+                    std::cout << "stop attacking " << player1.is_shooting
+                              << std::endl;
                 }
-            // } else if(dto_ptr->get_type() == DTOSerial::PlayerCommands::AIM){
-            //     AimDTO* aim_dto = dynamic_cast<AimDTO*>(dto_ptr.get());
-            //     if (aim_dto) {
-                    
-            //     }
+                // } else if(dto_ptr->get_type() ==
+                // DTOSerial::PlayerCommands::AIM){
+                //     AimDTO* aim_dto = dynamic_cast<AimDTO*>(dto_ptr.get());
+                //     if (aim_dto) {
+
+                //     }
             } else {
-                std::cout << "Comando no reconocido: " << int(dto_ptr->get_type()) << std::endl;
+                std::cout << "Comando no reconocido: "
+                          << int(dto_ptr->get_type()) << std::endl;
                 continue;
             }
-            
+
             // debe crear siempre un nuevo snapshot
             auto snap = std::make_shared<SnapshotDTO>();
 
