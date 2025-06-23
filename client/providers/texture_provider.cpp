@@ -109,12 +109,10 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     tilesheet_2_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
     textures["tilesheet_2"] = std::make_shared<SDL2pp::Texture>(renderer, tilesheet_2_surface);
 
-    // ==== EFFECTS ======
-    SDL2pp::Surface flare3_surface(DATA_PATH "/assets/gfx/flare3.bmp");
-    flare3_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
-    textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, flare3_surface);
+    // ==== EFFECTS ======    
+    textures["flare3"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/flare3.png");
     textures["flare3"]->SetColorMod(255, 255, 0);  // modular color a uno amarillo
-    textures["flare3"]->SetAlphaMod(128); // 128 es 50% opacidad
+
     
     SDL2pp::Surface knifeslash_surface(DATA_PATH "/assets/gfx/knifeslash.bmp");
     knifeslash_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
