@@ -30,39 +30,68 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Map Configuration:</string>
+      <string>Select Map:</string>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="QComboBox" name="mapBox">
      <item>
-      <widget class="QLineEdit" name="configPathEdit"/>
+      <property name="text">
+       <string>Aztec</string>
+      </property>
      </item>
      <item>
-      <widget class="QPushButton" name="browseButton">
-       <property name="text">
-        <string>Browse...</string>
-       </property>
-      </widget>
+      <property name="text">
+       <string>Dust</string>
+      </property>
      </item>
-    </layout>
+     <item>
+      <property name="text">
+       <string>Nuke</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string/>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
    </item>
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Max Players:</string>
+      <string>Select Team:</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QSpinBox" name="maxPlayersSpin">
-     <property name="minimum">
-      <number>2</number>
+    <widget class="QComboBox" name="teamBox">
+     <property name="locale">
+      <locale language="English" country="UnitedStates"/>
      </property>
-     <property name="maximum">
-      <number>10</number>
+     <property name="inputMethodHints">
+      <set>Qt::ImhNone</set>
      </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <property name="currentText">
+      <string>Terrorist</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Terrorist</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Counter-Terrorist</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>

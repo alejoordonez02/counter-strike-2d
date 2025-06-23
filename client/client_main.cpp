@@ -7,6 +7,7 @@
 
 int main(int argc, char** argv) {
     QApplication a(argc, argv);
+    qputenv("QT_LOGGING_RULES", "qt.qpa.wayland=false");
     MainWindow mainWindow;
     mainWindow.show();
 

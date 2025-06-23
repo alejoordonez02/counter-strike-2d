@@ -1,5 +1,6 @@
 #include "lobbywindow.h"
 #include "creatematchdialog.h"
+#include "teamselectiondialog.h"
 #include "ui_Lobby.h"
 #include <QMessageBox>
 
@@ -63,19 +64,20 @@ void LobbyWindow::on_joinMatchButton_clicked()
         return;
     }
     MatchInfo matchInfo = selected->data(Qt::UserRole).value<MatchInfo>();
-
+    
     if (matchInfo.currentPlayers >= matchInfo.maxPlayers) {
         QMessageBox::warning(this, "Match Full",
-            QString("User Cannot join map %1 \nThe match is full (%2/%3 players)")
+            QString("Cannot join map %1 \nThe match is full (%2/%3 players)")
                 .arg(matchInfo.name)
                 .arg(matchInfo.currentPlayers)
                 .arg(matchInfo.maxPlayers));
         return;
     }
 
+    // Primero confirmar unirse a la partida
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Confirm Join",
-        QString("Do you want to join ?\nGame: %1\nPlayers: %2/%3")
+        QString("Do you want to join?\nGame: %1\nPlayers: %2/%3")
             .arg(matchInfo.name)
             .arg(matchInfo.currentPlayers)
             .arg(matchInfo.maxPlayers),
@@ -85,11 +87,21 @@ void LobbyWindow::on_joinMatchButton_clicked()
         return;
     }
 
+    // Mostrar diálogo de selección de equipo
+    TeamSelectionDialog teamDialog(this);
+    if (teamDialog.exec() != QDialog::Accepted) {
+        return; 
+    }
+
+    int teamIdx = teamDialog.selectedTeamIndex();
+    QString teamName = teamIdx == 0 ? "Terrorist" : "Counter-Terrorist";
+
     try {
         QMessageBox::information(this, "Success", 
-            QString("Joining match '%1'...").arg(matchInfo.name));
-        //envio la senial que tiene lo necesari para crear el dto de JoinGame
-        emit requestJoinGame(matchInfo.name, team_idx);
+            QString("Joining match '%1' as %2...").arg(matchInfo.name).arg(teamName));
+        
+        // Enviar señal con el equipo seleccionado
+        emit requestJoinGame(matchInfo.name, teamIdx);
     } catch (const std::exception& e) {
         QMessageBox::critical(this, "Error",
             QString("Failed to join match: %1").arg(e.what()));
@@ -98,29 +110,23 @@ void LobbyWindow::on_joinMatchButton_clicked()
 
 void LobbyWindow::on_createMatchButton_clicked()
 {
-    CreateMatchDialog dialog(username, this);
+    CreateMatchDialog dialog(this);
 
     QListWidgetItem* selected = ui->matchesList->currentItem();
     MatchInfo matchInfo = selected->data(Qt::UserRole).value<MatchInfo>();
     if (dialog.exec() == QDialog::Accepted) {
         QString matchName = dialog.getMatchName();
-        QString configPath = dialog.getConfigPath();
-        
-        // Validar campos
+        MapName mapName = dialog.getSelectedMapName();
+        int teamIdx = dialog.getSelectedTeamIndex();
+
         if (matchName.isEmpty()) {
             QMessageBox::warning(this, "Error", "Match name cannot be empty");
             return;
         }
         
-        if (configPath.isEmpty()) {
-            QMessageBox::warning(this, "Error", "You must select a configuration file");
-            return;
-        }
-        
-        // Enviar comando al servidor
         try {
             //envio la senial que tiene lo necesari para crear el dto de CreateGame
-            emit requestCreateGame(matchInfo.name, matchInfo.map, team_idx);
+            emit requestCreateGame(matchName, mapName, teamIdx);
             
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", 

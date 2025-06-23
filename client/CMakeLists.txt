@@ -10,6 +10,7 @@ target_sources(cs2d_client
         mainwindow.cpp
         lobbywindow.cpp
         creatematchdialog.cpp
+        teamselectiondialog.cpp
         camera.cpp
         hud_manager.cpp
 )
