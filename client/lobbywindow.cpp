@@ -125,7 +125,7 @@ void LobbyWindow::on_createMatchButton_clicked()
         }
         
         try {
-            //envio la senial que tiene lo necesari para crear el dto de CreateGame
+
             emit requestCreateGame(matchName, mapName, teamIdx);
             
         } catch (const std::exception& e) {

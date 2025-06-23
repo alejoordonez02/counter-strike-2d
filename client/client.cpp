@@ -43,6 +43,7 @@ void Client::lobby_phase() {
                     mapname,
                     static_cast<TeamName>(teamIdx)
                 ));
+                lobbyWindow->close();
                 lobbyLoop.quit();
             });
 
@@ -53,12 +54,12 @@ void Client::lobby_phase() {
                     name.toStdString(),
                     static_cast<TeamName>(teamIdx)
                 ));
+                lobbyWindow->close();
                 lobbyLoop.quit();
             });
 
         lobbyWindow->show();
         lobbyLoop.exec(); 
-        lobbyWindow->close();
     
 
     } catch (const std::exception& e) {
