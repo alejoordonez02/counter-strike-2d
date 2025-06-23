@@ -55,9 +55,9 @@ public:
     MOCK_METHOD(void, buy_secondary_ammo, (const int& count), ());
     MOCK_METHOD(void, teleport_to_spawn, (), (override));
     MOCK_METHOD(void, plant_bomb, (), (override));
-    MOCK_METHOD(void, stop_planting, (), (override));
     MOCK_METHOD(void, defuse_bomb, (), (override));
-    MOCK_METHOD(void, stop_defusing, (), (override));
+    MOCK_METHOD(void, give_bomb, (), (override));
+    MOCK_METHOD(void, restart, (), (override));
 
     virtual ~MockPlayer() = default;
 };
