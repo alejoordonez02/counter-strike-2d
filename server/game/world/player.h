@@ -21,10 +21,11 @@ protected:
 
     void respawn();
 
+    PlayerPhysics physics;
+
 private:
     int id;
     std::vector<size_t> sorted_collidables_idx;
-    PlayerPhysics physics;
     Direction dir;
     Equipment equipment;
     Weapon& current;
