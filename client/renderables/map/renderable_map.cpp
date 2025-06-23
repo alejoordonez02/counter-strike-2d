@@ -62,7 +62,7 @@ void RenderableMap::update(const SnapshotDTO& snapshot) {
         BlockData block;
         block.x = weapon.x;
         block.y = weapon.y;
-        block.texture = weapon_type_to_string(weapon.w_type);
+        block.texture = weapon_type_to_string(weapon.name);
         droped_weapons.emplace_back(
             std::make_unique<RenderableBlock>(block, animation_provider));
     }
