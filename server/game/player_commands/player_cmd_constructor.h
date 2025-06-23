@@ -14,6 +14,7 @@
 #include "start_attacking.h"
 #include "start_moving.h"
 #include "start_planting.h"
+#include "start_reloading.h"
 #include "stop_action.h"
 #include "stop_moving.h"
 
@@ -46,6 +47,10 @@ public:
             {START_PLANTING,
              [](auto&& dto_p) {
                  return std::make_unique<StartPlanting>(std::move(dto_p));
+             }},
+            {START_RELOADING,
+             [](auto&& dto_p) {
+                 return std::make_unique<StartReloading>(std::move(dto_p));
              }},
             {STOP_ACTION,
              [](auto&& /* dto_p */) { return std::make_unique<StopAction>(); }},

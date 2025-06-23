@@ -19,6 +19,7 @@
 #include "create_game_dto.h"
 #include "join_game_dto.h"
 #include "list_games_dto.h"
+#include "start_reloading_dto.h"
 #include "stop_action_dto.h"
 
 using namespace DTOSerial;
@@ -54,6 +55,10 @@ public:
             {START_PLANTING,
              [](auto&& bytes) {
                  return std::make_unique<StartPlantingDTO>(std::move(bytes));
+             }},
+            {START_RELOADING,
+             [](auto&& bytes) {
+                 return std::make_unique<StartReloadingDTO>(std::move(bytes));
              }},
             {STOP_ACTION,
              [](auto&& bytes) {
