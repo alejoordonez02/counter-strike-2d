@@ -20,6 +20,7 @@
 #include "list_games_dto.h"
 #include "stop_attacking_dto.h"
 
+using namespace DTOSerial;
 using namespace DTOSerial::PlayerCommands;
 using namespace DTOSerial::LobbyCommands;
 // using namespace DTOSerial:: otros;
