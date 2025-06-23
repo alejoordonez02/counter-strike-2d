@@ -10,12 +10,12 @@ void Team::switch_player_sides() {
     for (auto& p : players) p->switch_side();
 }
 
-void Team::update(float dt) {
-    for (auto& p : players) p->update(dt);
+void Team::restart_players() {
+    for (auto& p : players) p->restart();
 }
 
-void Team::restart() {
-    for (auto& p : players) p->restart();
+void Team::update(float dt) {
+    for (auto& p : players) p->update(dt);
 }
 
 void Team::sum_won_round() { won_rounds++; }
@@ -33,6 +33,6 @@ void Team::switch_sides(Team& other) {
     players = std::move(players_tmp);
 }
 
-void Team::push_player_data(std::vector<PlayerData>& data) {
+void Team::push_player_data(std::vector<PlayerDTO>& data) {
     for (auto& p : players) data.push_back(p->get_data());
 }

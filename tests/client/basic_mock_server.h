@@ -25,7 +25,7 @@ void mock_server() {
 
     // 3. Crear las colas
     Queue<std::unique_ptr<DTO>> commands_queue;
-    Queue<std::unique_ptr<DTO>> snapshots_queue;
+    Queue<std::shared_ptr<DTO>> snapshots_queue;
 
     // 4. Crear Receiver y Sender
     Receiver receiver(server_con, commands_queue);
@@ -35,14 +35,14 @@ void mock_server() {
     sender.start();
 
     // ======== inicializacion ========
-    PlayerData player1{};
+    PlayerDTO player1{};
     player1.player_id = 1;
     player1.team_id = 0;
     player1.is_walking = false;
     player1.current_weapon = WeaponType::AK47;
 
 
-    PlayerData player2{};
+    PlayerDTO player2{};
     player2.player_id = 2;
     player2.team_id = 1;
     player2.is_walking = false;
@@ -53,7 +53,7 @@ void mock_server() {
     player2.aim_x = 400;
     player2.aim_y = 400;
 
-    PlayerData player3{};
+    PlayerDTO player3{};
     player3.player_id = 3;
     player3.team_id = 1;
     player3.is_walking = false;
@@ -62,13 +62,12 @@ void mock_server() {
     player3.x = 400;
     player3.y = 300;
 
-    SnapshotDTO initial_snap{};
-    initial_snap.round_number = 0;
-    initial_snap.players.push_back(player1);
-    initial_snap.players.push_back(player2);
-    initial_snap.players.push_back(player3);
-    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTOB>(initial_snap);
-    snapshots_queue.try_push(std::move(initial_snapshot));
+    auto initial_snap = std::make_shared<SnapshotDTO>();
+    initial_snap->round_number = 0;
+    initial_snap->players.push_back(player1);
+    initial_snap->players.push_back(player2);
+    initial_snap->players.push_back(player3);
+    snapshots_queue.try_push(std::move(initial_snap));
 
     int counter = 0;
 
@@ -116,24 +115,22 @@ void mock_server() {
             }
             
             // debe crear siempre un nuevo snapshot
-            SnapshotDTO snap{};
+            auto snap = std::make_shared<SnapshotDTO>();
 
             counter++;
             if (counter == 10) {
                 // Simular que los terroristas ganan cada 100 comandos
-                snap.round_finished = true;
-                snap.game_finished = true;
+                snap->round_finished = true;
+                snap->game_finished = true;
             }
             std::cout << "counter" << counter << std::endl;
-            snap.round_number = counter;
-            snap.players.push_back(player1);
-            snap.players.push_back(player2);
-            snap.players.push_back(player3);
+            snap->round_number = counter;
+            snap->players.push_back(player1);
+            snap->players.push_back(player2);
+            snap->players.push_back(player3);
 
-            // Empaquetar el snapshot en un DTO y enviarlo al cliente
-            std::unique_ptr<DTO> snapshot_dto =
-                    std::make_unique<SnapshotDTOB>(snap);
-            snapshots_queue.try_push(std::move(snapshot_dto));
+            // Enviarlo al cliente
+            snapshots_queue.try_push(std::move(snap));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }

@@ -39,4 +39,10 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
     game->add_player(std::move(con), team);
 }
 
-void GameMaker::list() {}
+std::vector<std::string> GameMaker::list() {
+    std::unique_lock<std::mutex> lck(m);
+    std::vector<std::string> game_names;
+    std::transform(games.begin(), games.end(), std::back_inserter(game_names),
+                   [](const auto& pair) { return pair.first; });
+    return game_names;
+}

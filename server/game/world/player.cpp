@@ -38,7 +38,7 @@ void Player::update(float dt) {
 /*
  * Restart
  * */
-void Player::restart() {
+void Player::respawn() {
     teleport_to_spawn();
     health = max_health;
     alive = true;
@@ -69,6 +69,9 @@ void Player::start_attacking() {
 void Player::stop_attacking() { stop_action(); }
 
 void Player::aim(Direction dir) { this->dir = dir; }
+
+void Player::stop_planting() { stop_action(); }
+void Player::stop_defusing() { stop_action(); }
 
 /*
  * Set current weapon
@@ -113,18 +116,18 @@ void Player::buy_secondary_ammo(const int& count) {
 /*
  * Get snapshot of the current state of the player
  * */
-YourPlayerData Player::get_special_data() const {
-    YourPlayerData data;
-    data.player_id = id;
-    data.player_hp = health;
-    data.total_money = money;
-    data.rounds_won = 0;  // ésto lo sabe World!
-    data.total_kills = kills;
+std::shared_ptr<PrivatePlayerDTO> Player::get_private_data() const {
+    auto data = std::make_shared<PrivatePlayerDTO>();
+    data->player_id = id;
+    data->player_hp = health;
+    data->total_money = money;
+    data->rounds_won = 0;  // ésto lo sabe World!
+    data->total_kills = kills;
     return data;
 }
 
-PlayerData Player::get_data() const {
-    PlayerData data;
+PlayerDTO Player::get_data() const {
+    PlayerDTO data;
     data.player_id = id;
     data.x = pos.x;
     data.y = pos.y;

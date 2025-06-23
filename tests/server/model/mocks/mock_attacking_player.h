@@ -33,9 +33,9 @@ public:
     MOCK_METHOD(void, get_attacked, (int damage), (override));
     MOCK_METHOD(void, switch_side, (), (override));
     MOCK_METHOD(void, plant_bomb, (), (override));
-    MOCK_METHOD(void, stop_planting, (), (override));
     MOCK_METHOD(void, defuse_bomb, (), (override));
-    MOCK_METHOD(void, stop_defusing, (), (override));
+    MOCK_METHOD(void, give_bomb, (), (override));
+    MOCK_METHOD(void, restart, (), (override));
 };
 
 #endif

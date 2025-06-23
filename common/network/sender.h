@@ -13,15 +13,15 @@
 class Sender: public Thread {
 private:
     Connection& con;
-    Queue<std::unique_ptr<DTO>>& queue;
+    Queue<std::shared_ptr<DTO>>& queue;
 
 public:
-    Sender(Connection& c, Queue<std::unique_ptr<DTO>>& q): con(c), queue(q) {}
+    Sender(Connection& c, Queue<std::shared_ptr<DTO>>& q): con(c), queue(q) {}
 
     void run() override {
         try {
             while (true) {
-                std::unique_ptr<DTO> dto_p = queue.pop();
+                std::shared_ptr<DTO> dto_p = queue.pop();
                 con.send_msg(dto_p->serialize());
             }
         } catch (const std::runtime_error& err) {

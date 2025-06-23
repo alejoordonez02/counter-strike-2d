@@ -31,7 +31,7 @@ private:
 
     const MapData& map_data;
 
-    std::unordered_map<uint16_t, std::unique_ptr<RenderablePlayer>>
+    std::unordered_map<uint8_t, std::unique_ptr<RenderablePlayer>>
         players_renderables;
     std::shared_ptr<AnimationProvider> animation_provider;
     std::unique_ptr<RenderableMap> renderable_map;
@@ -44,7 +44,8 @@ public:
 
     void run();
 
-    void update(SnapshotDTO snapshot, uint32_t& fps_timer);
+    void update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
+        uint32_t& fps_timer);
 
     void calculate_fps(uint32_t& fps_timer);
 

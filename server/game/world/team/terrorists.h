@@ -9,6 +9,8 @@ public:
     std::shared_ptr<Player> add_player(
         int id, const PlayerFactory& player_factory) override;
 
+    void restart() override;
+
     bool lost_round(const BombState& bomb, const Timer& round_time) override;
 };
 
