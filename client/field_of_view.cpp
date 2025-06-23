@@ -1,7 +1,7 @@
 #include "client/field_of_view.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 
-#define FOV_CONE_RADIUS 70     // 0 a 360, el ángulo del cono de visión (en grados)
+#define FOV_CONE_RADIUS 90     // 0 a 360, el ángulo del cono de visión (en grados)
 
 FieldOfView::FieldOfView(SDL2pp::Renderer& renderer, uint32_t width, uint32_t height)
     : stencil(

@@ -48,7 +48,8 @@ void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
         }
     }
 
-    field_of_view->update(renderer);
+    if(USE_FOV)
+        field_of_view->update(renderer);
 
     // actualizar textos
     hud_manager->update(snapshot, fps_timer);
@@ -79,6 +80,7 @@ void Render::render() {
         renderable_player->render(renderer);
     }
 
+    if(USE_FOV)
     field_of_view->render(renderer);
 
     // mostrar textos en pantalla
