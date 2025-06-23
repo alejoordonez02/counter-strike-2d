@@ -1,6 +1,8 @@
 #include "client/field_of_view.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 
+#define FOV_CONE_RADIUS 70     // 0 a 360, el ángulo del cono de visión (en grados)
+
 FieldOfView::FieldOfView(SDL2pp::Renderer& renderer, uint32_t width, uint32_t height)
     : stencil(
         renderer, 
@@ -27,21 +29,29 @@ void FieldOfView::update(SDL2pp::Renderer& renderer) {
 
     // calcula dirección hacia el mouse
     float angle = atan2(mouse_y - cy, mouse_x - cx);
-    float cone_radius = 300;  // tamaño del cono
-    float cone_width_angle = M_PI / 6;  // 30 grados
+    
+    // radio del cono de visión
+    float cone_radius = width * 2;
+    float cone_width_angle = FOV_CONE_RADIUS * M_PI / 180;
+    cone_width_angle = cone_width_angle / 2; // dividir por 2 para que el cono sea simétrico
+
+    // circulo de 1/4 de la pantalla en el centro
+    int circle_radius = width / 6;
 
     // puntos del triángulo que representa el cono
-    short vx[3] = {
-        static_cast<short>(cx),
-        static_cast<short>(cx + cone_radius * cos(angle - cone_width_angle)),
-        static_cast<short>(cx + cone_radius * cos(angle + cone_width_angle))
-    };
+    std::vector<short> vx, vy;
 
-    short vy[3] = {
-        static_cast<short>(cy),
-        static_cast<short>(cy + cone_radius * sin(angle - cone_width_angle)),
-        static_cast<short>(cy + cone_radius * sin(angle + cone_width_angle))
-    };
+    // vértice central
+    vx.push_back(cx);
+    vy.push_back(cy);
+
+    // cantidad de segmentos del abanico (mayor = más suave)
+    int segments = 10;
+    for (int i = 0; i <= segments; ++i) {
+        float theta = angle - cone_width_angle + (2 * cone_width_angle) * i / segments;
+        vx.push_back(static_cast<short>(cx + cone_radius * cos(theta)));
+        vy.push_back(static_cast<short>(cy + cone_radius * sin(theta)));
+    }
 
     
     // establecer la textura como target
@@ -54,7 +64,13 @@ void FieldOfView::update(SDL2pp::Renderer& renderer) {
     renderer.Clear();
 
     // dibuja el cono blanco sobre el fondo negro
-    filledPolygonRGBA(renderer.Get(), vx, vy, 3, 255, 255, 255, 255);
+    filledPolygonRGBA(renderer.Get(), vx.data(), vy.data(), vx.size(), 255, 255, 255, 255);
+    filledCircleRGBA(
+        renderer.Get(),
+        cx, cy,                // centro de la pantalla
+        circle_radius,         // radio
+        255, 255, 255, 255     // color blanco opaco
+    );
 
     // crear una Surface para aplicar color key (tomar un color como transparente, simil png)
     SDL2pp::Surface surface_temp(
