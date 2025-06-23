@@ -45,7 +45,7 @@ void RenderableMap::load_blocks() {
 }
 
 
-void RenderableMap::update(SnapshotDTO& snapshot) {
+void RenderableMap::update(const SnapshotDTO& snapshot) {
     // actualizar dropeables. Vaciar droped_weapons antes de agregar nuevos
     // NOTE: No muy eficiente pero sirve
     droped_weapons.clear();

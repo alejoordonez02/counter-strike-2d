@@ -24,7 +24,7 @@ Render::Render(const MapData& map_data):
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
+void Render::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
     // actualizar dropeables
     renderable_map->update(snapshot);
 
