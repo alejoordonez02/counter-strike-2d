@@ -1,12 +1,56 @@
 #include "client/providers/animation_provider.h"
-#include "client/renderables/animation.h"
-#include "client/providers/texture_provider.h"
+#include "animation_provider.h"
 
 AnimationProvider::AnimationProvider(){
-        load_animations();
+        load_sprites_from_yaml();
+        load_other_sprites();
 }
 
-void AnimationProvider::load_animations() {
+void AnimationProvider::load_animation_yaml(const std::string& yaml_path) {
+    YAML::Node config = YAML::LoadFile(yaml_path);
+    std::string texture_name = config["texture_name"].as<std::string>();
+    std::cout << "texture_name: " << texture_name << std::endl;
+    SDL2pp::Texture* texture = TextureProvider::get_texture(texture_name).get();
+    if (!texture) {
+        throw std::runtime_error("Texture not found: " + texture_name);
+    }
+    for (const auto& sprite_node : config["sprite_data"]) {
+        std::string name = sprite_node["name"].as<std::string>();
+        AnimationData data = parse_animation_data(sprite_node);
+        animation_prototypes[name] = {texture, data};
+    }
+}
+
+AnimationData AnimationProvider::parse_animation_data(const YAML::Node& node) {
+    AnimationData data;
+    data.columns = node["columns"].as<int>();
+    data.frames = node["frames"].as<int>();
+    data.is_animated = node["is_animated"].as<bool>();
+    data.steps = node["steps"].as<int>() ? node["steps"].as<int>() : 0;
+    data.size_width = node["size_width"] ? node["size_width"].as<int>() : 0;
+    data.size_height = node["size_height"] ? node["size_height"].as<int>() : 0;
+    data.modify_size = node["modify_size"] ? node["modify_size"].as<float>() : 0.0f;
+    return data;
+}
+
+
+void AnimationProvider::load_sprites_from_yaml() {
+    // carga todos los archivos .yaml dentro de "client/spritesheet_data"
+    std::string animation_data_dir = "client/providers/spritesheet_data";
+    for (const auto& entry : std::filesystem::directory_iterator(animation_data_dir)) {
+        if (entry.path().extension() == ".yaml") {
+            load_animation_yaml(entry.path().string());
+        }
+    }
+}
+
+
+
+void AnimationProvider::load_other_sprites() {
+    // muy especificos para ser cargados mediante un yaml
+    // Resulta mas practico de esta manera
+    
+
     // ====== PLAYERS =======
     // Terrorists
     for (int i = 1; i <= 4; ++i) {
@@ -55,30 +99,8 @@ void AnimationProvider::load_animations() {
     animation_prototypes["background_aztec"] = {TextureProvider::get_texture("background_aztec").get(), AnimationData{1, 0, false, 0}};
     animation_prototypes["background_nuke"] = {TextureProvider::get_texture("background_nuke").get(), AnimationData{1, 0, false, 0}};
     
-    
-    // ====== HUD ICONS ======
-    animation_prototypes["heart"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 0, false, 0, 0, 0, 0.3}};
-    animation_prototypes["shield"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 1, false, 0, 0, 0, 0.3}};
-    animation_prototypes["clock"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 2, false, 0, 0, 0, 0.3}};
-    animation_prototypes["money"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 7, false, 0, 0, 0, 0.3}};
-    animation_prototypes["death"] = {TextureProvider::get_texture("hud_symbols").get(), AnimationData{13, 12, false, 0, 0, 0, 0.5}};
-    
 
-    // ====== HUD NUMBERS ======
-    animation_prototypes["0"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 0, false, 0, 0, 66, 0.3}};
-    animation_prototypes["1"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 1, false, 0, 0, 66, 0.3}};
-    animation_prototypes["2"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 2, false, 0, 0, 66, 0.3}};
-    animation_prototypes["3"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 3, false, 0, 0, 66, 0.3}};
-    animation_prototypes["4"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 4, false, 0, 0, 66, 0.3}};
-    animation_prototypes["5"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 5, false, 0, 0, 66, 0.3}};
-    animation_prototypes["6"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 6, false, 0, 0, 66, 0.3}};
-    animation_prototypes["7"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 7, false, 0, 0, 66, 0.3}};
-    animation_prototypes["8"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 8, false, 0, 0, 66, 0.3}};
-    animation_prototypes["9"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 9, false, 0, 0, 66, 0.3}};
-    animation_prototypes[":"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 10, false, 0, 0, 66, 0.3}};
-    animation_prototypes["|"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 11, false, 0, 0, 66, 0.3}};
-    
-    // ====== HUD NUMBERS ======
+    // ====== POINTERS ======
     animation_prototypes["green_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 0, false, 0, 0, 0, 0.5}};
     animation_prototypes["red_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 1, false, 0, 0, 0, 0.5}};
 

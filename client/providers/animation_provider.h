@@ -5,8 +5,14 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <filesystem>
+#include <stdexcept>
+#include <iostream>
+
+#include <yaml-cpp/yaml.h>
 
 #include "client/renderables/animation.h"
+#include "client/providers/texture_provider.h"
 
 struct AnimationPrototype {
     SDL2pp::Texture* texture;
@@ -22,10 +28,13 @@ class AnimationProvider {
 
     public:
     AnimationProvider();
+    void load_animation_yaml(const std::string& yaml_path);
+    AnimationData parse_animation_data(const YAML::Node& node);
     std::unique_ptr<Animation> make_animation(
-            const std::string& animation_name);
+        const std::string& animation_name);
 
-    void load_animations();
+    void load_other_sprites();
+    void load_sprites_from_yaml();
 };
 
 #endif
