@@ -25,7 +25,7 @@ public:
 
     void play();
 
-    void send_snapshot(SnapshotDTO& snapshot);
+    bool send_snapshot(std::unique_ptr<SnapshotDTO> snapshot);
 };
 
 #endif

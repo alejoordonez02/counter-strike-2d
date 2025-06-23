@@ -93,22 +93,22 @@ bool World::has_ended() const { return ended; }
 /*
  * Get a snapshot of the current state of the world
  * */
-SnapshotDTO World::get_snapshot() {
-    SnapshotDTO snapshot;
-    snapshot.round_finished = !round_ongoing;
-    snapshot.game_finished = ended;
-    snapshot.initial_phase = true;  // ?
-    snapshot.round_number = rounds;
-    snapshot.terrorists_score = tt_team.get_won_rounds();
-    snapshot.counter_terrorists_score = ct_team.get_won_rounds();
-    tt_team.push_player_data(snapshot.players);
-    ct_team.push_player_data(snapshot.players);
+std::unique_ptr<SnapshotDTO> World::get_snapshot() {
+    auto snapshot = std::make_unique<SnapshotDTO>();
+    snapshot->round_finished = !round_ongoing;
+    snapshot->game_finished = ended;
+    snapshot->initial_phase = true;  // ?
+    snapshot->round_number = rounds;
+    snapshot->terrorists_score = tt_team.get_won_rounds();
+    snapshot->counter_terrorists_score = ct_team.get_won_rounds();
+    tt_team.push_player_data(snapshot->players);
+    ct_team.push_player_data(snapshot->players);
 
     // TODO: Eliminar. Lo dejo asi para que se vea en el mapa y 
     // se sepa que esta disponible para usar
-    snapshot.weapons_on_floor.push_back({WeaponType::AK47, 224, 228});
-    snapshot.weapons_on_floor.push_back({WeaponType::Glock, 128, 96});
-    snapshot.weapons_on_floor.push_back({WeaponType::Bomb, 100, 196});
+    snapshot->weapons_on_floor.push_back({WeaponType::AK47, 224, 228});
+    snapshot->weapons_on_floor.push_back({WeaponType::Glock, 128, 96});
+    snapshot->weapons_on_floor.push_back({WeaponType::Bomb, 100, 196});
 
     return snapshot;
 }

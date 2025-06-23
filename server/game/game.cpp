@@ -48,7 +48,7 @@ void Game::run() {
         add_pending_players();
 
         auto snapshot = world.get_snapshot();
-        for (auto& p : players) p->send_snapshot(snapshot);
+        for (auto& p : players) p->send_snapshot(std::move(snapshot));
 
         for (int i = 0; i < commands_per_tick; i++)
             for (auto& p : players) p->play();

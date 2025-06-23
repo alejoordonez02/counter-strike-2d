@@ -62,13 +62,12 @@ void mock_server() {
     player3.x = 400;
     player3.y = 300;
 
-    SnapshotDTO initial_snap{};
-    initial_snap.round_number = 0;
-    initial_snap.players.push_back(player1);
-    initial_snap.players.push_back(player2);
-    initial_snap.players.push_back(player3);
-    std::unique_ptr<DTO> initial_snapshot = std::make_unique<SnapshotDTOB>(initial_snap);
-    snapshots_queue.try_push(std::move(initial_snapshot));
+    auto initial_snap = std::make_unique<SnapshotDTO>();
+    initial_snap->round_number = 0;
+    initial_snap->players.push_back(player1);
+    initial_snap->players.push_back(player2);
+    initial_snap->players.push_back(player3);
+    snapshots_queue.try_push(std::move(initial_snap));
 
     int counter = 0;
 
@@ -116,24 +115,22 @@ void mock_server() {
             }
             
             // debe crear siempre un nuevo snapshot
-            SnapshotDTO snap{};
+            auto snap = std::make_unique<SnapshotDTO>();
 
             counter++;
             if (counter == 10) {
                 // Simular que los terroristas ganan cada 100 comandos
-                snap.round_finished = true;
-                snap.game_finished = true;
+                snap->round_finished = true;
+                snap->game_finished = true;
             }
             std::cout << "counter" << counter << std::endl;
-            snap.round_number = counter;
-            snap.players.push_back(player1);
-            snap.players.push_back(player2);
-            snap.players.push_back(player3);
+            snap->round_number = counter;
+            snap->players.push_back(player1);
+            snap->players.push_back(player2);
+            snap->players.push_back(player3);
 
-            // Empaquetar el snapshot en un DTO y enviarlo al cliente
-            std::unique_ptr<DTO> snapshot_dto =
-                    std::make_unique<SnapshotDTOB>(snap);
-            snapshots_queue.try_push(std::move(snapshot_dto));
+            // Enviarlo al cliente
+            snapshots_queue.try_push(std::move(snap));
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
