@@ -59,7 +59,8 @@ struct PlayerData {
     float aim_y;
 };
 
-struct SnapshotDTO {
+class SnapshotDTO: public DTO {
+public:
     bool round_finished = false;
     bool game_finished = false;
     bool initial_phase = true;
@@ -74,19 +75,15 @@ struct SnapshotDTO {
     YourPlayerData user_data;
     std::vector<PlayerData> players;
     std::vector<WeaponDTO> weapons_on_floor;
-};
 
-class SnapshotDTOB: public DTO {
 private:
-    // SnapshotDTO snapshot;
-
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         // Deserializar campos snapshot
         in++;  // skip 1st byte (DTO type)
-        snapshot.round_number = *in++;
+        round_number = *in++;
         size_t num_players = *in++;
-        snapshot.players.clear();
-        snapshot.players.reserve(num_players);
+        players.clear();
+        players.reserve(num_players);
         for (size_t j = 0; j < num_players; ++j) {
             PlayerData player;
             player.player_id = *in++;
@@ -103,51 +100,48 @@ private:
             Position aim = deserialize_pos_from(in);
             player.aim_x = aim.x;
             player.aim_y = aim.y;
-            snapshot.players.push_back(player);
+            players.push_back(player);
         }
         // armas en el suelo
         size_t num_weapons_on_floor = *in++;
-        snapshot.weapons_on_floor.clear();
-        snapshot.weapons_on_floor.reserve(num_weapons_on_floor);
+        weapons_on_floor.clear();
+        weapons_on_floor.reserve(num_weapons_on_floor);
         for (size_t j = 0; j < num_weapons_on_floor; ++j) {
             WeaponDTO weapon;
             weapon.type = static_cast<WeaponType>(*in++);
             Position pos = deserialize_pos_from(in);
             weapon.x = pos.x;
             weapon.y = pos.y;
-            snapshot.weapons_on_floor.push_back(weapon);
+            weapons_on_floor.push_back(weapon);
         }
-        snapshot.user_data.player_id = *in++;
-        snapshot.user_data.player_hp = *in++;
-        snapshot.user_data.total_money = deserialize_int_from(in);
-        snapshot.user_data.rounds_won = *in++;
-        snapshot.user_data.total_kills = *in++;
+        user_data.player_id = *in++;
+        user_data.player_hp = *in++;
+        user_data.total_money = deserialize_int_from(in);
+        user_data.rounds_won = *in++;
+        user_data.total_kills = *in++;
     }
 
 public:
-    SnapshotDTO snapshot;
-
-    explicit SnapshotDTOB(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+    explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);
     }
 
-    explicit SnapshotDTOB(std::vector<uint8_t>::iterator& in):
+    explicit SnapshotDTO(std::vector<uint8_t>::iterator& in):
             DTO(DTOSerial::PlayerCommands::SNAPSHOT) {
         deserialize_from(in);
     }
 
-    explicit SnapshotDTOB(const SnapshotDTO& snap):
-            DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
+    SnapshotDTO(): DTO(DTOSerial::PlayerCommands::SNAPSHOT) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
         // Serializar campos snapshot
-        out.push_back(snapshot.round_number);
+        out.push_back(round_number);
 
         // jugadores
-        out.push_back(snapshot.players.size());
-        for (const auto& player : snapshot.players) {
+        out.push_back(players.size());
+        for (const auto& player : players) {
             out.push_back(player.player_id);
             out.push_back(player.team_id);
             out.push_back(static_cast<uint8_t>(player.current_weapon));
@@ -162,19 +156,25 @@ public:
             serialize_tuple_into(out, player.aim_x, player.aim_y);
         }
         // armas en el suelo
-        out.push_back(snapshot.weapons_on_floor.size());
-        for (const auto& weapon : snapshot.weapons_on_floor) {
+        out.push_back(weapons_on_floor.size());
+        for (const auto& weapon : weapons_on_floor) {
             out.push_back(static_cast<uint8_t>(weapon.type));
             serialize_tuple_into(out, weapon.x, weapon.y);
         }
-        out.push_back(snapshot.user_data.player_id);
-        out.push_back(snapshot.user_data.player_hp);
-        serialize_int_into(out, snapshot.user_data.total_money);
-        out.push_back(snapshot.user_data.rounds_won);
-        out.push_back(snapshot.user_data.total_kills);
+        out.push_back(user_data.player_id);
+        out.push_back(user_data.player_hp);
+        serialize_int_into(out, user_data.total_money);
+        out.push_back(user_data.rounds_won);
+        out.push_back(user_data.total_kills);
     }
 
-    ~SnapshotDTOB() = default;
+    SnapshotDTO(const SnapshotDTO&) = delete;
+    SnapshotDTO& operator=(const SnapshotDTO&) = delete;
+    
+    SnapshotDTO(SnapshotDTO&&) = default;
+    SnapshotDTO& operator=(SnapshotDTO&&) = default;
+
+    ~SnapshotDTO() = default;
 };
 
 #endif
