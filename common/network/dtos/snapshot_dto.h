@@ -24,8 +24,8 @@ struct WeaponDTO {
 };
 
 struct YourPlayerData {
-    uint8_t player_id;
-    uint8_t player_hp;
+    uint8_t player_id = 0;
+    uint8_t player_hp = 100;
     
     uint total_money = 0;
 

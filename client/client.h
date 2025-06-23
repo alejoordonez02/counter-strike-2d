@@ -13,7 +13,7 @@ class Client {
 private:
     Connection con;
 
-    Queue<std::unique_ptr<DTO>> commands;
+    Queue<std::shared_ptr<DTO>> commands;
     Queue<std::unique_ptr<DTO>> snapshots;
 
     Sender sender;

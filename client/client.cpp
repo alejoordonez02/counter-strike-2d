@@ -36,7 +36,7 @@ void Client::lobby_phase(int i) {
 
             switch (opt) {
                 case 1: {
-                    commands.try_push(std::make_unique<ListGamesDTO>());
+                    commands.try_push(std::make_shared<ListGamesDTO>());
                     break;
                 }
                 case 2: {
@@ -50,7 +50,7 @@ void Client::lobby_phase(int i) {
                     std::cout
                         << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
                     std::cin >> team_idx;
-                    commands.try_push(std::make_unique<CreateGameDTO>(
+                    commands.try_push(std::make_shared<CreateGameDTO>(
                         name, static_cast<MapName>(map_idx),
                         static_cast<TeamName>(team_idx)));
                     return;  // salimos del lobby para entrar al game loop
@@ -63,7 +63,7 @@ void Client::lobby_phase(int i) {
                     std::cout
                         << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
                     std::cin >> team_idx;
-                    commands.try_push(std::make_unique<JoinGameDTO>(
+                    commands.try_push(std::make_shared<JoinGameDTO>(
                         name, static_cast<TeamName>(team_idx)));
                     return;
                 }
@@ -81,14 +81,14 @@ void Client::lobby_phase(int i) {
 
             QObject::connect(
                 lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
-                    commands.try_push(std::make_unique<ListGamesDTO>());
+                    commands.try_push(std::make_shared<ListGamesDTO>());
                 });
 
             // Conexión para crear partida
             QObject::connect(
                 lobbyWindow.get(), &LobbyWindow::requestCreateGame,
                 [&](const QString& name, int mapIdx, int teamIdx) {
-                    commands.try_push(std::make_unique<CreateGameDTO>(
+                    commands.try_push(std::make_shared<CreateGameDTO>(
                         name.toStdString(), static_cast<MapName>(mapIdx),
                         static_cast<TeamName>(teamIdx)));
                     lobbyLoop.quit();
@@ -98,7 +98,7 @@ void Client::lobby_phase(int i) {
             QObject::connect(
                 lobbyWindow.get(), &LobbyWindow::requestJoinGame,
                 [&](const QString& name, int teamIdx) {
-                    commands.try_push(std::make_unique<JoinGameDTO>(
+                    commands.try_push(std::make_shared<JoinGameDTO>(
                         name.toStdString(), static_cast<TeamName>(teamIdx)));
                     lobbyLoop.quit();
                 });

@@ -11,7 +11,7 @@
 class PlayerHandler {
 private:
     Connection con;
-    Queue<std::unique_ptr<DTO>> snapshots;
+    Queue<std::shared_ptr<DTO>> snapshots;
     Queue<std::unique_ptr<DTO>> commands;
     Receiver receiver;
     Sender sender;
@@ -25,7 +25,7 @@ public:
 
     void play();
 
-    bool send_snapshot(std::unique_ptr<SnapshotDTO> snapshot);
+    bool send_snapshot(std::shared_ptr<SnapshotDTO> snapshot);
 };
 
 #endif

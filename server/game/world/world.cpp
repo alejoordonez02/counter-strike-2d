@@ -93,8 +93,8 @@ bool World::has_ended() const { return ended; }
 /*
  * Get a snapshot of the current state of the world
  * */
-std::unique_ptr<SnapshotDTO> World::get_snapshot() {
-    auto snapshot = std::make_unique<SnapshotDTO>();
+std::shared_ptr<SnapshotDTO> World::get_snapshot() {
+    auto snapshot = std::make_shared<SnapshotDTO>();
     snapshot->round_finished = !round_ongoing;
     snapshot->game_finished = ended;
     snapshot->initial_phase = true;  // ?
@@ -110,5 +110,6 @@ std::unique_ptr<SnapshotDTO> World::get_snapshot() {
     snapshot->weapons_on_floor.push_back({WeaponType::Glock, 128, 96});
     snapshot->weapons_on_floor.push_back({WeaponType::Bomb, 100, 196});
 
+    snapshot->serialize();
     return snapshot;
 }

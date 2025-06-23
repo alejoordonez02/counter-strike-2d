@@ -25,7 +25,7 @@ void mock_server() {
 
     // 3. Crear las colas
     Queue<std::unique_ptr<DTO>> commands_queue;
-    Queue<std::unique_ptr<DTO>> snapshots_queue;
+    Queue<std::shared_ptr<DTO>> snapshots_queue;
 
     // 4. Crear Receiver y Sender
     Receiver receiver(server_con, commands_queue);
@@ -62,7 +62,7 @@ void mock_server() {
     player3.x = 400;
     player3.y = 300;
 
-    auto initial_snap = std::make_unique<SnapshotDTO>();
+    auto initial_snap = std::make_shared<SnapshotDTO>();
     initial_snap->round_number = 0;
     initial_snap->players.push_back(player1);
     initial_snap->players.push_back(player2);
@@ -115,7 +115,7 @@ void mock_server() {
             }
             
             // debe crear siempre un nuevo snapshot
-            auto snap = std::make_unique<SnapshotDTO>();
+            auto snap = std::make_shared<SnapshotDTO>();
 
             counter++;
             if (counter == 10) {

@@ -50,7 +50,7 @@ public:
 
     bool has_ended() const;
 
-    std::unique_ptr<SnapshotDTO> get_snapshot();
+    std::shared_ptr<SnapshotDTO> get_snapshot();
 };
 
 #endif

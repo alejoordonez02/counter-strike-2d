@@ -16,7 +16,7 @@
 #include "common/network/dtos/stop_moving_dto.h"
 #include "client/camera.h"
 
-InputHandler::InputHandler(Queue<std::unique_ptr<DTO>>& commands_queue):
+InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
 
 /**
@@ -65,7 +65,7 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
 //         // determina el tipo de arma a cambiar (ejemplo: 1="next" o -1="prev")
 //         int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
 //         std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
-//         commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
+//         commands_queue.try_push(std::make_shared<ChangeWeaponDTO>(weapon_type));
 //         weapon_scroll_accum = 0;
 //     }
 // }
@@ -90,10 +90,10 @@ void InputHandler::send_direction() {
     }
 
     if (dir.x != 0 || dir.y != 0) {
-        commands_queue.try_push(std::make_unique<StartMovingDTO>(dir));
+        commands_queue.try_push(std::make_shared<StartMovingDTO>(dir));
         was_moving = true;
     } else if (was_moving) {
-        commands_queue.try_push(std::make_unique<StopMovingDTO>());
+        commands_queue.try_push(std::make_shared<StopMovingDTO>());
         was_moving = false;
     }
 }
@@ -108,12 +108,12 @@ void InputHandler::send_attack() {
     if (is_attacking && !prev_left) {
         std::cout << "LOG: Enviando comando de ataque." << std::endl;
         // enviarlo solo una vez, no todo el tiempo
-        commands_queue.try_push(std::make_unique<StartAttackingDTO>());
+        commands_queue.try_push(std::make_shared<StartAttackingDTO>());
     }
     // Detecta el fin del ataque (soltar click)
     if (!is_attacking && prev_left) {
         std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
-        commands_queue.try_push(std::make_unique<StopAttackingDTO>());
+        commands_queue.try_push(std::make_shared<StopAttackingDTO>());
     }
 
     if (mouse_states["mouse_left"]) {
@@ -131,16 +131,16 @@ void InputHandler::send_change_weapon() {
     // secundaria, cuchillo o bomba
     if (key_states[SDLK_b]) {
         std::cout << "LOG: Enviando comando de cambio a arma bomba." << std::endl;
-        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Bomb));
+        commands_queue.try_push(std::make_shared<ChangeWeaponDTO>(EquipmentType::Bomb));
     } else if (key_states[SDLK_k]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo." << std::endl;
-        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Knife));
+        commands_queue.try_push(std::make_shared<ChangeWeaponDTO>(EquipmentType::Knife));
     } else if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma primaria." << std::endl;
-        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Primary));
+        commands_queue.try_push(std::make_shared<ChangeWeaponDTO>(EquipmentType::Primary));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria." << std::endl;
-        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Secondary));
+        commands_queue.try_push(std::make_shared<ChangeWeaponDTO>(EquipmentType::Secondary));
     }
 
 }
@@ -164,7 +164,7 @@ void InputHandler::send_aim() {
 
     if (aim_accum_x >= kAimThreshold || aim_accum_y >= kAimThreshold) {
         // std::cout << "LOG: Enviando comando de apuntar a: (" << dx << ", " << dy << ")" << std::endl;
-        commands_queue.try_push(std::make_unique<AimDTO>(Direction(dx, dy)));
+        commands_queue.try_push(std::make_shared<AimDTO>(Direction(dx, dy)));
         last_dx = dx;
         last_dy = dy;
         aim_accum_x = 0;
