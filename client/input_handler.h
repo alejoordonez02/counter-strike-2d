@@ -19,13 +19,12 @@ private:
 
     void handle_mouse_down(const SDL_Event& event);
     void handle_mouse_up(const SDL_Event& event);
-    void handle_mouse_wheel(const SDL_Event& event);
 
     bool handle_events();
 
     void process_movement();
     void send_direction();
-
+    void send_change_weapon();
     void send_attack();
 
     void send_aim();

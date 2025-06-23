@@ -3,16 +3,18 @@
 
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 class ChangeWeaponDTO: public DTO {
 private:
-    uint8_t weapon_type;
+    // uint8_t weapon_type;
+    EquipmentType weapon_type;
 
     // friend class ChangeWeapon;
 
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         in++;  // skip 1st byte (DTO type)
-        weapon_type = *in++;
+        weapon_type = static_cast<EquipmentType>(*in++);
     }
 
 public:
@@ -26,41 +28,16 @@ public:
         deserialize_from(in);
     }
 
-    explicit ChangeWeaponDTO(uint8_t w_type):
+    explicit ChangeWeaponDTO(EquipmentType w_type):
             DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON),
             weapon_type(w_type) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        out.push_back(weapon_type);
+        out.push_back(static_cast<uint8_t>(weapon_type));
     }
 
     ~ChangeWeaponDTO() = default;
 };
 
 #endif
-
-
-// class ChangeWeaponDTO: public DTO {
-// private:
-//     int weapon_type;
-
-//     void deserialize() override {}
-
-// public:
-//     explicit ChangeWeaponDTO(std::vector<uint8_t>&& bytes):
-//             DTO(std::move(bytes)) {
-//         deserialize();
-//     }
-
-//     explicit ChangeWeaponDTO(int weapon_type): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(weapon_type) {}
-
-//     ChangeWeaponDTO(): DTO(DTOSerial::PlayerCommands::CHANGE_WEAPON), weapon_type(0) {}
-
-//     void serialize_into(std::vector<uint8_t>& out) override {
-//         out.push_back(type);
-//         out.push_back(static_cast<uint8_t>(weapon_type));
-//     }
-
-//     ~ChangeWeaponDTO() = default;
-// };

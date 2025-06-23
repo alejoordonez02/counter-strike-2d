@@ -14,6 +14,8 @@
 
 enum class WeaponType { None, Bomb, Knife, Glock, AK47, M3, AWP };
 
+enum class EquipmentType { Primary, Secondary, Knife, Bomb};
+
 // armas en el suelo
 struct WeaponDTO {
     WeaponType type;
