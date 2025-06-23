@@ -9,7 +9,6 @@ int main(int argc, char** argv) {
     QApplication a(argc, argv);
     MainWindow mainWindow;
     mainWindow.show();
-    QEventLoop mainLoop;
 
     QObject::connect(&mainWindow, &MainWindow::connectToLobby, [&](const QString& host,const QString& serv) {
         mainWindow.close();
@@ -17,6 +16,5 @@ int main(int argc, char** argv) {
         client.run(0);
     });
 
-    mainLoop.quit();
     return a.exec();
 }

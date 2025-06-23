@@ -37,10 +37,10 @@ void Client::lobby_phase() {
 
         // Conexión para crear partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
-            [&](const QString& name, int mapIdx, int teamIdx) {
+            [&](const QString & name,const MapName & mapname, int teamIdx) {
                 commands.try_push(std::make_unique<CreateGameDTO>(
                     name.toStdString(),
-                    static_cast<MapName>(mapIdx),
+                    mapname,
                     static_cast<TeamName>(teamIdx)
                 ));
                 lobbyLoop.quit();
@@ -48,7 +48,7 @@ void Client::lobby_phase() {
 
         // Conexión para unirse a partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestJoinGame,
-            [&](const QString& name, int teamIdx) {
+            [&](const QString & name, int teamIdx) {
                 commands.try_push(std::make_unique<JoinGameDTO>(
                     name.toStdString(),
                     static_cast<TeamName>(teamIdx)

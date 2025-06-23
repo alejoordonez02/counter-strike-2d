@@ -2,12 +2,10 @@
 #include "creatematchdialog.h"
 #include "ui_Lobby.h"
 #include <QMessageBox>
-#include <QListWidgetItem>
 
 LobbyWindow::LobbyWindow(QWidget *parent) : 
     QMainWindow(parent),
     ui(new Ui::Lobby),
-    map_idx(0),
     team_idx(0)
 {
 
@@ -27,17 +25,16 @@ void LobbyWindow::populateMatchesList()
     // aca tendria que recibir las partidas del servidor y cargarlas
     // Hardcodeo algunas partidas para que se vean 
     QList<MatchInfo> matches = {
-        MatchInfo("Competitive Match", "de_dust2", 4, 10),
-        MatchInfo("Casual Game", "cs_italy", 6, 12),
-        MatchInfo("Tournament Practice", "de_inferno", 10, 10),
-        MatchInfo("New Players Only", "de_mirage", 2, 10),
-        MatchInfo("Headshot Only", "de_nuke", 5, 8)
+        MatchInfo("Dust", MapName::DUST, 4, 10),
+        MatchInfo("Headshot Only", MapName::AZTEC, 6, 12),
+        MatchInfo("Tournament", MapName::AZTEC, 10, 10),
+        MatchInfo("1v5", MapName::AZTEC, 2, 10),
+        MatchInfo("Nuke", MapName::NUKE, 5, 8)
     };
     
     for (const auto& match : matches) {
-        QString matchText = QString("%1\nMap: %2\nPlayers: %3/%4")
+        QString matchText = QString("%1\nPlayers: %2/%3")
                           .arg(match.name)
-                          .arg(match.map)
                           .arg(match.currentPlayers)
                           .arg(match.maxPlayers);
         
@@ -46,7 +43,7 @@ void LobbyWindow::populateMatchesList()
         
         if (match.currentPlayers >= match.maxPlayers) {
             item->setForeground(Qt::red);
-            item->setToolTip("Esta partida está llena");
+            item->setToolTip("Match is full");
         }
     }
 }
@@ -69,8 +66,7 @@ void LobbyWindow::on_joinMatchButton_clicked()
 
     if (matchInfo.currentPlayers >= matchInfo.maxPlayers) {
         QMessageBox::warning(this, "Match Full",
-            QString("User %1 Cannot join '%2'\nThe match is full (%3/%4 players)")
-                .arg(username)
+            QString("User Cannot join map %1 \nThe match is full (%2/%3 players)")
                 .arg(matchInfo.name)
                 .arg(matchInfo.currentPlayers)
                 .arg(matchInfo.maxPlayers));
@@ -79,9 +75,8 @@ void LobbyWindow::on_joinMatchButton_clicked()
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Confirm Join",
-        QString("Do you want to join '%1'?\nMap: %2\nPlayers: %3/%4")
+        QString("Do you want to join ?\nGame: %1\nPlayers: %2/%3")
             .arg(matchInfo.name)
-            .arg(matchInfo.map)
             .arg(matchInfo.currentPlayers)
             .arg(matchInfo.maxPlayers),
         QMessageBox::Yes | QMessageBox::No);
@@ -125,7 +120,7 @@ void LobbyWindow::on_createMatchButton_clicked()
         // Enviar comando al servidor
         try {
             //envio la senial que tiene lo necesari para crear el dto de CreateGame
-            emit requestCreateGame(matchInfo.name, map_idx, team_idx);
+            emit requestCreateGame(matchInfo.name, matchInfo.map, team_idx);
             
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", 

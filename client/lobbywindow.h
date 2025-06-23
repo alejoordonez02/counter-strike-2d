@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include "common/map_name.h"
 
 namespace Ui {
 class Lobby;
@@ -10,11 +11,11 @@ class Lobby;
 
 struct MatchInfo {
     QString name;
-    QString map;
+    MapName map;
     int currentPlayers;
     int maxPlayers;
     
-    MatchInfo(QString n = "", QString m = "", int cp = 0, int mp = 0)
+    MatchInfo(QString n = "", MapName m = MapName::AZTEC, int cp = 0, int mp = 0)
         : name(n), map(m), currentPlayers(cp), maxPlayers(mp) {}
 };
 
@@ -28,8 +29,8 @@ public:
     explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
 signals:
-    void requestJoinGame(const QString& username, int teamIdx);
-    void requestCreateGame(const QString& username,int mapIdx, int teamIdx);
+    void requestJoinGame(const QString & name, int teamIdx);
+    void requestCreateGame(const QString & name,const MapName & mapname, int teamIdx);
     void requestListGames();
 
 private slots:
@@ -40,7 +41,6 @@ private:
     void populateMatchesList();
     Ui::Lobby *ui;
     QString username;
-    int map_idx;
     int team_idx;
 };
 
