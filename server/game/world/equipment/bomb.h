@@ -1,17 +1,19 @@
 #ifndef SERVER_WORLD_EQUIPMENT_BOMB_H
 #define SERVER_WORLD_EQUIPMENT_BOMB_H
 
+#include "position.h"
 #include "server/game/world/timer.h"
 
 enum class BombState { NOT_PLANTED, PLANTED, EXPLODED, DEFUSED };
 
 class Bomb {
 private:
+    Position pos;
     Timer timer;
     BombState state;
 
 public:
-    Bomb(float time_left);
+    Bomb(Position pos, float time_left);
 
     void update(float dt);
 

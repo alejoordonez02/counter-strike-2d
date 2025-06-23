@@ -1,6 +1,7 @@
 #include "bomb.h"
 
-Bomb::Bomb(float time_left): timer(time_left), state(BombState::NOT_PLANTED) {}
+Bomb::Bomb(Position pos, float time_left):
+    pos(pos), timer(time_left), state(BombState::NOT_PLANTED) {}
 
 void Bomb::update(float dt) {
     if (state == BombState::PLANTED) timer.update(dt);
