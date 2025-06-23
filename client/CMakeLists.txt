@@ -3,8 +3,6 @@ target_sources(cs2d_client
         client_main.cpp
         client.cpp
         gameloop.cpp
-        texture_provider.cpp
-        animation_provider.cpp
         input_handler.cpp
         render.cpp
         mainwindow.cpp
@@ -15,5 +13,6 @@ target_sources(cs2d_client
 )
 
 add_subdirectory(renderables)
+add_subdirectory(providers)
 
 target_include_directories(cs2d_client PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

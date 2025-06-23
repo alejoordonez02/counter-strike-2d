@@ -1,6 +1,6 @@
 #include "client/renderables/hud/renderable_hud_timer.h"
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 
 #include <utility>
 #include "renderable_numbers.h"

@@ -1,6 +1,6 @@
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
-#include "client/texture_provider.h"
+#include "client/providers/texture_provider.h"
 
 AnimationProvider::AnimationProvider(){
         load_animations();
@@ -8,26 +8,41 @@ AnimationProvider::AnimationProvider(){
 
 void AnimationProvider::load_animations() {
     // ====== PLAYERS =======
-    animation_prototypes["terrorist_1_holding_knife"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 0, false}};
-    animation_prototypes["terrorist_1_idle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 1, false}};
-    animation_prototypes["terrorist_1_placing_bomb"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 2, false}};
-    animation_prototypes["terrorist_1_holding_pistol"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 3, false}};
-    animation_prototypes["terrorist_1_holding_rifle"] = {TextureProvider::get_texture("terrorist_1").get(), AnimationData{2, 5, false}};
-    
-    animation_prototypes["terrorist_2_idle"] = {TextureProvider::get_texture("terrorist_2").get(), AnimationData{2, 1, false, 1}};
-    animation_prototypes["terrorist_3_idle"] = {TextureProvider::get_texture("terrorist_3").get(), AnimationData{2, 1, false, 1}};
-    animation_prototypes["terrorist_4_idle"] = {TextureProvider::get_texture("terrorist_4").get(), AnimationData{2, 1, false, 1}};
-
+    // Terrorists
+    for (int i = 1; i <= 4; ++i) {
+        std::string base = "terrorist_" + std::to_string(i);
+        animation_prototypes[base + "_holding_knife"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 0, false}};
+        animation_prototypes[base + "_idle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 1, false}};
+        animation_prototypes[base + "_placing_bomb"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 2, false}};
+        animation_prototypes[base + "_holding_pistol"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 3, false}};
+        animation_prototypes[base + "_holding_rifle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 5, false}};
+    }
+    // Counter-Terrorists
+    for (int i = 1; i <= 4; ++i) {
+        std::string base = "counter_terrorist_" + std::to_string(i);
+        animation_prototypes[base + "_holding_knife"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 0, false}};
+        animation_prototypes[base + "_idle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 1, false}};
+        animation_prototypes[base + "_placing_bomb"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 2, false}};
+        animation_prototypes[base + "_holding_pistol"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 3, false}};
+        animation_prototypes[base + "_holding_rifle"] = {TextureProvider::get_texture(base).get(), AnimationData{2, 5, false}};
+    }
     animation_prototypes["legs"] = {TextureProvider::get_texture("legs").get(), AnimationData{4, 8, true, 5, 0}};
 
+
     // ====== GUNS ======
-    animation_prototypes["bomb"] = {TextureProvider::get_texture("bomb").get(), AnimationData{1, 0, false}};
-    animation_prototypes["knife"] = {TextureProvider::get_texture("knife").get(), AnimationData{1, 0, false}};
-    animation_prototypes["glock"] = {TextureProvider::get_texture("glock").get(), AnimationData{1, 0, false}};
-    animation_prototypes["ak47"] = {TextureProvider::get_texture("ak47").get(), AnimationData{1, 0, false}};
-    animation_prototypes["m3"] = {TextureProvider::get_texture("m3").get(), AnimationData{1, 0, false}};
-    animation_prototypes["awp"] = {TextureProvider::get_texture("awp").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_bomb"] = {TextureProvider::get_texture("held_bomb").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_knife"] = {TextureProvider::get_texture("held_knife").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_glock"] = {TextureProvider::get_texture("held_glock").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_ak47"] = {TextureProvider::get_texture("held_ak47").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_m3"] = {TextureProvider::get_texture("held_m3").get(), AnimationData{1, 0, false}};
+    animation_prototypes["held_awp"] = {TextureProvider::get_texture("held_awp").get(), AnimationData{1, 0, false}};
     
+    animation_prototypes["bomb"] = {TextureProvider::get_texture("bomb").get(), AnimationData{1, 0, false}};
+    animation_prototypes["glock"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 0, false}};
+    animation_prototypes["ak47"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 1, false}};
+    animation_prototypes["m3"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 2, false}};
+    animation_prototypes["awp"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 3, false}};
+
     // ====== EFFECTS ======
     animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
     animation_prototypes["knifeslash"] = {TextureProvider::get_texture("knifeslash").get(), AnimationData{1, 0, false, 0, 0, 0, 0.5}};
@@ -62,6 +77,12 @@ void AnimationProvider::load_animations() {
     animation_prototypes["9"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 9, false, 0, 0, 66, 0.3}};
     animation_prototypes[":"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 10, false, 0, 0, 66, 0.3}};
     animation_prototypes["|"] = {TextureProvider::get_texture("hud_nums").get(), AnimationData{12, 11, false, 0, 0, 66, 0.3}};
+    
+    // ====== HUD NUMBERS ======
+    animation_prototypes["green_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 0, false, 0, 0, 0, 0.5}};
+    animation_prototypes["red_pointer"] = {TextureProvider::get_texture("pointer").get(), AnimationData{2, 1, false, 0, 0, 0, 0.5}};
+
+
 
     // ======= TILES / BLOCKS ========
     // ======= DUST BLOCKS ========

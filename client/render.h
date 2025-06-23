@@ -7,7 +7,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/hud_manager.h"
 #include "client/renderables/map/renderable_map.h"
 #include "client/renderables/renderable_player.h"
@@ -37,9 +37,9 @@ public:
 
     void run();
 
-    void update(SnapshotDTO snapshot);
+    void update(SnapshotDTO snapshot, uint32_t& fps_timer);
 
-    // void skip_frames(uint8_t frames);
+    void calculate_fps(uint32_t& fps_timer);
 
     void skip_frames(uint8_t frames);
 

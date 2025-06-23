@@ -2,9 +2,9 @@
 
 #include <utility>
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
+#include "client/providers/texture_provider.h"
 #include "client/camera.h"
-#include "client/texture_provider.h"
 #include "render.h"
 
 Render::Render(const MapData& map_data):
@@ -24,8 +24,9 @@ Render::Render(const MapData& map_data):
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(SnapshotDTO snapshot) {
-    // TODO: actualizar dropeables
+void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
+    // actualizar dropeables
+    renderable_map->update(snapshot);
 
     // actualizar jugadores
     int my_id = snapshot.user_data.player_id;
@@ -53,7 +54,7 @@ void Render::update(SnapshotDTO snapshot) {
     }
 
     // actualizar textos
-    hud_manager->update(snapshot);
+    hud_manager->update(snapshot, fps_timer);
 }
 
 void Render::skip_frames(uint8_t frames) {
@@ -80,8 +81,6 @@ void Render::render() {
         // renderizar cada jugador
         renderable_player->render(renderer);
     }
-
-    // TODO: renderizar dropeables
 
     // mostrar textos en pantalla
     hud_manager->render(renderer);
