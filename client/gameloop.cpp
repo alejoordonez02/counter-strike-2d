@@ -1,6 +1,7 @@
 #include "client/gameloop.h"
 
 #include <unistd.h>
+#include <utility>
 
 #include "common/network/dtos/snapshot_dto.h"
 
@@ -12,23 +13,18 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
     input_handler.start();
 }
 
-SnapshotDTO GameLoop::get_snapshot_from_queue(SnapshotDTO last_snapshot) {
+void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot) {
     std::unique_ptr<DTO> dto_ptr;
-    SnapshotDTOB* snapshot_dto = nullptr;
 
-    if (snapshots_queue.try_pop(dto_ptr)) {
-        if (!dto_ptr) {
-            throw std::runtime_error(
-                "Received a null DTO from the snapshots queue.");
-        }
-        snapshot_dto = dynamic_cast<SnapshotDTOB*>(dto_ptr.get());
-    }
-    if (snapshot_dto) {
-        return snapshot_dto->snapshot;
-    }
+    if (not snapshots_queue.try_pop(dto_ptr))
+        return;
+
+    auto s_dto_ptr = static_cast<SnapshotDTO*>(dto_ptr.get());
+    last_snapshot = std::move(*s_dto_ptr);
+    dto_ptr.reset();
+    
     // si no hay snapshot nueva, devuelve el último estado
     // -> Esto permite que siga renderizando
-    return last_snapshot;
 }
 
 void GameLoop::run() {
@@ -40,7 +36,7 @@ void GameLoop::run() {
     uint32_t fps_timer = SDL_GetTicks();
 
     while (is_running) {
-        last_snapshot = this->get_snapshot_from_queue(last_snapshot);
+        this->get_snapshot_from_queue(last_snapshot);
 
         render.update(last_snapshot, fps_timer);
         render.render();
