@@ -1,0 +1,87 @@
+texture_name: hud_nums
+columns: 12
+sprite_data:
+  - name: '0'
+    frames: 0
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '1'
+    frames: 1
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '2'
+    frames: 2
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '3'
+    frames: 3
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '4'
+    frames: 4
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '5'
+    frames: 5
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '6'
+    frames: 6
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '7'
+    frames: 7
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '8'
+    frames: 8
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '9'
+    frames: 9
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: ':'
+    frames: 10
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
+  - name: '|'
+    frames: 11
+    is_animated: false
+    steps: 0
+    size_width: 0
+    size_height: 66
+    modify_size: 0.3
