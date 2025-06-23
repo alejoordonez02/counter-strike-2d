@@ -206,7 +206,7 @@ bool InputHandler::handle_events() {
                 handle_mouse_up(event);
                 break;
             case SDL_MOUSEWHEEL:
-                handle_mouse_wheel(event);
+                // handle_mouse_wheel(event);
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Saliendo del input handler..." << std::endl;
