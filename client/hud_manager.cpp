@@ -19,7 +19,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 
 void HUDManager::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
     this->snapshot = snapshot;
-    show_text = snapshot.round_number >= 50 ? true : false;
+    show_text = false;
 
     int time = snapshot.time_left; //60 * 5;
     std::string time_string = std::to_string(time / 60) + ":" + (time % 60 < 10 ? "0" : "") + std::to_string(time % 60);
