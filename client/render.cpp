@@ -1,11 +1,5 @@
 #include "client/render.h"
 
-#include <utility>
-
-#include "client/providers/animation_provider.h"
-#include "client/providers/texture_provider.h"
-#include "client/camera.h"
-#include "render.h"
 
 Render::Render(const MapData& map_data):
     sdl(SDL_INIT_VIDEO), window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
@@ -22,6 +16,7 @@ Render::Render(const MapData& map_data):
     renderable_map =
         std::make_unique<RenderableMap>(map_data, animation_provider);
     hud_manager = std::make_unique<HUDManager>(animation_provider);
+    field_of_view = std::make_unique<FieldOfView>(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
@@ -53,6 +48,8 @@ void Render::update(SnapshotDTO snapshot, uint32_t& fps_timer) {
         }
     }
 
+    field_of_view->update(renderer);
+
     // actualizar textos
     hud_manager->update(snapshot, fps_timer);
 }
@@ -81,6 +78,8 @@ void Render::render() {
         // renderizar cada jugador
         renderable_player->render(renderer);
     }
+
+    field_of_view->render(renderer);
 
     // mostrar textos en pantalla
     hud_manager->render(renderer);
