@@ -11,6 +11,7 @@ target_sources(cs2d_client
         camera.cpp
         hud_manager.cpp
         field_of_view.cpp
+        game_config.cpp
 )
 
 add_subdirectory(renderables)
