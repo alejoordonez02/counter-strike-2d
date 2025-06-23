@@ -16,6 +16,7 @@
 #include "common/network/dtos/start_planting_dto.h"
 #include "common/network/dtos/stop_action_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
+#include "start_reloading_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -191,6 +192,19 @@ void InputHandler::send_plant_bomb() {
     prev = is_planting;
 }
 
+void InputHandler::send_reload() {
+    static bool prev = false;
+    bool is_reloading = key_states[SDLK_r];
+
+    if (is_reloading && !prev)
+        commands_queue.try_push(std::make_shared<StartReloadingDTO>());
+
+    if (!is_reloading && prev)
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
+
+    prev = is_reloading;
+}
+
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
@@ -198,6 +212,7 @@ void InputHandler::process_movement() {
     send_change_weapon();
     send_aim();
     send_plant_bomb();
+    send_reload();
     // send_states();
 }
 
