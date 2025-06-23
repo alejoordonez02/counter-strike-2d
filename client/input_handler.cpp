@@ -54,21 +54,21 @@ void InputHandler::handle_mouse_up(const SDL_Event& event) {
 }
 
 
-void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
-    // Sensibilidad mínima para el scroll de arma
-    const int kWeaponScrollThreshold = 1;
-    static int weapon_scroll_accum = 0;
+// void InputHandler::handle_mouse_wheel(const SDL_Event& event) {
+//     // Sensibilidad mínima para el scroll de arma
+//     const int kWeaponScrollThreshold = 1;
+//     static int weapon_scroll_accum = 0;
 
-    // Acumula el desplazamiento de la rueda
-    weapon_scroll_accum += event.wheel.y;
-    if (std::abs(weapon_scroll_accum) >= kWeaponScrollThreshold) {
-        // determina el tipo de arma a cambiar (ejemplo: 1="next" o -1="prev")
-        int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
-        std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
-        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
-        weapon_scroll_accum = 0;
-    }
-}
+//     // Acumula el desplazamiento de la rueda
+//     weapon_scroll_accum += event.wheel.y;
+//     if (std::abs(weapon_scroll_accum) >= kWeaponScrollThreshold) {
+//         // determina el tipo de arma a cambiar (ejemplo: 1="next" o -1="prev")
+//         int weapon_type = weapon_scroll_accum > 0 ? 1 : -1;
+//         std::cout << "LOG: Cambiando arma a: " << weapon_type << std::endl;
+//         commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(weapon_type));
+//         weapon_scroll_accum = 0;
+//     }
+// }
 
 // en base a que teclas presiones envía un comando de movimiento
 // permite tambien movimientos en diagonal y el de quedarse quieto
@@ -126,6 +126,26 @@ void InputHandler::send_attack() {
 }
 
 
+void InputHandler::send_change_weapon() {
+    // verifica si se apretó la tecla para cambiar entre arma primaria
+    // secundaria, cuchillo o bomba
+    if (key_states[SDLK_b]) {
+        std::cout << "LOG: Enviando comando de cambio a arma bomba." << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Bomb));
+    } else if (key_states[SDLK_k]) {
+        std::cout << "LOG: Enviando comando de cambio a arma cuchillo." << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Knife));
+    } else if (key_states[SDLK_1]) {
+        std::cout << "LOG: Enviando comando de cambio a arma primaria." << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Primary));
+    } else if (key_states[SDLK_2]) {
+        std::cout << "LOG: Enviando comando de cambio a arma secundaria." << std::endl;
+        commands_queue.try_push(std::make_unique<ChangeWeaponDTO>(EquipmentType::Secondary));
+    }
+
+}
+
+
 void InputHandler::send_aim() {
     // sensibilidad mínima para el aim
     const int kAimThreshold = 90;
@@ -156,6 +176,7 @@ void InputHandler::send_aim() {
 void InputHandler::process_movement() {
     send_direction();
     send_attack();
+    send_change_weapon();
     send_aim();
     // send_states();
 }
@@ -185,7 +206,7 @@ bool InputHandler::handle_events() {
                 handle_mouse_up(event);
                 break;
             case SDL_MOUSEWHEEL:
-                handle_mouse_wheel(event);
+                // handle_mouse_wheel(event);
                 break;
             case SDL_QUIT:
                 std::cout << "LOG: Saliendo del input handler..." << std::endl;
