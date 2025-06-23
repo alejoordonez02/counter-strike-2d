@@ -11,20 +11,19 @@
 class Weapon {
 private:
     int damage;
-    int ammo;
-    int max_loaded_ammo;
-    int loaded_ammo;
     float accuracy;
     float range;
     Timer fire_delay;
     int cost;
     int ammo_cost;
+    int ammo;
+    int max_loaded_ammo;
+    int loaded_ammo;
     float reload_time;
 
 public:
-    Weapon(const int& damage, const int& ammo, const float& accuracy,
-           const float& range, float fire_rate, const int& cost,
-           const int& ammo_cost, float reload_time);
+    Weapon(int damage, float accuracy, float range, float fire_rate, int cost,
+           int ammo_cost, int ammo, int max_loaded_ammo, float reload_time);
 
     void update(float dt) { fire_delay.update(dt); }
 
@@ -32,12 +31,7 @@ public:
                         std::vector<std::shared_ptr<Hitbox>>& collidables,
                         const std::vector<size_t>& sorted_idx);
 
-    virtual void reload() {
-        int to_load = std::clamp(max_loaded_ammo - loaded_ammo, loaded_ammo,
-                                 max_loaded_ammo);
-        loaded_ammo += to_load;
-        ammo -= to_load;
-    }
+    virtual void reload();
 
     virtual int get_cost() const;
 

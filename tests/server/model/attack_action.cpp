@@ -6,7 +6,7 @@
 
 class MagicWeapon: public Weapon {
 public:
-    MagicWeapon(): Weapon(100, 100, 100, 100, 1, 0, 0, 0) {}
+    MagicWeapon(): Weapon(100, 100, 100, 100, 0, 0, 100, 100, 0) {}
 };
 
 class PlayerAttackTest: public ::testing::Test {
