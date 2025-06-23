@@ -5,22 +5,23 @@
 
 class Terrorist: public Player {
 private:
-    std::optional<Bomb> bomb;
+    bool has_bomb;
 
     void teleport_to_spawn() override;
 
 public:
     Terrorist(int id, std::weak_ptr<Map> map, float max_velocity,
-              float acceleration, float radius, int money, int health,
-              std::optional<Bomb> bomb);
+              float acceleration, float radius, int money, int health);
 
     void switch_side() override {}
 
+    void restart() override;
+
+    void give_bomb() override;
+
     void plant_bomb() override;
-    void stop_planting() override;
 
     void defuse_bomb() override {}
-    void stop_defusing() override {}
 };
 
 #endif
