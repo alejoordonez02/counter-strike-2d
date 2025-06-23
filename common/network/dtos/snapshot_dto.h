@@ -20,14 +20,14 @@ enum class EquipmentType : uint8_t { PRIMARY, SECONDARY, KNIFE, BOMB };
 // armas en el suelo
 class WeaponDTO: public DTO {
 public:
-    WeaponName w_type;
+    WeaponName name;
     int16_t x;
     int16_t y;
 
 private:
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         in++;  // skip 1st byte (DTO type)
-        w_type = static_cast<WeaponName>(*in++);
+        name = static_cast<WeaponName>(*in++);
         Position pos = deserialize_pos_from(in);
         x = pos.x;
         y = pos.y;
@@ -48,7 +48,7 @@ public:
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
-        out.push_back(static_cast<uint8_t>(w_type));
+        out.push_back(static_cast<uint8_t>(name));
         serialize_tuple_into(out, x, y);
     }
 
@@ -61,10 +61,54 @@ public:
     ~WeaponDTO() = default;
 };
 
+class PrivateWeaponDTO: public DTO {
+public:
+    WeaponName name;
+    uint8_t total_ammo = 0;
+    uint8_t loaded_ammo = 0;
+
+    PrivateWeaponDTO(WeaponName weapon_name, uint8_t total_ammo,
+                     uint8_t loaded_ammo):
+        DTO(DTOSerial::WEAPON_PRIVATE), name(weapon_name),
+        total_ammo(total_ammo), loaded_ammo(loaded_ammo) {}
+
+    explicit PrivateWeaponDTO(std::vector<uint8_t>&& bytes):
+        DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+    explicit PrivateWeaponDTO(std::vector<uint8_t>::iterator& in):
+        DTO(DTOSerial::WEAPON_PRIVATE) {
+        deserialize_from(in);
+    }
+    PrivateWeaponDTO(): DTO(DTOSerial::WEAPON_PRIVATE) {}
+    void serialize_into(std::vector<uint8_t>& out) override {
+        out.push_back(type);
+        out.push_back(static_cast<uint8_t>(name));
+        out.push_back(total_ammo);
+        out.push_back(loaded_ammo);
+    }
+    PrivateWeaponDTO(const PrivateWeaponDTO&) = delete;
+    PrivateWeaponDTO& operator=(const PrivateWeaponDTO&) = delete;
+    PrivateWeaponDTO(PrivateWeaponDTO&&) = default;
+    PrivateWeaponDTO& operator=(PrivateWeaponDTO&&) = default;
+    ~PrivateWeaponDTO() = default;
+
+private:
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        name = static_cast<WeaponName>(*in++);
+        total_ammo = *in++;
+        loaded_ammo = *in++;
+    }
+};
+
 class PrivatePlayerDTO: public DTO {
 public:
     uint8_t player_id = 0;
     uint8_t player_hp = 100;
+
+    PrivateWeaponDTO current_weapon;
 
     uint total_money = 0;
 
@@ -77,6 +121,7 @@ private:
         in++;  // skip 1st byte (DTO type)
         player_id = *in++;
         player_hp = *in++;
+        current_weapon = PrivateWeaponDTO(in);
         total_money = deserialize_int_from(in);
         rounds_won = *in++;
         total_kills = *in++;
@@ -100,6 +145,7 @@ public:
         out.push_back(type);
         out.push_back(player_id);
         out.push_back(player_hp);
+        current_weapon.serialize_into(out);
         serialize_int_into(out, total_money);
         out.push_back(rounds_won);
         out.push_back(total_kills);
