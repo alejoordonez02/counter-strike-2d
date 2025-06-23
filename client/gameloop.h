@@ -32,11 +32,7 @@ public:
              Queue<std::shared_ptr<DTO>>& commands, const MapData& map_data, const GameConfig& game_config);
     void run();
 
-    void debug_get_fps(uint32_t& fps_timer, int& frame_count);
-
     void handle_frame_timing(uint32_t& t1);
-
-    // void handle_frame_timing(uint32_t& t1);
 
     void get_snapshot_from_queue(SnapshotDTO& last_snapshot, PrivatePlayerDTO& user_data);
 };

@@ -8,7 +8,7 @@
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::shared_ptr<DTO>>& commands,
                    const MapData& map_data, const GameConfig& game_config):
-    render(map_data), snapshots_queue(snapshots), commands_queue(commands),
+    render(map_data, game_config), snapshots_queue(snapshots), commands_queue(commands),
     input_handler(commands), FRAME_RATE(game_config.window.frame_rate) {
     input_handler.start();
 }

@@ -18,10 +18,8 @@
 #include "common/maploader.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "client/field_of_view.h"
+#include "client/game_config.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
-#define USE_FOV false
 
 class Render {
 private:
@@ -30,6 +28,7 @@ private:
     SDL2pp::Renderer renderer;
 
     const MapData& map_data;
+    const int USE_FOV;
 
     std::unordered_map<uint8_t, std::unique_ptr<RenderablePlayer>>
         players_renderables;
@@ -39,7 +38,7 @@ private:
     std::unique_ptr<FieldOfView> field_of_view;
 
 public:
-    Render(const MapData& map_data);
+    Render(const MapData& map_data, const GameConfig& game_config);
     ~Render();
 
     void run();

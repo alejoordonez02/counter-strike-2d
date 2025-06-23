@@ -1,11 +1,16 @@
 #include "client/render.h"
 
 
-Render::Render(const MapData& map_data):
-    sdl(SDL_INIT_VIDEO), window("Counter Strike 2D", SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH,
-                                WINDOW_HEIGHT, SDL_WINDOW_SHOWN),
-    renderer(window, -1, SDL_RENDERER_ACCELERATED), map_data(map_data) {
+Render::Render(const MapData& map_data, const GameConfig& game_config):
+    sdl(SDL_INIT_VIDEO), window(
+          "Counter Strike 2D",
+          SDL_WINDOWPOS_UNDEFINED,
+          SDL_WINDOWPOS_UNDEFINED,
+          game_config.window.window_width,
+          game_config.window.window_height,
+          game_config.window.use_fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN
+      ),
+    renderer(window, -1, SDL_RENDERER_ACCELERATED), map_data(map_data), USE_FOV(game_config.fov.use_field_of_view) {
     // color de fondo negro
     renderer.SetDrawColor(0, 0, 0, 0);
 
@@ -16,7 +21,7 @@ Render::Render(const MapData& map_data):
     renderable_map =
         std::make_unique<RenderableMap>(map_data, animation_provider);
     hud_manager = std::make_unique<HUDManager>(animation_provider);
-    field_of_view = std::make_unique<FieldOfView>(renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
+    field_of_view = std::make_unique<FieldOfView>(renderer, game_config);
 }
 
 void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,

@@ -1,8 +1,7 @@
 #include "client/camera.h"
-#include "client/render.h"
 
 SDL2pp::Point Camera::camera_offset = SDL2pp::Point(0, 0);
-SDL2pp::Point Camera::screen_size = SDL2pp::Point(WINDOW_WIDTH, WINDOW_HEIGHT);
+SDL2pp::Point Camera::screen_size = SDL2pp::Point(0, 0);
 
 
 void Camera::set_center(int jugador_x, int jugador_y){
