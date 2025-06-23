@@ -66,6 +66,8 @@ public:
 
     void aim(Direction dir);
 
+    void reload();
+
     void use_primary();
     void use_secondary();
     void use_knife();

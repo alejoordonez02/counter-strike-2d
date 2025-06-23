@@ -9,6 +9,7 @@
 #include "equipment/weapon.h"
 #include "map.h"
 #include "physics/player_physics.h"
+#include "reload.h"
 
 void Player::stop_action() { action = std::make_unique<Idle>(); }
 
@@ -79,6 +80,8 @@ void Player::stop_defusing() { stop_action(); }
 void Player::use_primary() { current = equipment.primary; }
 void Player::use_secondary() { current = equipment.secondary; }
 void Player::use_knife() { current = equipment.knife; }
+
+void Player::reload() { action = std::make_unique<Reload>(current); }
 
 /*
  * Buy
