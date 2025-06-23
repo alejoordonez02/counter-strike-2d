@@ -3,6 +3,7 @@
 target_sources(cs2d_server_lib
     PRIVATE
     attack.cpp
+    defuse_bomb.cpp
     plant_bomb.cpp
 )
 
