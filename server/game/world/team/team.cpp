@@ -10,12 +10,12 @@ void Team::switch_player_sides() {
     for (auto& p : players) p->switch_side();
 }
 
-void Team::update(float dt) {
-    for (auto& p : players) p->update(dt);
+void Team::restart_players() {
+    for (auto& p : players) p->restart();
 }
 
-void Team::restart() {
-    for (auto& p : players) p->restart();
+void Team::update(float dt) {
+    for (auto& p : players) p->update(dt);
 }
 
 void Team::sum_won_round() { won_rounds++; }

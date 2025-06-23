@@ -34,7 +34,9 @@ public:
 
     std::vector<std::shared_ptr<Hitbox>>& get_collidables();
 
-    void plant_bomb(std::optional<Bomb> bomb, const Position& pos);
+    std::vector<Structure>& get_bomb_site();
+
+    void plant_bomb(const Position& pos);
 
     BombState get_bomb_state() {
         if (!bomb) return BombState::NOT_PLANTED;

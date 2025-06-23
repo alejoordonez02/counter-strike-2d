@@ -7,7 +7,8 @@
 #include "physics/hitbox.h"
 #include "physics/structure.h"
 
-#define BOMB_SITE_RADIUS 10
+// TODO: make this configurable
+#define BOMB_TIME 300
 
 Map::Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
          const std::vector<Structure>& bomb_site,
@@ -48,9 +49,9 @@ std::vector<std::shared_ptr<Hitbox>>& Map::get_collidables() {
 /*
  * Bomb
  * */
-void Map::plant_bomb(std::optional<Bomb> bomb, const Position& pos) {
-    /* if (bomb_site.get_distance(pos) < BOMB_SITE_RADIUS) {
-        this->bomb = bomb;
-        bomb->plant();
-    } */
+std::vector<Structure>& Map::get_bomb_site() { return bomb_site; }
+
+void Map::plant_bomb(const Position& pos) {
+    bomb = Bomb(pos, BOMB_TIME);
+    bomb->plant();
 }

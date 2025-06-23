@@ -13,11 +13,12 @@ public:
 
     void switch_side() override {}
 
-    void defuse_bomb() override;
-    void stop_defusing() override;
+    void restart() override;
 
+    void defuse_bomb() override;
+
+    void give_bomb() override {}
     void plant_bomb() override {}
-    void stop_planting() override {}
 };
 
 #endif

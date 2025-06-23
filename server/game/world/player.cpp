@@ -38,7 +38,7 @@ void Player::update(float dt) {
 /*
  * Restart
  * */
-void Player::restart() {
+void Player::respawn() {
     teleport_to_spawn();
     health = max_health;
     alive = true;
@@ -69,6 +69,9 @@ void Player::start_attacking() {
 void Player::stop_attacking() { stop_action(); }
 
 void Player::aim(Direction dir) { this->dir = dir; }
+
+void Player::stop_planting() { stop_action(); }
+void Player::stop_defusing() { stop_action(); }
 
 /*
  * Set current weapon

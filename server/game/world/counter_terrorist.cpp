@@ -11,5 +11,6 @@ CounterTerrorist::CounterTerrorist(int id, std::weak_ptr<Map> map,
     Player(id, map.lock()->get_ct_spawn(), CTEquipment(), map, max_velocity,
            acceleration, radius, money, health) {}
 
+void CounterTerrorist::restart() { respawn(); }
+
 void CounterTerrorist::defuse_bomb() {}
-void CounterTerrorist::stop_defusing() {}
