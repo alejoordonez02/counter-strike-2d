@@ -70,6 +70,10 @@ public:
              [](auto&& bytes) {
                  return std::make_unique<SnapshotDTO>(std::move(bytes));
              }},
+            {PLAYER_PRIVATE,
+             [](auto&& bytes) {
+                 return std::make_unique<PrivatePlayerDTO>(std::move(bytes));
+             }},
             // ...
         };
     }
