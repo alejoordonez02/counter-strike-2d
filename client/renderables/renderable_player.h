@@ -8,8 +8,8 @@
 #include "SDL2pp/Renderer.hh"
 #include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
-#include "client/renderables/renderable_legs.h"
 #include "client/renderables/renderable_gun.h"
+#include "client/renderables/renderable_legs.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/position.h"
 
@@ -33,7 +33,7 @@ private:
     int fadeout_alpha = 255;
     bool is_fading_out = false;
 
-    WeaponType current_weapon;
+    WeaponName current_weapon;
     RenderableLegs legs;
     RenderableGun gun;
 

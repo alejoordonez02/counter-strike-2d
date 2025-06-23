@@ -108,6 +108,7 @@ std::shared_ptr<PrivatePlayerDTO> Player::get_private_data() const {
     auto data = std::make_shared<PrivatePlayerDTO>();
     data->player_id = id;
     data->player_hp = health;
+    data->current_weapon = current.get_private_data();
     data->total_money = money;
     data->rounds_won = 0;  // ésto lo sabe World!
     data->total_kills = kills;
@@ -119,6 +120,7 @@ PlayerDTO Player::get_data() const {
     data.player_id = id;
     data.x = pos.x;
     data.y = pos.y;
+    data.current_weapon = current.get_data();
     data.aim_x = dir.x;
     data.aim_y = dir.y;
     data.is_walking = physics.is_moving();

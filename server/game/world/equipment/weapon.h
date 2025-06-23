@@ -7,9 +7,11 @@
 
 #include "server/game/world/physics/hitbox.h"
 #include "server/game/world/timer.h"
+#include "snapshot_dto.h"
 
 class Weapon {
 private:
+    WeaponName name;
     int damage;
     float accuracy;
     float range;
@@ -22,8 +24,9 @@ private:
     float reload_time;
 
 public:
-    Weapon(int damage, float accuracy, float range, float fire_rate, int cost,
-           int ammo_cost, int ammo, int max_loaded_ammo, float reload_time);
+    Weapon(WeaponName name, int damage, float accuracy, float range,
+           float fire_rate, int cost, int ammo_cost, int ammo,
+           int max_loaded_ammo, float reload_time);
 
     void update(float dt) { fire_delay.update(dt); }
 
@@ -38,6 +41,10 @@ public:
     virtual int get_ammo_cost() const;
 
     float get_reload_time();
+
+    WeaponName get_data() const;
+
+    PrivateWeaponDTO get_private_data() const;
 
     virtual ~Weapon() = default;
 };
