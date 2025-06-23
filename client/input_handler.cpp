@@ -13,10 +13,9 @@
 #include "common/network/dtos/change_weapon_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
-#include "common/network/dtos/stop_attacking_dto.h"
+#include "common/network/dtos/start_planting_dto.h"
+#include "common/network/dtos/stop_action_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
-#include "start_planting_dto.h"
-#include "stop_planting_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -114,7 +113,7 @@ void InputHandler::send_attack() {
     // Detecta el fin del ataque (soltar click)
     if (!is_attacking && prev_left) {
         std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
-        commands_queue.try_push(std::make_shared<StopAttackingDTO>());
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
     }
 
     if (mouse_states["mouse_left"]) {
@@ -187,7 +186,7 @@ void InputHandler::send_plant_bomb() {
         commands_queue.try_push(std::make_shared<StartPlantingDTO>());
 
     if (!is_planting && prev)
-        commands_queue.try_push(std::make_shared<StopPlantingDTO>());
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
 
     prev = is_planting;
 }

@@ -15,13 +15,11 @@
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/start_planting_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
-#include "common/network/dtos/stop_planting_dto.h"
 #include "common/network/protocol.h"
 #include "create_game_dto.h"
 #include "join_game_dto.h"
 #include "list_games_dto.h"
-#include "stop_attacking_dto.h"
-#include "stop_planting_dto.h"
+#include "stop_action_dto.h"
 
 using namespace DTOSerial;
 using namespace DTOSerial::PlayerCommands;
@@ -53,17 +51,13 @@ public:
              [](auto&& bytes) {
                  return std::make_unique<StartAttackingDTO>(std::move(bytes));
              }},
-            {STOP_ATTACKING,
-             [](auto&& bytes) {
-                 return std::make_unique<StopAttackingDTO>(std::move(bytes));
-             }},
             {START_PLANTING,
              [](auto&& bytes) {
                  return std::make_unique<StartPlantingDTO>(std::move(bytes));
              }},
-            {STOP_PLANTING,
+            {STOP_ACTION,
              [](auto&& bytes) {
-                 return std::make_unique<StopPlantingDTO>(std::move(bytes));
+                 return std::make_unique<StopActionDTO>(std::move(bytes));
              }},
             {CREATE_GAME,
              [](auto&& bytes) {
