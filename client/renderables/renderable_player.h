@@ -49,7 +49,7 @@ public:
     /*
      * toda la data puede ser const, (si no se me queja el linter xd)
      * */
-    void update(const PlayerData& player);
+    void update(const PlayerDTO& player);
 
     void render(SDL2pp::Renderer& renderer);
 

@@ -33,6 +33,6 @@ void Team::switch_sides(Team& other) {
     players = std::move(players_tmp);
 }
 
-void Team::push_player_data(std::vector<PlayerData>& data) {
+void Team::push_player_data(std::vector<PlayerDTO>& data) {
     for (auto& p : players) data.push_back(p->get_data());
 }

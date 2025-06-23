@@ -17,8 +17,8 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
 }
 
 
-void HUDManager::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
-    this->snapshot = snapshot;
+void HUDManager::update(const SnapshotDTO& snapshot,
+        PrivatePlayerDTO& user_data, uint32_t& fps_timer) {
     show_text = false;
 
     int time = snapshot.time_left; //60 * 5;
@@ -26,22 +26,23 @@ void HUDManager::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
 
     // update hud elements
     hud_timer.update(time_string);
-    hud_hp.update(snapshot.user_data.player_hp);
-    hud_money.update(snapshot.user_data.total_money);
+    hud_hp.update(user_data.player_hp);
+    hud_money.update(user_data.total_money);
 
-    bool user_is_attacking = get_user_is_shooting(snapshot);
+    bool user_is_attacking = get_user_is_shooting(snapshot, user_data);
     pointer.update(user_is_attacking);
 
     // fps counter
     calculate_fps(fps_timer);
 }
 
-bool HUDManager::get_user_is_shooting(const SnapshotDTO& snapshot) {
+bool HUDManager::get_user_is_shooting(const SnapshotDTO& snapshot,
+        PrivatePlayerDTO& user_data) {
     // busca el jugador actual en el snapshot 
     // para obtener su estado de is_shooting
-    int user_id = snapshot.user_data.player_id;
+    int user_id = user_data.player_id;
     auto it = std::find_if(snapshot.players.begin(), snapshot.players.end(),
-        [user_id](const PlayerData& p) { return p.player_id == user_id; });
+        [user_id](const PlayerDTO& p) { return p.player_id == user_id; });
     if (it != snapshot.players.end()) {
         return it->is_shooting;
     }

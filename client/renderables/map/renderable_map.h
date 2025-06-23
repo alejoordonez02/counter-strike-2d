@@ -28,7 +28,7 @@ class RenderableMap {
 
     void load_background();
 
-    void update(SnapshotDTO& snapshot);
+    void update(const SnapshotDTO& snapshot);
 
     void render(SDL2pp::Renderer& renderer);
 

@@ -23,6 +23,7 @@
 #include "stop_attacking_dto.h"
 #include "stop_planting_dto.h"
 
+using namespace DTOSerial;
 using namespace DTOSerial::PlayerCommands;
 using namespace DTOSerial::LobbyCommands;
 // using namespace DTOSerial:: otros;
@@ -78,7 +79,11 @@ public:
              }},
             {SNAPSHOT,
              [](auto&& bytes) {
-                 return std::make_unique<SnapshotDTOB>(std::move(bytes));
+                 return std::make_unique<SnapshotDTO>(std::move(bytes));
+             }},
+            {PLAYER_PRIVATE,
+             [](auto&& bytes) {
+                 return std::make_unique<PrivatePlayerDTO>(std::move(bytes));
              }},
             // ...
         };
