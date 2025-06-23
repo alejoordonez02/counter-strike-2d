@@ -25,7 +25,7 @@ private:
 
     void process_movement();
     void send_direction();
-
+    void send_change_weapon();
     void send_attack();
 
     void send_aim();
