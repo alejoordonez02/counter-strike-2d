@@ -17,7 +17,6 @@ class HUDManager {
     SDL2pp::Font font;
 
     bool show_text;
-    SnapshotDTO snapshot;
     
     // fps
     int frame_count = 0;
