@@ -18,10 +18,10 @@ private:
 
 public:
     explicit StartAttackingDTO(std::vector<uint8_t>&& bytes):
-            DTO(std::move(bytes)) {}
+        DTO(std::move(bytes)) {}
 
     explicit StartAttackingDTO(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::PlayerCommands::START_ATTACKING) {
+        DTO(DTOSerial::PlayerCommands::START_ATTACKING) {
         deserialize_from(in);
     }
 

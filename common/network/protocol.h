@@ -26,7 +26,9 @@ constexpr uint8_t START_MOVING = 0x6D;  // m - 109
 constexpr uint8_t STOP_MOVING = 0x6E;
 constexpr uint8_t START_ATTACKING = 0x61;  // a - 97
 constexpr uint8_t STOP_ATTACKING = 0x62;
-constexpr uint8_t SNAPSHOT = 0x53;  // S - 83
+constexpr uint8_t START_PLANTING = 0x63;  // a - 97
+constexpr uint8_t STOP_PLANTING = 0x64;
+constexpr uint8_t SNAPSHOT = 0x53;       // S - 83
 constexpr uint8_t CHANGE_WEAPON = 0x57;  // W - 87
 };  // namespace PlayerCommands
 namespace LobbyCommands {
