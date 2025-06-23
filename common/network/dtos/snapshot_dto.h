@@ -24,8 +24,8 @@ struct WeaponDTO {
 };
 
 struct YourPlayerData {
-    uint16_t player_id;
-    uint16_t player_hp;
+    uint8_t player_id;
+    uint8_t player_hp;
     
     uint total_money = 0;
 
@@ -117,6 +117,11 @@ private:
             weapon.y = pos.y;
             snapshot.weapons_on_floor.push_back(weapon);
         }
+        snapshot.user_data.player_id = *in++;
+        snapshot.user_data.player_hp = *in++;
+        snapshot.user_data.total_money = deserialize_int_from(in);
+        snapshot.user_data.rounds_won = *in++;
+        snapshot.user_data.total_kills = *in++;
     }
 
 public:
@@ -162,6 +167,11 @@ public:
             out.push_back(static_cast<uint8_t>(weapon.type));
             serialize_tuple_into(out, weapon.x, weapon.y);
         }
+        out.push_back(snapshot.user_data.player_id);
+        out.push_back(snapshot.user_data.player_hp);
+        serialize_int_into(out, snapshot.user_data.total_money);
+        out.push_back(snapshot.user_data.rounds_won);
+        out.push_back(snapshot.user_data.total_kills);
     }
 
     ~SnapshotDTOB() = default;
