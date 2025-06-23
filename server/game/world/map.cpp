@@ -8,7 +8,7 @@
 #include "physics/structure.h"
 
 // TODO: make this configurable
-#define BOMB_TIME 300
+#define BOMB_TIME 20
 
 Map::Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
          const std::vector<Structure>& bomb_site,
@@ -50,8 +50,11 @@ std::vector<std::shared_ptr<Hitbox>>& Map::get_collidables() {
  * Bomb
  * */
 std::vector<Structure>& Map::get_bomb_site() { return bomb_site; }
+Position Map::get_bomb_position() { return bomb->get_position(); }
 
 void Map::plant_bomb(const Position& pos) {
     bomb = Bomb(pos, BOMB_TIME);
     bomb->plant();
 }
+
+void Map::defuse_bomb() { bomb->defuse(); }

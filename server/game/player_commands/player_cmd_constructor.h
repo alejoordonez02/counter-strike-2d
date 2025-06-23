@@ -13,8 +13,10 @@
 #include "player_command.h"
 #include "start_attacking.h"
 #include "start_moving.h"
+#include "start_planting.h"
 #include "stop_attacking.h"
 #include "stop_moving.h"
+#include "stop_planting.h"
 
 using namespace DTOSerial::PlayerCommands;
 
@@ -45,6 +47,14 @@ public:
             {STOP_ATTACKING,
              [](auto&& /* dto_p */) {
                  return std::make_unique<StopAttacking>();
+             }},
+            {START_PLANTING,
+             [](auto&& dto_p) {
+                 return std::make_unique<StartPlanting>(std::move(dto_p));
+             }},
+            {STOP_PLANTING,
+             [](auto&& /* dto_p */) {
+                 return std::make_unique<StopPlanting>();
              }},
         };
     }

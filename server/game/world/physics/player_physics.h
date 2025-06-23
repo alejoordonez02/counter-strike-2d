@@ -43,6 +43,8 @@ public:
     void stop_moving();
 
     std::optional<Position> intersect(const Trajectory& trajectory) const;
+
+    bool intersects(const Position& pos) const;
 };
 
 #endif
