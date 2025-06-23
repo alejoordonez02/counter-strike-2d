@@ -81,9 +81,9 @@ public:
     virtual void defuse_bomb() = 0;
     void stop_defusing();
 
-    YourPlayerData get_special_data() const;
+    std::shared_ptr<PrivatePlayerDTO> get_private_data() const;
 
-    PlayerData get_data() const;
+    PlayerDTO get_data() const;
 
     virtual ~Player() = default;
 };

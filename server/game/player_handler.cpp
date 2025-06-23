@@ -25,7 +25,8 @@ void PlayerHandler::play() {
     }
 }
 
-bool PlayerHandler::send_snapshot(std::shared_ptr<SnapshotDTO> snapshot) {
-    // snapshot->user_data = player->get_special_data();
-    return snapshots.try_push(snapshot);
+void PlayerHandler::send_snapshot(std::shared_ptr<SnapshotDTO> snapshot) {
+    auto user_data = player->get_private_data();
+    snapshots.try_push(user_data);
+    snapshots.try_push(snapshot);
 }

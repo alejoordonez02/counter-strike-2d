@@ -37,7 +37,8 @@ public:
 
     void run();
 
-    void update(const SnapshotDTO& snapshot, uint32_t& fps_timer);
+    void update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
+        uint32_t& fps_timer);
 
     void calculate_fps(uint32_t& fps_timer);
 

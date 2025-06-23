@@ -24,12 +24,13 @@ Render::Render(const MapData& map_data):
     hud_manager = std::make_unique<HUDManager>(animation_provider);
 }
 
-void Render::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
+void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
+        uint32_t& fps_timer) {
     // actualizar dropeables
     renderable_map->update(snapshot);
 
     // actualizar jugadores
-    int my_id = snapshot.user_data.player_id;
+    int my_id = user_data.player_id;
     for (auto& jugador : snapshot.players) {
         // si es el jugador actual actualiza el offset de la camara
         if (jugador.player_id == my_id) {
@@ -54,7 +55,7 @@ void Render::update(const SnapshotDTO& snapshot, uint32_t& fps_timer) {
     }
 
     // actualizar textos
-    hud_manager->update(snapshot, fps_timer);
+    hud_manager->update(snapshot, user_data, fps_timer);
 }
 
 void Render::skip_frames(uint8_t frames) {

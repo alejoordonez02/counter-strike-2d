@@ -35,14 +35,14 @@ void mock_server() {
     sender.start();
 
     // ======== inicializacion ========
-    PlayerData player1{};
+    PlayerDTO player1{};
     player1.player_id = 1;
     player1.team_id = 0;
     player1.is_walking = false;
     player1.current_weapon = WeaponType::AK47;
 
 
-    PlayerData player2{};
+    PlayerDTO player2{};
     player2.player_id = 2;
     player2.team_id = 1;
     player2.is_walking = false;
@@ -53,7 +53,7 @@ void mock_server() {
     player2.aim_x = 400;
     player2.aim_y = 400;
 
-    PlayerData player3{};
+    PlayerDTO player3{};
     player3.player_id = 3;
     player3.team_id = 1;
     player3.is_walking = false;

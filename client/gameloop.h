@@ -36,7 +36,7 @@ public:
 
     // void handle_frame_timing(uint32_t& t1);
 
-    void get_snapshot_from_queue(SnapshotDTO& last_snapshot);
+    void get_snapshot_from_queue(SnapshotDTO& last_snapshot, PrivatePlayerDTO& user_data);
 };
 
 #endif  // GAMELOOP_H

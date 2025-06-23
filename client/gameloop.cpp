@@ -13,22 +13,31 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
     input_handler.start();
 }
 
-void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot) {
-    std::unique_ptr<DTO> dto_ptr;
+void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
+        PrivatePlayerDTO& user_data) {
+    std::vector<std::unique_ptr<DTO>> dtos(2);
 
-    if (not snapshots_queue.try_pop(dto_ptr))
-        return;
+    for (auto& dto_p : dtos) {
+        if (not snapshots_queue.try_pop(dto_p))
+            continue;
+        if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
+            auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
+            last_snapshot = std::move(*ptr);
+        }
+        if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
+            auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
+            user_data = std::move(*ptr);
+        }
+        dto_p.reset();
+    }
 
-    auto s_dto_ptr = static_cast<SnapshotDTO*>(dto_ptr.get());
-    last_snapshot = std::move(*s_dto_ptr);
-    dto_ptr.reset();
-    
     // si no hay snapshot nueva, devuelve el último estado
     // -> Esto permite que siga renderizando
 }
 
 void GameLoop::run() {
     SnapshotDTO last_snapshot;
+    PrivatePlayerDTO user_data;
     uint32_t frameStart = SDL_GetTicks();
 
     // FPS tracking
@@ -36,9 +45,9 @@ void GameLoop::run() {
     uint32_t fps_timer = SDL_GetTicks();
 
     while (is_running) {
-        this->get_snapshot_from_queue(last_snapshot);
+        this->get_snapshot_from_queue(last_snapshot, user_data);
 
-        render.update(last_snapshot, fps_timer);
+        render.update(last_snapshot, user_data, fps_timer);
         render.render();
 
         is_running = input_handler.alive_status();

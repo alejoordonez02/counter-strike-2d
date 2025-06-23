@@ -35,7 +35,7 @@ public:
 
     void switch_sides(Team& other);
 
-    void push_player_data(std::vector<PlayerData>& data);
+    void push_player_data(std::vector<PlayerDTO>& data);
 };
 
 #endif
