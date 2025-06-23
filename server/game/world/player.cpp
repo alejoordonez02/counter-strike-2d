@@ -9,6 +9,7 @@
 #include "equipment/weapon.h"
 #include "map.h"
 #include "physics/player_physics.h"
+#include "reload.h"
 
 void Player::stop_action() { action = std::make_unique<Idle>(); }
 
@@ -66,12 +67,7 @@ void Player::start_attacking() {
                                       sorted_collidables_idx);
 }
 
-void Player::stop_attacking() { stop_action(); }
-
 void Player::aim(Direction dir) { this->dir = dir; }
-
-void Player::stop_planting() { stop_action(); }
-void Player::stop_defusing() { stop_action(); }
 
 /*
  * Set current weapon
@@ -79,6 +75,8 @@ void Player::stop_defusing() { stop_action(); }
 void Player::use_primary() { current = equipment.primary; }
 void Player::use_secondary() { current = equipment.secondary; }
 void Player::use_knife() { current = equipment.knife; }
+
+void Player::start_reloading() { action = std::make_unique<Reload>(current); }
 
 /*
  * Buy
@@ -101,16 +99,6 @@ void Player::buy_secondary(Weapon& weapon) {
         equipment.secondary = weapon;
         use_secondary();
     }
-}
-
-void Player::buy_primary_ammo(const int& count) {
-    if (pay(equipment.primary.get_ammo_cost() * count))
-        equipment.primary.load_ammo(count);
-}
-
-void Player::buy_secondary_ammo(const int& count) {
-    if (pay(equipment.secondary.get_ammo_cost() * count))
-        equipment.secondary.load_ammo(count);
 }
 
 /*

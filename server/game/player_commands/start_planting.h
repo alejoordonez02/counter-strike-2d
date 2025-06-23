@@ -6,13 +6,12 @@
 #include <utility>
 
 #include "common/network/dto.h"
-#include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_planting_dto.h"
 #include "player_command.h"
 #include "server/game/world/player.h"
 
 /*
- * Start attacking
+ * Start planting
  * */
 class StartPlanting: public Command {
 public:

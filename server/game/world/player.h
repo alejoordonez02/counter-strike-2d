@@ -37,8 +37,6 @@ private:
 
     bool pay(const int& cost);
 
-    void stop_action();
-
     virtual void teleport_to_spawn() = 0;
 
 public:
@@ -49,21 +47,34 @@ public:
     void update(float dt);
 
     virtual void switch_side() = 0;
-
     virtual void restart() = 0;
 
     bool is_alive();
 
     std::optional<Position> intersect(const Trajectory& t) const override;
-
     void get_attacked(int damage) override;
 
+    /*
+     * Pasive commands: change what the player **is** doing
+     * */
     virtual void start_moving(Direction dir);
     void stop_moving();
 
+    /*
+     * Éstas acciones llevan una noción del tiempo transcurrido, están en una
+     * categoría distinta a la acción de movimiento: entre ellas son excluyentes
+     * (se puede hacer una a la vez), pero se pueden hacer mientras el jugador
+     * se mueve (salvo lógica interna de la action strategy). Por eso para ellas
+     * existe un único stop_action(), mientras que el movimiento precisa del
+     * stop_moving() para que el jugador pare de moverse
+     * */
     virtual void start_attacking();
-    void stop_attacking();
+    void start_reloading();
+    void stop_action();
 
+    /*
+     * Active commands
+     * */
     void aim(Direction dir);
 
     void use_primary();
@@ -75,15 +86,17 @@ public:
     void buy_primary_ammo(const int& count);
     void buy_secondary_ammo(const int& count);
 
+    /*
+     * TT & CTs
+     * */
     virtual void give_bomb() = 0;
     virtual void plant_bomb() = 0;
-    void stop_planting();
-
     virtual void defuse_bomb() = 0;
-    void stop_defusing();
 
+    /*
+     * DTOs
+     * */
     std::shared_ptr<PrivatePlayerDTO> get_private_data() const;
-
     PlayerDTO get_data() const;
 
     virtual ~Player() = default;
