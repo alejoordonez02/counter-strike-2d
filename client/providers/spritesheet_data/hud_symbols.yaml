@@ -1,4 +1,4 @@
-texture_name: hud_nums
+texture_name: hud_symbols
 sprite_data:
   - name: heart
     columns: 13
