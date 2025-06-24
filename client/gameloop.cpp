@@ -12,26 +12,31 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
     input_handler.start();
 }
 
-void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
-        PrivatePlayerDTO& user_data) {
-    std::vector<std::unique_ptr<DTO>> dtos(2);
 
-    for (auto& dto_p : dtos) {
-        if (not snapshots_queue.try_pop(dto_p))
-            continue;
+void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot, PrivatePlayerDTO& user_data) {
+    // usa skip_count calculado en el frame anterior
+    std::unique_ptr<DTO> dto_p;
+    int processed = 0;
+    
+    // Procesar DTOs hasta encontrar los más recientes
+    while (snapshots_queue.try_pop(dto_p) && processed < 10) {
+        processed++;
+        
         if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
+            // Usar este snapshot (siempre sobrescribir con el más reciente)
             auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
             last_snapshot = std::move(*ptr);
         }
-        if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
+        else if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
+            // Usar este private data (siempre sobrescribir con el más reciente)
             auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
             user_data = std::move(*ptr);
         }
-        dto_p.reset();
+        dto_p.reset();      // liberar el DTO procesado
     }
-
-    // si no hay snapshot nueva, devuelve el último estado
-    // -> Esto permite que siga renderizando
+    if(processed > 10){
+        std::cerr << "WARNING: Se procesaron: " << processed << " DTOs en un frame" << std::endl;
+    }
 }
 
 void GameLoop::run() {

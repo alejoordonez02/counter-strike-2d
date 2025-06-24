@@ -59,3 +59,9 @@ void Map::plant_bomb(const Position& pos) {
 }
 
 void Map::defuse_bomb() { bomb->defuse(); }
+
+void Map::push_map_data(std::shared_ptr<SnapshotDTO> snapshot) {
+    for (auto& d : drops) d.push_drop_data(snapshot->weapons_on_floor);
+    if (!bomb) return;
+    bomb->push_bomb_data(snapshot->weapons_on_floor);
+}

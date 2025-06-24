@@ -19,3 +19,7 @@ void Bomb::defuse() {
 bool Bomb::is_planted() const { return state == BombState::PLANTED; }
 bool Bomb::is_defused() const { return state == BombState::DEFUSED; }
 bool Bomb::has_exploded() const { return state == BombState::EXPLODED; }
+
+void Bomb::push_bomb_data(std::vector<WeaponDTO>& snapshot) {
+    snapshot.push_back(WeaponDTO(WeaponName::BOMB, pos));
+}

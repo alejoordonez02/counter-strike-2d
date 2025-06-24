@@ -61,7 +61,7 @@ void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
     hud_manager->update(snapshot, user_data, fps_timer);
 }
 
-void Render::skip_frames(uint8_t frames) {
+void Render::skip_frames(int frames) {
     if (frames == 0) {
         return;
     }
