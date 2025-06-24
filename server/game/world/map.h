@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "drop.h"
 #include "equipment/bomb.h"
 #include "physics/hitbox.h"
 #include "physics/structure.h"
@@ -11,6 +12,7 @@
 class Map {
 private:
     std::vector<std::shared_ptr<Hitbox>> collidables;
+    std::vector<Drop> drops;
     std::vector<Structure> bomb_site;
     std::vector<Position> tt_spawn;
     std::vector<Position> ct_spawn;
@@ -18,7 +20,7 @@ private:
 
 public:
     Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
-        const std::vector<Structure>& bomb_site,
+        const std::vector<Drop>& drops, const std::vector<Structure>& bomb_site,
         const std::vector<Position>& tt_spawn,
         const std::vector<Position>& ct_spawn);
 
@@ -33,6 +35,8 @@ public:
     void add_collidable(std::shared_ptr<Hitbox> cll);
 
     std::vector<std::shared_ptr<Hitbox>>& get_collidables();
+
+    // Weapon pickup(const Position& pos);
 
     std::vector<Structure>& get_bomb_site();
     Position get_bomb_position();

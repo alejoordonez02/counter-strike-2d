@@ -10,6 +10,7 @@
 #include "server/game/factory/player_factory.h"
 #include "team/counter_terrorists.h"
 #include "team/terrorists.h"
+#include "weapon_factory.h"
 
 namespace WorldTiming {
 constexpr int constant_tick_rate = 60;
@@ -32,6 +33,7 @@ private:
     bool ended;
 
     PlayerFactory player_factory;
+    std::shared_ptr<WeaponFactory> weapon_factory;
 
     void start_round();
 
@@ -42,7 +44,8 @@ private:
 public:
     World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
           float time_out, /* int max_terrorists, int max_counter_terrorists, */
-          const PlayerFactory& player_factory);
+          const PlayerFactory& player_factory,
+          std::shared_ptr<WeaponFactory> weapon_factory);
 
     void update(float dt);
 
