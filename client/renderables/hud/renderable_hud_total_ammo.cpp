@@ -1,4 +1,4 @@
-#include "client/renderables/hud/renderable_hud_ammo.h"
+#include "client/renderables/hud/renderable_hud_total_ammo.h"
 
 RenderableHUDAmmo::RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider):
 numbers(animation_provider) {
