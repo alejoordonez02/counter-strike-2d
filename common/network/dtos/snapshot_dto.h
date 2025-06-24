@@ -14,8 +14,6 @@
 
 #define MAX_PLAYER_NAME 32
 
-enum class EquipmentType : uint8_t { PRIMARY, SECONDARY, KNIFE, BOMB };
-
 // armas en el suelo
 class WeaponDTO: public DTO {
 public:
@@ -33,6 +31,9 @@ private:
     }
 
 public:
+    WeaponDTO(WeaponName name, const Position& pos):
+        DTO(DTOSerial::WEAPON), name(name), x(pos.x), y(pos.y) {}
+
     explicit WeaponDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);

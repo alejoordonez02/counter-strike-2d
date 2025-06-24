@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "buy_ammo_dto.h"
+#include "buy_weapon_dto.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/aim_dto.h"
 #include "common/network/dtos/snapshot_dto.h"
@@ -21,6 +23,7 @@
 #include "list_games_dto.h"
 #include "start_reloading_dto.h"
 #include "stop_action_dto.h"
+#include "use_weapon_dto.h"
 
 using namespace DTOSerial;
 using namespace DTOSerial::PlayerCommands;
@@ -39,6 +42,18 @@ public:
             {AIM,
              [](auto&& bytes) {
                  return std::make_unique<AimDTO>(std::move(bytes));
+             }},
+            {USE_WEAPON,
+             [](auto&& bytes) {
+                 return std::make_unique<UseWeaponDTO>(std::move(bytes));
+             }},
+            {BUY_WEAPON,
+             [](auto&& bytes) {
+                 return std::make_unique<BuyWeaponDTO>(std::move(bytes));
+             }},
+            {BUY_AMMO,
+             [](auto&& bytes) {
+                 return std::make_unique<BuyAmmoDTO>(std::move(bytes));
              }},
             {START_MOVING,
              [](auto&& bytes) {

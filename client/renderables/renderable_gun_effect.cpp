@@ -15,10 +15,11 @@ RenderableGunEffect::RenderableGunEffect(
         animation_provider(animation_provider) {
     load_animation("flare3");
     load_animation("knifeslash");
+    load_animation("none");
     // load_animation("fragments");
 
     // por default no tiene armas
-    current_animation = nullptr;
+    current_animation = animations["none"].get();
 }
 
 void RenderableGunEffect::load_animation(const std::string& animation_name) {
@@ -35,19 +36,15 @@ void RenderableGunEffect::update(const Position& player_position,
     this->aim_position = aim_position;
 
     if (!is_shooting || weapon_type == WeaponName::NONE) {
-        current_animation = nullptr;
-        return;
+        current_animation = animations["none"].get();
     } else if (is_shooting && weapon_type == WeaponName::KNIFE) {
-        current_animation = animations["knifeslash"].get();
+        // current_animation = animations["knifeslash"].get();
     } else if (is_shooting && (weapon_type == WeaponName::M3 || weapon_type == WeaponName::GLOCK || weapon_type == WeaponName::AK47 || weapon_type == WeaponName::AWP)) {
         current_animation = animations["flare3"].get();
     } else if (!is_shooting) {
-        current_animation = nullptr;
+        current_animation = animations["none"].get();
     }
 
-    if (current_animation == nullptr) {
-        return;
-    }
     // NOTE: Para que el arma quede alineada con el eje X
     Position texture_size = current_animation->get_animation_size();
     this->facing_angle = facing_angle + 90;
@@ -100,11 +97,6 @@ void RenderableGunEffect::render_line(SDL2pp::Renderer& renderer) {
 }
 
 void RenderableGunEffect::render(SDL2pp::Renderer& renderer) {
-    // No hay arma para renderizar
-    if (current_animation == nullptr) {
-        return;
-    }
-
     // Si el efecto actual es flare3, dibujar la línea amarilla
     if (current_animation == animations["flare3"].get()) {
         render_line(renderer);
@@ -114,10 +106,6 @@ void RenderableGunEffect::render(SDL2pp::Renderer& renderer) {
 }
 
 void RenderableGunEffect::skip_frames(uint8_t frames_to_skip) {
-    // No hay arma para renderizar
-    if (current_animation == nullptr) {
-        return;
-    }
     current_animation->skip_frames(frames_to_skip);
 }
 

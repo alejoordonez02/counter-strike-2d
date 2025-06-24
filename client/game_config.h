@@ -19,16 +19,29 @@ struct FOVConfig {
 };
 
 
+struct GunsData{
+    std::string name;
+    uint price;
+};
+struct GunsConfig {
+    std::unordered_map<std::string, GunsData> guns;
+    int primary_ammo_price;
+    int secondary_ammo_price;
+};
+
+
 class GameConfig {
     private:
         void load_fov_config(const YAML::Node& config);
         void load_window_config(const YAML::Node& config);
+        void load_guns_config(const YAML::Node& config);
 
     public:
         GameConfig(const std::string& path);
 
         WindowConfig window;
         FOVConfig fov;
+        GunsConfig guns_config;
 
 };
 

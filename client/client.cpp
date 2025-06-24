@@ -18,33 +18,16 @@
 #include "common/team_name.h"
 #include "lobbywindow.h"
 #include "client/game_config.h"
+#include "common/network/protocol.h"
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
     receiver(con, snapshots), input_handler(commands) {}
 
-void Client::create_test_matches() {
-    std::vector<std::unique_ptr<GameDetailsDTO>> games;
-    
-    games.emplace_back(std::make_unique<GameDetailsDTO>("Dust", 1, 1, MapName::DUST, true));
-    games.emplace_back(std::make_unique<GameDetailsDTO>("Headshot Only", 1, 1, MapName::AZTEC, true));
-    games.emplace_back(std::make_unique<GameDetailsDTO>("Tournament", 5, 5, MapName::AZTEC, false));
-    games.emplace_back(std::make_unique<GameDetailsDTO>("1v5", 1, 5, MapName::AZTEC, false));
-    games.emplace_back(std::make_unique<GameDetailsDTO>("Nuke", 1, 0, MapName::NUKE, true));
-    
-    for (auto& game : games) {
-    commands.try_push(std::make_unique<CreateGameDTO>(
-        game->getName(),      // Direct access (requires name to be public)
-        game->getMapName(),  // Direct access
-        static_cast<TeamName>(0)
-    ));
-}
-}
-
 MapName Client::lobby_phase(int i) {
     using namespace DTOSerial::LobbyCommands;
     MapName map_name = MapName::PRUEBA_MAPA_MOD; // HARDCODEADO
-    create_test_matches();
+
     if (i) {
         while (true) {
             std::cout << "\n=== LOBBY MENU ===\n"
@@ -95,72 +78,77 @@ MapName Client::lobby_phase(int i) {
             }
         }
     } else {
-        try {
-            std::unique_ptr<LobbyWindow> lobbyWindow =
-                std::make_unique<LobbyWindow>();
-            lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
+        std::unique_ptr<LobbyWindow> lobbyWindow =
+            std::make_unique<LobbyWindow>();
+        lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-            QEventLoop lobbyLoop;
+        QEventLoop lobbyLoop;
 
-            QObject::connect(
-                lobbyWindow.get(), &LobbyWindow::requestListGames, 
-                [this, &lobbyWindow]() {
-                    commands.try_push(std::make_shared<ListGamesDTO>());
-                    // aca obtengo la lista de matches
-                    QList<GameDetailsDTO> hardcodedMatches = {
-                        GameDetailsDTO("Dust II Competitive", 3, 2, MapName::DUST, true),
-                        GameDetailsDTO("Aztec Casual", 2, 3, MapName::AZTEC, true),
-                        GameDetailsDTO("Nuke Tournament", 5, 5, MapName::NUKE, false),
-                        GameDetailsDTO("Nuke Practice", 1, 0, MapName::NUKE, true)
-                    };
-                    lobbyWindow->setMatchesList(hardcodedMatches);
+        QObject::connect(
+            lobbyWindow.get(), &LobbyWindow::requestListGames, 
+            [&]() {
+                ListGamesDTO dto;
+                con.send_msg(dto.serialize());
+                auto n_games = con.receive_single();
+                QList<GameDetailsDTO> list;
+                for (int i = 0; i < n_games; i++) {
+                    GameDetailsDTO dto(con.receive_msg());
+                    list.append(dto);
                 }
-            );
+                lobbyWindow->setMatchesList(list);
+                lobbyWindow->refreshMatchesListUI();
+            }
+        );
 
         // Conexión para crear partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
-            [&](const QString & name,const MapName & mapname, int teamIdx) {
-                commands.try_push(std::make_shared<CreateGameDTO>(
-                    name.toStdString(),
-                    mapname,
-                    static_cast<TeamName>(teamIdx)
-                ));
-                lobbyWindow->close();
-                lobbyLoop.quit();
-                map_name = mapname;
-            });
-
+            [&](const QString& name, MapName m_name, TeamName t_name) {
+                CreateGameDTO dto(name.toStdString(), m_name, t_name);
+                con.send_msg(dto.serialize());
+                auto res = con.receive_single();
+                if (res == LobbyCommands::SUCCESS) {
+                    lobbyWindow->close();
+                    lobbyLoop.quit();
+                    map_name = m_name;
+                } else if (res == LobbyCommands::FAILURE) {
+                    QMessageBox::critical(nullptr, "Failure!",
+                        "Could not create game");
+                }
+                
+            }
+        );
+        
         // Conexión para unirse a partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestJoinGame,
-            [&](const QString & name, int teamIdx) {
-                commands.try_push(std::make_shared<JoinGameDTO>(
-                    name.toStdString(),
-                    static_cast<TeamName>(teamIdx)
-                ));
+            [&](const QString& name, TeamName t_name, MapName m_name) {
+                JoinGameDTO dto(name.toStdString(), t_name);
+                con.send_msg(dto.serialize());
+                auto res = con.receive_single();
+                if (res == LobbyCommands::SUCCESS) {
                 lobbyWindow->close();
                 lobbyLoop.quit();
-                // map_name = ???
-            });
+                map_name = m_name;
+                } else if (res == LobbyCommands::FAILURE) {
+                    QMessageBox::critical(nullptr, "Failure!",
+                        "Could not join game");
+                }
+            }
+        );
 
         lobbyWindow->show();
+        lobbyWindow->on_refreshButton_clicked();
         lobbyLoop.exec(); 
-    
-
-        } catch (const std::exception& e) {
-            QMessageBox::critical(nullptr, "Error",
-                                  QString("Critical error: %1").arg(e.what()));
-        }
     }
     return map_name; // ACOPLAR A CREATE Y JOIN (este enum se usa para cargar MapData para construir GameLoop)
 }
 
 void Client::run(int i) {
-    sender.start();
-    receiver.start();
-
-    // lobby: menu interactivo que envía dtos (create, join y list, más otros)
+    // lobby: menu interactivo que envía operaciones (create, join y list, más otros)
     // al servidor
     MapName map_name = lobby_phase(i);
+    
+    sender.start();
+    receiver.start();
 
     // TODO: El mapa se debe poner descargar del server supuestamente
     // std::cout << "LOG: Current working directory: " <<

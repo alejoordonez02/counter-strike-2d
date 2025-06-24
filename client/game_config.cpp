@@ -2,11 +2,14 @@
 
 
 GameConfig::GameConfig(const std::string& path) {
-    std::cout << "loading client config\n";
+    std::cout << "LOG: loading client config\n";
     YAML::Node yaml = YAML::LoadFile(path);
-
+    
     load_window_config(yaml["window"]);
     load_fov_config(yaml["fov"]);
+    
+    YAML::Node yaml_server = YAML::LoadFile("config/server-config.yaml");
+    load_guns_config(yaml_server["world"]);
 }
 
 void GameConfig::load_fov_config(const YAML::Node& config) {
@@ -16,10 +19,24 @@ void GameConfig::load_fov_config(const YAML::Node& config) {
 
 
 void GameConfig::load_window_config(const YAML::Node& config) {
-    std::cout << "loading player config\n";
+    std::cout << "LOG: loading player config\n";
     window.window_width = config["window_width"].as<uint>();
     window.window_height = config["window_height"].as<uint>();
     window.use_fullscreen = config["use_fullscreen"].as<bool>();
     window.frame_rate = config["frame_rate"].as<uint>();
+}
+
+void GameConfig::load_guns_config(const YAML::Node& config) {
+    std::cout << "LOG: loading guns config\n";
+    guns_config.primary_ammo_price = config["ammo"]["primary_ammo_price"].as<int>();
+    guns_config.secondary_ammo_price = config["ammo"]["secondary_ammo_price"].as<int>();
+
+    for (const auto& gun : config["weapons"]) {
+        GunsData data;
+        std::string gun_name = gun.first.as<std::string>();
+        data.name = gun_name;
+        data.price = gun.second["cost"].as<uint>();
+        guns_config.guns.emplace(gun_name, data);
+    }
 }
 

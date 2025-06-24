@@ -5,9 +5,11 @@
 #include <QListWidgetItem>
 #include <QList>
 #include "common/map_name.h"
+#include "common/team_name.h"
 #include "common/network/dtos/game_details_dto.h"
-#define MAX_PLAYERS 10
 
+constexpr int TEAM_MAX_PLAYERS = 5;
+constexpr int MAX_PLAYERS = TEAM_MAX_PLAYERS * 2;
 namespace Ui {
 class Lobby;
 }
@@ -20,18 +22,19 @@ public:
     explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
     void setMatchesList(const QList<GameDetailsDTO>& newMatches);
+    void refreshMatchesListUI();
 
 signals:
-    void requestJoinGame(const QString & name, int teamIdx);
-    void requestCreateGame(const QString & name,const MapName & mapname, int teamIdx);
+    void requestJoinGame(const QString& name, TeamName team, MapName map);
+    void requestCreateGame(const QString& name, MapName map,
+        TeamName team);
     void requestListGames();
 
-private slots:
+public slots:
     void on_refreshButton_clicked();
     void on_joinMatchButton_clicked();
     void on_createMatchButton_clicked();
 private:
-    void refreshMatchesListUI();
     Ui::Lobby *ui;
     int team_idx;
     QList<QSharedPointer<GameDetailsDTO>> currentMatches;

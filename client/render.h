@@ -37,6 +37,8 @@ private:
     std::unique_ptr<HUDManager> hud_manager;
     std::unique_ptr<FieldOfView> field_of_view;
 
+    void update_players(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data);
+
 public:
     Render(const MapData& map_data, const GameConfig& game_config);
     ~Render();
@@ -48,7 +50,7 @@ public:
 
     void calculate_fps(uint32_t& fps_timer);
 
-    void skip_frames(uint8_t frames);
+    void skip_frames(int frames);
 
     void render();
 };

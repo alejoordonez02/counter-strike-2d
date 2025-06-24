@@ -18,6 +18,13 @@ enum : uint8_t {
 };
 };  // namespace MapSerial
 
+namespace GameSerial {
+enum : uint8_t {
+    TERRORIST,
+    COUNTER_TERRORIST
+};
+}; // namespace GameSerial
+
 namespace DTOSerial {
 constexpr uint8_t GAME_DETAILS = 0x47;    // G - 71
 constexpr uint8_t SNAPSHOT = 0x53;        // S - 83
@@ -33,7 +40,9 @@ constexpr uint8_t START_ATTACKING = 0x61;  // a - 97
 constexpr uint8_t START_PLANTING = 0x70;   // p - 112
 constexpr uint8_t START_RELOADING = 0x72;  // r - 114
 constexpr uint8_t STOP_ACTION = 0x62;      // b - 98
-constexpr uint8_t CHANGE_WEAPON = 0x77;    // w - 119
+constexpr uint8_t USE_WEAPON = 0x77;       // w - 119
+constexpr uint8_t BUY_WEAPON = 0x78;       // x - 120
+constexpr uint8_t BUY_AMMO = 0x79;         // y - 121
 };  // namespace PlayerCommands
 namespace LobbyCommands {
 constexpr uint8_t CHANGE_USERNAME = 0x55;  // U - 85

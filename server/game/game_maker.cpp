@@ -18,6 +18,7 @@ void GameMaker::create(Connection&& con, const std::string& game_name,
 
     GameConfig config("config/server-config.yaml", map);
     auto game = game_factory.create(config);
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
     game->start();
     games[game_name] = std::move(game);
@@ -30,12 +31,8 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
     if (it == games.end()) throw GameNotFound(game_name);
                         
     auto& game = games.at(game_name);
-    /*
-     * acá es donde tienen que ir los checkeos, si la partida está llena, si
-     * no hay lugar en el team, si ya terminó, etc; y tirar excepción, ej:
-     * GameIsFull(game_name)
-     * */
-
+    if (game->team_is_full(team)) throw TeamIsFull();
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
 }
 

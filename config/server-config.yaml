@@ -13,6 +13,10 @@ world:
     radius: 10
     starting_money: 800
     max_health: 100
+
+  ammo:
+    primary_ammo_price: 200
+    secondary_ammo_price: 100
   
   weapons:
     Glock:

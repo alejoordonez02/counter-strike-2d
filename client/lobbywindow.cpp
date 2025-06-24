@@ -11,7 +11,6 @@ LobbyWindow::LobbyWindow(QWidget *parent) :
     team_idx(0)
 {
     ui->setupUi(this);
-    refreshMatchesListUI();
 }
 
 LobbyWindow::~LobbyWindow()
@@ -25,8 +24,6 @@ void LobbyWindow::setMatchesList(const QList<GameDetailsDTO>& newMatches) {
     for (const auto& match : newMatches) {
         currentMatches.append(QSharedPointer<GameDetailsDTO>::create(match));
     }
-    
-    refreshMatchesListUI();
 }
 
 void LobbyWindow::refreshMatchesListUI() {
@@ -36,10 +33,12 @@ void LobbyWindow::refreshMatchesListUI() {
         QString name = QString::fromStdString(match->getName());
         QString mapName = QString::fromStdString(mapNameToString(match->getMapName()));
         
-        QString matchText = QString("%1\nPlayers: %2/%3 - %4")
+        QString matchText = QString(
+            "%1\nTerrorists: %2/%4  |  Counter-Terrorists: %3/%4\n%5")
                           .arg(name)
-                          .arg(match->getTtCount() + match->getCtCount())
-                          .arg(MAX_PLAYERS)
+                          .arg(match->getTtCount())
+                          .arg(match->getCtCount())
+                          .arg(TEAM_MAX_PLAYERS)
                           .arg(mapName);
         
         QListWidgetItem* item = new QListWidgetItem(matchText, ui->matchesList);
@@ -65,73 +64,38 @@ void LobbyWindow::on_joinMatchButton_clicked() {
         QMessageBox::warning(this, "Error", "Please select a match first");
         return;
     }
-    
     auto matchInfo = selected->data(Qt::UserRole).value<QSharedPointer<GameDetailsDTO>>();
-    
-    if (matchInfo->getTtCount() + matchInfo->getCtCount() >= 10 || !matchInfo->isJoinable()) {
-        QMessageBox::warning(this, "Cannot Join Match", 
-            QString("%1\nPlayers: %2/10")
-            .arg(QString::fromStdString(matchInfo->getName()))
-            .arg(matchInfo->getTtCount() + matchInfo->getCtCount()));
-        return;
-    }
-
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Confirm Join",
-        QString("Do you want to join?\nGame: %1\nPlayers: %2/10")
-            .arg(QString::fromStdString(matchInfo->getName()))
-            .arg(matchInfo->getTtCount() + matchInfo->getCtCount()),
-        QMessageBox::Yes | QMessageBox::No);
-
-    if (reply != QMessageBox::Yes) {
-        return;
-    }
 
     TeamSelectionDialog teamDialog(this);
-    if (teamDialog.exec() != QDialog::Accepted) {
+    if (teamDialog.exec() != QDialog::Accepted)
         return; 
-    }
 
-    int teamIdx = teamDialog.selectedTeamIndex();
-    QString teamName = teamIdx == 0 ? "Terrorist" : "Counter-Terrorist";
+    QString matchName = QString::fromStdString(matchInfo->getName());
+    TeamName teamName = static_cast<TeamName>(teamDialog.selectedTeamIndex());
+    MapName mapName = matchInfo->getMapName();
 
-    try {
-        QMessageBox::information(this, "Success", 
-            QString("Joining match '%1' as %2...")
-                .arg(QString::fromStdString(matchInfo->getName()))
-                .arg(teamName)
-        );
-        emit requestJoinGame(QString::fromStdString(matchInfo->getName()), teamIdx);
-    } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Error",
-            QString("Failed to join match: %1").arg(e.what()));
-    }
+    emit requestJoinGame(matchName, teamName, mapName);
 }
 
 void LobbyWindow::on_createMatchButton_clicked() {
     CreateMatchDialog dialog(this);
+    if (dialog.exec() != QDialog::Accepted)
+        return;
 
-    if (dialog.exec() == QDialog::Accepted) {
-        QString matchName = dialog.getMatchName();
-        MapName mapName = dialog.getSelectedMapName();
-        int teamIdx = dialog.getSelectedTeamIndex();
+    QString matchName = dialog.getMatchName();
+    MapName mapName = dialog.getSelectedMapName();
+    TeamName teamName = static_cast<TeamName>(dialog.getSelectedTeamIndex());
 
-        if (matchName.isEmpty()) {
-            QMessageBox::warning(this, "Error", "Match name cannot be empty");
-            return;
-        }
-        
-        try {
-            emit requestCreateGame(matchName, mapName, teamIdx);
-        } catch (const std::exception& e) {
-            QMessageBox::critical(this, "Error", 
-                QString("Failed to create match: %1").arg(e.what()));
-        }
+    if (matchName.isEmpty()) {
+        QMessageBox::warning(this, "Error", "Match name cannot be empty");
+        return;
     }
+
+    emit requestCreateGame(matchName, mapName, teamName);
 }
 
 void LobbyWindow::on_refreshButton_clicked() {
-    QMessageBox::information(this, "Refreshing", "Match list updated");
-    refreshMatchesListUI();
+    ui->matchesList->clear();
+    ui->matchesList->addItem("Loading...");
     emit requestListGames();
 }

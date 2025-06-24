@@ -1,4 +1,5 @@
 #include "client/render.h"
+#include <unordered_set>
 
 
 Render::Render(const MapData& map_data, const GameConfig& game_config):
@@ -20,7 +21,7 @@ Render::Render(const MapData& map_data, const GameConfig& game_config):
     // cargar renderizables principales
     renderable_map =
         std::make_unique<RenderableMap>(map_data, animation_provider);
-    hud_manager = std::make_unique<HUDManager>(animation_provider);
+    hud_manager = std::make_unique<HUDManager>(animation_provider, game_config);
     field_of_view = std::make_unique<FieldOfView>(renderer, game_config);
 }
 
@@ -30,6 +31,35 @@ void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
     renderable_map->update(snapshot);
 
     // actualizar jugadores
+    update_players(snapshot, user_data);
+
+    if(USE_FOV)
+        field_of_view->update(renderer);
+
+    // actualizar textos
+    hud_manager->update(snapshot, user_data, fps_timer);
+}
+
+void Render::update_players(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data) {
+    // verificar jugadores eliminados
+    // Crear set con IDs de jugadores activos en el snapshot
+    std::unordered_set<int> active_players;
+    for (const auto& jugador : snapshot.players) {
+        active_players.insert(jugador.player_id);
+    }
+    // Eliminar jugadores que ya no existen en el snapshot
+    auto it = players_renderables.begin();
+    while (it != players_renderables.end()) {
+        if (active_players.find(it->first) == active_players.end()) {
+            std::cout << "LOG: Eliminando jugador con ID: " << it->first << std::endl;
+            it = players_renderables.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    
+    // update players
     int my_id = user_data.player_id;
     for (auto& jugador : snapshot.players) {
         // si es el jugador actual actualiza el offset de la camara
@@ -53,15 +83,11 @@ void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
                 std::move(renderable_player);
         }
     }
-
-    if(USE_FOV)
-        field_of_view->update(renderer);
-
-    // actualizar textos
-    hud_manager->update(snapshot, user_data, fps_timer);
 }
 
-void Render::skip_frames(uint8_t frames) {
+
+
+void Render::skip_frames(int frames) {
     if (frames == 0) {
         return;
     }
