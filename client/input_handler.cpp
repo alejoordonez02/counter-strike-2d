@@ -130,21 +130,21 @@ void InputHandler::send_attack() {
 void InputHandler::send_change_weapon() {
     // verifica si se apretó la tecla para cambiar entre arma primaria
     // secundaria, cuchillo o bomba
-    if (key_states[SDLK_k]) {
+    if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo."
                   << std::endl;
         commands_queue.try_push(
             std::make_shared<UseWeaponDTO>(WeaponType::KNIFE));
-    } else if (key_states[SDLK_1]) {
-        std::cout << "LOG: Enviando comando de cambio a arma primaria."
-                  << std::endl;
-        commands_queue.try_push(
-            std::make_shared<UseWeaponDTO>(WeaponType::PRIMARY));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria."
                   << std::endl;
         commands_queue.try_push(
             std::make_shared<UseWeaponDTO>(WeaponType::SECONDARY));
+    } else if (key_states[SDLK_3]) {
+        std::cout << "LOG: Enviando comando de cambio a arma primaria."
+                  << std::endl;
+        commands_queue.try_push(
+            std::make_shared<UseWeaponDTO>(WeaponType::PRIMARY));
     }
 }
 
