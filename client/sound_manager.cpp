@@ -17,18 +17,39 @@ SoundManager::SoundManager(const GameConfig& game_config)
         mixer.AllocateChannels(CHANNELS);
         
         // sonidos de armas
-        load_sound("weapon_switch", DATA_PATH "/assets/sfx/items/ammo.wav");
+        load_sound("weapon_switch", DATA_PATH "/assets/sfx/wpn_select.wav");
         
         load_sound("buy_weapon", DATA_PATH "/assets/sfx/items/pickup.wav");
-        load_sound("buy_ammo", DATA_PATH "/assets/sfx/items/kevlar.wav");
+        load_sound("buy_ammo", DATA_PATH "/assets/sfx/items/ammo.wav");
         
         load_sound("gunshot_ak47", DATA_PATH "/assets/sfx/weapons/ak47.wav");
+        load_sound("gunshot_m3", DATA_PATH "/assets/sfx/weapons/m3.wav");
+        load_sound("knife_swing", DATA_PATH "/assets/sfx/weapons/melee.wav");
+        load_sound("glock", DATA_PATH "/assets/sfx/weapons/glock18.wav");
+        load_sound("awp", DATA_PATH "/assets/sfx/weapons/awp.wav");
         
-        // otros
+        load_sound("reload", DATA_PATH "/assets/sfx/player/repair.wav");        // simil, no encontre la original
+
+        // bomba
         load_sound("bomb_plant", DATA_PATH "/assets/sfx/radio/bombpl.wav");
+        load_sound("bombdef", DATA_PATH "/assets/sfx/radio/bombdef.ogg");           // counter terrorits won
+        load_sound("bomb_exploded", DATA_PATH "/assets/sfx/radio/explode1.wav");     // terrorists won
+        load_sound("bomb_tick", DATA_PATH "/assets/sfx/weapons/c4.wav");     // queda poco tiempo
+
+        // jugador
         load_sound("death", DATA_PATH "/assets/sfx/player/die1.wav");
-        load_sound("footstep", DATA_PATH "/assets/sfx/player/pl_dirt1.wav");
+        load_sound("footstep_dirt_1", DATA_PATH "/assets/sfx/player/pl_dirt1.wav");
+        load_sound("footstep_dirt_2", DATA_PATH "/assets/sfx/player/pl_dirt2.wav");
+        load_sound("footstep_dirt_3", DATA_PATH "/assets/sfx/player/pl_dirt3.wav");
         
+        load_sound("hit1", DATA_PATH "/assets/sfx/player/hit1.wav");
+        load_sound("hit2", DATA_PATH "/assets/sfx/player/hit2.wav");
+        load_sound("hit3", DATA_PATH "/assets/sfx/player/hit3.wav");
+        
+        // radio
+        load_sound("gogogo", DATA_PATH "/assets/sfx/radio/go.ogg");
+
+
         // Cargar música de fondo
         load_music(DATA_PATH "/assets/sfx/menu.wav");
         play_music();
@@ -62,11 +83,11 @@ void SoundManager::play_sound(const std::string& name, int channel_group) {
     auto it = sound_effects.find(name);
     if (it != sound_effects.end()) {
         try {
-            // Configurar volumen del chunk
+            // configurar volumen del chunk
             it->second->SetVolume(sfx_volume);
             
-            // Reproducir en cualquier canal disponible (-1)
-            // Si se especifica un grupo, usar reserva de canales para ese grupo
+            // con -1 se reproduce en cualquier canal disponbile
+            // Si se especifica un grupo, usa reserva de canales para ese grupo
             int channel = -1;
             if (channel_group != -1) {
                 // Reservar canales para grupos específicos
@@ -99,45 +120,45 @@ void SoundManager::play_sound(const std::string& name, int channel_group) {
     }
 }
 
-void SoundManager::play_sound_with_distance(const std::string& name, float distance, int channel_group) {
-    if (!sfx_enabled) return;
+// void SoundManager::play_sound_with_distance(const std::string& name, float distance, int channel_group) {
+//     if (!sfx_enabled) return;
     
-    auto it = sound_effects.find(name);
-    if (it != sound_effects.end()) {
-        try {
-            // Calcular volumen basado en distancia (máximo 500 unidades)
-            float distance_factor = 1.0f - std::min(distance / 500.0f, 1.0f);
-            int volume = static_cast<int>(sfx_volume * distance_factor);
+//     auto it = sound_effects.find(name);
+//     if (it != sound_effects.end()) {
+//         try {
+//             // Calcular volumen basado en distancia (máximo 500 unidades)
+//             float distance_factor = 1.0f - std::min(distance / 500.0f, 1.0f);
+//             int volume = static_cast<int>(sfx_volume * distance_factor);
             
-            // Configurar volumen del chunk
-            it->second->SetVolume(volume);
+//             // Configurar volumen del chunk
+//             it->second->SetVolume(volume);
             
-            // Reproducir con el grupo especificado
-            int channel = -1;
-            if (channel_group != -1) {
-                switch (channel_group) {
-                    case WEAPON_GROUP:
-                        channel = mixer.PlayChannel(0, *it->second, 0);
-                        break;
-                    case UI_GROUP:
-                        channel = mixer.PlayChannel(2, *it->second, 0);
-                        break;
-                    case WORLD_GROUP:
-                        channel = mixer.PlayChannel(4, *it->second, 0);
-                        break;
-                    default:
-                        channel = mixer.PlayChannel(-1, *it->second, 0);
-                        break;
-                }
-            } else {
-                channel = mixer.PlayChannel(-1, *it->second, 0);
-            }
+//             // Reproducir con el grupo especificado
+//             int channel = -1;
+//             if (channel_group != -1) {
+//                 switch (channel_group) {
+//                     case WEAPON_GROUP:
+//                         channel = mixer.PlayChannel(0, *it->second, 0);
+//                         break;
+//                     case UI_GROUP:
+//                         channel = mixer.PlayChannel(2, *it->second, 0);
+//                         break;
+//                     case WORLD_GROUP:
+//                         channel = mixer.PlayChannel(4, *it->second, 0);
+//                         break;
+//                     default:
+//                         channel = mixer.PlayChannel(-1, *it->second, 0);
+//                         break;
+//                 }
+//             } else {
+//                 channel = mixer.PlayChannel(-1, *it->second, 0);
+//             }
             
-        } catch (const SDL2pp::Exception& e) {
-            std::cerr << "Error reproduciendo sonido con distancia " << name << ": " << e.what() << std::endl;
-        }
-    }
-}
+//         } catch (const SDL2pp::Exception& e) {
+//             std::cerr << "Error reproduciendo sonido con distancia " << name << ": " << e.what() << std::endl;
+//         }
+//     }
+// }
 
 void SoundManager::play_music() {
     if (music_enabled && background_music) {
@@ -158,6 +179,9 @@ void SoundManager::stop_music() {
     }
 }
 
+// mas adelante se podria hacer para controlar el volumen
+// o detener la musica y sonido
+// ==================
 void SoundManager::set_sfx_volume(int volume) {
     sfx_volume = std::clamp(volume, 0, 128);
 }
@@ -183,10 +207,14 @@ void SoundManager::toggle_mute() {
         play_music();
     }
 }
+// ==================
 
 
-
-
+/**
+ * Se llama en cada ciclo, verifica el estado del jugador y reproduce sonidos
+ * para no hacerlo en el input handler (ej. cambiar de arma) es mas conveniente
+ * manejarlo desde aca y aplicar un poco de logica
+ */
 void SoundManager::check_and_play_game_sounds(const SnapshotDTO& snapshot, const PrivatePlayerDTO& user_data) {
     static WeaponName last_weapon = WeaponName::NONE;
     static int last_hp = 100;
@@ -201,27 +229,28 @@ void SoundManager::check_and_play_game_sounds(const SnapshotDTO& snapshot, const
     }
     
     // Sonido de recarga (cuando las balas cargadas aumentan significativamente)
-    if (last_ammo != -1 && user_data.current_weapon.loaded_ammo > last_ammo + 5) {
+    if (last_ammo != -1 && user_data.current_weapon.loaded_ammo > last_ammo + 3) {
         play_sound("reload", WEAPON_GROUP);
     }
     last_ammo = user_data.current_weapon.loaded_ammo;
     
     // Sonido de daño recibido
     if (user_data.player_hp < last_hp && last_hp > 0) {
-        play_sound("death", WORLD_GROUP);
+        play_sound("hit1", WORLD_GROUP);
     }
     last_hp = user_data.player_hp;
+
+    // itera todos los jugadores y reproduce sonidos segun la distancia al user
+
     
-    // Sonidos de disparos con distancia (comentado por ahora)
-    /*
-    Position my_pos = get_my_player_position(snapshot, user_data.player_id);
-    for (const auto& player : snapshot.players) {
-        if (player.is_shooting && player.player_id != user_data.player_id) {
-            float distance = calculate_distance(my_pos, Position(player.x, player.y));
-            play_sound_with_distance("gunshot", distance, WEAPON_GROUP);
-        }
-    }
-    */
+    
+    // Position my_pos = get_my_player_position(snapshot, user_data.player_id);
+    // for (const auto& player : snapshot.players) {
+    //     if (player.is_shooting && player.player_id != user_data.player_id) {
+    //         float distance = calculate_distance(my_pos, Position(player.x, player.y));
+    //         play_sound_with_distance("gunshot", distance, WEAPON_GROUP);
+    //     }
+    // }
 }
 
 // Métodos auxiliares para calcular distancias (para futura implementación)
