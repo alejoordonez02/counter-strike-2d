@@ -15,10 +15,10 @@ std::string RenderableHUDLoadedAmmo::get_icon_name() const {
 
 Position RenderableHUDLoadedAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) const {
     int spacing_between = icon_size.x / 4;
-    int MAX_DIGITS = 6;
+    int MAX_DIGITS = 3;
     // esquina inferior derecha
-    int x = screen_size.x - icon_size.x * MAX_DIGITS - spacing_between;
-    int y = screen_size.y - (icon_size.y + spacing_between) * 2;    // para dejar espacio al ammo
+    int x = screen_size.x - icon_size.x * MAX_DIGITS - spacing_between * 2;
+    int y = screen_size.y - icon_size.y - spacing_between;
     return Position(x, y);
 }
 

@@ -1,6 +1,6 @@
 #include "client/renderables/hud/renderable_hud_total_ammo.h"
 
-RenderableHUDAmmo::RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider):
+RenderableHUDTotalAmmo::RenderableHUDTotalAmmo(std::shared_ptr<AnimationProvider> animation_provider):
 numbers(animation_provider) {
     animations["glock"] = animation_provider->make_animation("glock");
     animations["ak47"] = animation_provider->make_animation("ak47");
@@ -13,7 +13,7 @@ numbers(animation_provider) {
     current_animation = animations["glock"].get();
 }
 
-void RenderableHUDAmmo::update_gun_icon(WeaponName weapon_name) {
+void RenderableHUDTotalAmmo::update_gun_icon(WeaponName weapon_name) {
     if (weapon_name == WeaponName::GLOCK) {
         current_animation = animations["glock"].get();
     } else if (weapon_name == WeaponName::AK47) {
@@ -31,23 +31,23 @@ void RenderableHUDAmmo::update_gun_icon(WeaponName weapon_name) {
     }
 }
 
-void RenderableHUDAmmo::update(const PrivateWeaponDTO& weapon_data) {
+void RenderableHUDTotalAmmo::update(const PrivateWeaponDTO& weapon_data) {
     numbers.update(weapon_data.total_ammo);
 
-    update_gun_icon(weapon_data.name);
+    update_gun_icon(WeaponName::BOMB);
 }
 
 
-Position RenderableHUDAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
+Position RenderableHUDTotalAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
     int spacing_between = icon_size.x / 4;
-    int MAX_DIGITS = 5;
-    // esquina inferior derecha
+    int MAX_DIGITS = 4;
+    // esquina inferior derecha dejando un margen para loaded ammo
     int x = screen_size.x - (icon_size.x + spacing_between) * MAX_DIGITS;
     int y = screen_size.y - icon_size.y;
     return Position(x, y);
 }
 
-void RenderableHUDAmmo::render(SDL2pp::Renderer& renderer) {
+void RenderableHUDTotalAmmo::render(SDL2pp::Renderer& renderer) {
     bool is_camera_enabled = false;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     Position icon_size = current_animation->get_animation_size();

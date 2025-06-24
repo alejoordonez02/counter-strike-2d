@@ -27,7 +27,7 @@ class HUDManager {
     RenderableHUDHealth hud_hp;
     RenderableHUDTimer hud_timer;
     RenderableHUDMoney hud_money;
-    RenderableHUDAmmo hud_total_ammo;
+    RenderableHUDTotalAmmo hud_total_ammo;
     RenderableHUDLoadedAmmo hud_loaded_ammo;
 
     RenderablePointer pointer;

@@ -8,7 +8,7 @@
 #include "client/renderables/hud/renderable_numbers.h"
 #include "common/network/dtos/snapshot_dto.h"
 
-class RenderableHUDAmmo {
+class RenderableHUDTotalAmmo {
 private:
     void update_gun_icon(WeaponName weapon_name);
 
@@ -19,7 +19,7 @@ private:
 
     Position get_icon_position(const Position& screen_size, const Position& icon_size);
 public:
-    RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider);
+    RenderableHUDTotalAmmo(std::shared_ptr<AnimationProvider> animation_provider);
 
     void update(const PrivateWeaponDTO& weapon_data);
     
