@@ -88,7 +88,7 @@ void AnimationProvider::load_other_sprites() {
     animation_prototypes["ak47"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 1, false}};
     animation_prototypes["m3"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 2, false}};
     animation_prototypes["awp"] = {TextureProvider::get_texture("tilesheet_2").get(), AnimationData{4, 3, false}};
-    animation_prototypes["none"] = {TextureProvider::get_texture("block").get(), AnimationData{1, 0, false}};
+    animation_prototypes["none"] = {TextureProvider::get_texture("none").get(), AnimationData{1, 0, false}};
 
     // ====== EFFECTS ======
     animation_prototypes["flare3"] = {TextureProvider::get_texture("flare3").get(), AnimationData{2, 2, true, 0, 0, 0, 0.5}};

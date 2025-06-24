@@ -103,9 +103,9 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
 
-    SDL2pp::Surface none_surface(DATA_PATH "/assets/gfx/block.bmp");
-    none_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
-    textures["block"] = std::make_shared<SDL2pp::Texture>(renderer, none_surface);
+    SDL2pp::Surface none_weapon_surface(DATA_PATH "/assets/gfx/weapons/empty_weapon.bmp");
+    none_weapon_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
+    textures["none"] = std::make_shared<SDL2pp::Texture>(renderer, none_weapon_surface);
 
     
     // NOTE: uso el que hizo Marcos ya que estan mas cuadradas las armas

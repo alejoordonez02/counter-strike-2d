@@ -34,16 +34,19 @@ void RenderableHUDTotalAmmo::update_gun_icon(WeaponName weapon_name) {
 void RenderableHUDTotalAmmo::update(const PrivateWeaponDTO& weapon_data) {
     numbers.update(weapon_data.total_ammo);
 
-    update_gun_icon(WeaponName::BOMB);
+    update_gun_icon(weapon_data.name);
 }
 
 
 Position RenderableHUDTotalAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
     int spacing_between = icon_size.x / 4;
-    int MAX_DIGITS = 4;
+    int MAX_DIGITS = 3 + 1; // 1 dígitos para total ammo + 4 para loaded ammo
     // esquina inferior derecha dejando un margen para loaded ammo
     int x = screen_size.x - (icon_size.x + spacing_between) * MAX_DIGITS;
     int y = screen_size.y - icon_size.y;
+    std::cout << "get_icon_position: screen_size: " << screen_size.x << ", " << screen_size.y << 
+    " icon_size: " << icon_size.x << ", " << icon_size.y << 
+    " x,y=" << x << ", " << y << std::endl;
     return Position(x, y);
 }
 
