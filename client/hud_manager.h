@@ -11,6 +11,7 @@
 #include "client/renderables/hud/renderable_hud_money.h"
 #include "client/renderables/hud/renderable_hud_total_ammo.h"
 #include "client/renderables/hud/renderable_hud_loaded_ammo.h"
+#include "client/renderables/hud/renderable_hud_buy_guns.h"
 #include "client/renderables/renderable_pointer.h"
 
 class HUDManager {
@@ -29,6 +30,7 @@ class HUDManager {
     RenderableHUDMoney hud_money;
     RenderableHUDTotalAmmo hud_total_ammo;
     RenderableHUDLoadedAmmo hud_loaded_ammo;
+    RenderableHUDBuyGuns hud_buy_guns;
 
     RenderablePointer pointer;
 
@@ -48,6 +50,11 @@ class HUDManager {
     void render(SDL2pp::Renderer& renderer);
 
     void show_terrorist_won(SDL2pp::Renderer& renderer);
+    
+    // Métodos para controlar el menú de compra
+    void show_buy_menu() { hud_buy_guns.show(); }
+    void hide_buy_menu() { hud_buy_guns.hide(); }
+    bool is_buy_menu_visible() const { return hud_buy_guns.is_visible(); }
 
     
 };
