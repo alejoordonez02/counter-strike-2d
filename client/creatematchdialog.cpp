@@ -36,10 +36,13 @@ void CreateMatchDialog::validateInputs()
 void CreateMatchDialog::setupMaps()
 {
     // Configurar mapas disponibles con sus MapNames correspondientes
+
+    
     mapNames = {
-        {"Aztec", MapName::AZTEC},
-        {"Dust", MapName::DUST},
-        {"Nuke", MapName::NUKE}
+        #define X(name, lowercase) \
+                {lowercase, MapName::name},
+            MAP_LIST
+        #undef X
     };
 
     ui->mapBox->clear();
