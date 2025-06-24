@@ -8,11 +8,11 @@
 #include "common/direction.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/position.h"
-#include "equipment/equipment.h"
 #include "equipment/weapon.h"
 #include "map.h"
 #include "physics/hitbox.h"
 #include "physics/player_physics.h"
+#include "weapon_factory.h"
 
 class Player: public Hitbox {
 protected:
@@ -27,30 +27,43 @@ private:
     int id;
     std::vector<size_t> sorted_collidables_idx;
     Direction dir;
-    Equipment equipment;
-    Weapon& current;
+
+    std::shared_ptr<Weapon> primary;
+    std::shared_ptr<Weapon> secondary;
+    std::shared_ptr<Weapon> knife;
+    std::shared_ptr<Weapon>& current;
+
+    float shield;
+
     int max_health;
     int health;
     bool alive;
+
     int kills;
     int money;
 
     bool pay(const int& cost);
+    std::shared_ptr<Weapon> get_weapon(WeaponType type);
 
     virtual void teleport_to_spawn() = 0;
 
+    std::shared_ptr<WeaponFactory> weapon_factory;
+
 public:
-    Player(int id, Position pos, const Equipment& equipment,
+    Player(int id, Position pos, std::shared_ptr<Weapon> primary,
+           std::shared_ptr<Weapon> secondary, std::shared_ptr<Weapon> knife,
            std::weak_ptr<Map> map, float max_velocity, float acceleration,
-           float radius, int money, int health);
+           float radius, int money, int health,
+           std::shared_ptr<WeaponFactory> weapon_factory);
 
     void update(float dt);
 
     virtual void switch_side() = 0;
     virtual void restart() = 0;
 
-    bool is_alive();
-
+    /*
+     * Hitbox interface
+     * */
     std::optional<Position> intersect(const Trajectory& t) const override;
     void get_attacked(int damage) override;
 
@@ -60,16 +73,11 @@ public:
     virtual void start_moving(Direction dir);
     void stop_moving();
 
-    /*
-     * Éstas acciones llevan una noción del tiempo transcurrido, están en una
-     * categoría distinta a la acción de movimiento: entre ellas son excluyentes
-     * (se puede hacer una a la vez), pero se pueden hacer mientras el jugador
-     * se mueve (salvo lógica interna de la action strategy). Por eso para ellas
-     * existe un único stop_action(), mientras que el movimiento precisa del
-     * stop_moving() para que el jugador pare de moverse
-     * */
     virtual void start_attacking();
     void start_reloading();
+    virtual void start_planting() = 0;
+    virtual void start_defusing() = 0;
+
     void stop_action();
 
     /*
@@ -77,21 +85,20 @@ public:
      * */
     void aim(Direction dir);
 
-    void use_primary();
-    void use_secondary();
-    void use_knife();
+    void pickup();
 
-    void buy_primary(Weapon& weapon);
-    void buy_secondary(Weapon& weapon);
-    void buy_primary_ammo(const int& count);
-    void buy_secondary_ammo(const int& count);
+    void use_weapon(const WeaponType& type);
+
+    void buy_weapon(WeaponName name);
+    void buy_ammo(WeaponType type, int count);
+
+    virtual void give_bomb() = 0;
 
     /*
-     * TT & CTs
+     * Getters & setters (mostly for testing purposes)
      * */
-    virtual void give_bomb() = 0;
-    virtual void plant_bomb() = 0;
-    virtual void defuse_bomb() = 0;
+    void set_weapon(std::shared_ptr<Weapon> weapon) { current = weapon; }
+    bool is_alive();
 
     /*
      * DTOs
