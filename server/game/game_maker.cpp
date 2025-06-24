@@ -18,11 +18,7 @@ void GameMaker::create(Connection&& con, const std::string& game_name,
 
     GameConfig config("config/server-config.yaml", map);
     auto game = game_factory.create(config);
-    /*
-     * TODO: descomentar la siguiente línea cuando se implemente el manejo de
-     * msjs del client lobby
-     * */
-    // con.send_single(LobbyCommands::SUCCESS);
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
     game->start();
     games[game_name] = std::move(game);
@@ -36,11 +32,7 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
                         
     auto& game = games.at(game_name);
     if (game->team_is_full(team)) throw TeamIsFull();
-    /*
-     * TODO: descomentar la siguiente línea cuando se implemente el manejo de
-     * msjs del client lobby
-     * */
-    // con.send_single(LobbyCommands::SUCCESS);
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
 }
 
