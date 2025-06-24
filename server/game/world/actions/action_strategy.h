@@ -6,6 +6,7 @@
  * */
 class ActionStrategy {
 public:
+    virtual bool is_attacking() const { return false; }
     virtual void update(float dt) = 0;
     virtual ~ActionStrategy() = default;
 };

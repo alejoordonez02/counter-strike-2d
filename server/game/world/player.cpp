@@ -194,12 +194,15 @@ std::shared_ptr<PrivatePlayerDTO> Player::get_private_data() const {
 PlayerDTO Player::get_data() const {
     PlayerDTO data;
     data.player_id = id;
+    data.team_id = get_team();
+    data.has_bomb = has_bomb();
     data.x = pos.x;
     data.y = pos.y;
     data.current_weapon = current->get_data();
     data.aim_x = dir.x;
     data.aim_y = dir.y;
     data.is_walking = physics.is_moving();
+    data.is_shooting = action->is_attacking();
     data.is_dead = !alive;
     return data;
 }

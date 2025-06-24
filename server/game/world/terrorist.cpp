@@ -18,19 +18,21 @@ void Terrorist::teleport_to_spawn() { pos = map.lock()->get_tt_spawn(); }
 
 void Terrorist::restart() {
     respawn();
-    has_bomb = false;
+    _has_bomb = false;
 }
 
-void Terrorist::give_bomb() { has_bomb = true; }
+bool Terrorist::has_bomb() const { return _has_bomb; }
+
+void Terrorist::give_bomb() { _has_bomb = true; }
 
 void Terrorist::drop_bomb() {
-    if (!has_bomb) return;
+    if (!_has_bomb) return;
     map.lock()->drop(std::make_unique<BombDrop>(pos));
-    has_bomb = false;
+    _has_bomb = false;
 }
 
 void Terrorist::start_planting() {
-    if (!has_bomb) return;
+    if (!_has_bomb) return;
     auto bomb_site = map.lock()->get_bomb_site();
     bool on_bomb_site = false;
     for (auto s : bomb_site)
@@ -40,5 +42,5 @@ void Terrorist::start_planting() {
         }
 
     if (!on_bomb_site) return;
-    action = std::make_unique<PlantBomb>(has_bomb, pos, map, TIME_TO_PLANT);
+    action = std::make_unique<PlantBomb>(_has_bomb, pos, map, TIME_TO_PLANT);
 }
