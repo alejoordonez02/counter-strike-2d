@@ -7,3 +7,9 @@ window:
 fov:
   field_of_view_angle: 90   # 0 a 360, el ángulo del cono de visión (en grados)
   use_field_of_view: true  # si se usa el campo de visión o no
+
+sfx:
+  use_sound: true
+  use_music: true
+  sound_volume: 50
+  music_volume: 20
