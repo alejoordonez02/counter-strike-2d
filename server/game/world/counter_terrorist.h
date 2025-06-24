@@ -21,8 +21,12 @@ public:
 
     void start_defusing() override;
 
-    void give_bomb() override {}
-    void drop_bomb() override {}
+    void give_bomb() override { drop_bomb(); }
+
+    void drop_bomb() override {
+        map.lock()->drop(std::make_unique<BombDrop>(pos));
+    }
+
     void start_planting() override {}
 };
 

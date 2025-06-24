@@ -39,8 +39,13 @@ public:
     std::vector<std::shared_ptr<Hitbox>>& get_collidables();
 
     std::unique_ptr<Drop> pickup(const Position& pos) {
-        for (auto& d : drops)
-            if (d->intersects(pos)) return std::move(d);
+        for (auto it = drops.begin(); it != drops.end(); ++it) {
+            if ((*it)->intersects(pos)) {
+                auto result = std::move(*it);
+                drops.erase(it);
+                return result;
+            }
+        }
         return nullptr;
     }
 
