@@ -6,7 +6,7 @@
 #include <QList>
 #include "common/map_name.h"
 #include "common/team_name.h"
-#include "common/network/dtos/game_details_dto.h"
+#include "client/q_game_details_dto.h"
 
 constexpr int TEAM_MAX_PLAYERS = 5;
 constexpr int MAX_PLAYERS = TEAM_MAX_PLAYERS * 2;
@@ -21,7 +21,7 @@ class LobbyWindow : public QMainWindow
 public:
     explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
-    void setMatchesList(const QList<GameDetailsDTO>& newMatches);
+    void setMatchesList(const QList<QGameDetailsDTO>& newMatches);
     void refreshMatchesListUI();
 
 signals:
@@ -37,7 +37,7 @@ public slots:
 private:
     Ui::Lobby *ui;
     int team_idx;
-    QList<QSharedPointer<GameDetailsDTO>> currentMatches;
+    QList<QSharedPointer<QGameDetailsDTO>> currentMatches;
 };
 
 #endif // LOBBYWINDOW_H

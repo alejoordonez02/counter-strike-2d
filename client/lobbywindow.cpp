@@ -18,11 +18,11 @@ LobbyWindow::~LobbyWindow()
     delete ui;
 }
 
-void LobbyWindow::setMatchesList(const QList<GameDetailsDTO>& newMatches) {
+void LobbyWindow::setMatchesList(const QList<QGameDetailsDTO>& newMatches) {
     currentMatches.clear();
 
     for (const auto& match : newMatches) {
-        currentMatches.append(QSharedPointer<GameDetailsDTO>::create(match));
+        currentMatches.append(QSharedPointer<QGameDetailsDTO>::create(match));
     }
 }
 
@@ -64,7 +64,7 @@ void LobbyWindow::on_joinMatchButton_clicked() {
         QMessageBox::warning(this, "Error", "Please select a match first");
         return;
     }
-    auto matchInfo = selected->data(Qt::UserRole).value<QSharedPointer<GameDetailsDTO>>();
+    auto matchInfo = selected->data(Qt::UserRole).value<QSharedPointer<QGameDetailsDTO>>();
 
     TeamSelectionDialog teamDialog(this);
     if (teamDialog.exec() != QDialog::Accepted)

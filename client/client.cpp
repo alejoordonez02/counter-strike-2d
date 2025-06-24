@@ -15,6 +15,7 @@
 #include "common/network/dtos/join_game_dto.h"
 #include "common/network/dtos/list_games_dto.h"
 #include "common/network/dtos/game_details_dto.h"
+#include "client/q_game_details_dto.h"
 #include "common/team_name.h"
 #include "lobbywindow.h"
 #include "client/game_config.h"
@@ -90,10 +91,11 @@ MapName Client::lobby_phase(int i) {
                 ListGamesDTO dto;
                 con.send_msg(dto.serialize());
                 auto n_games = con.receive_single();
-                QList<GameDetailsDTO> list;
+                QList<QGameDetailsDTO> list;
                 for (int i = 0; i < n_games; i++) {
                     GameDetailsDTO dto(con.receive_msg());
-                    list.append(dto);
+                    QGameDetailsDTO q(std::move(dto));
+                    list.append(q);
                 }
                 lobbyWindow->setMatchesList(list);
                 lobbyWindow->refreshMatchesListUI();
