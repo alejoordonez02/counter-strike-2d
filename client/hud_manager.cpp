@@ -12,6 +12,8 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         hud_hp(animation_provider),
         hud_timer(animation_provider),
         hud_money(animation_provider),
+        hud_total_ammo(animation_provider),
+        hud_loaded_ammo(animation_provider),
         pointer(animation_provider)
          {
 }
@@ -28,6 +30,16 @@ void HUDManager::update(const SnapshotDTO& snapshot,
     hud_timer.update(time_string);
     hud_hp.update(user_data.player_hp);
     hud_money.update(user_data.total_money);
+
+    if(user_data.current_weapon.name == WeaponName::BOMB || user_data.current_weapon.name == WeaponName::NONE) {
+        hud_total_ammo.hide();
+        hud_loaded_ammo.hide();
+    } else {
+        hud_total_ammo.show();
+        hud_loaded_ammo.show();
+        hud_total_ammo.update(user_data.current_weapon);
+        hud_loaded_ammo.update(user_data.current_weapon.loaded_ammo);
+    }
 
     bool user_is_attacking = get_user_is_shooting(snapshot, user_data);
     pointer.update(user_is_attacking);
@@ -57,6 +69,8 @@ void HUDManager::render(SDL2pp::Renderer& renderer) {
     hud_hp.render(renderer);
     hud_timer.render(renderer);
     hud_money.render(renderer);
+    hud_total_ammo.render(renderer);
+    hud_loaded_ammo.render(renderer);
     
 
     if(show_text){
