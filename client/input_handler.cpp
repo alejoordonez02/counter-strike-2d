@@ -9,6 +9,7 @@
 #include "drop_bomb_dto.h"
 #include "drop_current_dto.h"
 #include "pickup_dto.h"
+#include "start_defusing_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -179,6 +180,19 @@ void InputHandler::send_plant_bomb() {
     prev = is_planting;
 }
 
+void InputHandler::send_defuse_bomb() {
+    static bool prev = false;
+    bool is_defusing = key_states[SDLK_q];
+
+    if (is_defusing && !prev)
+        commands_queue.try_push(std::make_shared<StartDefusingDTO>());
+
+    if (!is_defusing && prev)
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
+
+    prev = is_defusing;
+}
+
 void InputHandler::send_reload() {
     static bool prev = false;
     bool is_reloading = key_states[SDLK_r];
@@ -237,6 +251,7 @@ void InputHandler::process_movement() {
     send_change_weapon();
     send_aim();
     send_plant_bomb();
+    send_defuse_bomb();
     send_reload();
     send_buy_weapon();
     send_buy_ammo();

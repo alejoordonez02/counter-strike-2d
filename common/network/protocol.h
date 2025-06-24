@@ -31,6 +31,7 @@ constexpr uint8_t START_MOVING = 0x6D;     // m - 109
 constexpr uint8_t STOP_MOVING = 0x6E;      // n - 110
 constexpr uint8_t START_ATTACKING = 0x61;  // a - 97
 constexpr uint8_t START_PLANTING = 0x70;   // p - 112
+constexpr uint8_t START_DEFUSING = 0x71;   // q - 112
 constexpr uint8_t START_RELOADING = 0x72;  // r - 114
 constexpr uint8_t STOP_ACTION = 0x62;      // b - 98
 constexpr uint8_t USE_WEAPON = 0x77;       // w - 119

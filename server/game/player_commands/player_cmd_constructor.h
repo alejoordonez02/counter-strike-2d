@@ -17,6 +17,7 @@
 #include "pickup.h"
 #include "player_command.h"
 #include "start_attacking.h"
+#include "start_defusing.h"
 #include "start_moving.h"
 #include "start_planting.h"
 #include "start_reloading.h"
@@ -73,6 +74,10 @@ public:
             {START_PLANTING,
              [](auto&& dto_p) {
                  return std::make_unique<StartPlanting>(std::move(dto_p));
+             }},
+            {START_DEFUSING,
+             [](auto&& dto_p) {
+                 return std::make_unique<StartDefusing>(std::move(dto_p));
              }},
             {START_RELOADING,
              [](auto&& dto_p) {

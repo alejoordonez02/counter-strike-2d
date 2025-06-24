@@ -40,6 +40,7 @@ private:
     void send_change_weapon();
     void send_attack();
     void send_plant_bomb();
+    void send_defuse_bomb();
     void send_reload();
     void send_aim();
     void send_buy_weapon();
