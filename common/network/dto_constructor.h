@@ -21,6 +21,7 @@
 #include "list_games_dto.h"
 #include "start_reloading_dto.h"
 #include "stop_action_dto.h"
+#include "use_weapon_dto.h"
 
 using namespace DTOSerial;
 using namespace DTOSerial::PlayerCommands;
@@ -39,6 +40,10 @@ public:
             {AIM,
              [](auto&& bytes) {
                  return std::make_unique<AimDTO>(std::move(bytes));
+             }},
+            {USE_WEAPON,
+             [](auto&& bytes) {
+                 return std::make_unique<UseWeaponDTO>(std::move(bytes));
              }},
             {START_MOVING,
              [](auto&& bytes) {
