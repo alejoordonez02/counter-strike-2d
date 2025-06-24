@@ -37,6 +37,8 @@ private:
     std::unique_ptr<HUDManager> hud_manager;
     std::unique_ptr<FieldOfView> field_of_view;
 
+    void update_players(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data);
+
 public:
     Render(const MapData& map_data, const GameConfig& game_config);
     ~Render();
