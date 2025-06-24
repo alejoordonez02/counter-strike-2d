@@ -6,8 +6,24 @@
 #include <memory>
 
 #include "common/network/dto.h"
+#include "common/network/dto.h"
 #include "common/queue.h"
 #include "common/thread.h"
+#include "common/weapons.h"
+
+#include "client/camera.h"
+#include "common/direction.h"
+#include "common/network/dto.h"
+#include "common/network/dtos/start_reloading_dto.h"
+#include "common/network/dtos/use_weapon_dto.h"
+#include "common/network/dtos/aim_dto.h"
+#include "common/network/dtos/start_attacking_dto.h"
+#include "common/network/dtos/start_moving_dto.h"
+#include "common/network/dtos/start_planting_dto.h"
+#include "common/network/dtos/stop_action_dto.h"
+#include "common/network/dtos/stop_moving_dto.h"
+#include "common/network/dtos/buy_ammo_dto.h"
+#include "common/network/dtos/buy_weapon_dto.h"
 
 class InputHandler: public Thread {
 private:
@@ -29,6 +45,8 @@ private:
     void send_plant_bomb();
     void send_reload();
     void send_aim();
+    void send_buy_weapon();
+    void send_buy_ammo();
 
 public:
     explicit InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue);

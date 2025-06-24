@@ -1,7 +1,7 @@
 #include "client/renderables/hud/renderable_hud_buy_guns.h"
 
 RenderableHUDBuyGuns::RenderableHUDBuyGuns(std::shared_ptr<AnimationProvider> animation_provider, SDL2pp::Font& font, const GameConfig& game_config):
-font(font), visible(true) {  // Por defecto oculto
+font(font), visible(false) {  // Por defecto oculto
     // Cargar animaciones de armas
     animations["glock"] = animation_provider->make_animation("glock");
     animations["ak47"] = animation_provider->make_animation("ak47");
@@ -18,16 +18,16 @@ void RenderableHUDBuyGuns::setup_weapon_data(const GameConfig& game_config) {
     // std::unordered_map<std::string, GunsConfig>
 
     weapons_data = {
-        {"1", game_config.guns_config.guns.at("Glock").name, "$" + std::to_string(game_config.guns_config.guns.at("Glock").price)},
-        {"2", game_config.guns_config.guns.at("Ak47").name, "$" + std::to_string(game_config.guns_config.guns.at("Ak47").price)},
-        {"3", game_config.guns_config.guns.at("M3").name, "$" + std::to_string(game_config.guns_config.guns.at("M3").price)},
-        {"4", game_config.guns_config.guns.at("Awp").name, "$" + std::to_string(game_config.guns_config.guns.at("Awp").price)},
+        {"5", game_config.guns_config.guns.at("Glock").name, "$" + std::to_string(game_config.guns_config.guns.at("Glock").price)},
+        {"6", game_config.guns_config.guns.at("Ak47").name, "$" + std::to_string(game_config.guns_config.guns.at("Ak47").price)},
+        {"7", game_config.guns_config.guns.at("M3").name, "$" + std::to_string(game_config.guns_config.guns.at("M3").price)},
+        {"8", game_config.guns_config.guns.at("Awp").name, "$" + std::to_string(game_config.guns_config.guns.at("Awp").price)},
     };
     
     // Configurar datos de munición
     ammo_data = {
-        {"5", "Primaria", "$" + std::to_string(game_config.guns_config.primary_ammo_price)},
-        {"6", "Secundaria", "$" + std::to_string(game_config.guns_config.secondary_ammo_price)}
+        {"9", "Primaria", "$" + std::to_string(game_config.guns_config.primary_ammo_price)},
+        {"0", "Secundaria", "$" + std::to_string(game_config.guns_config.secondary_ammo_price)}
     };
 }
 
@@ -136,7 +136,7 @@ void RenderableHUDBuyGuns::render_exit_option(SDL2pp::Renderer& renderer, const 
     int y = screen_size.y - (margin + padding);
     
     // Renderizar número de tecla para salir
-    render_key_number(renderer, "0", Position(x, y));
+    render_key_number(renderer, "q", Position(x, y));
     
     // Renderizar texto "Salir"
     Position text_pos(x + icon_size.x, y);
