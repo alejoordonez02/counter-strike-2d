@@ -48,7 +48,7 @@ public:
 
     void calculate_fps(uint32_t& fps_timer);
 
-    void skip_frames(uint8_t frames);
+    void skip_frames(int frames);
 
     void render();
 };
