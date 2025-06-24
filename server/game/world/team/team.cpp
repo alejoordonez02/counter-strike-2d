@@ -36,3 +36,5 @@ void Team::switch_sides(Team& other) {
 void Team::push_player_data(std::vector<PlayerDTO>& data) {
     for (auto& p : players) data.push_back(p->get_data());
 }
+
+int Team::get_count() { return players.size(); }
