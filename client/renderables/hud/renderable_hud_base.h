@@ -3,9 +3,10 @@
 
 #include <memory>
 #include <string>
-#include "SDL2pp/Point.hh"
-#include "common/position.h"
 #include "SDL2pp/Renderer.hh"
+
+#include "common/position.h"
+#include "common/network/dtos/snapshot_dto.h"
 #include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "client/renderables/hud/renderable_numbers.h"
