@@ -76,7 +76,36 @@ void Player::aim(Direction dir) { this->dir = dir; }
 /*
  * Pickup and drop stuff on the ground
  * */
-void Player::pickup() {}
+void Player::pickup() {
+    if (!alive) return;
+    std::unique_ptr<Drop> item = map.lock()->pickup(pos);
+    if (!item) return;
+    std::shared_ptr<Weapon> weapon;
+    switch (item->get_type()) {
+        case WeaponType::KNIFE:
+            return;
+        case WeaponType::BOMB:
+            return give_bomb();
+        case WeaponType::PRIMARY:
+        case WeaponType::SECONDARY:
+            weapon = get_weapon(item->get_type());
+            break;
+        default:
+            throw std::runtime_error("Player: pickup: unknown weapon type");
+    }
+    if (weapon) return drop(std::move(weapon));
+    weapon = item->get_weapon();
+}
+
+void Player::drop(std::shared_ptr<Weapon> weapon) {
+    if (weapon->get_type() == WeaponType::KNIFE) return;
+    map.lock()->drop(std::make_unique<WeaponDrop>(std::move(weapon), pos));
+}
+
+void Player::drop() {
+    if (!alive || !current) return;
+    drop(std::move(current));
+}
 
 /*
  * Weapon private selector

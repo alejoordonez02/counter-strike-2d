@@ -44,6 +44,7 @@ private:
 
     bool pay(const int& cost);
     std::shared_ptr<Weapon> get_weapon(WeaponType type);
+    void drop(std::shared_ptr<Weapon> weapon);
 
     virtual void teleport_to_spawn() = 0;
 
@@ -86,6 +87,9 @@ public:
     void aim(Direction dir);
 
     void pickup();
+    void drop();
+
+    virtual void drop_bomb() = 0;
 
     void use_weapon(const WeaponType& type);
 
