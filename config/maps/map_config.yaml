@@ -2,12 +2,12 @@ map_name: Nuke
 background: nuke
 tile_width: 32
 tile_height: 32
-planting_spots: 2
+planting_spots: 13
 blocks:
   - x: 96
     y: 224
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 128
     y: 224
     type: Solid
@@ -15,11 +15,11 @@ blocks:
   - x: 160
     y: 224
     type: Common
-    texture: sand1
+    texture: sandgravel3
   - x: 96
     y: 192
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 128
     y: 192
     type: Common
@@ -38,8 +38,8 @@ blocks:
     texture: sand1
   - x: 96
     y: 256
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 128
     y: 256
     type: Common
@@ -50,8 +50,8 @@ blocks:
     texture: sand1
   - x: 192
     y: 256
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: sitea
   - x: 64
     y: 256
     type: Solid
@@ -86,8 +86,8 @@ blocks:
     texture: solid7
   - x: 128
     y: 320
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: sitea
   - x: 256
     y: 224
     type: Plantable
@@ -103,11 +103,11 @@ blocks:
   - x: 160
     y: 288
     type: Common
-    texture: sandgrass1
+    texture: sandgravel3
   - x: 192
     y: 288
-    type: Common
-    texture: sandgrass1
+    type: Plantable
+    texture: sitea
   - x: 224
     y: 288
     type: Common
@@ -130,8 +130,8 @@ blocks:
     texture: sand1
   - x: 64
     y: 320
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 224
     y: 160
     type: Solid
@@ -147,7 +147,7 @@ blocks:
   - x: 192
     y: 320
     type: Common
-    texture: sand1
+    texture: sandgravel3
   - x: 224
     y: 320
     type: Common
@@ -198,12 +198,12 @@ blocks:
     texture: gravel3
   - x: 128
     y: 352
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: sitea
   - x: 96
     y: 352
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 288
     y: 224
     type: Common
@@ -222,8 +222,8 @@ blocks:
     texture: tspawn
   - x: 64
     y: 352
-    type: Solid
-    texture: solid7
+    type: Plantable
+    texture: sitea
   - x: 64
     y: 384
     type: Solid
@@ -298,8 +298,8 @@ blocks:
     texture: sand1
   - x: 32
     y: 320
-    type: Common
-    texture: sand1
+    type: Plantable
+    texture: plantspot1
   - x: 352
     y: 288
     type: Common
@@ -564,3 +564,7 @@ blocks:
     y: 64
     type: Common
     texture: sand1
+  - x: 0
+    y: 384
+    type: Common
+    texture: sandgravel3

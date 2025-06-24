@@ -17,7 +17,7 @@ public:
     
     void loadBackground(const QString &imagePath);
     void setTileSize(int width, int height);
-    void placeTile(const QPoint& position, const QString& texturePath, const QString& type);
+    void placeTile(const QPoint& position, const QString& texture, const QString& type);
     void loadMapFromData(const MapDataEditor& data);
     void saveMapData(const QString& filePath);
     MapDataEditor getMapData();
@@ -31,7 +31,7 @@ public:
     void paintEvent(QPaintEvent *event) override;
 
     public slots:
-    void setCurrentTile(const QString& texturePath, const QString& typeString);
+    void setCurrentTile(const QString& texture, const QString& typeString);
 
 private:
 
@@ -42,7 +42,7 @@ private:
     int m_tileHeight;
     MapDataEditor mapdata;
     struct {
-        QString texturePath;
+        QString texture;
         QString typeString;
         bool isValid = false;
     } m_selectedTile;
