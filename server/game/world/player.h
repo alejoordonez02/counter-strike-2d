@@ -47,6 +47,7 @@ private:
     void drop(std::shared_ptr<Weapon> weapon);
 
     virtual void teleport_to_spawn() = 0;
+    virtual uint8_t get_team() const = 0;
 
     std::shared_ptr<WeaponFactory> weapon_factory;
 
@@ -103,6 +104,7 @@ public:
      * */
     void set_weapon(std::shared_ptr<Weapon> weapon) { current = weapon; }
     bool is_alive();
+    virtual bool has_bomb() const = 0;
 
     /*
      * DTOs

@@ -5,9 +5,10 @@
 
 class Terrorist: public Player {
 private:
-    bool has_bomb;
+    bool _has_bomb;
 
     void teleport_to_spawn() override;
+    uint8_t get_team() const override { return 0; }
 
 public:
     Terrorist(int id, std::shared_ptr<Weapon> primary,
@@ -23,6 +24,8 @@ public:
     void give_bomb() override;
 
     void drop_bomb() override;
+
+    bool has_bomb() const override;
 
     void start_planting() override;
 
