@@ -1,15 +1,16 @@
 #include "client/renderables/renderable_player.h"
-#include "client/providers/animation_provider.h"
-#include "common/network/dtos/snapshot_dto.h"
 
 #include <utility>
+
+#include "client/providers/animation_provider.h"
+#include "common/network/dtos/snapshot_dto.h"
 
 RenderablePlayer::RenderablePlayer(
     uint16_t player_id, std::shared_ptr<AnimationProvider> animation_provider):
     player_id(player_id), is_terrorist(true), position(0, 0), facing_angle(0),
     is_shooting(false), was_hurt(false), is_walking(false), is_dead(false),
-    current_weapon(WeaponType::None), legs(animation_provider), gun(animation_provider),
-    animation_provider(animation_provider) {
+    current_weapon(WeaponName::NONE), legs(animation_provider),
+    gun(animation_provider), animation_provider(animation_provider) {
     load_animation("holding_pistol");
     load_animation("holding_knife");
     load_animation("holding_rifle");
@@ -23,7 +24,7 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
     std::string sufix_name = is_terrorist ? "terrorist_" : "counter_terrorist_";
     std::string skin_id = "1_";
     std::string full_name = sufix_name + skin_id + animation_name;
-    
+
     animations[animation_name] = animation_provider->make_animation(full_name);
 }
 
@@ -33,7 +34,7 @@ void RenderablePlayer::update(const PlayerDTO& player) {
     this->is_walking = player.is_walking;
     this->is_shooting = player.is_shooting;
 
-    if(player.is_dead){
+    if (player.is_dead) {
         current_animation = animations["death_icon"].get();
         current_animation->start_fadeout();
         current_animation->update();
@@ -41,44 +42,46 @@ void RenderablePlayer::update(const PlayerDTO& player) {
     }
 
     // ahora usa float y resta posiciones correctamente
-    this->facing_angle = calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
+    this->facing_angle =
+        calculate_facing_angle(player.x, player.y, player.aim_x, player.aim_y);
     current_weapon = player.current_weapon;
 
     // siempre actualiza las piernas
-    legs.update(this->position, this->facing_angle, is_walking); 
+    legs.update(this->position, this->facing_angle, is_walking);
 
     // segun el tipo de arma adopta sprite diferente
-    if(this->current_weapon == WeaponType::None) {
+    if (this->current_weapon == WeaponName::NONE) {
         current_animation = animations["idle"].get();
-    } else if(this->current_weapon == WeaponType::Knife) {
+    } else if (this->current_weapon == WeaponName::KNIFE) {
         current_animation = animations["holding_knife"].get();
-    } else if(this->current_weapon == WeaponType::Glock) {
+    } else if (this->current_weapon == WeaponName::GLOCK) {
         current_animation = animations["holding_pistol"].get();
-    } else if (this->current_weapon == WeaponType::Bomb) {
+    } else if (this->current_weapon == WeaponName::BOMB) {
         current_animation = animations["placing_bomb"].get();
     } else {
         current_animation = animations["holding_rifle"].get();
     }
     // renderizar siempre el arma
-    gun.update(this->position, Position(player.aim_x, player.aim_y), this->facing_angle, this->current_weapon, this->is_shooting);
-    
+    gun.update(this->position, Position(player.aim_x, player.aim_y),
+               this->facing_angle, this->current_weapon, this->is_shooting);
+
     current_animation->update();
 }
 
 void RenderablePlayer::render(SDL2pp::Renderer& renderer) {
     // NOTE: el orden de renderizado indica como un sprite "pisa" a otro
-    
+
     double angle = this->facing_angle;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-    if (current_animation->is_fading_out && !current_animation->update_fadeout()) {
+    if (current_animation->is_fading_out &&
+        !current_animation->update_fadeout()) {
         // si está en fadeout, no lo renderiza
         return;
     }
     legs.render(renderer);
     current_animation->render(renderer, position, flip, angle);
     gun.render(renderer);
-    
 }
 
 /*

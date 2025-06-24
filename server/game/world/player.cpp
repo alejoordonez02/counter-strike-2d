@@ -9,6 +9,7 @@
 #include "equipment/weapon.h"
 #include "map.h"
 #include "physics/player_physics.h"
+#include "reload.h"
 
 void Player::stop_action() { action = std::make_unique<Idle>(); }
 
@@ -66,12 +67,7 @@ void Player::start_attacking() {
                                       sorted_collidables_idx);
 }
 
-void Player::stop_attacking() { stop_action(); }
-
 void Player::aim(Direction dir) { this->dir = dir; }
-
-void Player::stop_planting() { stop_action(); }
-void Player::stop_defusing() { stop_action(); }
 
 /*
  * Set current weapon
@@ -79,6 +75,8 @@ void Player::stop_defusing() { stop_action(); }
 void Player::use_primary() { current = equipment.primary; }
 void Player::use_secondary() { current = equipment.secondary; }
 void Player::use_knife() { current = equipment.knife; }
+
+void Player::start_reloading() { action = std::make_unique<Reload>(current); }
 
 /*
  * Buy
@@ -103,16 +101,6 @@ void Player::buy_secondary(Weapon& weapon) {
     }
 }
 
-void Player::buy_primary_ammo(const int& count) {
-    if (pay(equipment.primary.get_ammo_cost() * count))
-        equipment.primary.load_ammo(count);
-}
-
-void Player::buy_secondary_ammo(const int& count) {
-    if (pay(equipment.secondary.get_ammo_cost() * count))
-        equipment.secondary.load_ammo(count);
-}
-
 /*
  * Get snapshot of the current state of the player
  * */
@@ -120,6 +108,7 @@ std::shared_ptr<PrivatePlayerDTO> Player::get_private_data() const {
     auto data = std::make_shared<PrivatePlayerDTO>();
     data->player_id = id;
     data->player_hp = health;
+    data->current_weapon = current.get_private_data();
     data->total_money = money;
     data->rounds_won = 0;  // ésto lo sabe World!
     data->total_kills = kills;
@@ -131,6 +120,7 @@ PlayerDTO Player::get_data() const {
     data.player_id = id;
     data.x = pos.x;
     data.y = pos.y;
+    data.current_weapon = current.get_data();
     data.aim_x = dir.x;
     data.aim_y = dir.y;
     data.is_walking = physics.is_moving();

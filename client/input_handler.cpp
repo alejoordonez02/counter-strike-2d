@@ -13,10 +13,10 @@
 #include "common/network/dtos/change_weapon_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
-#include "common/network/dtos/stop_attacking_dto.h"
+#include "common/network/dtos/start_planting_dto.h"
+#include "common/network/dtos/stop_action_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
-#include "start_planting_dto.h"
-#include "stop_planting_dto.h"
+#include "start_reloading_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -114,7 +114,7 @@ void InputHandler::send_attack() {
     // Detecta el fin del ataque (soltar click)
     if (!is_attacking && prev_left) {
         std::cout << "LOG: Enviando comando de fin de ataque." << std::endl;
-        commands_queue.try_push(std::make_shared<StopAttackingDTO>());
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
     }
 
     if (mouse_states["mouse_left"]) {
@@ -133,22 +133,22 @@ void InputHandler::send_change_weapon() {
         std::cout << "LOG: Enviando comando de cambio a arma bomba."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Bomb));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::BOMB));
     } else if (key_states[SDLK_k]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Knife));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::KNIFE));
     } else if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma primaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Primary));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::PRIMARY));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::Secondary));
+            std::make_shared<ChangeWeaponDTO>(EquipmentType::SECONDARY));
     }
 }
 
@@ -187,9 +187,22 @@ void InputHandler::send_plant_bomb() {
         commands_queue.try_push(std::make_shared<StartPlantingDTO>());
 
     if (!is_planting && prev)
-        commands_queue.try_push(std::make_shared<StopPlantingDTO>());
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
 
     prev = is_planting;
+}
+
+void InputHandler::send_reload() {
+    static bool prev = false;
+    bool is_reloading = key_states[SDLK_r];
+
+    if (is_reloading && !prev)
+        commands_queue.try_push(std::make_shared<StartReloadingDTO>());
+
+    if (!is_reloading && prev)
+        commands_queue.try_push(std::make_shared<StopActionDTO>());
+
+    prev = is_reloading;
 }
 
 // Nueva función para procesar el movimiento:
@@ -199,6 +212,7 @@ void InputHandler::process_movement() {
     send_change_weapon();
     send_aim();
     send_plant_bomb();
+    send_reload();
     // send_states();
 }
 

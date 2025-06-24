@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <utility>
 
-#include "common/network/dtos/snapshot_dto.h"
 
 GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
                    Queue<std::shared_ptr<DTO>>& commands,
