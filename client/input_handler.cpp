@@ -10,13 +10,14 @@
 #include "common/direction.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/aim_dto.h"
-#include "common/network/dtos/change_weapon_dto.h"
 #include "common/network/dtos/start_attacking_dto.h"
 #include "common/network/dtos/start_moving_dto.h"
 #include "common/network/dtos/start_planting_dto.h"
 #include "common/network/dtos/stop_action_dto.h"
 #include "common/network/dtos/stop_moving_dto.h"
+#include "common/weapons.h"
 #include "start_reloading_dto.h"
+#include "use_weapon_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -129,26 +130,21 @@ void InputHandler::send_attack() {
 void InputHandler::send_change_weapon() {
     // verifica si se apretó la tecla para cambiar entre arma primaria
     // secundaria, cuchillo o bomba
-    if (key_states[SDLK_b]) {
-        std::cout << "LOG: Enviando comando de cambio a arma bomba."
-                  << std::endl;
-        commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::BOMB));
-    } else if (key_states[SDLK_k]) {
+    if (key_states[SDLK_k]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::KNIFE));
+            std::make_shared<UseWeaponDTO>(WeaponType::KNIFE));
     } else if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma primaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::PRIMARY));
+            std::make_shared<UseWeaponDTO>(WeaponType::PRIMARY));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::SECONDARY));
+            std::make_shared<UseWeaponDTO>(WeaponType::SECONDARY));
     }
 }
 
