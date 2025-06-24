@@ -1,6 +1,6 @@
-#include "client/renderables/hud/renderable_hud_total_ammo.h"
+#include "client/renderables/hud/renderable_hud_ammo.h"
 
-RenderableHUDTotalAmmo::RenderableHUDTotalAmmo(std::shared_ptr<AnimationProvider> animation_provider):
+RenderableHUDAmmo::RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider):
 numbers(animation_provider), visible(true) {
     animations["glock"] = animation_provider->make_animation("glock");
     animations["ak47"] = animation_provider->make_animation("ak47");
@@ -13,7 +13,7 @@ numbers(animation_provider), visible(true) {
     current_animation = animations["glock"].get();
 }
 
-void RenderableHUDTotalAmmo::update_gun_icon(WeaponName weapon_name) {
+void RenderableHUDAmmo::update_gun_icon(WeaponName weapon_name) {
     if (weapon_name == WeaponName::GLOCK) {
         current_animation = animations["glock"].get();
     } else if (weapon_name == WeaponName::AK47) {
@@ -31,26 +31,23 @@ void RenderableHUDTotalAmmo::update_gun_icon(WeaponName weapon_name) {
     }
 }
 
-void RenderableHUDTotalAmmo::update(const PrivateWeaponDTO& weapon_data) {
+void RenderableHUDAmmo::update(const PrivateWeaponDTO& weapon_data) {
     numbers.update(weapon_data.total_ammo);
 
     update_gun_icon(weapon_data.name);
 }
 
 
-Position RenderableHUDTotalAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
+Position RenderableHUDAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
     int spacing_between = icon_size.x / 4;
-    int MAX_DIGITS = 3 + 1; // 1 dígitos para total ammo + 4 para loaded ammo
-    // esquina inferior derecha dejando un margen para loaded ammo
+    int MAX_DIGITS = 5;
+    // esquina inferior derecha
     int x = screen_size.x - (icon_size.x + spacing_between) * MAX_DIGITS;
     int y = screen_size.y - icon_size.y;
-    std::cout << "get_icon_position: screen_size: " << screen_size.x << ", " << screen_size.y << 
-    " icon_size: " << icon_size.x << ", " << icon_size.y << 
-    " x,y=" << x << ", " << y << std::endl;
     return Position(x, y);
 }
 
-void RenderableHUDTotalAmmo::render(SDL2pp::Renderer& renderer) {
+void RenderableHUDAmmo::render(SDL2pp::Renderer& renderer) {
     if (!visible) return; // No renderizar si está oculto
     
     bool is_camera_enabled = false;

@@ -16,14 +16,20 @@ protected:
     std::shared_ptr<AnimationProvider> animation_provider;
     std::unique_ptr<Animation> icon_animation;
     RenderableNumbers numbers;
+    bool visible;
 
 public:
     RenderableHUDBase(std::shared_ptr<AnimationProvider> animation_provider)
-        : animation_provider(animation_provider), numbers(animation_provider) {
+        : animation_provider(animation_provider), numbers(animation_provider), visible(true) {
         numbers.load_numbers();
     }
 
     virtual ~RenderableHUDBase() {}
+
+    // Métodos para mostrar/ocultar
+    void show() { visible = true; }
+    void hide() { visible = false; }
+    bool is_visible() const { return visible; }
 
     virtual std::string get_icon_name() const = 0;
     virtual Position get_icon_position(const Position& screen_size, const Position& icon_size) const = 0;
@@ -38,6 +44,8 @@ public:
     }
 
     virtual void render(SDL2pp::Renderer& renderer) {
+        if (!visible) return; // No renderizar si está oculto
+        
         /** 
          * Siempre se calcula el tamaño de la pantalla, ya que permitiria
          * hacer un resize de la misma en tiempo real

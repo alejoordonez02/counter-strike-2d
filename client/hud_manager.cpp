@@ -30,8 +30,16 @@ void HUDManager::update(const SnapshotDTO& snapshot,
     hud_timer.update(time_string);
     hud_hp.update(user_data.player_hp);
     hud_money.update(user_data.total_money);
-    hud_total_ammo.update(user_data.current_weapon);
-    hud_loaded_ammo.update(user_data.current_weapon.loaded_ammo);
+
+    if(user_data.current_weapon.name == WeaponName::BOMB || user_data.current_weapon.name == WeaponName::NONE) {
+        hud_total_ammo.hide();
+        hud_loaded_ammo.hide();
+    } else {
+        hud_total_ammo.show();
+        hud_loaded_ammo.show();
+        hud_total_ammo.update(user_data.current_weapon);
+        hud_loaded_ammo.update(user_data.current_weapon.loaded_ammo);
+    }
 
     bool user_is_attacking = get_user_is_shooting(snapshot, user_data);
     pointer.update(user_is_attacking);

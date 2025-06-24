@@ -1,5 +1,5 @@
-#ifndef CLIENT_RENDERABLES_RENDERABLE_HUD_TOTAL_AMMO_H
-#define CLIENT_RENDERABLES_RENDERABLE_HUD_TOTAL_AMMO_H
+#ifndef CLIENT_RENDERABLES_RENDERABLE_HUD_AMMO_H
+#define CLIENT_RENDERABLES_RENDERABLE_HUD_AMMO_H
 
 #include <utility>
 
@@ -8,7 +8,7 @@
 #include "client/renderables/hud/renderable_numbers.h"
 #include "common/network/dtos/snapshot_dto.h"
 
-class RenderableHUDTotalAmmo {
+class RenderableHUDAmmo {
 private:
     void update_gun_icon(WeaponName weapon_name);
 
@@ -19,8 +19,9 @@ private:
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
 
     Position get_icon_position(const Position& screen_size, const Position& icon_size);
+    Position get_number_position(const Position& screen_size, const Position& icon_size, int spacing);
 public:
-    RenderableHUDTotalAmmo(std::shared_ptr<AnimationProvider> animation_provider);
+    RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider);
 
     // Métodos para mostrar/ocultar
     void show() { visible = true; }
