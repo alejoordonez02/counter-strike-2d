@@ -38,8 +38,11 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
 
 std::vector<std::string> GameMaker::list() {
     std::unique_lock<std::mutex> lck(m);
-    std::vector<std::string> game_names;
-    std::transform(games.begin(), games.end(), std::back_inserter(game_names),
-                   [](const auto& pair) { return pair.first; });
-    return game_names;
+    
+    std::vector<std::unique_ptr<GameDetailsDTO>> list;
+    for (const auto& [n, g]: games) {
+        list.push_back(g->get_details_dto());
+    }
+
+    return list;
 }

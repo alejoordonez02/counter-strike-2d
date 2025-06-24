@@ -11,6 +11,8 @@
 #include "factory/game_factory.h"
 #include "game.h"
 
+class GameDetailsDTO;
+
 class GameMaker {
 private:
     std::mutex m;
@@ -26,7 +28,7 @@ public:
 
     void join(Connection&& con, const std::string& game_name, TeamName team);
 
-    std::vector<std::string> list();
+    std::vector<std::unique_ptr<GameDetailsDTO>> list();
 };
 
 #endif
