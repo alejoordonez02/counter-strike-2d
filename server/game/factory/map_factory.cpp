@@ -2,12 +2,11 @@
 
 #include "common/maploader.h"
 #include "server/game/world/map.h"
+#include "weapon_factory.h"
 
-std::shared_ptr<Map> MapFactory::create(const MapData& config) {
+std::shared_ptr<Map> MapFactory::create(
+    const MapData& config, std::shared_ptr<WeaponFactory> weapon_factory) {
     std::vector<std::shared_ptr<Hitbox>> collidables;
-    /*
-     * TODO: levantar los drops
-     * */
     std::vector<Drop> drops;
     std::vector<Structure> bomb_site;
     std::vector<Position> tt_spawn;
@@ -22,6 +21,29 @@ std::shared_ptr<Map> MapFactory::create(const MapData& config) {
             tt_spawn.push_back(Position(block.x, block.y));
         else if (block.type == "CtSpawn")
             ct_spawn.push_back(Position(block.x, block.y));
+        /*
+         * por ésto son malas las strings para las configs, 20 mins para darme
+         * cuenta que había un typo en prueba-mapa-mod.yaml (medio boludo yo
+         * igual xd)
+         * TODO: typo
+         * */
+        else if (block.type == "DropedAk47") {
+            Drop drop(weapon_factory->create(WeaponName::AK47),
+                      Position(block.x, block.y));
+            drops.push_back(std::move(drop));
+        } else if (block.type == "DropedGlock") {
+            Drop drop(weapon_factory->create(WeaponName::GLOCK),
+                      Position(block.x, block.y));
+            drops.push_back(std::move(drop));
+        } else if (block.type == "DropedAwp") {
+            Drop drop(weapon_factory->create(WeaponName::AWP),
+                      Position(block.x, block.y));
+            drops.push_back(std::move(drop));
+        } else if (block.type == "DropedM3") {
+            Drop drop(weapon_factory->create(WeaponName::M3),
+                      Position(block.x, block.y));
+            drops.push_back(std::move(drop));
+        }
     }
 
     return std::make_shared<Map>(collidables, drops, bomb_site, tt_spawn,
