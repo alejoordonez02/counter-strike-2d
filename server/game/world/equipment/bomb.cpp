@@ -12,6 +12,10 @@ void Bomb::plant() {
     if (state == BombState::NOT_PLANTED) state = BombState::PLANTED;
 }
 
+BombState Bomb::get_state() { return state; }
+
+Position Bomb::get_position() { return pos; }
+
 void Bomb::defuse() {
     if (state == BombState::PLANTED) state = BombState::DEFUSED;
 }

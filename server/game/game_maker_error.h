@@ -6,19 +6,17 @@
 
 class GameAlreadyExists: public std::runtime_error {
 public:
-    explicit GameAlreadyExists(const std::string& game_name):
-        std::runtime_error("Game '" + game_name + "' already exists\n") {}
+    explicit GameAlreadyExists(const std::string& game_name);
 };
 
 class GameNotFound: public std::runtime_error {
 public:
-    explicit GameNotFound(const std::string& game_name):
-        std::runtime_error("Game '" + game_name + "' does not exist\n") {}
+    explicit GameNotFound(const std::string& game_name);
 };
 
 class TeamIsFull: public std::runtime_error {
 public:
-    explicit TeamIsFull(): std::runtime_error("Team is full\n") {}
+    explicit TeamIsFull();
 };
 
 #endif

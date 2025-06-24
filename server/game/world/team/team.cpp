@@ -22,6 +22,8 @@ void Team::sum_won_round() { won_rounds++; }
 
 int Team::get_won_rounds() { return won_rounds; }
 
+bool Team::is_full() const { return players.size() >= max_players; }
+
 void Team::switch_sides(Team& other) {
     switch_player_sides();
     other.switch_player_sides();

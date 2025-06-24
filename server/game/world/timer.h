@@ -8,23 +8,15 @@ private:
     bool done;
 
 public:
-    explicit Timer(float time): time(time), time_left(time), done(false) {}
+    explicit Timer(float time);
 
-    void update(float dt) {
-        if (done) return;
+    void update(float dt);
 
-        time_left -= dt;
-        if (time_left <= 0) done = true;
-    }
+    void restart();
 
-    void restart() {
-        time_left = time;
-        done = false;
-    }
+    bool is_done() const;
 
-    bool is_done() const { return done; }
-
-    float get_time_left() { return time_left; }
+    float get_time_left();
 };
 
 #endif

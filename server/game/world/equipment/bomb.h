@@ -22,8 +22,9 @@ public:
 
     void plant();
 
-    BombState get_state() { return state; }
-    Position get_position() { return pos; }
+    BombState get_state();
+
+    Position get_position();
 
     void defuse();
 

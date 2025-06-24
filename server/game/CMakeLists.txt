@@ -4,6 +4,7 @@ target_sources(cs2d_server_lib
     PRIVATE
     game.cpp
     game_maker.cpp
+    game_maker_error.cpp
     player_handler.cpp
 )
 

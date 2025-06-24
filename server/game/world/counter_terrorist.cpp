@@ -16,6 +16,8 @@ CounterTerrorist::CounterTerrorist(
 
 void CounterTerrorist::teleport_to_spawn() { pos = map.lock()->get_ct_spawn(); }
 
+uint8_t CounterTerrorist::get_team() const { return 1; }
+
 void CounterTerrorist::restart() { respawn(); }
 
 void CounterTerrorist::start_defusing() {
@@ -26,3 +28,12 @@ void CounterTerrorist::start_defusing() {
 
     action = std::make_unique<DefuseBomb>(pos, map, TIME_TO_DEFUSE);
 }
+
+void CounterTerrorist::give_bomb() {
+    /*
+     * papa caliente, la agarra y la suelta
+     * */
+    map.lock()->drop(std::make_unique<BombDrop>(pos));
+}
+
+bool CounterTerrorist::has_bomb() const override { return false; }

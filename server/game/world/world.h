@@ -3,7 +3,6 @@
 
 #include <chrono>
 #include <memory>
-#include <stdexcept>
 
 #include "common/team_name.h"
 #include "map.h"
@@ -55,16 +54,7 @@ public:
 
     std::shared_ptr<Player> add_player(TeamName team);
 
-    bool team_is_full(TeamName team) const {
-        switch (team) {
-            case TeamName::TERRORIST:
-                return tt_team.is_full();
-            case TeamName::COUNTER_TERRORIST:
-                return tt_team.is_full();
-            default:
-                throw std::runtime_error("World error: unknown team name");
-        }
-    }
+    bool team_is_full(TeamName team) const;
 
     bool has_ended() const;
 

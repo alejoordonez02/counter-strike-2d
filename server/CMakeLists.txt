@@ -1,8 +1,10 @@
 # server/CMakeLists.txt
 
 set(SERVER_SOURCES
+    acceptor.cpp
     client_handler.cpp
     main.cpp
+    server.cpp
 )
 
 add_library(cs2d_server_lib)

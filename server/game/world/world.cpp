@@ -93,6 +93,17 @@ std::shared_ptr<Player> World::add_player(TeamName team) {
     return p;
 }
 
+bool World::team_is_full(TeamName team) const {
+    switch (team) {
+        case TeamName::TERRORIST:
+            return tt_team.is_full();
+        case TeamName::COUNTER_TERRORIST:
+            return tt_team.is_full();
+        default:
+            throw std::runtime_error("World error: unknown team name");
+    }
+}
+
 /*
  * Check wheter the game has ended
  * */

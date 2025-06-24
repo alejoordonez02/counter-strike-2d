@@ -38,7 +38,7 @@ public:
 
     void switch_sides(Team& other);
 
-    bool is_full() const { return players.size() >= max_players; }
+    bool is_full() const;
 
     void push_player_data(std::vector<PlayerDTO>& data);
 };

@@ -17,3 +17,5 @@ void Attack::update(float /* dt */) {
         money += KILL_REWARD;
     };
 }
+
+bool Attack::is_attacking() const { return true; }

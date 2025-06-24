@@ -50,6 +50,22 @@ std::vector<std::shared_ptr<Hitbox>>& Map::get_collidables() {
     return collidables;
 }
 
+std::unique_ptr<Drop> Map::pickup(const Position& pos) {
+    for (auto d = drops.begin(); d != drops.end(); ++d) {
+        if ((*d)->intersects(pos)) {
+            auto item = std::move(*d);
+            drops.erase(d);
+            return item;
+        }
+    }
+    return nullptr;
+}
+
+void Map::drop(std::unique_ptr<Drop> item) {
+    if (!item) return;
+    drops.push_back(std::move(item));
+}
+
 /*
  * Bomb
  * */
@@ -62,6 +78,11 @@ void Map::plant_bomb(const Position& pos) {
 }
 
 void Map::defuse_bomb() { bomb->defuse(); }
+
+BombState Map::get_bomb_state() {
+    if (!bomb) return BombState::NOT_PLANTED;
+    return bomb->get_state();
+}
 
 void Map::push_map_data(std::shared_ptr<SnapshotDTO> snapshot) {
     for (auto& d : drops) d->push_drop_data(snapshot->weapons_on_floor);

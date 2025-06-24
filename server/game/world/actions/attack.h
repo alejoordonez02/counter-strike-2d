@@ -27,7 +27,7 @@ public:
 
     void update(float dt) override;
 
-    bool is_attacking() const override { return true; }
+    bool is_attacking() const override;
 };
 
 #endif
