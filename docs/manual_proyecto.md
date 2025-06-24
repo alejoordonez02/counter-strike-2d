@@ -1,12 +1,5 @@
 ## Manual del proyecto
 
-
-## Integrantes
-Alejo Ordoñez - 108397
-Weng Xu Marcos Tomás - 109153
-Alejandro Paff - 103376
-Gonzalo Bustos - 100827
-
 ## División de trabajo
 Al ser un TP tan grande la división de tareas fué fundamental, cada uno se encargó de una parte del proyecto.
 Alejo -> Servidor y logica del juego.
