@@ -8,17 +8,6 @@ PlayerFactory::PlayerFactory(std::shared_ptr<Map> map,
                              std::shared_ptr<WeaponFactory> weapon_factory):
     map(std::move(map)), config(config), weapon_factory(weapon_factory) {}
 
-/* int id,
-   std::shared_ptr<Weapon> primary,
-   std::shared_ptr<Weapon> secondary,
-   std::shared_ptr<Weapon> knife,
-   std::weak_ptr<Map> map,
-   float max_velocity,
-   float acceleration,
-   float radius,
-   int money,
-   int health,
-   std::shared_ptr<WeaponFactory> weapon_factory); */
 std::shared_ptr<Player> PlayerFactory::create(int id, TeamName team) const {
     switch (team) {
         case TeamName::TERRORIST:
