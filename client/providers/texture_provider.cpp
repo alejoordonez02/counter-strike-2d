@@ -45,8 +45,6 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     textures["aztect_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/aztec.bmp");
     textures["embrador_tiles"] = std::make_shared<SDL2pp::Texture>(renderer, DATA_PATH "/assets/gfx/tiles/embrador.bmp");
     
-    
-    
     // ==== HUD ======
     // Cargar hud_symbols con fondo negro como transparente
     SDL2pp::Surface hud_symbols_surface(DATA_PATH "/assets/gfx/hud_symbols.bmp");
@@ -59,6 +57,7 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     
     
     // ==== GUNS ======
+    // HELD GUN
     SDL2pp::Surface held_bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb.bmp");
     held_bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["held_bomb"] = std::make_shared<SDL2pp::Texture>(renderer, held_bomb_surface);
@@ -83,7 +82,7 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     held_awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["held_awp"] = std::make_shared<SDL2pp::Texture>(renderer, held_awp_surface);
 
-
+    // GUNS ON FLOOR
     SDL2pp::Surface bomb_surface(DATA_PATH "/assets/gfx/weapons/bomb_d.bmp");
     bomb_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["bomb"] = std::make_shared<SDL2pp::Texture>(renderer, bomb_surface);
@@ -103,6 +102,11 @@ void TextureProvider::load_textures(SDL2pp::Renderer& renderer) {
     SDL2pp::Surface awp_surface(DATA_PATH "/assets/gfx/weapons/awp_d.bmp");
     awp_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 0, 0, 0));
     textures["awp"] = std::make_shared<SDL2pp::Texture>(renderer, awp_surface);
+
+    SDL2pp::Surface none_weapon_surface(DATA_PATH "/assets/gfx/weapons/empty_weapon.bmp");
+    none_weapon_surface.SetColorKey(true, SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_RGB24), 255, 255, 255));
+    textures["none"] = std::make_shared<SDL2pp::Texture>(renderer, none_weapon_surface);
+
     
     // NOTE: uso el que hizo Marcos ya que estan mas cuadradas las armas
     SDL2pp::Surface tilesheet_2_surface(DATA_PATH "/../resources/weapons/tilesheet_2.png");
