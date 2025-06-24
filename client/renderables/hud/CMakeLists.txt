@@ -7,6 +7,7 @@ target_sources(cs2d_client
         renderable_hud_timer.cpp
         renderable_hud_money.cpp
         renderable_hud_ammo.cpp
+        renderable_hud_loaded_ammo.cpp
     PUBLIC
 )
 

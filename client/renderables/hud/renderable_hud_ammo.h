@@ -17,8 +17,6 @@ private:
     Animation* current_animation;
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
 
-    std::shared_ptr<AnimationProvider> animation_provider;
-    
     Position get_icon_position(const Position& screen_size, const Position& icon_size);
     Position get_number_position(const Position& screen_size, const Position& icon_size, int spacing);
 public:

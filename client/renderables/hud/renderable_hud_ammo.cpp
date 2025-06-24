@@ -1,7 +1,7 @@
 #include "client/renderables/hud/renderable_hud_ammo.h"
 
 RenderableHUDAmmo::RenderableHUDAmmo(std::shared_ptr<AnimationProvider> animation_provider):
-numbers(animation_provider), animation_provider(animation_provider) {
+numbers(animation_provider) {
     animations["glock"] = animation_provider->make_animation("glock");
     animations["ak47"] = animation_provider->make_animation("ak47");
     animations["m3"] = animation_provider->make_animation("m3");
@@ -40,17 +40,11 @@ void RenderableHUDAmmo::update(const PrivateWeaponDTO& weapon_data) {
 
 Position RenderableHUDAmmo::get_icon_position(const Position& screen_size, const Position& icon_size) {
     int spacing_between = icon_size.x / 4;
-    int MAX_DIGITS = 2;
+    int MAX_DIGITS = 5;
     // esquina inferior derecha
     int x = screen_size.x - (icon_size.x + spacing_between) * MAX_DIGITS;
-    int y = screen_size.y - icon_size.y - spacing_between;
+    int y = screen_size.y - icon_size.y;
     return Position(x, y);
-}
-
-Position RenderableHUDAmmo::get_number_position(const Position& screen_size, const Position& icon_size, int spacing) {
-    Position icon_pos = get_icon_position(screen_size, icon_size);
-    // Los números van a la derecha del icono
-    return Position(icon_pos.x + icon_size.x + spacing, icon_pos.y);
 }
 
 void RenderableHUDAmmo::render(SDL2pp::Renderer& renderer) {
@@ -64,7 +58,7 @@ void RenderableHUDAmmo::render(SDL2pp::Renderer& renderer) {
     Position screen_size = Position(renderer.GetOutputSize().x, renderer.GetOutputSize().y);
     
     Position icon_pos = get_icon_position(screen_size, icon_size);
-    Position number_pos = get_number_position(screen_size, icon_size, spacing_between);
+    Position number_pos = Position(icon_pos.x + icon_size.x + spacing_between, icon_pos.y);
 
     // render icon and numbers
     current_animation->render(renderer, icon_pos, flip, 0, is_camera_enabled);

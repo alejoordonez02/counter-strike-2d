@@ -13,6 +13,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         hud_timer(animation_provider),
         hud_money(animation_provider),
         hud_ammo(animation_provider),
+        hud_loaded_ammo(animation_provider),
         pointer(animation_provider)
          {
 }
@@ -30,7 +31,7 @@ void HUDManager::update(const SnapshotDTO& snapshot,
     hud_hp.update(user_data.player_hp);
     hud_money.update(user_data.total_money);
     hud_ammo.update(user_data.current_weapon);
-    // hud_loaded_ammo.update(user_data.current_weapon);
+    hud_loaded_ammo.update(user_data.current_weapon.loaded_ammo);
 
     bool user_is_attacking = get_user_is_shooting(snapshot, user_data);
     pointer.update(user_is_attacking);
@@ -61,7 +62,7 @@ void HUDManager::render(SDL2pp::Renderer& renderer) {
     hud_timer.render(renderer);
     hud_money.render(renderer);
     hud_ammo.render(renderer);
-    // hud_loaded_ammo.render(renderer);
+    hud_loaded_ammo.render(renderer);
     
 
     if(show_text){
