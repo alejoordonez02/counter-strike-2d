@@ -39,6 +39,10 @@ void Weapon::reload() {
     ammo -= to_load;
 }
 
+void Weapon::add_ammo(int count) { ammo += count; }
+
+WeaponType Weapon::get_type() const { return type; }
+
 int Weapon::get_cost() const { return cost; }
 
 int Weapon::get_ammo_cost() const { return ammo_cost; }

@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "common/network/dtos/snapshot_dto.h"
+#include "common/network/dtos/private_weapon_dto.h"
 #include "common/weapons.h"
 #include "server/game/world/physics/hitbox.h"
 #include "server/game/world/timer.h"
@@ -41,6 +41,13 @@ public:
                         const std::vector<size_t>& sorted_idx);
 
     virtual void reload();
+
+    void add_ammo(int count);
+
+    /*
+     * Getters
+     * */
+    WeaponType get_type() const;
 
     virtual int get_cost() const;
 
