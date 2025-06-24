@@ -10,18 +10,30 @@
  * */
 void GameConfig::load_world_config(YAML::Node config, MapName map) {
     std::cout << "loading world config\n";
-    world.rounds = config["rounds"].as<int>();
-    world.round_time = config["round_time"].as<float>();
-    world.time_out = config["time_out"].as<float>();
-    world.map = load_map_config(map);
-    world.player = load_player_config(config["player"]);
-    world.weapons = load_weapon_configs(config["weapons"]);
+    try {
+        world.rounds = config["rounds"].as<int>();
+        world.round_time = config["round_time"].as<float>();
+        world.time_out = config["time_out"].as<float>();
+        world.map = load_map_config(map);
+        world.player = load_player_config(config["player"]);
+        world.weapons = load_weapon_configs(config["weapons"]);
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading world config: " << e.what() << std::endl;
+        throw std::runtime_error(
+            "Game config error: invalid world configuration");
+    }
 }
 
 void GameConfig::load_loop_config(YAML::Node config) {
     std::cout << "loading loop config\n";
-    loop.tick_rate = config["tick_rate"].as<int>();
-    loop.commands_per_tick = config["commands_per_tick"].as<int>();
+    try {
+        loop.tick_rate = config["tick_rate"].as<int>();
+        loop.commands_per_tick = config["commands_per_tick"].as<int>();
+    } catch (...) {
+        std::cerr << "Error loading loop config" << std::endl;
+        throw std::runtime_error(
+            "Game config error: invalid loop configuration");
+    }
 }
 
 GameConfig::GameConfig(const std::string& path, MapName map) {
@@ -63,11 +75,17 @@ MapData GameConfig::load_map_config(MapName map_name) {
 PlayerConfig GameConfig::load_player_config(YAML::Node config) {
     std::cout << "loading player config\n";
     PlayerConfig player;
-    player.max_velocity = config["max_velocity"].as<float>();
-    player.acceleration = config["acceleration"].as<float>();
-    player.radius = config["radius"].as<float>();
-    player.starting_money = config["starting_money"].as<int>();
-    player.max_health = config["max_health"].as<int>();
+    try {
+        player.max_velocity = config["max_velocity"].as<float>();
+        player.acceleration = config["acceleration"].as<float>();
+        player.radius = config["radius"].as<float>();
+        player.starting_money = config["starting_money"].as<int>();
+        player.max_health = config["max_health"].as<int>();
+    } catch (...) {
+        std::cerr << "Error loading player config" << std::endl;
+        throw std::runtime_error(
+            "Game config error: invalid player configuration");
+    }
     return player;
 }
 
@@ -83,20 +101,37 @@ std::map<WeaponName, WeaponConfig> GameConfig::load_weapon_configs(
         {"Awp", WeaponName::AWP},
         {"Knife", WeaponName::KNIFE}};
 
+    std::map<std::string, WeaponType> weapon_type_map = {
+        {"Primary", WeaponType::PRIMARY},
+        {"Secondary", WeaponType::SECONDARY},
+        {"Knife", WeaponType::KNIFE}};
+
     std::cout << "loading weapon config\n";
     std::map<WeaponName, WeaponConfig> weapons;
     for (auto c : configs) {
-        std::string name = c.first.as<std::string>();
-        auto config = c.second;
-        WeaponConfig weapon;
-        weapon.damage = config["damage"].as<int>();
-        weapon.ammo = config["ammo"].as<int>();
-        weapon.accuracy = config["accuracy"].as<float>();
-        weapon.range = config["range"].as<float>();
-        weapon.fire_rate = config["fire_rate"].as<float>();
-        weapon.cost = config["cost"].as<int>();
-        weapon.ammo_cost = config["ammo_cost"].as<int>();
-        weapons[weapon_name_map.at(name)] = weapon;
+        try {
+            auto config = c.second;
+            WeaponName name = weapon_name_map.at(c.first.as<std::string>());
+            WeaponConfig weapon;
+            weapon.type = weapon_type_map.at(config["type"].as<std::string>());
+            weapon.damage = config["damage"].as<float>();
+            weapon.accuracy = config["accuracy"].as<float>();
+            weapon.range = config["range"].as<float>();
+            weapon.bullet_size = config["bullet_size"].as<float>();
+            weapon.fire_rate = config["fire_rate"].as<float>();
+            weapon.reload_time = config["reload_time"].as<float>();
+            weapon.ammo_capacity = config["ammo_capacity"].as<int>();
+            weapon.starting_ammo = config["starting_ammo"].as<int>();
+            weapon.cost = config["cost"].as<int>();
+            weapon.ammo_cost = config["ammo_cost"].as<int>();
+            weapons[name] = weapon;
+        } catch (const std::exception& e) {
+            std::cerr << "Error loading weapon config for "
+                      << c.first.as<std::string>() << ": " << e.what()
+                      << std::endl;
+            throw std::runtime_error(
+                "Game config error: invalid weapon configuration");
+        }
     }
     return weapons;
 }
