@@ -7,17 +7,17 @@ blocks:
   # Fila 0 (y=0)
   - x: 0
     y: 0
-    texture: "resources/weapons/glock.png"
+    texture: "glock"
     type: "DropedGlock"
   - x: 1
     y: 0
-    texture: "resources/weapons/ak47.png"
+    texture: "ak47"
     type: "DropedAk47"
   - x: 2
     y: 0
-    texture: "resources/weapons/m4.png"
+    texture: "m4"
     type: "DropedM4"
   - x: 3
     y: 0
-    texture: "resources/weapons/awp.png"
+    texture: "awp"
     type: "DropedAwp"
