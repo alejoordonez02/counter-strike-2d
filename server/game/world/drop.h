@@ -10,10 +10,13 @@ class Player;
 
 class Drop {
 private:
-    std::unique_ptr<Weapon> weapon;
+    std::shared_ptr<Weapon> weapon;
     Position pos;
 
 public:
+    Drop(std::shared_ptr<Weapon> weapon, Position pos):
+        weapon(std::move(weapon)), pos(pos) {}
+
     void push_drop_data(std::vector<WeaponDTO>& snapshot) {
         snapshot.push_back(WeaponDTO(weapon->get_name(), pos));
     }
