@@ -13,7 +13,7 @@
 class Map {
 private:
     std::vector<std::shared_ptr<Hitbox>> collidables;
-    std::vector<Drop> drops;
+    std::vector<std::unique_ptr<Drop>> drops;
     std::vector<Structure> bomb_site;
     std::vector<Position> tt_spawn;
     std::vector<Position> ct_spawn;
@@ -21,7 +21,8 @@ private:
 
 public:
     Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
-        const std::vector<Drop>& drops, const std::vector<Structure>& bomb_site,
+        std::vector<std::unique_ptr<Drop>>&& drops,
+        const std::vector<Structure>& bomb_site,
         const std::vector<Position>& tt_spawn,
         const std::vector<Position>& ct_spawn);
 
@@ -37,7 +38,21 @@ public:
 
     std::vector<std::shared_ptr<Hitbox>>& get_collidables();
 
-    // Weapon pickup(const Position& pos);
+    std::unique_ptr<Drop> pickup(const Position& pos) {
+        for (auto d = drops.begin(); d != drops.end(); ++d) {
+            if ((*d)->intersects(pos)) {
+                auto item = std::move(*d);
+                drops.erase(d);
+                return item;
+            }
+        }
+        return nullptr;
+    }
+
+    void drop(std::unique_ptr<Drop> item) {
+        if (!item) return;
+        drops.push_back(std::move(item));
+    }
 
     std::vector<Structure>& get_bomb_site();
     Position get_bomb_position();

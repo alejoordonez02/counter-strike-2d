@@ -76,7 +76,55 @@ void Player::aim(Direction dir) { this->dir = dir; }
 /*
  * Pickup and drop stuff on the ground
  * */
-void Player::pickup() {}
+void Player::pickup() {
+    if (!alive) return;
+
+    std::unique_ptr<Drop> item = map.lock()->pickup(pos);
+    if (!item) return;
+
+    if (item->get_type() == WeaponType::KNIFE) return;
+    if (item->get_type() == WeaponType::BOMB) return give_bomb();
+
+    std::shared_ptr<Weapon> weapon;
+    weapon = get_weapon(item->get_type());
+    if (weapon) drop(std::move(weapon));
+
+    switch (item->get_type()) {
+        case WeaponType::PRIMARY:
+            primary = item->get_weapon();
+            current = primary;
+            break;
+        case WeaponType::SECONDARY:
+            secondary = item->get_weapon();
+            current = secondary;
+            break;
+        default:
+            throw std::runtime_error("Player: pickup: unknown weapon type");
+    }
+}
+
+void Player::drop(std::shared_ptr<Weapon> weapon) {
+    if (weapon->get_type() == WeaponType::KNIFE) return;
+    switch (weapon->get_type()) {
+        case WeaponType::PRIMARY:
+            if (primary == weapon) primary = nullptr;
+            break;
+        case WeaponType::SECONDARY:
+            if (secondary == weapon) secondary = nullptr;
+            break;
+        default:
+            throw std::runtime_error("Player: drop: unknown weapon type");
+    }
+
+    map.lock()->drop(std::make_unique<WeaponDrop>(std::move(weapon), pos));
+    current = knife;
+}
+
+void Player::drop() {
+    if (!alive || !current) return;
+    auto weapon = current;
+    drop(std::move(weapon));
+}
 
 /*
  * Weapon private selector
@@ -146,12 +194,15 @@ std::shared_ptr<PrivatePlayerDTO> Player::get_private_data() const {
 PlayerDTO Player::get_data() const {
     PlayerDTO data;
     data.player_id = id;
+    data.team_id = get_team();
+    data.has_bomb = has_bomb();
     data.x = pos.x;
     data.y = pos.y;
     data.current_weapon = current->get_data();
     data.aim_x = dir.x;
     data.aim_y = dir.y;
     data.is_walking = physics.is_moving();
+    data.is_shooting = action->is_attacking();
     data.is_dead = !alive;
     return data;
 }

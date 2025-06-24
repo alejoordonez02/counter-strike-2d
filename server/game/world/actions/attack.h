@@ -24,6 +24,8 @@ public:
            std::vector<size_t>& sorted_idx);
 
     void update(float dt) override;
+
+    bool is_attacking() const override { return true; }
 };
 
 #endif

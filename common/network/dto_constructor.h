@@ -19,8 +19,11 @@
 #include "common/network/dtos/stop_moving_dto.h"
 #include "common/network/protocol.h"
 #include "create_game_dto.h"
+#include "drop_bomb_dto.h"
+#include "drop_current_dto.h"
 #include "join_game_dto.h"
 #include "list_games_dto.h"
+#include "pickup_dto.h"
 #include "start_reloading_dto.h"
 #include "stop_action_dto.h"
 #include "use_weapon_dto.h"
@@ -54,6 +57,18 @@ public:
             {BUY_AMMO,
              [](auto&& bytes) {
                  return std::make_unique<BuyAmmoDTO>(std::move(bytes));
+             }},
+            {DROP_CURRENT,
+             [](auto&& bytes) {
+                 return std::make_unique<DropCurrentDTO>(std::move(bytes));
+             }},
+            {DROP_BOMB,
+             [](auto&& bytes) {
+                 return std::make_unique<DropBombDTO>(std::move(bytes));
+             }},
+            {PICKUP,
+             [](auto&& bytes) {
+                 return std::make_unique<PickupDTO>(std::move(bytes));
              }},
             {START_MOVING,
              [](auto&& bytes) {
