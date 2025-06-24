@@ -6,8 +6,6 @@ numbers(animation_provider), visible(true) {
     animations["ak47"] = animation_provider->make_animation("ak47");
     animations["m3"] = animation_provider->make_animation("m3");
     animations["awp"] = animation_provider->make_animation("awp");
-    animations["knife"] = animation_provider->make_animation("knife");
-    animations["bomb"] = animation_provider->make_animation("bomb");
     animations["none"] = animation_provider->make_animation("none");
 
     current_animation = animations["glock"].get();
@@ -22,10 +20,6 @@ void RenderableHUDTotalAmmo::update_gun_icon(WeaponName weapon_name) {
         current_animation = animations["m3"].get();
     } else if (weapon_name == WeaponName::AWP) {
         current_animation = animations["awp"].get();
-    } else if (weapon_name == WeaponName::KNIFE) {
-        current_animation = animations["knife"].get();
-    } else if (weapon_name == WeaponName::BOMB) {
-        current_animation = animations["bomb"].get();
     } else {
         current_animation = animations["none"].get();
     }
@@ -44,9 +38,6 @@ Position RenderableHUDTotalAmmo::get_icon_position(const Position& screen_size, 
     // esquina inferior derecha dejando un margen para loaded ammo
     int x = screen_size.x - (icon_size.x + spacing_between) * MAX_DIGITS;
     int y = screen_size.y - icon_size.y;
-    std::cout << "get_icon_position: screen_size: " << screen_size.x << ", " << screen_size.y << 
-    " icon_size: " << icon_size.x << ", " << icon_size.y << 
-    " x,y=" << x << ", " << y << std::endl;
     return Position(x, y);
 }
 
