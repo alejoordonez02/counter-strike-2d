@@ -8,8 +8,6 @@
 #include <string>
 #include <utility>
 
-#define EFFECT_COUNTER_TIME 0.1f
-// ej. 30 fps * 0.2f = 6 => cada 6 ticks hace el flare
 
 RenderableGunEffect::RenderableGunEffect(
         std::shared_ptr<AnimationProvider> animation_provider):
@@ -17,8 +15,7 @@ RenderableGunEffect::RenderableGunEffect(
         gun_position(0, 0),
         facing_angle(0),
         current_animation(nullptr),
-        animation_provider(animation_provider),
-        effect_timer(0) {
+        animation_provider(animation_provider) {
     load_animation("flare3");
     load_animation("knifeslash");
     // load_animation("fragments");
@@ -38,18 +35,13 @@ void RenderableGunEffect::update(const Position& player_position, const Position
 
     if(!is_shooting || weapon_type == WeaponType::None) {
         current_animation = nullptr;
-        effect_timer = 0;
         return;
-    } else if (weapon_type == WeaponType::Bomb) {
-        // current_animation = animations["bomb_explosion"].get();
-    } else if (weapon_type == WeaponType::Knife) {
+    } else if (is_shooting && weapon_type == WeaponType::Knife) {
         current_animation = animations["knifeslash"].get();
-    } else if (is_shooting && effect_timer < EFFECT_COUNTER_TIME * FRAME_RATE){
+    } else if (is_shooting && (weapon_type == WeaponType::M3 || weapon_type == WeaponType::Glock || weapon_type == WeaponType::AK47 || weapon_type == WeaponType::AWP)) {
         current_animation = animations["flare3"].get();
-        effect_timer++;
-    } else if (is_shooting && effect_timer >= EFFECT_COUNTER_TIME * FRAME_RATE) {
+    } else if (!is_shooting) {
         current_animation = nullptr;
-        effect_timer = 0;
     }
 
     if(current_animation == nullptr) {

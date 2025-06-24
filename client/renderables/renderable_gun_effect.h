@@ -22,8 +22,6 @@ class RenderableGunEffect {
 
     std::shared_ptr<AnimationProvider> animation_provider;
 
-    int effect_timer;
-
     void load_animation(const std::string& animation_name);
 
     public:
