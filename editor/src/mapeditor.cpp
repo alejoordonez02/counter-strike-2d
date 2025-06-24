@@ -52,6 +52,8 @@ void MapEditor::saveMapData(const QString& filePath) {
     if (!mapdata.background.isEmpty()) {
         QString bgPath = mapdata.background;
         out << YAML::Key << "background" << YAML::Value << bgPath.toStdString();
+    }else{
+        out << YAML::Key << "background" << YAML::Value << "";
     }
     out << YAML::Key << "tile_width" << YAML::Value << m_tileWidth;
     out << YAML::Key << "tile_height" << YAML::Value << m_tileHeight;   
@@ -114,7 +116,7 @@ void MapEditor::setTileSize(int width, int height)
     update();
 }
 
-void MapEditor::placeTile(const QPoint& position, const QString& texturePath, const QString& type) {
+void MapEditor::placeTile(const QPoint& position, const QString& texture, const QString& type) {
     Block::Type blockType = Block::stringToType(type);
     
     static const QVector<Block::Type> weaponTypes = {
@@ -146,7 +148,7 @@ void MapEditor::placeTile(const QPoint& position, const QString& texturePath, co
         }else{
             Block block;
             block.setPosition(position);
-            block.setTexture(texturePath);
+            block.setTexture(texture);
             block.setType(type);
             mapdata.addBlock(block);  
             update();
@@ -155,12 +157,12 @@ void MapEditor::placeTile(const QPoint& position, const QString& texturePath, co
     }
 
     if (it != mapdata.blocks.end()) {
-        it->setTexture(texturePath);
+        it->setTexture(texture);
         it->setType(type);
     } else {
         Block block;
         block.setPosition(position);
-        block.setTexture(texturePath);
+        block.setTexture(texture);
         block.setType(type);
         mapdata.addBlock(block);
     }
@@ -194,20 +196,20 @@ void MapEditor::dragLeaveEvent(QDragLeaveEvent *event) {
     Q_UNUSED(event);
 }
 
-void MapEditor::setCurrentTile(const QString& texturePath, const QString& typeString) {
-    m_selectedTile.texturePath = texturePath;
+void MapEditor::setCurrentTile(const QString& texture, const QString& typeString) {
+    m_selectedTile.texture = texture;
     m_selectedTile.typeString = typeString;
     m_selectedTile.isValid = true;
 }
 
 void MapEditor::mousePressEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton && !m_selectedTile.texturePath.isEmpty()) {
+    if (event->button() == Qt::LeftButton && !m_selectedTile.texture.isEmpty()) {
         QPoint dropPos(
             (event->pos().x() / m_tileWidth) * m_tileWidth,
             (event->pos().y() / m_tileHeight) * m_tileHeight
         );
         
-        placeTile(dropPos, m_selectedTile.texturePath, m_selectedTile.typeString);
+        placeTile(dropPos, m_selectedTile.texture, m_selectedTile.typeString);
     }
     QWidget::mousePressEvent(event);
 }
@@ -216,17 +218,17 @@ void MapEditor::dropEvent(QDropEvent* event) {
      if (event->mimeData()->hasFormat("application/x-tiledata")) {
         QByteArray itemData = event->mimeData()->data("application/x-tiledata");
         QDataStream stream(&itemData, QIODevice::ReadOnly);
-        QString texturePath;
+        QString texture;
         QString typeString;
-        stream >> texturePath >> typeString;
-        m_selectedTile.texturePath = texturePath;
+        stream >> texture >> typeString;
+        m_selectedTile.texture = texture;
         m_selectedTile.typeString = typeString;
         QPoint dropPos(
             (event->pos().x() / m_tileWidth) * m_tileWidth,
             (event->pos().y() / m_tileHeight) * m_tileHeight
         );
         
-        placeTile(dropPos, texturePath, typeString);
+        placeTile(dropPos, texture, typeString);
         event->acceptProposedAction();
     }
 }

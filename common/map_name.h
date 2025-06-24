@@ -2,7 +2,9 @@
 #define MAP_NAME_H
 
 #include <cstdint>
-
+#include <string>
+#include <stdexcept>
+#include <unordered_map>
 #include "map_list.h"
 #include "common/network/protocol.h"
 
@@ -11,5 +13,17 @@ enum class MapName : uint8_t {
         MAP_LIST
     #undef X
 };
+
+inline std::string mapNameToString(MapName map) {
+    switch (map) {
+        #define X(name, lowercase) \
+                case MapName::name: \
+                    return lowercase;
+            MAP_LIST
+        #undef X
+        default:
+            throw std::runtime_error("MapName not found");
+    }
+}
 
 #endif

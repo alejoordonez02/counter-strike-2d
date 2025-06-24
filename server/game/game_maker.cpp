@@ -18,14 +18,11 @@ void GameMaker::create(Connection&& con, const std::string& game_name,
 
     GameConfig config("config/server-config.yaml", map);
     auto game = game_factory.create(config);
-    /*
-     * TODO: descomentar la siguiente línea cuando se implemente el manejo de
-     * msjs del client lobby
-     * */
-    // con.send_single(LobbyCommands::SUCCESS);
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
     game->start();
     games[game_name] = std::move(game);
+    game_maps[game_name] = map;
 }
 
 void GameMaker::join(Connection&& con, const std::string& game_name,
@@ -33,21 +30,25 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
     std::unique_lock<std::mutex> lck(m);
     auto it = games.find(game_name);
     if (it == games.end()) throw GameNotFound(game_name);
-
+                        
     auto& game = games.at(game_name);
     if (game->team_is_full(team)) throw TeamIsFull();
-    /*
-     * TODO: descomentar la siguiente línea cuando se implemente el manejo de
-     * msjs del client lobby
-     * */
-    // con.send_single(LobbyCommands::SUCCESS);
+    con.send_single(LobbyCommands::SUCCESS);
     game->add_player(std::move(con), team);
 }
 
-std::vector<std::string> GameMaker::list() {
+std::vector<GameDetailsDTO> GameMaker::list() {
     std::unique_lock<std::mutex> lck(m);
-    std::vector<std::string> game_names;
-    std::transform(games.begin(), games.end(), std::back_inserter(game_names),
-                   [](const auto& pair) { return pair.first; });
-    return game_names;
+    
+    std::vector<GameDetailsDTO> list;
+    for (const auto& [n, g]: games) {
+        GameDetailsDTO dto(n,
+                            g->get_tt_count(),
+                            g->get_ct_count(),
+                            game_maps[n],
+                            g->is_joinable());
+        list.push_back(std::move(dto));
+    }
+
+    return list;
 }

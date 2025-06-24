@@ -3,22 +3,16 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QList>
+#include "common/map_name.h"
+#include "common/team_name.h"
+#include "client/q_game_details_dto.h"
 
+constexpr int TEAM_MAX_PLAYERS = 5;
+constexpr int MAX_PLAYERS = TEAM_MAX_PLAYERS * 2;
 namespace Ui {
 class Lobby;
 }
-
-struct MatchInfo {
-    QString name;
-    QString map;
-    int currentPlayers;
-    int maxPlayers;
-    
-    MatchInfo(QString n = "", QString m = "", int cp = 0, int mp = 0)
-        : name(n), map(m), currentPlayers(cp), maxPlayers(mp) {}
-};
-
-Q_DECLARE_METATYPE(MatchInfo)
 
 class LobbyWindow : public QMainWindow
 {
@@ -27,21 +21,23 @@ class LobbyWindow : public QMainWindow
 public:
     explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
+    void setMatchesList(const QList<QGameDetailsDTO>& newMatches);
+    void refreshMatchesListUI();
+
 signals:
-    void requestJoinGame(const QString& username, int teamIdx);
-    void requestCreateGame(const QString& username,int mapIdx, int teamIdx);
+    void requestJoinGame(const QString& name, TeamName team, MapName map);
+    void requestCreateGame(const QString& name, MapName map,
+        TeamName team);
     void requestListGames();
 
-private slots:
+public slots:
     void on_refreshButton_clicked();
     void on_joinMatchButton_clicked();
     void on_createMatchButton_clicked();
 private:
-    void populateMatchesList();
     Ui::Lobby *ui;
-    QString username;
-    int map_idx;
     int team_idx;
+    QList<QSharedPointer<QGameDetailsDTO>> currentMatches;
 };
 
 #endif // LOBBYWINDOW_H

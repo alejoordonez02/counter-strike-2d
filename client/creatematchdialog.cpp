@@ -1,30 +1,23 @@
 #include "creatematchdialog.h"
 #include "ui_CreateMatch.h"
 #include <QMessageBox>
-#include <QRegularExpression>
-#include <QPushButton>
+#include <QDebug>
 
-CreateMatchDialog::CreateMatchDialog(const QString& username, QWidget *parent)
+CreateMatchDialog::CreateMatchDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::CreateMatch)
-    , username(username)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("Create New Match - %1").arg(username));
-    
-    ui->matchNameEdit->setText(tr("Match by %1").arg(username));
-    ui->maxPlayersSpin->setRange(MIN_PLAYERS, MAX_PLAYERS);
+    setWindowTitle(tr("Create New Match"));
+    setupMaps();
 
     connect(ui->matchNameEdit, &QLineEdit::textChanged, this, &CreateMatchDialog::validateInputs);
-    connect(ui->configPathEdit, &QLineEdit::textChanged, this, &CreateMatchDialog::validateInputs);
-    connect(ui->maxPlayersSpin, QOverload<int>::of(&QSpinBox::valueChanged), 
+    connect(ui->mapBox, QOverload<int>::of(&QComboBox::currentIndexChanged), 
             this, &CreateMatchDialog::validateInputs);
+    connect(ui->createButton, &QPushButton::clicked, this, &CreateMatchDialog::accept);
+    connect(ui->cancelButton, &QPushButton::clicked, this, &CreateMatchDialog::reject);
 
-    ui->createButton->setText(tr("Create"));
-    ui->createButton->setEnabled(false);
-    
-    connect(ui->createButton, &QPushButton::clicked, this, &QDialog::accept);
-    connect(ui->cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+    validateInputs();
 }
 
 CreateMatchDialog::~CreateMatchDialog()
@@ -32,81 +25,61 @@ CreateMatchDialog::~CreateMatchDialog()
     delete ui;
 }
 
-void CreateMatchDialog::on_createButton_clicked()
-{
-    if (isValid()) {
-        accept();
-    } else {
-        QMessageBox::warning(this, 
-                           tr("Invalid Input"), 
-                           tr("Please check your inputs and try again"));
-    }
-}
-
-void CreateMatchDialog::on_browseButton_clicked()
-{
-    QString filePath = QFileDialog::getOpenFileName(
-        this,
-        tr("Select Map Configuration"),
-        QDir::homePath(),
-        tr("YAML Files (*.yaml *.yml);;All Files (*)")
-    );
-    
-    if (!filePath.isEmpty()) {
-        ui->configPathEdit->setText(filePath);
-    }
-}
-
 void CreateMatchDialog::validateInputs()
 {
-    bool valid = true;
-    
-    // Validar nombre de partida
-    QString matchName = getMatchName();
-    if (matchName.isEmpty() || matchName.length() > 30) {
-        valid = false;
-    }
-    
-    QFile configFile(getConfigPath());
-    if (!configFile.exists() || !getConfigPath().endsWith(".yaml", Qt::CaseInsensitive)) {
-        valid = false;
-    }
-    
-    if (getMaxPlayers() < MIN_PLAYERS || getMaxPlayers() > MAX_PLAYERS) { // Mínimo 2 jugadores
-        valid = false;
-    }
+    bool valid = !getMatchName().isEmpty() && 
+                 ui->mapBox->currentIndex() >= 0;
     
     ui->createButton->setEnabled(valid);
 }
 
+void CreateMatchDialog::setupMaps()
+{
+    // Configurar mapas disponibles con sus MapNames correspondientes
+
+    
+    mapNames = {
+        #define X(name, lowercase) \
+                {lowercase, MapName::name},
+            MAP_LIST
+        #undef X
+    };
+
+    ui->mapBox->clear();
+    for (const auto& displayName : mapNames.keys()) {
+        ui->mapBox->addItem(displayName);
+    }
+}
 QString CreateMatchDialog::getMatchName() const
 {
-    return ui->matchNameEdit->text().trimmed();
+    QString displayName = ui->matchNameEdit->text();
+    return displayName;
 }
 
-QString CreateMatchDialog::getConfigPath() const
+MapName CreateMatchDialog::getSelectedMapName() const
 {
-    return ui->configPathEdit->text();
+    QString displayName = ui->mapBox->currentText();
+    return mapNames.value(displayName, MapName::DUST); 
 }
 
-QString CreateMatchDialog::getMapName() const
+QString CreateMatchDialog::getSelectedMapDisplayName() const
 {
-    if (getConfigPath().isEmpty()) return "";
-    QFileInfo fileInfo(getConfigPath());
-    return fileInfo.baseName();
+    return ui->mapBox->currentText();
 }
 
-int CreateMatchDialog::getMaxPlayers() const
+
+int CreateMatchDialog::getSelectedTeamIndex() const
 {
-    return ui->maxPlayersSpin->value();
+    return ui->teamBox->currentIndex();
+}
+
+bool CreateMatchDialog::isTeamSelected() const
+{
+    return ui->teamBox->currentIndex() >= 0;
 }
 
 bool CreateMatchDialog::isValid() const
 {
-    QFile configFile(getConfigPath());
     return !getMatchName().isEmpty() && 
-           configFile.exists() && 
-           getConfigPath().endsWith(".yaml", Qt::CaseInsensitive) &&
-           getMaxPlayers() >= MIN_PLAYERS && 
-           getMaxPlayers() <= MAX_PLAYERS;
+           ui->mapBox->currentIndex() >= 0;
 }
