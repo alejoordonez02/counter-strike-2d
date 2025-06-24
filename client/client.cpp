@@ -16,6 +16,7 @@
 #include "common/network/dtos/list_games_dto.h"
 #include "common/team_name.h"
 #include "lobbywindow.h"
+#include "client/game_config.h"
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
@@ -129,9 +130,11 @@ void Client::run(int i) {
     MapData map_to_use =
         map_loader.loadMapData("tests/client/prueba_mapa_mod.yaml");
 
+    GameConfig game_config("client_config.yaml");
+
     // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y
     // final se encontrará en el GameLoop
-    GameLoop gameloop(snapshots, commands, map_to_use);
+    GameLoop gameloop(snapshots, commands, map_to_use, game_config);
     gameloop.run();
 
     commands.close();

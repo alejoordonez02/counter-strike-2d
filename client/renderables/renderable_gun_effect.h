@@ -9,6 +9,7 @@
 #include "client/renderables/animation.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/position.h"
+#include "client/camera.h"
 
 class RenderableGunEffect {
 private:
@@ -21,8 +22,6 @@ private:
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
 
     std::shared_ptr<AnimationProvider> animation_provider;
-
-    int effect_timer;
 
     void load_animation(const std::string& animation_name);
 

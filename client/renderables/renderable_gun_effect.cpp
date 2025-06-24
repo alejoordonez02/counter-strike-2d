@@ -5,18 +5,14 @@
 #include <string>
 #include <utility>
 
-#include "client/camera.h"
-#include "client/gameloop.h"
-#include "client/providers/animation_provider.h"
-
-#define EFFECT_COUNTER_TIME 0.1f
-// ej. 30 fps * 0.2f = 6 => cada 6 ticks hace el flare
 
 RenderableGunEffect::RenderableGunEffect(
-    std::shared_ptr<AnimationProvider> animation_provider):
-    position(0, 0), gun_position(0, 0), facing_angle(0),
-    current_animation(nullptr), animation_provider(animation_provider),
-    effect_timer(0) {
+        std::shared_ptr<AnimationProvider> animation_provider):
+        position(0, 0),
+        gun_position(0, 0),
+        facing_angle(0),
+        current_animation(nullptr),
+        animation_provider(animation_provider) {
     load_animation("flare3");
     load_animation("knifeslash");
     // load_animation("fragments");
@@ -40,19 +36,13 @@ void RenderableGunEffect::update(const Position& player_position,
 
     if (!is_shooting || weapon_type == WeaponName::NONE) {
         current_animation = nullptr;
-        effect_timer = 0;
         return;
-    } else if (weapon_type == WeaponName::BOMB) {
-        // current_animation = animations["bomb_explosion"].get();
-    } else if (weapon_type == WeaponName::KNIFE) {
+    } else if (is_shooting && weapon_type == WeaponName::KNIFE) {
         current_animation = animations["knifeslash"].get();
-    } else if (is_shooting && effect_timer < EFFECT_COUNTER_TIME * FRAME_RATE) {
+    } else if (is_shooting && (weapon_type == WeaponName::M3 || weapon_type == WeaponName::GLOCK || weapon_type == WeaponName::AK47 || weapon_type == WeaponName::AWP)) {
         current_animation = animations["flare3"].get();
-        effect_timer++;
-    } else if (is_shooting &&
-               effect_timer >= EFFECT_COUNTER_TIME * FRAME_RATE) {
+    } else if (!is_shooting) {
         current_animation = nullptr;
-        effect_timer = 0;
     }
 
     if (current_animation == nullptr) {

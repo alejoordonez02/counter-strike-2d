@@ -1,0 +1,9 @@
+window: 
+  window_width: 600
+  window_height: 400
+  use_fullscreen: false   # windowed o fullscreen
+  frame_rate: 70      # tasa de refresco del cliente
+
+fov:
+  field_of_view_angle: 90   # 0 a 360, el ángulo del cono de visión (en grados)
+  use_field_of_view: true  # si se usa el campo de visión o no

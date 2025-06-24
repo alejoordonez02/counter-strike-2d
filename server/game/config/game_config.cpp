@@ -90,3 +90,4 @@ std::map<std::string, WeaponConfig> GameConfig::load_weapon_configs(
     }
     return weapons;
 }
+
