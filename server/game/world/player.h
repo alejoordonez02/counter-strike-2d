@@ -31,7 +31,7 @@ private:
     std::shared_ptr<Weapon> primary;
     std::shared_ptr<Weapon> secondary;
     std::shared_ptr<Weapon> knife;
-    std::shared_ptr<Weapon>& current;
+    std::shared_ptr<Weapon> current;
 
     float shield;
 

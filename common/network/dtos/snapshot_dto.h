@@ -14,8 +14,6 @@
 
 #define MAX_PLAYER_NAME 32
 
-enum class EquipmentType : uint8_t { PRIMARY, SECONDARY, KNIFE, BOMB };
-
 // armas en el suelo
 class WeaponDTO: public DTO {
 public:
