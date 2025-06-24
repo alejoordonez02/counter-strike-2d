@@ -67,7 +67,7 @@ world:
       type: Knife
       damage: 25
       accuracy: 1
-      range: 10
+      range: 32
       bullet_size: 1
       fire_rate: 1
       reload_time: 0
