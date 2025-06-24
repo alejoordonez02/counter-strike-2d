@@ -1,5 +1,5 @@
 #include "client/renderables/renderable_gun.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 
 #include <memory>
 #include <string>
@@ -13,12 +13,12 @@ RenderableGun::RenderableGun(
         current_animation(nullptr),
         animation_provider(animation_provider),
         gun_effect(animation_provider) {
-    load_animation("bomb");
-    load_animation("knife");
-    load_animation("glock");
-    load_animation("ak47");
-    load_animation("m3");
-    load_animation("awp");
+    load_animation("held_bomb");
+    load_animation("held_knife");
+    load_animation("held_glock");
+    load_animation("held_ak47");
+    load_animation("held_m3");
+    load_animation("held_awp");
     // por default no tiene armas
     current_animation = nullptr;
 }
@@ -33,17 +33,17 @@ void RenderableGun::update(const Position& player_position, const Position& aim_
         current_animation = nullptr;
         return;
     } else if (weapon_type == WeaponType::Bomb) {
-        current_animation = animations["bomb"].get();
+        current_animation = animations["held_bomb"].get();
     } else if (weapon_type == WeaponType::Knife) {
-        current_animation = animations["knife"].get();
+        current_animation = animations["held_knife"].get();
     } else if (weapon_type == WeaponType::Glock) {
-        current_animation = animations["glock"].get();
+        current_animation = animations["held_glock"].get();
     } else if (weapon_type == WeaponType::AK47) {
-        current_animation = animations["ak47"].get();
+        current_animation = animations["held_ak47"].get();
     } else if (weapon_type == WeaponType::M3) {
-        current_animation = animations["m3"].get();
+        current_animation = animations["held_m3"].get();
     } else if (weapon_type == WeaponType::AWP) {
-        current_animation = animations["awp"].get();
+        current_animation = animations["held_awp"].get();
     }
 
 

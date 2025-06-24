@@ -12,8 +12,7 @@ std::shared_ptr<Player> PlayerFactory::create(int id, TeamName team) const {
         case TeamName::TERRORIST:
             return std::make_shared<Terrorist>(
                 id, map, config.max_velocity, config.acceleration,
-                config.radius, config.starting_money, config.max_health,
-                std::nullopt);
+                config.radius, config.starting_money, config.max_health);
         case TeamName::COUNTER_TERRORIST:
             return std::make_shared<CounterTerrorist>(
                 id, map, config.max_velocity, config.acceleration,

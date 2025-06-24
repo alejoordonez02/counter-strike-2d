@@ -7,9 +7,11 @@ std::shared_ptr<Player> CounterTerrorists::add_player(
     return p;
 }
 
+void CounterTerrorists::restart() { restart_players(); }
+
 bool CounterTerrorists::lost_round(const BombState& bomb,
                                    const Timer& round_time) {
     if (bomb == BombState::EXPLODED) return true;
-    if (bomb == BombState::PLANTED && !players_are_alive()) return true;
+    if (bomb != BombState::DEFUSED && !players_are_alive()) return true;
     return false;
 }

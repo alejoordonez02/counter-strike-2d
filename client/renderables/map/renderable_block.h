@@ -6,14 +6,14 @@
 #include <unordered_map>
 
 #include "SDL2pp/Renderer.hh"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "common/maploader.h"
 #include "common/position.h"
 
 class RenderableBlock {
     private:
-    const BlockData& block_data;
+    BlockData block_data;
     std::shared_ptr<AnimationProvider> animation_provider;
 
     std::unique_ptr<Animation> block;

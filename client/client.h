@@ -13,18 +13,20 @@ class Client {
 private:
     Connection con;
 
-    Queue<std::unique_ptr<DTO>> commands;
+    Queue<std::shared_ptr<DTO>> commands;
     Queue<std::unique_ptr<DTO>> snapshots;
 
     Sender sender;
     Receiver receiver;
     InputHandler input_handler;
 
-    void lobby_phase();
+    void lobby_phase(
+        int i = 0);  // i != 0 no abre la interfaz de lobby (para testear)
 
 public:
+    void create_test_matches();
     Client(const std::string& hostname, const std::string& servname);
-    void run(int use_id);
+    void run(int i = 0);  // igual a arriba
 };
 
 #endif

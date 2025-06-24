@@ -40,8 +40,8 @@ jobs:
           qt5-qmake-bin \
           qtchooser \
           qttools5-dev-tools \
-          libyaml-cpp-dev
-
+          libyaml-cpp-dev \
+          libsdl2-gfx-dev
 
       - name: Build project and run tests
         run: |

@@ -9,18 +9,6 @@ namespace Ui {
 class Lobby;
 }
 
-struct MatchInfo {
-    QString name;
-    MapName map;
-    int currentPlayers;
-    int maxPlayers;
-    
-    MatchInfo(QString n = "", MapName m = MapName::AZTEC, int cp = 0, int mp = 0)
-        : name(n), map(m), currentPlayers(cp), maxPlayers(mp) {}
-};
-
-Q_DECLARE_METATYPE(MatchInfo)
-
 class LobbyWindow : public QMainWindow
 {
     Q_OBJECT

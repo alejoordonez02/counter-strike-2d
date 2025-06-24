@@ -2,6 +2,8 @@
 
 #include <bits/fs_fwd.h>
 
+#include <QEventLoop>
+#include <QMessageBox>
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -12,28 +14,97 @@
 #include "common/network/dtos/create_game_dto.h"
 #include "common/network/dtos/join_game_dto.h"
 #include "common/network/dtos/list_games_dto.h"
+#include "common/network/dtos/game_details_dto.h"
 #include "common/team_name.h"
-#include <QEventLoop>
-#include <QMessageBox>
 #include "lobbywindow.h"
+
 
 Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
-    receiver(con, snapshots), input_handler(commands) {}
+    receiver(con, snapshots), input_handler(commands) {
 
-void Client::lobby_phase() {
+    }
+
+void Client::create_test_matches() {
+    std::vector<std::unique_ptr<GameDetailsDTO>> games;
+    
+    games.emplace_back(std::make_unique<GameDetailsDTO>("Dust", 1, 1, MapName::DUST, true));
+    games.emplace_back(std::make_unique<GameDetailsDTO>("Headshot Only", 1, 1, MapName::AZTEC, true));
+    games.emplace_back(std::make_unique<GameDetailsDTO>("Tournament", 5, 5, MapName::AZTEC, false));
+    games.emplace_back(std::make_unique<GameDetailsDTO>("1v5", 1, 5, MapName::AZTEC, false));
+    games.emplace_back(std::make_unique<GameDetailsDTO>("Nuke", 1, 0, MapName::NUKE, true));
+    
+    for (auto& game : games) {
+    commands.try_push(std::make_unique<CreateGameDTO>(
+        game->getName(),      // Direct access (requires name to be public)
+        game->getMapName(),  // Direct access
+        static_cast<TeamName>(0)
+    ));
+}
+}
+
+void Client::lobby_phase(int i) {
     using namespace DTOSerial::LobbyCommands;
+    create_test_matches();
+    if (i) {
+        while (true) {
+            std::cout << "\n=== LOBBY MENU ===\n"
+                      << "1) Listar partidas\n"
+                      << "2) Crear partida\n"
+                      << "3) Unirse a partida\n"
+                      << "Elija una opción: ";
+            int opt;
+            if (!(std::cin >> opt)) std::exit(1);
 
-    try {
+            switch (opt) {
+                case 1: {
+                    commands.try_push(std::make_shared<ListGamesDTO>());
+                    break;
+                }
+                case 2: {
+                    std::string name;
+                    int map_idx;
+                    int team_idx;
+                    std::cout << "Nombre de la partida: ";
+                    std::cin >> name;
+                    std::cout << "Mapa (0..N): ";
+                    std::cin >> map_idx;
+                    std::cout
+                        << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
+                    std::cin >> team_idx;
+                    commands.try_push(std::make_shared<CreateGameDTO>(
+                        name, static_cast<MapName>(map_idx),
+                        static_cast<TeamName>(team_idx)));
+                    return;  // salimos del lobby para entrar al game loop
+                }
+                case 3: {
+                    std::string name;
+                    int team_idx;
+                    std::cout << "Nombre de la partida: ";
+                    std::cin >> name;
+                    std::cout
+                        << "Equipo (0: Terrorist, 1: Counter-Terrorist): ";
+                    std::cin >> team_idx;
+                    commands.try_push(std::make_shared<JoinGameDTO>(
+                        name, static_cast<TeamName>(team_idx)));
+                    return;
+                }
+                default:
+                    std::cout << "Opción inválida\n";
+            }
+        }
+    } else {
+        try {
+            std::unique_ptr<LobbyWindow> lobbyWindow =
+                std::make_unique<LobbyWindow>();
+            lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
 
-        std::unique_ptr<LobbyWindow> lobbyWindow = std::make_unique<LobbyWindow>();
-        lobbyWindow->setAttribute(Qt::WA_DeleteOnClose);
+            QEventLoop lobbyLoop;
 
-        QEventLoop lobbyLoop;
-
-        QObject::connect(lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
-            commands.try_push(std::make_unique<ListGamesDTO>());
-        });
+            QObject::connect(
+                lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
+                    commands.try_push(std::make_shared<ListGamesDTO>());
+                });
 
         // Conexión para crear partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
@@ -62,20 +133,21 @@ void Client::lobby_phase() {
         lobbyLoop.exec(); 
     
 
-    } catch (const std::exception& e) {
-        QMessageBox::critical(nullptr, "Error", QString("Critical error: %1").arg(e.what()));
+        } catch (const std::exception& e) {
+            QMessageBox::critical(nullptr, "Error",
+                                  QString("Critical error: %1").arg(e.what()));
+        }
     }
 }
 
-void Client::run(int use_id) {
+void Client::run(int i) {
     sender.start();
     receiver.start();
 
     // lobby: menu interactivo que envía dtos (create, join y list, más otros)
     // al servidor
-    lobby_phase();
-
-    int player_id = use_id;
+    lobby_phase(i);
+    
     // TODO: El mapa se debe poner descargar del server supuestamente
     // std::cout << "LOG: Current working directory: " <<
     // std::filesystem::current_path() << std::endl;
@@ -85,7 +157,7 @@ void Client::run(int use_id) {
 
     // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y
     // final se encontrará en el GameLoop
-    GameLoop gameloop(snapshots, commands, player_id, map_to_use);
+    GameLoop gameloop(snapshots, commands, map_to_use);
     gameloop.run();
 
     commands.close();

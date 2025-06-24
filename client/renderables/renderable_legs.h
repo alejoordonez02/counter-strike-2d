@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "client/renderables/animation.h"
 #include "common/position.h"
 

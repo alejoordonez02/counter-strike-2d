@@ -27,13 +27,15 @@ private:
     int max_rounds;
     int rounds;
     Timer round_time;
-    float time_out;
+    Timer time_out;
     bool round_ongoing;
     bool ended;
 
     PlayerFactory player_factory;
 
     void start_round();
+
+    void sum_won_round(Team& team);
 
     void update_rounds(float dt);
 
@@ -48,7 +50,7 @@ public:
 
     bool has_ended() const;
 
-    SnapshotDTO get_snapshot();
+    std::shared_ptr<SnapshotDTO> get_snapshot();
 };
 
 #endif

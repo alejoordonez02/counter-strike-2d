@@ -103,3 +103,8 @@ std::optional<Position> PlayerPhysics::intersect(const Trajectory& t) const {
     auto intersection = pos + pos.get_direction(closest.second) * radius;
     return intersection;
 }
+
+bool PlayerPhysics::intersects(const Position& pos) const {
+    float distance = this->pos.get_distance(pos);
+    return distance < radius;
+}

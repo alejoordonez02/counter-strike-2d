@@ -2,6 +2,7 @@
 #define COMMON_NETWORK_DTOS_SNAPSHOT_DTO_H
 
 #include <cstdint>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -12,29 +13,110 @@
 
 #define MAX_PLAYER_NAME 32
 
-enum class WeaponType { None, Bomb, Knife, Glock, AK47, M3, AWP };
+enum class WeaponType : uint8_t { None, Bomb, Knife, Glock, AK47, M3, AWP };
+
+enum class EquipmentType : uint8_t { Primary, Secondary, Knife, Bomb};
 
 // armas en el suelo
-struct WeaponDTO {
-    WeaponType type;
+class WeaponDTO: public DTO {
+public:
+    WeaponType w_type;
     int16_t x;
     int16_t y;
+    
+private:
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        w_type = static_cast<WeaponType>(*in++);
+        Position pos = deserialize_pos_from(in);
+        x = pos.x;
+        y = pos.y;
+    }
+
+public:
+    explicit WeaponDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit WeaponDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::WEAPON) {
+        deserialize_from(in);
+    }
+
+    WeaponDTO(): DTO(DTOSerial::WEAPON) {}
+
+    void serialize_into(std::vector<uint8_t>& out) override {
+        out.push_back(type);
+        out.push_back(static_cast<uint8_t>(w_type));
+        serialize_tuple_into(out, x, y);
+    }
+
+    WeaponDTO(const WeaponDTO&) = delete;
+    WeaponDTO& operator=(const WeaponDTO&) = delete;
+    
+    WeaponDTO(WeaponDTO&&) = default;
+    WeaponDTO& operator=(WeaponDTO&&) = default;
+
+    ~WeaponDTO() = default;
 };
 
-struct YourPlayerData {
-    uint16_t player_id;
-    uint16_t player_hp;
+class PrivatePlayerDTO: public DTO {
+public:
+    uint8_t player_id = 0;
+    uint8_t player_hp = 100;
     
     uint total_money = 0;
 
     // estadisticas
     uint8_t rounds_won = 0;
     uint8_t total_kills = 0;
+
+private:
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        player_id = *in++;
+        player_hp = *in++;
+        total_money = deserialize_int_from(in);
+        rounds_won = *in++;
+        total_kills = *in++;
+    }
+
+public:
+    explicit PrivatePlayerDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit PrivatePlayerDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PLAYER_PRIVATE) {
+        deserialize_from(in);
+    }
+
+    PrivatePlayerDTO(): DTO(DTOSerial::PLAYER_PRIVATE) {}
+
+    void serialize_into(std::vector<uint8_t>& out) override {
+        out.push_back(type);
+        out.push_back(player_id);
+        out.push_back(player_hp);
+        serialize_int_into(out, total_money);
+        out.push_back(rounds_won);
+        out.push_back(total_kills);
+    }
+
+    PrivatePlayerDTO(const PrivatePlayerDTO&) = delete;
+    PrivatePlayerDTO& operator=(const PrivatePlayerDTO&) = delete;
+    
+    PrivatePlayerDTO(PrivatePlayerDTO&&) = default;
+    PrivatePlayerDTO& operator=(PrivatePlayerDTO&&) = default;
+
+    ~PrivatePlayerDTO() = default;
 };
 
-struct PlayerData {
+class PlayerDTO: public DTO {
+public:
     uint8_t player_id;
-    char player_name[MAX_PLAYER_NAME];
+    std::string player_name;
     uint8_t team_id;  // 0 para terroristas, 1 para counter
 
     // Armas
@@ -55,9 +137,67 @@ struct PlayerData {
     // coordenadas del mouse
     float aim_x;
     float aim_y;
+
+private:
+    void deserialize_from(std::vector<uint8_t>::iterator& in) override {
+        in++;  // skip 1st byte (DTO type)
+        player_id = *in++;
+        // player_name = deserialize_string_from(in);
+        team_id = *in++;
+        current_weapon = static_cast<WeaponType>(*in++);
+        has_bomb = *in++;
+        is_shooting = *in++;
+        was_hurt = *in++;
+        is_walking = *in++;
+        is_dead = *in++;
+        Position pos = deserialize_pos_from(in);
+        x = pos.x;
+        y = pos.y;
+        Position aim = deserialize_pos_from(in);
+        aim_x = aim.x;
+        aim_y = aim.y;
+    }
+
+public:
+    explicit PlayerDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+        auto payload_it = payload.begin();
+        deserialize_from(payload_it);
+    }
+
+    explicit PlayerDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::PLAYER) {
+        deserialize_from(in);
+    }
+
+    PlayerDTO(): DTO(DTOSerial::PLAYER) {}
+
+    void serialize_into(std::vector<uint8_t>& out) override {
+        out.push_back(type);
+        out.push_back(player_id);
+        // serialize_string_into(out, player_name);
+        out.push_back(team_id);
+        out.push_back(static_cast<uint8_t>(current_weapon));
+        out.push_back(has_bomb);
+        out.push_back(is_shooting);
+        out.push_back(was_hurt);
+        out.push_back(is_walking);
+        out.push_back(is_dead);
+        
+        serialize_tuple_into(out, x, y);
+        serialize_tuple_into(out, aim_x, aim_y);
+    }
+
+    PlayerDTO(const PlayerDTO&) = delete;
+    PlayerDTO& operator=(const PlayerDTO&) = delete;
+    
+    PlayerDTO(PlayerDTO&&) = default;
+    PlayerDTO& operator=(PlayerDTO&&) = default;
+
+    ~PlayerDTO() = default;
 };
 
-struct SnapshotDTO {
+class SnapshotDTO: public DTO {
+public:
     bool round_finished = false;
     bool game_finished = false;
     bool initial_phase = true;
@@ -69,100 +209,64 @@ struct SnapshotDTO {
     uint8_t terrorists_score = 0;
     uint8_t counter_terrorists_score = 0;
 
-    YourPlayerData user_data;
-    std::vector<PlayerData> players;
+    std::vector<PlayerDTO> players;
     std::vector<WeaponDTO> weapons_on_floor;
-};
 
-class SnapshotDTOB: public DTO {
 private:
-    // SnapshotDTO snapshot;
-
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         // Deserializar campos snapshot
         in++;  // skip 1st byte (DTO type)
-        snapshot.round_number = *in++;
+        round_number = *in++;
         size_t num_players = *in++;
-        snapshot.players.clear();
-        snapshot.players.reserve(num_players);
         for (size_t j = 0; j < num_players; ++j) {
-            PlayerData player;
-            player.player_id = *in++;
-            player.team_id = *in++;
-            player.current_weapon = static_cast<WeaponType>(*in++);
-            player.has_bomb = *in++;
-            player.is_shooting = *in++;
-            player.was_hurt = *in++;
-            player.is_walking = *in++;
-            player.is_dead = *in++;
-            Position pos = deserialize_pos_from(in);
-            player.x = pos.x;
-            player.y = pos.y;
-            Position aim = deserialize_pos_from(in);
-            player.aim_x = aim.x;
-            player.aim_y = aim.y;
-            snapshot.players.push_back(player);
+            PlayerDTO player(in);
+            players.push_back(std::move(player));
         }
         // armas en el suelo
         size_t num_weapons_on_floor = *in++;
-        snapshot.weapons_on_floor.clear();
-        snapshot.weapons_on_floor.reserve(num_weapons_on_floor);
         for (size_t j = 0; j < num_weapons_on_floor; ++j) {
-            WeaponDTO weapon;
-            weapon.type = static_cast<WeaponType>(*in++);
-            Position pos = deserialize_pos_from(in);
-            weapon.x = pos.x;
-            weapon.y = pos.y;
-            snapshot.weapons_on_floor.push_back(weapon);
+            WeaponDTO weapon(in);
+            weapons_on_floor.push_back(std::move(weapon));
         }
     }
 
 public:
-    SnapshotDTO snapshot;
-
-    explicit SnapshotDTOB(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
+    explicit SnapshotDTO(std::vector<uint8_t>&& bytes): DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);
     }
 
-    explicit SnapshotDTOB(std::vector<uint8_t>::iterator& in):
-            DTO(DTOSerial::PlayerCommands::SNAPSHOT) {
+    explicit SnapshotDTO(std::vector<uint8_t>::iterator& in):
+            DTO(DTOSerial::SNAPSHOT) {
         deserialize_from(in);
     }
 
-    explicit SnapshotDTOB(const SnapshotDTO& snap):
-            DTO(DTOSerial::PlayerCommands::SNAPSHOT), snapshot(snap) {}
+    SnapshotDTO(): DTO(DTOSerial::SNAPSHOT) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
         // Serializar campos snapshot
-        out.push_back(snapshot.round_number);
+        out.push_back(round_number);
 
         // jugadores
-        out.push_back(snapshot.players.size());
-        for (const auto& player : snapshot.players) {
-            out.push_back(player.player_id);
-            out.push_back(player.team_id);
-            out.push_back(static_cast<uint8_t>(player.current_weapon));
-            out.push_back(player.has_bomb);
-
-            out.push_back(player.is_shooting);
-            out.push_back(player.was_hurt);
-            out.push_back(player.is_walking);
-            out.push_back(player.is_dead);
-            
-            serialize_tuple_into(out, player.x, player.y);
-            serialize_tuple_into(out, player.aim_x, player.aim_y);
+        out.push_back(players.size());
+        for (auto& player : players) {
+            player.serialize_into(out);
         }
         // armas en el suelo
-        out.push_back(snapshot.weapons_on_floor.size());
-        for (const auto& weapon : snapshot.weapons_on_floor) {
-            out.push_back(static_cast<uint8_t>(weapon.type));
-            serialize_tuple_into(out, weapon.x, weapon.y);
+        out.push_back(weapons_on_floor.size());
+        for (auto& weapon : weapons_on_floor) {
+            weapon.serialize_into(out);
         }
     }
 
-    ~SnapshotDTOB() = default;
+    SnapshotDTO(const SnapshotDTO&) = delete;
+    SnapshotDTO& operator=(const SnapshotDTO&) = delete;
+    
+    SnapshotDTO(SnapshotDTO&&) = default;
+    SnapshotDTO& operator=(SnapshotDTO&&) = default;
+
+    ~SnapshotDTO() = default;
 };
 
 #endif

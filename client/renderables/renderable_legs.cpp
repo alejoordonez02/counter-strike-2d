@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 
 RenderableLegs::RenderableLegs(
         std::shared_ptr<AnimationProvider> animation_provider):

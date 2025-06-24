@@ -26,7 +26,7 @@ public:
 
     void join(Connection&& con, const std::string& game_name, TeamName team);
 
-    void list();
+    std::vector<std::string> list();
 };
 
 #endif

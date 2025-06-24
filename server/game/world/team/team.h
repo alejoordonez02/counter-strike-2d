@@ -15,6 +15,8 @@ protected:
 
     void switch_player_sides();
 
+    void restart_players();
+
 public:
     Team() = default;
 
@@ -23,7 +25,9 @@ public:
     virtual std::shared_ptr<Player> add_player(
         int id, const PlayerFactory& player_factory) = 0;
 
-    void restart();
+    virtual void restart() = 0;
+
+    void sum_won_round();
 
     int get_won_rounds();
 
@@ -31,7 +35,7 @@ public:
 
     void switch_sides(Team& other);
 
-    void push_player_data(std::vector<PlayerData>& data);
+    void push_player_data(std::vector<PlayerDTO>& data);
 };
 
 #endif

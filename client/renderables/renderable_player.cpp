@@ -1,5 +1,5 @@
 #include "client/renderables/renderable_player.h"
-#include "client/animation_provider.h"
+#include "client/providers/animation_provider.h"
 #include "common/network/dtos/snapshot_dto.h"
 
 #include <utility>
@@ -27,7 +27,7 @@ void RenderablePlayer::load_animation(const std::string& animation_name) {
     animations[animation_name] = animation_provider->make_animation(full_name);
 }
 
-void RenderablePlayer::update(const PlayerData& player) {
+void RenderablePlayer::update(const PlayerDTO& player) {
     this->position.x = player.x;
     this->position.y = player.y;
     this->is_walking = player.is_walking;
