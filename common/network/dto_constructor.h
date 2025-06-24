@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "buy_ammo_dto.h"
 #include "buy_weapon_dto.h"
 #include "common/network/dto.h"
 #include "common/network/dtos/aim_dto.h"
@@ -49,6 +50,10 @@ public:
             {BUY_WEAPON,
              [](auto&& bytes) {
                  return std::make_unique<BuyWeaponDTO>(std::move(bytes));
+             }},
+            {BUY_AMMO,
+             [](auto&& bytes) {
+                 return std::make_unique<BuyAmmoDTO>(std::move(bytes));
              }},
             {START_MOVING,
              [](auto&& bytes) {

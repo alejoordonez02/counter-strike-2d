@@ -35,6 +35,7 @@ constexpr uint8_t START_RELOADING = 0x72;  // r - 114
 constexpr uint8_t STOP_ACTION = 0x62;      // b - 98
 constexpr uint8_t USE_WEAPON = 0x77;       // w - 119
 constexpr uint8_t BUY_WEAPON = 0x78;       // x - 120
+constexpr uint8_t BUY_AMMO = 0x79;         // y - 121
 };  // namespace PlayerCommands
 namespace LobbyCommands {
 constexpr uint8_t CHANGE_USERNAME = 0x55;  // U - 85
