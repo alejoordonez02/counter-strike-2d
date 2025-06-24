@@ -12,6 +12,7 @@ target_sources(cs2d_client
         hud_manager.cpp
         field_of_view.cpp
         game_config.cpp
+        sound_manager.cpp
 )
 
 add_subdirectory(renderables)

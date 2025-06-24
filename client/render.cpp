@@ -3,7 +3,7 @@
 
 
 Render::Render(const MapData& map_data, const GameConfig& game_config):
-    sdl(SDL_INIT_VIDEO), window(
+    sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO), window(
           "Counter Strike 2D",
           SDL_WINDOWPOS_UNDEFINED,
           SDL_WINDOWPOS_UNDEFINED,
@@ -18,11 +18,15 @@ Render::Render(const MapData& map_data, const GameConfig& game_config):
     // cargar texturas
     TextureProvider::load_textures(renderer);
     animation_provider = std::make_shared<AnimationProvider>();
+
     // cargar renderizables principales
     renderable_map =
         std::make_unique<RenderableMap>(map_data, animation_provider);
     hud_manager = std::make_unique<HUDManager>(animation_provider, game_config);
     field_of_view = std::make_unique<FieldOfView>(renderer, game_config);
+
+    // Inicializar sonidos
+    sound_manager = std::make_unique<SoundManager>(game_config);
 }
 
 void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
@@ -38,6 +42,9 @@ void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
 
     // actualizar textos
     hud_manager->update(snapshot, user_data, fps_timer);
+    
+    // reproducir sonidos basados en cambios de estado
+    sound_manager->check_and_play_game_sounds(snapshot, user_data);
 }
 
 void Render::update_players(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data) {
@@ -121,6 +128,9 @@ void Render::render() {
     // mostrar la ventana
     renderer.Present();
 }
+
+
+
 
 Render::~Render() {
     // Limpiar los renderables de jugadores

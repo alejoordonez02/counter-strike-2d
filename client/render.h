@@ -19,6 +19,7 @@
 #include "common/network/dtos/snapshot_dto.h"
 #include "client/field_of_view.h"
 #include "client/game_config.h"
+#include "client/sound_manager.h"
 
 
 class Render {
@@ -36,6 +37,7 @@ private:
     std::unique_ptr<RenderableMap> renderable_map;
     std::unique_ptr<HUDManager> hud_manager;
     std::unique_ptr<FieldOfView> field_of_view;
+    std::unique_ptr<SoundManager> sound_manager;
 
     void update_players(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data);
 

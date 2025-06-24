@@ -214,10 +214,10 @@ void InputHandler::send_buy_ammo() {
     // teclas para comprar
     if (key_states[SDLK_9]) {
         commands_queue.try_push(
-            std::make_shared<BuyAmmoDTO>(WeaponType::PRIMARY, 1));
+            std::make_shared<BuyAmmoDTO>(WeaponType::PRIMARY, 10));
     } else if (key_states[SDLK_0]) {
         commands_queue.try_push(
-            std::make_shared<BuyAmmoDTO>(WeaponType::SECONDARY, 1));
+            std::make_shared<BuyAmmoDTO>(WeaponType::SECONDARY, 10));
     }
 }
 
