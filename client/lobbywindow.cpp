@@ -21,7 +21,7 @@ LobbyWindow::~LobbyWindow()
 
 void LobbyWindow::setMatchesList(const QList<GameDetailsDTO>& newMatches) {
     currentMatches.clear();
-    
+
     for (const auto& match : newMatches) {
         currentMatches.append(QSharedPointer<GameDetailsDTO>::create(match));
     }
@@ -133,4 +133,5 @@ void LobbyWindow::on_createMatchButton_clicked() {
 void LobbyWindow::on_refreshButton_clicked() {
     QMessageBox::information(this, "Refreshing", "Match list updated");
     refreshMatchesListUI();
+    emit requestListGames();
 }

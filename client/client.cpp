@@ -102,11 +102,19 @@ void Client::lobby_phase(int i) {
             QEventLoop lobbyLoop;
 
             QObject::connect(
-                lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
+                lobbyWindow.get(), &LobbyWindow::requestListGames, 
+                [this, &lobbyWindow]() {
                     commands.try_push(std::make_shared<ListGamesDTO>());
-                    //matches = LISTA DE GAMEDETAILS
-                    //lobbyWindow.setMatchesList(const QList<GameDetailsDTO>& newMatches)
-                });
+                    // aca obtengo la lista de matches
+                    QList<GameDetailsDTO> hardcodedMatches = {
+                        GameDetailsDTO("Dust II Competitive", 3, 2, MapName::DUST, true),
+                        GameDetailsDTO("Aztec Casual", 2, 3, MapName::AZTEC, true),
+                        GameDetailsDTO("Nuke Tournament", 5, 5, MapName::NUKE, false),
+                        GameDetailsDTO("Nuke Practice", 1, 0, MapName::NUKE, true)
+                    };
+                    lobbyWindow->setMatchesList(hardcodedMatches);
+                }
+            );
 
         // Conexión para crear partida
         QObject::connect(lobbyWindow.get(), &LobbyWindow::requestCreateGame, 
