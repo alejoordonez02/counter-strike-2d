@@ -12,7 +12,7 @@
 #include "common/network/dtos/snapshot_dto.h"
 #include "client/game_config.h"
 
-#define CHANNELS 8      // permite reproducir 8 sonidos en simultaneo
+#define CHANNELS 2      // permite reproducir 8 sonidos en simultaneo
 #define WEAPON_GROUP 1
 #define UI_GROUP 2
 #define WORLD_GROUP 3
@@ -28,12 +28,18 @@ private:
     int sfx_volume;
     int music_volume;
 
-public:
-    SoundManager(const GameConfig& game_config);
-    
     // Cargar sonidos
     void load_sound(const std::string& name, const std::string& path);
     void load_music(const std::string& path);
+
+    Position get_my_player_position(const SnapshotDTO& snapshot, int my_id);
+    float calculate_distance(const Position& pos1, const Position& pos2);
+    std::string get_random_hit_sound();
+
+public:
+    SoundManager(const GameConfig& game_config);
+    
+    
     
     // Reproducir sonidos
     void play_sound(const std::string& name, int channel_group = -1);

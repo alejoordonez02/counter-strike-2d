@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <unordered_set>
+#include <random>
 
 SoundManager::SoundManager(const GameConfig& game_config) 
     : mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, CHANNELS, 4096), // Inicializar mixer con SDL2pp
@@ -31,9 +33,9 @@ SoundManager::SoundManager(const GameConfig& game_config)
         load_sound("reload", DATA_PATH "/assets/sfx/player/repair.wav");        // simil, no encontre la original
 
         // bomba
-        load_sound("bomb_plant", DATA_PATH "/assets/sfx/radio/bombpl.wav");
+        load_sound("bomb_plant", DATA_PATH "/assets/sfx/radio/bombpl.ogg");
         load_sound("bombdef", DATA_PATH "/assets/sfx/radio/bombdef.ogg");           // counter terrorits won
-        load_sound("bomb_exploded", DATA_PATH "/assets/sfx/radio/explode1.wav");     // terrorists won
+        load_sound("bomb_exploded", DATA_PATH "/assets/sfx/weapons/explode1.wav");     // terrorists won
         load_sound("bomb_tick", DATA_PATH "/assets/sfx/weapons/c4.wav");     // queda poco tiempo
 
         // jugador
@@ -120,45 +122,56 @@ void SoundManager::play_sound(const std::string& name, int channel_group) {
     }
 }
 
-// void SoundManager::play_sound_with_distance(const std::string& name, float distance, int channel_group) {
-//     if (!sfx_enabled) return;
+void SoundManager::play_sound_with_distance(const std::string& name, float distance, int channel_group) {
+    if (!sfx_enabled) return;
+
+    int MAX_UNIT_DISTANCE_FROM_PLAYER = 200;
     
-//     auto it = sound_effects.find(name);
-//     if (it != sound_effects.end()) {
-//         try {
-//             // Calcular volumen basado en distancia (máximo 500 unidades)
-//             float distance_factor = 1.0f - std::min(distance / 500.0f, 1.0f);
-//             int volume = static_cast<int>(sfx_volume * distance_factor);
+    auto it = sound_effects.find(name);
+    if (it != sound_effects.end()) {
+        try {
+            // Calcular volumen basado en distancia
+            float distance_factor = 1.0f - std::min(distance / MAX_UNIT_DISTANCE_FROM_PLAYER, 1.0f);
+            if( distance_factor == 0.0f) {
+                // esta demasiado lejos, no reproduce sonido
+                return;
+            }
+            int volume = static_cast<int>(sfx_volume * distance_factor);
             
-//             // Configurar volumen del chunk
-//             it->second->SetVolume(volume);
+            // Configurar volumen del chunk
+            it->second->SetVolume(volume);
             
-//             // Reproducir con el grupo especificado
-//             int channel = -1;
-//             if (channel_group != -1) {
-//                 switch (channel_group) {
-//                     case WEAPON_GROUP:
-//                         channel = mixer.PlayChannel(0, *it->second, 0);
-//                         break;
-//                     case UI_GROUP:
-//                         channel = mixer.PlayChannel(2, *it->second, 0);
-//                         break;
-//                     case WORLD_GROUP:
-//                         channel = mixer.PlayChannel(4, *it->second, 0);
-//                         break;
-//                     default:
-//                         channel = mixer.PlayChannel(-1, *it->second, 0);
-//                         break;
-//                 }
-//             } else {
-//                 channel = mixer.PlayChannel(-1, *it->second, 0);
-//             }
+            // Reproducir con el grupo especificado
+            int channel;
+            if (channel_group != -1) {
+                switch (channel_group) {
+                    case WEAPON_GROUP:
+                        channel = mixer.PlayChannel(0, *it->second, 0);
+                        break;
+                    case UI_GROUP:
+                        channel = mixer.PlayChannel(2, *it->second, 0);
+                        break;
+                    case WORLD_GROUP:
+                        channel = mixer.PlayChannel(4, *it->second, 0);
+                        break;
+                    default:
+                        channel = mixer.PlayChannel(-1, *it->second, 0);
+                        break;
+                }
+            } else {
+                channel = mixer.PlayChannel(-1, *it->second, 0);
+            }
+
+            if (channel == -1) {
+                std::cerr << "Advertencia: No se pudo reproducir sonido " << name 
+                         << " (todos los canales ocupados)" << std::endl;
+            }
             
-//         } catch (const SDL2pp::Exception& e) {
-//             std::cerr << "Error reproduciendo sonido con distancia " << name << ": " << e.what() << std::endl;
-//         }
-//     }
-// }
+        } catch (const SDL2pp::Exception& e) {
+            std::cerr << "Error reproduciendo sonido con distancia " << name << ": " << e.what() << std::endl;
+        }
+    }
+}
 
 void SoundManager::play_music() {
     if (music_enabled && background_music) {
@@ -219,42 +232,124 @@ void SoundManager::check_and_play_game_sounds(const SnapshotDTO& snapshot, const
     static WeaponName last_weapon = WeaponName::NONE;
     static int last_hp = 100;
     static int last_ammo = -1;
+    static int last_total_ammo = -1;
+    static uint last_bomb_tick_played = 0;
+    static std::unordered_set<int> players_shooting_last_frame;
+    static std::unordered_set<int> players_hurt_last_frame;
+    static std::unordered_set<int> players_walking_last_frame;
+    static std::unordered_set<int> players_dead_last_frame;
     
-    // Sonido de cambio de arma
+    // Sonido de cambio de arma (solo cuando cambia)
     if (user_data.current_weapon.name != last_weapon && last_weapon != WeaponName::NONE) {
         play_sound("weapon_switch", WEAPON_GROUP);
-        last_weapon = user_data.current_weapon.name;
-    } else if (last_weapon == WeaponName::NONE) {
-        last_weapon = user_data.current_weapon.name;
     }
+    last_weapon = user_data.current_weapon.name;
     
-    // Sonido de recarga (cuando las balas cargadas aumentan significativamente)
+    // Sonido de recarga (solo cuando aumenta significativamente)
     if (last_ammo != -1 && user_data.current_weapon.loaded_ammo > last_ammo + 3) {
         play_sound("reload", WEAPON_GROUP);
     }
     last_ammo = user_data.current_weapon.loaded_ammo;
+
+    // Sonido de comprar balas (solo cuando aumenta significativamente)
+    if (last_total_ammo != -1 && user_data.current_weapon.total_ammo > last_total_ammo + 3) {
+        play_sound("buy_ammo", WEAPON_GROUP);
+    }
+    last_total_ammo = user_data.current_weapon.total_ammo;
     
-    // Sonido de daño recibido
+    // Sonido de daño recibido (solo cuando disminuye HP)
     if (user_data.player_hp < last_hp && last_hp > 0) {
-        play_sound("hit1", WORLD_GROUP);
+        play_sound(get_random_hit_sound(), WORLD_GROUP);
     }
     last_hp = user_data.player_hp;
 
-    // itera todos los jugadores y reproduce sonidos segun la distancia al user
+    // Sonido tick de bomba, empieza a sonar cuando quedan 30 segs
+    if (snapshot.time_left <= 30 && snapshot.time_left != last_bomb_tick_played) {
+        play_sound("bomb_tick", WORLD_GROUP);
+        last_bomb_tick_played = snapshot.time_left;
+    }
 
+    // Itera todos los jugadores y les aplica un sonido según la distancia al user
+    // Sets para el frame actual
+    std::unordered_set<int> current_shooting;
+    std::unordered_set<int> current_hurt;
+    std::unordered_set<int> current_walking;
+    std::unordered_set<int> current_dead;
+
+    Position my_pos = get_my_player_position(snapshot, user_data.player_id);
     
-    
-    // Position my_pos = get_my_player_position(snapshot, user_data.player_id);
-    // for (const auto& player : snapshot.players) {
-    //     if (player.is_shooting && player.player_id != user_data.player_id) {
-    //         float distance = calculate_distance(my_pos, Position(player.x, player.y));
-    //         play_sound_with_distance("gunshot", distance, WEAPON_GROUP);
-    //     }
-    // }
+    for (const auto& player : snapshot.players) {
+        float distance = (player.player_id == user_data.player_id) ? 0.0f : 
+                        calculate_distance(my_pos, Position(player.x, player.y));
+
+        // DISPAROS: Solo si no estaba disparando en el frame anterior
+        if (player.is_shooting) {
+            current_shooting.insert(player.player_id);
+            
+            if (players_shooting_last_frame.find(player.player_id) == players_shooting_last_frame.end()) {
+                // Nuevo disparo
+                if (player.current_weapon == WeaponName::KNIFE) {
+                    play_sound_with_distance("knife_swing", distance, WEAPON_GROUP);
+                } else if (player.current_weapon == WeaponName::GLOCK) {
+                    play_sound_with_distance("glock", distance, WEAPON_GROUP);
+                } else if (player.current_weapon == WeaponName::AK47) {
+                    play_sound_with_distance("gunshot_ak47", distance, WEAPON_GROUP);
+                } else if (player.current_weapon == WeaponName::M3) {
+                    play_sound_with_distance("gunshot_m3", distance, WEAPON_GROUP);
+                } else if (player.current_weapon == WeaponName::AWP) {
+                    play_sound_with_distance("awp", distance, WEAPON_GROUP);
+                }
+            }
+        }
+
+        // DAÑO: Solo si no estaba herido en el frame anterior
+        if (player.was_hurt) {
+            current_hurt.insert(player.player_id);
+            
+            if (players_hurt_last_frame.find(player.player_id) == players_hurt_last_frame.end()) {
+                play_sound_with_distance(get_random_hit_sound(), distance, WORLD_GROUP);
+            }
+        }
+
+        // MUERTE: Solo si no estaba muerto en el frame anterior
+        if (player.is_dead) {
+            current_dead.insert(player.player_id);
+            
+            if (players_dead_last_frame.find(player.player_id) == players_dead_last_frame.end()) {
+                play_sound_with_distance("death", distance, WORLD_GROUP);
+            }
+        }
+
+        // PASOS: Controlar con throttling (no en cada frame)
+        if (player.is_walking && player.player_id != user_data.player_id) {
+            current_walking.insert(player.player_id);
+            
+            // Solo reproducir pasos cada cierto tiempo
+            static uint32_t last_footstep_time = 0;
+            uint32_t current_time = SDL_GetTicks();
+            
+            if (current_time - last_footstep_time > 1000) { // 300ms entre pasos
+                if (player.team_id == 0) {
+                    play_sound_with_distance("footstep_dirt_1", distance, WORLD_GROUP);
+                } else {
+                    play_sound_with_distance("footstep_dirt_2", distance, WORLD_GROUP);
+                }
+                last_footstep_time = current_time;
+            }
+        }
+    }
 }
 
-// Métodos auxiliares para calcular distancias (para futura implementación)
-/*
+
+std::string SoundManager::get_random_hit_sound() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dis(1, 3);
+    
+    int random_hit = dis(gen);
+    return "hit" + std::to_string(random_hit);
+}
+
 Position SoundManager::get_my_player_position(const SnapshotDTO& snapshot, int my_id) {
     for (const auto& player : snapshot.players) {
         if (player.player_id == my_id) {
@@ -264,9 +359,9 @@ Position SoundManager::get_my_player_position(const SnapshotDTO& snapshot, int m
     return Position(0, 0);
 }
 
+
 float SoundManager::calculate_distance(const Position& pos1, const Position& pos2) {
     float dx = pos1.x - pos2.x;
     float dy = pos1.y - pos2.y;
     return std::sqrt(dx*dx + dy*dy);
 }
-*/
