@@ -93,7 +93,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
     include(FetchContent)
     
     set(SDL2PP_WITH_IMAGE YES)      #texturas, imagenes, etc
-    # set(SDL2PP_WITH_MIXER YES)    # sonido, música, etc
+    set(SDL2PP_WITH_MIXER YES)    # sonido, música, etc
     set(SDL2PP_WITH_TTF YES)        # fuentes, tipografías, etc
 
     # Continue with libSDL2pp
