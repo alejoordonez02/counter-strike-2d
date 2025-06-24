@@ -45,6 +45,7 @@ void GameLoop::run() {
     uint32_t frameStart = SDL_GetTicks();
 
     // FPS tracking
+    // cuenta cuantos frames/bucles hay. Se reinicia luego de 1 segundo
     uint32_t fps_timer = SDL_GetTicks();
 
     while (is_running) {
