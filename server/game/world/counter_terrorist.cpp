@@ -4,7 +4,7 @@
 #include "player.h"
 
 // TODO: make this configurable
-#define TIME_TO_DEFUSE 10
+#define TIME_TO_DEFUSE 5
 
 CounterTerrorist::CounterTerrorist(
     int id, std::shared_ptr<Weapon> primary, std::shared_ptr<Weapon> secondary,

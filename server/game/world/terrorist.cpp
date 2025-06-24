@@ -3,7 +3,7 @@
 #include "actions/plant_bomb.h"
 #include "player.h"
 
-#define TIME_TO_PLANT 10
+#define TIME_TO_PLANT 5
 
 Terrorist::Terrorist(int id, std::shared_ptr<Weapon> primary,
                      std::shared_ptr<Weapon> secondary,
