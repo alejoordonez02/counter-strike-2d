@@ -127,7 +127,7 @@ MapName Client::lobby_phase(int i) {
                 ));
                 lobbyWindow->close();
                 lobbyLoop.quit();
-                    map_name = static_cast<MapName>(mapIdx);
+                map_name = mapname;
             });
 
         // Conexión para unirse a partida
@@ -139,7 +139,7 @@ MapName Client::lobby_phase(int i) {
                 ));
                 lobbyWindow->close();
                 lobbyLoop.quit();
-                    // map_name = ???
+                // map_name = ???
             });
 
         lobbyWindow->show();
