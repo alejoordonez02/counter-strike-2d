@@ -1,19 +1,22 @@
-#ifndef COMMON_NETWORK_DTOS_CHANGE_WEAPON_DTO_H
-#define COMMON_NETWORK_DTOS_CHANGE_WEAPON_DTO_H
+#ifndef COMMON_NETWORK_DTOS_USE_WEAPON_DTO_H
+#define COMMON_NETWORK_DTOS_USE_WEAPON_DTO_H
+
+#include <cstdint>
+#include <utility>
+#include <vector>
 
 #include "common/network/dto.h"
-#include "common/network/dtos/snapshot_dto.h"
 #include "common/network/protocol.h"
+#include "common/weapons.h"
 
 class UseWeaponDTO: public DTO {
 private:
-    // uint8_t weapon_type;
     WeaponType weapon_type;
 
-    // friend class ChangeWeapon;
+    friend class UseWeapon;
 
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
-        in++;  // skip 1st byte (DTO type)
+        in++;  // skip 1st byte (DTO weapon_type)
         weapon_type = static_cast<WeaponType>(*in++);
     }
 
@@ -28,8 +31,8 @@ public:
         deserialize_from(in);
     }
 
-    explicit UseWeaponDTO(WeaponType w_type):
-        DTO(DTOSerial::PlayerCommands::USE_WEAPON), weapon_type(w_type) {}
+    explicit UseWeaponDTO(WeaponType weapon_type):
+        DTO(DTOSerial::PlayerCommands::USE_WEAPON), weapon_type(weapon_type) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
