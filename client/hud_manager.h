@@ -4,6 +4,11 @@
 #include <SDL2pp/Font.hh>
 #include <SDL2pp/SDLTTF.hh>
 #include <SDL2pp/Renderer.hh>
+#include <SDL2pp/Texture.hh>
+#include <SDL2pp/Surface.hh>
+
+#include <utility>
+#include <algorithm>
 
 #include "common/network/dtos/snapshot_dto.h"
 #include "client/renderables/hud/renderable_hud_health.h"
@@ -13,6 +18,7 @@
 #include "client/renderables/hud/renderable_hud_loaded_ammo.h"
 #include "client/renderables/hud/renderable_hud_buy_guns.h"
 #include "client/renderables/renderable_pointer.h"
+#include "client/game_config.h"
 
 class HUDManager {
     private:
@@ -39,7 +45,7 @@ class HUDManager {
 
 
     public:
-    HUDManager(std::shared_ptr<AnimationProvider> animation_provider);
+    HUDManager(std::shared_ptr<AnimationProvider> animation_provider, const GameConfig& game_config);
 
     void update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
         uint32_t& fps_timer);

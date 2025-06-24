@@ -1,12 +1,6 @@
 #include "hud_manager.h"
 
-#include <utility>
-
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Surface.hh>
-#include <algorithm>
-
-HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
+HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider, const GameConfig& game_config):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
         show_text(false),
         hud_hp(animation_provider),
@@ -14,7 +8,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         hud_money(animation_provider),
         hud_total_ammo(animation_provider),
         hud_loaded_ammo(animation_provider),
-        hud_buy_guns(animation_provider, font),
+        hud_buy_guns(animation_provider, font, game_config),
         pointer(animation_provider)
          {
 }

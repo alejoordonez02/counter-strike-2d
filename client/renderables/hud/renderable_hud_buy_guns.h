@@ -5,11 +5,14 @@
 #include <vector>
 #include <string>
 
+#include <SDL2pp/Font.hh>
+
+#include "client/camera.h"
 #include "common/position.h"
 #include "client/providers/animation_provider.h"
 #include "client/renderables/hud/renderable_numbers.h"
 #include "common/network/dtos/snapshot_dto.h"
-#include <SDL2pp/Font.hh>
+#include "client/game_config.h"
 
 struct WeaponItem {
     std::string key;    // Tecla para comprar
@@ -25,8 +28,8 @@ struct AmmoItem {
 
 class RenderableHUDBuyGuns {
 private:
-    bool visible;
     SDL2pp::Font& font;
+    bool visible;
     int player_money;
     
     std::unordered_map<std::string, std::unique_ptr<Animation>> animations;
@@ -34,7 +37,7 @@ private:
     std::vector<AmmoItem> ammo_data;
     
     // Métodos privados para renderizado
-    void setup_weapon_data();
+    void setup_weapon_data(const GameConfig& game_config);
     void render_background(SDL2pp::Renderer& renderer, const Position& screen_size);
     void render_weapons(SDL2pp::Renderer& renderer);
     void render_ammo(SDL2pp::Renderer& renderer, const Position& screen_size);
@@ -47,7 +50,7 @@ private:
     bool can_afford_weapon(const std::string& weapon_name);
 
 public:
-    RenderableHUDBuyGuns(std::shared_ptr<AnimationProvider> animation_provider, SDL2pp::Font& font);
+    RenderableHUDBuyGuns(std::shared_ptr<AnimationProvider> animation_provider, SDL2pp::Font& font, const GameConfig& game_config);
 
     // Métodos para mostrar/ocultar
     void show() { visible = true; }

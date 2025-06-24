@@ -20,7 +20,7 @@ Render::Render(const MapData& map_data, const GameConfig& game_config):
     // cargar renderizables principales
     renderable_map =
         std::make_unique<RenderableMap>(map_data, animation_provider);
-    hud_manager = std::make_unique<HUDManager>(animation_provider);
+    hud_manager = std::make_unique<HUDManager>(animation_provider, game_config);
     field_of_view = std::make_unique<FieldOfView>(renderer, game_config);
 }
 

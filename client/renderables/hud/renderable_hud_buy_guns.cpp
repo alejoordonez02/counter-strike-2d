@@ -1,7 +1,6 @@
 #include "client/renderables/hud/renderable_hud_buy_guns.h"
-#include "client/camera.h"
 
-RenderableHUDBuyGuns::RenderableHUDBuyGuns(std::shared_ptr<AnimationProvider> animation_provider, SDL2pp::Font& font):
+RenderableHUDBuyGuns::RenderableHUDBuyGuns(std::shared_ptr<AnimationProvider> animation_provider, SDL2pp::Font& font, const GameConfig& game_config):
 font(font), visible(true) {  // Por defecto oculto
     // Cargar animaciones de armas
     animations["glock"] = animation_provider->make_animation("glock");
@@ -10,23 +9,25 @@ font(font), visible(true) {  // Por defecto oculto
     animations["awp"] = animation_provider->make_animation("awp");
     
     // Inicializar datos de armas
-    setup_weapon_data();
+    setup_weapon_data(game_config);
 }
 
 
-void RenderableHUDBuyGuns::setup_weapon_data() {
+void RenderableHUDBuyGuns::setup_weapon_data(const GameConfig& game_config) {
     // Configurar datos de armas (tecla, nombre, precio)
+    // std::unordered_map<std::string, GunsConfig>
+
     weapons_data = {
-        {"1", "Glock", "$200"},
-        {"2", "AK47", "$2500"}, 
-        {"3", "M3", "$1700"},
-        {"4", "AWP", "$4750"}
+        {"1", game_config.guns_config.guns.at("Glock").name, "$" + std::to_string(game_config.guns_config.guns.at("Glock").price)},
+        {"2", game_config.guns_config.guns.at("Ak47").name, "$" + std::to_string(game_config.guns_config.guns.at("Ak47").price)},
+        {"3", game_config.guns_config.guns.at("M3").name, "$" + std::to_string(game_config.guns_config.guns.at("M3").price)},
+        {"4", game_config.guns_config.guns.at("Awp").name, "$" + std::to_string(game_config.guns_config.guns.at("Awp").price)},
     };
     
     // Configurar datos de munición
     ammo_data = {
-        {"5", "Primaria", "$100"},
-        {"6", "Secundaria", "$50"}
+        {"5", "Primaria", "$" + std::to_string(game_config.guns_config.primary_ammo_price)},
+        {"6", "Secundaria", "$" + std::to_string(game_config.guns_config.secondary_ammo_price)}
     };
 }
 
