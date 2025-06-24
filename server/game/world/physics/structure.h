@@ -26,9 +26,9 @@ public:
     bool intersects(const Position& pos) const;
 
     /*
-     * No hace nada
+     * Siempre retorna false
      * */
-    void get_attacked(int /* damage */) override;
+    bool get_attacked(int /* damage */) override;
 };
 
 #endif

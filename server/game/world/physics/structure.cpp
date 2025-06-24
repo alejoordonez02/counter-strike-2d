@@ -30,4 +30,4 @@ bool Structure::intersects(const Position& pos) const {
     return distance < distance_to_perimeter;
 }
 
-void Structure::get_attacked(int /* damage */) {}
+bool Structure::get_attacked(int /* damage */) { return false; }

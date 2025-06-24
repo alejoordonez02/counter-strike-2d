@@ -36,7 +36,7 @@ public:
 
     void update(float dt) { fire_delay.update(dt); }
 
-    virtual void attack(Position origin, Direction direction,
+    virtual bool attack(Position origin, Direction direction,
                         std::vector<std::shared_ptr<Hitbox>>& collidables,
                         const std::vector<size_t>& sorted_idx);
 
