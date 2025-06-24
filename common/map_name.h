@@ -16,10 +16,13 @@ enum class MapName : uint8_t {
 inline std::string mapNameToString(MapName map) {
     switch (map) {
         #define X(name, lowercase) \
-                case name: \
-                    return lowercase; \
+                case MapName::name: \
+                    return lowercase;
             MAP_LIST
         #undef X
+        default:
+            return "unknown";
+    }
 }
 
 #endif
