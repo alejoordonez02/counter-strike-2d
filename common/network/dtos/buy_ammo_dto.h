@@ -12,12 +12,14 @@
 class BuyAmmoDTO: public DTO {
 private:
     WeaponType weapon_type;
+    uint8_t count;
 
     friend class BuyAmmo;
 
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         in++;  // skip 1st byte (DTO weapon_type)
         weapon_type = static_cast<WeaponType>(*in++);
+        count = *in++;
     }
 
 public:
@@ -31,12 +33,14 @@ public:
         deserialize_from(in);
     }
 
-    explicit BuyAmmoDTO(WeaponType weapon_type):
-        DTO(DTOSerial::PlayerCommands::BUY_AMMO), weapon_type(weapon_type) {}
+    explicit BuyAmmoDTO(WeaponType weapon_type, uint8_t count):
+        DTO(DTOSerial::PlayerCommands::BUY_AMMO), weapon_type(weapon_type),
+        count(count) {}
 
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
         out.push_back(static_cast<uint8_t>(weapon_type));
+        out.push_back(count);
     }
 
     ~BuyAmmoDTO() = default;
