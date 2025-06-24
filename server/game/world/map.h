@@ -8,6 +8,7 @@
 #include "equipment/bomb.h"
 #include "physics/hitbox.h"
 #include "physics/structure.h"
+#include "snapshot_dto.h"
 
 class Map {
 private:
@@ -48,6 +49,8 @@ public:
         if (!bomb) return BombState::NOT_PLANTED;
         return bomb->get_state();
     }
+
+    void push_map_data(std::shared_ptr<SnapshotDTO> snapshot);
 };
 
 #endif
