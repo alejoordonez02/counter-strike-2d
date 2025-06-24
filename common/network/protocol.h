@@ -12,7 +12,7 @@ constexpr int MaxLen = 256;  // <= 65535
 
 namespace MapSerial {
 enum : uint8_t {
-#define X(name) name,
+#define X(name, lowercase) name,
     MAP_LIST
 #undef X
 };

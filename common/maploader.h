@@ -3,6 +3,8 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include "common/map_name.h"
+
 struct BlockData{
     int x;
     int y;
@@ -24,7 +26,8 @@ class MapLoader
 public:
     MapLoader();
     
-    MapData loadMapData(const std::string& filePath);
+    MapData loadMapData(MapName map_name);
+    MapData loadMapYaml(const std::string& filePath);
     
     static bool validateMapData(const MapData& data);
 
