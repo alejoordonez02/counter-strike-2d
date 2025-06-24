@@ -1,17 +1,20 @@
 #include "terrorist.h"
 
 #include "actions/plant_bomb.h"
-#include "equipment/tt_equipment.h"
 #include "player.h"
 
 #define TIME_TO_PLANT 10
 
-void Terrorist::teleport_to_spawn() { pos = map.lock()->get_tt_spawn(); }
+Terrorist::Terrorist(int id, std::shared_ptr<Weapon> primary,
+                     std::shared_ptr<Weapon> secondary,
+                     std::shared_ptr<Weapon> knife, std::weak_ptr<Map> map,
+                     float max_velocity, float acceleration, float radius,
+                     int money, int health,
+                     std::shared_ptr<WeaponFactory> weapon_factory):
+    Player(id, map.lock()->get_tt_spawn(), primary, secondary, knife, map,
+           max_velocity, acceleration, radius, money, health, weapon_factory) {}
 
-Terrorist::Terrorist(int id, std::weak_ptr<Map> map, float max_velocity,
-                     float acceleration, float radius, int money, int health):
-    Player(id, map.lock()->get_tt_spawn(), TTEquipment(), map, max_velocity,
-           acceleration, radius, money, health) {}
+void Terrorist::teleport_to_spawn() { pos = map.lock()->get_tt_spawn(); }
 
 void Terrorist::restart() {
     respawn();
@@ -20,7 +23,7 @@ void Terrorist::restart() {
 
 void Terrorist::give_bomb() { has_bomb = true; }
 
-void Terrorist::plant_bomb() {
+void Terrorist::start_planting() {
     if (!has_bomb) return;
     auto bomb_site = map.lock()->get_bomb_site();
     bool on_bomb_site = false;

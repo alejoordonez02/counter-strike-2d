@@ -5,6 +5,7 @@ target_sources(cs2d_server_lib
     game_factory.cpp
     map_factory.cpp
     player_factory.cpp
+    weapon_factory.cpp
     world_factory.cpp
 )
 

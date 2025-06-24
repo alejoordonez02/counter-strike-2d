@@ -15,52 +15,63 @@ world:
     max_health: 100
   
   weapons:
-    Knife:
-      damage: 25
-      ammo: 1000
-      accuracy: 1
-      range: 10
-      fire_rate: 1
-      cost: 0
-      ammo_cost: 0
     Glock:
+      type: Secondary
       damage: 20
-      ammo: 30
-      accuracy: 0.8
+      accuracy: 1
       range: 960
+      bullet_size: 1
       fire_rate: 2
-      cost: 200
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
       ammo_cost: 1
     Ak47:
-      damage: 27
-      ammo: 30
-      accuracy: 0.9
-      range: 1280
-      fire_rate: 3
-      cost: 2500
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
       ammo_cost: 1
     M3:
-      damage: 70
-      ammo: 30
-      accuracy: 0.5
-      range: 320
-      fire_rate: 0.5
-      cost: 1700
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
       ammo_cost: 1
     Awp:
-      damage: 100
-      ammo: 30
-      accuracy: 1
-      range: 3200
-      fire_rate: 0.2
-      cost: 4750
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
       ammo_cost: 1
-    Bomb:
-      damage: 100
-      ammo: 1
+    Knife:
+      type: Knife
+      damage: 25
       accuracy: 1
-      range: 10
-      fire_rate: 0
+      range: 32
+      bullet_size: 1
+      fire_rate: 1
+      reload_time: 0
+      ammo_capacity: 1000
+      starting_ammo: 1000
       cost: 0
       ammo_cost: 0
-  

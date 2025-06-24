@@ -25,7 +25,7 @@ public:
         }
     }
 
-    void execute(Player& p) const override { p.plant_bomb(); }
+    void execute(Player& p) const override { p.start_planting(); }
 
     ~StartPlanting() = default;
 };

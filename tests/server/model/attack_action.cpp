@@ -7,7 +7,8 @@
 class MagicWeapon: public Weapon {
 public:
     MagicWeapon():
-        Weapon(WeaponName::NONE, 100, 100, 100, 100, 0, 0, 100, 100, 0) {}
+        Weapon(WeaponName::NONE, WeaponType::NONE, 100, 100, 1000, 0, 1, 0, 100,
+               100, 0, 0) {}
 };
 
 class PlayerAttackTest: public ::testing::Test {
@@ -29,8 +30,9 @@ protected:
 
     void SetUp() override {
         map = std::make_shared<Map>(
-            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Structure>{},
-            std::vector<Position>{}, std::vector<Position>{});
+            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Drop>{},
+            std::vector<Structure>{}, std::vector<Position>{},
+            std::vector<Position>{});
         map_weak_ptr = map;
 
         player =
@@ -44,8 +46,7 @@ protected:
         map->add_collidable(aligned_enemy);
 
         MagicWeapon weapon;
-        player->buy_primary(weapon);
-        player->use_primary();
+        player->set_weapon(std::make_shared<Weapon>(weapon));
     }
 };
 
