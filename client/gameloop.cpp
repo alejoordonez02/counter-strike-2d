@@ -11,49 +11,72 @@ GameLoop::GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
     input_handler(commands), FRAME_RATE(game_config.window.frame_rate) {
     input_handler.start();
 }
-
 void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
         PrivatePlayerDTO& user_data, uint8_t skip_count) {
-    // usa skip_count calculado en el frame anterior
-
-    std::unique_ptr<DTO> dto_p;
-    bool found_snapshot = false;
-    bool found_private = false;
-    int processed = 0;
-    int skipped = 0;
     
-    // Procesar DTOs hasta encontrar los más recientes
-    while (snapshots_queue.try_pop(dto_p) && processed < 100) {
-        processed++;
+    std::unique_ptr<DTO> dto_p;
+    int processed = 0;
+    
+    // Si skip_count es alto (lag severo), usa "always latest"
+    if (skip_count > 3) {
+        // MODO RECUPERACIÓN: Solo el más reciente
+        SnapshotDTO temp_snapshot;
+        PrivatePlayerDTO temp_private;
+        bool has_snapshot = false;
+        bool has_private = false;
         
-        if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
-            if (skipped < skip_count) {
-                // saltear este snapshot
-                skipped++;
-            } else {
-                // Usar este snapshot (siempre sobrescribir con el más reciente)
+        while (snapshots_queue.try_pop(dto_p) && processed < 100) {
+            processed++;
+            
+            if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
                 auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
-                last_snapshot = std::move(*ptr);
-                found_snapshot = true;
+                temp_snapshot = std::move(*ptr);
+                has_snapshot = true;
             }
-        }
-        else if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
-            if (skipped < skip_count) {
-                // Saltear este private data
-                skipped++;
-            } else {
-                // Usar este private data (siempre sobrescribir con el más reciente)
+            else if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
                 auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
-                user_data = std::move(*ptr);
-                found_private = true;
+                temp_private = std::move(*ptr);
+                has_private = true;
             }
+            dto_p.reset();
         }
-        dto_p.reset();
         
-        // Si encontramos ambos y no necesitamos saltear más, podemos parar
-        if (found_snapshot && found_private && skipped >= skip_count) {
-            // Pero seguimos procesando un poco más para no acumular
-            if (processed > 10) break;
+        if (has_snapshot) last_snapshot = std::move(temp_snapshot);
+        if (has_private) user_data = std::move(temp_private);
+        
+    } else {
+        // MODO NORMAL: Skip controlado
+        bool found_snapshot = false;
+        bool found_private = false;
+        int skipped = 0;
+        
+        while (snapshots_queue.try_pop(dto_p) && processed < 100) {
+            processed++;
+            
+            if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
+                if (skipped < skip_count) {
+                    skipped++;
+                } else {
+                    auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
+                    last_snapshot = std::move(*ptr);
+                    found_snapshot = true;
+                }
+            }
+            else if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
+                if (skipped < skip_count) {
+                    skipped++;
+                } else {
+                    auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
+                    user_data = std::move(*ptr);
+                    found_private = true;
+                }
+            }
+            dto_p.reset();
+            
+            // Parar si encontramos ambos y terminamos de saltar
+            if (found_snapshot && found_private && skipped >= skip_count) {
+                if (processed > 10) break;
+            }
         }
     }
 }
