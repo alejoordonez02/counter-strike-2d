@@ -5,6 +5,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include "client/camera.h"
 #include "common/direction.h"
@@ -259,7 +260,7 @@ void InputHandler::run() {
     // se utiliza un timer para evitar que el input sea demasiado sensible
     using clock = std::chrono::steady_clock;
     auto last_sent = clock::now();
-    const int cooldown_ms = 20;  // ajustar sensibilidad
+    const int cooldown_ms = 20;  // ~30 FPS de input (reducido de 20ms)
 
     while (is_alive) {
         auto now = clock::now();
@@ -268,7 +269,11 @@ void InputHandler::run() {
                 .count() > cooldown_ms) {
             is_alive = handle_events();
             last_sent = now;
-        }
+        } 
+        // else {
+        //     // Dormir un poco para no consumir CPU innecesariamente
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        // }
     }
     std::cout << "LOG: InputHandler ha terminado." << std::endl;
 }
