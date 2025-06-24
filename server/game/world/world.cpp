@@ -106,6 +106,7 @@ std::shared_ptr<SnapshotDTO> World::get_snapshot() {
     snapshot->counter_terrorists_score = ct_team.get_won_rounds();
     tt_team.push_player_data(snapshot->players);
     ct_team.push_player_data(snapshot->players);
+    map->push_map_data(snapshot);
     snapshot->serialize();
     return snapshot;
 }
