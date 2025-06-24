@@ -1,8 +1,11 @@
 #ifndef SERVER_WORLD_EQUIPMENT_BOMB_H
 #define SERVER_WORLD_EQUIPMENT_BOMB_H
 
+#include <vector>
+
 #include "position.h"
 #include "server/game/world/timer.h"
+#include "snapshot_dto.h"
 
 enum class BombState { NOT_PLANTED, PLANTED, EXPLODED, DEFUSED };
 
@@ -29,6 +32,8 @@ public:
     bool is_defused() const;
 
     bool has_exploded() const;
+
+    void push_bomb_data(std::vector<WeaponDTO>& snapshot);
 };
 
 #endif
