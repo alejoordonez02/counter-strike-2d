@@ -25,8 +25,8 @@ void HUDManager::update(const SnapshotDTO& snapshot,
     hud_timer.update(time_string);
     hud_hp.update(user_data.player_hp);
     hud_money.update(user_data.total_money);
-
-    if(user_data.current_weapon.name == WeaponName::BOMB || user_data.current_weapon.name == WeaponName::NONE) {
+        
+    if(user_data.current_weapon.name == WeaponName::KNIFE || user_data.current_weapon.name == WeaponName::NONE) {
         hud_total_ammo.hide();
         hud_loaded_ammo.hide();
     } else {
