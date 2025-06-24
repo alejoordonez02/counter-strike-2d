@@ -1,8 +1,8 @@
 #include "team.h"
 
 bool Team::players_are_alive() {
-    bool alive = true;
-    for (auto& p : players) alive &= p->is_alive();
+    bool alive = false;
+    for (auto& p : players) alive += p->is_alive();
     return alive;
 }
 
