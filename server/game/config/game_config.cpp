@@ -71,10 +71,20 @@ PlayerConfig GameConfig::load_player_config(YAML::Node config) {
     return player;
 }
 
-std::map<std::string, WeaponConfig> GameConfig::load_weapon_configs(
+std::map<WeaponName, WeaponConfig> GameConfig::load_weapon_configs(
     YAML::Node configs) {
+    /*
+     * TODO: éste map seguramente tenga que estar en common, en common/weapons.h
+     * */
+    std::map<std::string, WeaponName> weapon_name_map = {
+        {"Glock", WeaponName::GLOCK},
+        {"Ak47", WeaponName::AK47},
+        {"M3", WeaponName::M3},
+        {"Awp", WeaponName::AWP},
+        {"Knife", WeaponName::KNIFE}};
+
     std::cout << "loading weapon config\n";
-    std::map<std::string, WeaponConfig> weapons;
+    std::map<WeaponName, WeaponConfig> weapons;
     for (auto c : configs) {
         std::string name = c.first.as<std::string>();
         auto config = c.second;
@@ -86,8 +96,7 @@ std::map<std::string, WeaponConfig> GameConfig::load_weapon_configs(
         weapon.fire_rate = config["fire_rate"].as<float>();
         weapon.cost = config["cost"].as<int>();
         weapon.ammo_cost = config["ammo_cost"].as<int>();
-        weapons[name] = weapon;
+        weapons[weapon_name_map.at(name)] = weapon;
     }
     return weapons;
 }
-
