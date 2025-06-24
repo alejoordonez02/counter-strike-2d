@@ -9,3 +9,15 @@ Alejandro Paff - 103376
 Gonzalo Bustos - 100827
 
 
+## Capturas
+![image](https://github.com/user-attachments/assets/62298a10-d57c-448d-bf91-a6b2c2b5d857)
+
+![image](https://github.com/user-attachments/assets/cf559e2e-3fbb-4312-b42b-e8aa3a532de2)
+
+![image](https://github.com/user-attachments/assets/0c015868-6927-4065-8e66-0b72c59c5610)
+
+![image](https://github.com/user-attachments/assets/2c52503e-47be-423e-85a1-a363567870dd)
+
+
+## Licencia:
+GPL v2
