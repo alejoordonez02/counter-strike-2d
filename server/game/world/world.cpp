@@ -106,25 +106,6 @@ std::shared_ptr<SnapshotDTO> World::get_snapshot() {
     snapshot->counter_terrorists_score = ct_team.get_won_rounds();
     tt_team.push_player_data(snapshot->players);
     ct_team.push_player_data(snapshot->players);
-
-    // TODO: Eliminar. Lo dejo asi para que se vea en el mapa y
-    // se sepa que esta disponible para usar
-    WeaponDTO w1;
-    w1.name = WeaponName::AK47;
-    w1.x = 224;
-    w1.y = 228;
-    snapshot->weapons_on_floor.push_back(std::move(w1));
-    WeaponDTO w2;
-    w2.name = WeaponName::GLOCK;
-    w2.x = 128;
-    w2.y = 96;
-    snapshot->weapons_on_floor.push_back(std::move(w2));
-    WeaponDTO w3;
-    w3.name = WeaponName::BOMB;
-    w3.x = 100;
-    w3.y = 196;
-    snapshot->weapons_on_floor.push_back(std::move(w3));
-
     snapshot->serialize();
     return snapshot;
 }
