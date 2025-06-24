@@ -82,21 +82,21 @@ void Player::pickup() {
     std::unique_ptr<Drop> item = map.lock()->pickup(pos);
     if (!item) return;
 
+    if (item->get_type() == WeaponType::KNIFE) return;
+    if (item->get_type() == WeaponType::BOMB) return give_bomb();
+
     std::shared_ptr<Weapon> weapon;
+    weapon = get_weapon(item->get_type());
+    if (weapon) drop(std::move(weapon));
+
     switch (item->get_type()) {
-        case WeaponType::KNIFE:
-            return;
-        case WeaponType::BOMB:
-            return give_bomb();
         case WeaponType::PRIMARY:
+            primary = item->get_weapon();
+            current = primary;
+            break;
         case WeaponType::SECONDARY:
-            weapon = get_weapon(item->get_type());
-            if (weapon) drop(std::move(weapon));
-            if (item->get_type() == WeaponType::PRIMARY)
-                primary = item->get_weapon();
-            else
-                secondary = item->get_weapon();
-            current = item->get_weapon();
+            secondary = item->get_weapon();
+            current = secondary;
             break;
         default:
             throw std::runtime_error("Player: pickup: unknown weapon type");
@@ -113,7 +113,7 @@ void Player::drop(std::shared_ptr<Weapon> weapon) {
             if (secondary == weapon) secondary = nullptr;
             break;
         default:
-            break;
+            throw std::runtime_error("Player: drop: unknown weapon type");
     }
 
     map.lock()->drop(std::make_unique<WeaponDrop>(std::move(weapon), pos));
