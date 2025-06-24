@@ -17,6 +17,7 @@
 #include "start_reloading.h"
 #include "stop_action.h"
 #include "stop_moving.h"
+#include "use_weapon.h"
 
 using namespace DTOSerial::PlayerCommands;
 
@@ -33,6 +34,10 @@ public:
             {AIM,
              [](auto&& dto_p) {
                  return std::make_unique<Aim>(std::move(dto_p));
+             }},
+            {USE_WEAPON,
+             [](auto&& dto_p) {
+                 return std::make_unique<UseWeapon>(std::move(dto_p));
              }},
             {START_MOVING,
              [](auto&& dto_p) {
