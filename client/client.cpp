@@ -22,8 +22,9 @@ Client::Client(const std::string& hostname, const std::string& servname):
     con(hostname, servname), commands(), snapshots(), sender(con, commands),
     receiver(con, snapshots), input_handler(commands) {}
 
-void Client::lobby_phase(int i) {
+MapName Client::lobby_phase(int i) {
     using namespace DTOSerial::LobbyCommands;
+    MapName map_name = MapName::PRUEBA_MAPA_MOD; // HARDCODEADO
 
     if (i) {
         while (true) {
@@ -54,7 +55,8 @@ void Client::lobby_phase(int i) {
                     commands.try_push(std::make_shared<CreateGameDTO>(
                         name, static_cast<MapName>(map_idx),
                         static_cast<TeamName>(team_idx)));
-                    return;  // salimos del lobby para entrar al game loop
+                    map_name = static_cast<MapName>(map_idx);
+                    return map_name;  // salimos del lobby para entrar al game loop
                 }
                 case 3: {
                     std::string name;
@@ -66,7 +68,8 @@ void Client::lobby_phase(int i) {
                     std::cin >> team_idx;
                     commands.try_push(std::make_shared<JoinGameDTO>(
                         name, static_cast<TeamName>(team_idx)));
-                    return;
+                    // map_name = ???
+                    return map_name;
                 }
                 default:
                     std::cout << "Opción inválida\n";
@@ -93,6 +96,7 @@ void Client::lobby_phase(int i) {
                         name.toStdString(), static_cast<MapName>(mapIdx),
                         static_cast<TeamName>(teamIdx)));
                     lobbyLoop.quit();
+                    map_name = static_cast<MapName>(mapIdx);
                 });
 
             // Conexión para unirse a partida
@@ -102,6 +106,7 @@ void Client::lobby_phase(int i) {
                     commands.try_push(std::make_shared<JoinGameDTO>(
                         name.toStdString(), static_cast<TeamName>(teamIdx)));
                     lobbyLoop.quit();
+                    // map_name = ???
                 });
 
             lobbyWindow->show();
@@ -113,6 +118,7 @@ void Client::lobby_phase(int i) {
                                   QString("Critical error: %1").arg(e.what()));
         }
     }
+    return map_name; // ACOPLAR A CREATE Y JOIN (este enum se usa para cargar MapData para construir GameLoop)
 }
 
 void Client::run(int i) {
@@ -121,16 +127,16 @@ void Client::run(int i) {
 
     // lobby: menu interactivo que envía dtos (create, join y list, más otros)
     // al servidor
-    lobby_phase(i);
+    MapName map_name = lobby_phase(i);
 
     // TODO: El mapa se debe poner descargar del server supuestamente
     // std::cout << "LOG: Current working directory: " <<
     // std::filesystem::current_path() << std::endl;
     MapLoader map_loader;
     MapData map_to_use =
-        map_loader.loadMapData("tests/client/prueba_mapa_mod.yaml");
+        map_loader.loadMapData(map_name);
 
-    GameConfig game_config("client_config.yaml");
+    GameConfig game_config("config/client-config.yaml");
 
     // TODO: Aqui inicia un juego, la logica de las fases inicial, durante y
     // final se encontrará en el GameLoop

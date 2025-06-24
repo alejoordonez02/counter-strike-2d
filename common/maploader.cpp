@@ -9,13 +9,25 @@
 MapLoader::MapLoader() {
 }
 
-MapData MapLoader::loadMapData(const std::string& filePath) {
+MapData MapLoader::loadMapData(MapName map_name) {
     std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
-    
-    if (!std::filesystem::exists(filePath)) {
-        throw std::runtime_error("File does not exist: " + filePath);
-    }
 
+    std::string yaml_path;
+    switch (map_name) {
+        #define X(name, lowercase) \
+                case MapName::name: \
+                    yaml_path = "config/maps/" lowercase ".yaml"; \
+                    break;
+            MAP_LIST
+        #undef X
+        default:
+            throw std::runtime_error("MapLoader error: map not found");
+    }
+    
+    return loadMapYaml(yaml_path);
+}
+
+MapData MapLoader::loadMapYaml(const std::string& filePath) {
     MapData data;
     try {
         YAML::Node config = YAML::LoadFile(filePath);

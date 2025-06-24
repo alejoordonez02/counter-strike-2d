@@ -9,6 +9,8 @@
 #include "client/renderables/hud/renderable_hud_health.h"
 #include "client/renderables/hud/renderable_hud_timer.h"
 #include "client/renderables/hud/renderable_hud_money.h"
+#include "client/renderables/hud/renderable_hud_total_ammo.h"
+#include "client/renderables/hud/renderable_hud_loaded_ammo.h"
 #include "client/renderables/renderable_pointer.h"
 
 class HUDManager {
@@ -25,6 +27,8 @@ class HUDManager {
     RenderableHUDHealth hud_hp;
     RenderableHUDTimer hud_timer;
     RenderableHUDMoney hud_money;
+    RenderableHUDTotalAmmo hud_total_ammo;
+    RenderableHUDLoadedAmmo hud_loaded_ammo;
 
     RenderablePointer pointer;
 

@@ -46,30 +46,11 @@ GameConfig::GameConfig(const std::string& path, MapName map) {
 /*
  * Config helpers
  * */
-/*
- * No están los mapas definidos todavía así que uso el mismo para todos.
- * TODO: ésto debería estar en common! la traducción del enum es la misma
- * para el server que para el cliente (y que se llame MapConfig con un
- * vector de structs StructureConfig porfa jsjajaj)
- * */
+
 MapData GameConfig::load_map_config(MapName map_name) {
     std::cout << "loading map config\n";
-    std::string map_yaml;
-    switch (map_name) {
-        case MapName::DUST:
-            map_yaml = "tests/client/prueba_mapa_mod.yaml";
-            break;
-        case MapName::AZTEC:
-            map_yaml = "tests/client/prueba_mapa_mod.yaml";
-            break;
-        case MapName::NUKE:
-            map_yaml = "tests/client/prueba_mapa_mod.yaml";
-            break;
-        default:
-            throw std::runtime_error("Game config error: map not found");
-    }
     MapLoader map_loader;
-    return map_loader.loadMapData(map_yaml);
+    return map_loader.loadMapData(map_name);
 }
 
 PlayerConfig GameConfig::load_player_config(YAML::Node config) {
