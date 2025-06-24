@@ -8,6 +8,7 @@ target_sources(cs2d_client
         renderable_hud_money.cpp
         renderable_hud_total_ammo.cpp
         renderable_hud_loaded_ammo.cpp
+        renderable_hud_buy_guns.cpp
     PUBLIC
 )
 

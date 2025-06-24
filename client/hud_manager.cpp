@@ -1,12 +1,6 @@
 #include "hud_manager.h"
 
-#include <utility>
-
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Surface.hh>
-#include <algorithm>
-
-HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
+HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider, const GameConfig& game_config):
         font(DATA_PATH "/assets/gfx/fonts/sourcesans.ttf", 16),
         show_text(false),
         hud_hp(animation_provider),
@@ -14,6 +8,7 @@ HUDManager::HUDManager(std::shared_ptr<AnimationProvider> animation_provider):
         hud_money(animation_provider),
         hud_total_ammo(animation_provider),
         hud_loaded_ammo(animation_provider),
+        hud_buy_guns(animation_provider, font, game_config),
         pointer(animation_provider)
          {
 }
@@ -43,6 +38,9 @@ void HUDManager::update(const SnapshotDTO& snapshot,
 
     bool user_is_attacking = get_user_is_shooting(snapshot, user_data);
     pointer.update(user_is_attacking);
+    
+    // Actualizar UI de compra de armas
+    hud_buy_guns.update(user_data);
 
     // fps counter
     calculate_fps(fps_timer);
@@ -71,6 +69,8 @@ void HUDManager::render(SDL2pp::Renderer& renderer) {
     hud_money.render(renderer);
     hud_total_ammo.render(renderer);
     hud_loaded_ammo.render(renderer);
+    
+    hud_buy_guns.render(renderer);
     
 
     if(show_text){
