@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "aim.h"
+#include "buy_ammo.h"
+#include "buy_weapon.h"
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
 #include "player_command.h"
@@ -38,6 +40,14 @@ public:
             {USE_WEAPON,
              [](auto&& dto_p) {
                  return std::make_unique<UseWeapon>(std::move(dto_p));
+             }},
+            {BUY_WEAPON,
+             [](auto&& dto_p) {
+                 return std::make_unique<BuyWeapon>(std::move(dto_p));
+             }},
+            {BUY_AMMO,
+             [](auto&& dto_p) {
+                 return std::make_unique<BuyAmmo>(std::move(dto_p));
              }},
             {START_MOVING,
              [](auto&& dto_p) {
