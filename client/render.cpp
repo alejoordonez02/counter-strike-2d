@@ -26,7 +26,7 @@ Render::Render(const MapData& map_data, const GameConfig& game_config):
     field_of_view = std::make_unique<FieldOfView>(renderer, game_config);
 
     // Inicializar sonidos
-    sound_manager = std::make_unique<SoundManager>();
+    sound_manager = std::make_unique<SoundManager>(game_config);
 }
 
 void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,

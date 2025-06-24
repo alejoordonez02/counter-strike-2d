@@ -10,14 +10,12 @@
 #include <SDL2pp/Mixer.hh>
 
 #include "common/network/dtos/snapshot_dto.h"
+#include "client/game_config.h"
 
 #define CHANNELS 8      // permite reproducir 8 sonidos en simultaneo
 #define WEAPON_GROUP 1
 #define UI_GROUP 2
 #define WORLD_GROUP 3
-
-#define MUSIC_VOLUME 20
-#define SOUND_VOLUME 50
 
 class SoundManager {
 private:
@@ -31,8 +29,7 @@ private:
     int music_volume;
 
 public:
-    SoundManager();
-    ~SoundManager();
+    SoundManager(const GameConfig& game_config);
     
     // Cargar sonidos
     void load_sound(const std::string& name, const std::string& path);

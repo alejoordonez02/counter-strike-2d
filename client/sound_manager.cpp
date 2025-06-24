@@ -4,13 +4,13 @@
 #include <algorithm>
 #include <cmath>
 
-SoundManager::SoundManager() 
+SoundManager::SoundManager(const GameConfig& game_config) 
     : mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, CHANNELS, 4096), // Inicializar mixer con SDL2pp
       background_music(nullptr),
-      music_enabled(true), 
-      sfx_enabled(true), 
-      sfx_volume(SOUND_VOLUME), 
-      music_volume(MUSIC_VOLUME) {
+      music_enabled(game_config.sfx.use_music), 
+      sfx_enabled(game_config.sfx.use_sound), 
+      sfx_volume(game_config.sfx.sound_volume), 
+      music_volume(game_config.sfx.music_volume) {
     
     try {
         // configurar canales con grupos (permite separar sonidos)
