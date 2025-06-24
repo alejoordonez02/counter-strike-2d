@@ -11,11 +11,11 @@
 #define BOMB_TIME 20
 
 Map::Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
-         const std::vector<Drop>& drops,
+         std::vector<std::unique_ptr<Drop>>&& drops,
          const std::vector<Structure>& bomb_site,
          const std::vector<Position>& tt_spawn,
          const std::vector<Position>& ct_spawn):
-    collidables(collidables), drops(drops), bomb_site(bomb_site),
+    collidables(collidables), drops(std::move(drops)), bomb_site(bomb_site),
     tt_spawn(tt_spawn), ct_spawn(ct_spawn), bomb(std::nullopt) {}
 
 /*
@@ -28,7 +28,10 @@ void Map::update(float dt) {
 /*
  * Restart
  * */
-void Map::restart() { bomb = std::nullopt; }
+void Map::restart() {
+    drops.clear();
+    bomb = std::nullopt;
+}
 
 /*
  * Sites TODO: WIP
@@ -61,7 +64,7 @@ void Map::plant_bomb(const Position& pos) {
 void Map::defuse_bomb() { bomb->defuse(); }
 
 void Map::push_map_data(std::shared_ptr<SnapshotDTO> snapshot) {
-    for (auto& d : drops) d.push_drop_data(snapshot->weapons_on_floor);
+    for (auto& d : drops) d->push_drop_data(snapshot->weapons_on_floor);
     if (!bomb) return;
     bomb->push_bomb_data(snapshot->weapons_on_floor);
 }

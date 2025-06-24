@@ -44,7 +44,9 @@ Game::Game(World&& world, int tick_rate, int commands_per_tick):
 void Game::run() {
     auto t1 = Clock::now();
     float elapsed_seconds = Duration(tick_duration).count();
+    world.start();  // TODO: ésto lo debería poder hacer el user
     while (should_keep_running()) {
+        if (world.has_ended()) stop();
         add_pending_players();
 
         auto snapshot = world.get_snapshot();

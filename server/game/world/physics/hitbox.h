@@ -14,7 +14,7 @@ public:
 
     virtual std::optional<Position> intersect(const Trajectory& t) const = 0;
 
-    virtual void get_attacked(int damage) = 0;
+    virtual bool get_attacked(int damage) = 0;
 
     Position get_position() const { return pos; }
 

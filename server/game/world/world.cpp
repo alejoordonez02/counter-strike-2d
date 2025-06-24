@@ -15,7 +15,7 @@
 World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
              float time_out, const PlayerFactory& player_factory,
              std::shared_ptr<WeaponFactory> weapon_factory):
-    map(std::move(map)), id_gen(0), max_rounds(max_rounds),
+    map(std::move(map)), id_gen(0), max_rounds(max_rounds), rounds(0),
     round_time(round_time), time_out(time_out), round_ongoing(false),
     ended(false), player_factory(player_factory),
     weapon_factory(weapon_factory) {}
@@ -24,16 +24,20 @@ World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
  * Update rounds
  * */
 void World::start_round() {
+    printf("round number %d, total rounds %d\n", rounds, max_rounds);
+    printf("ended = %d\n", ended);
+    if (rounds >= max_rounds) ended = true;
     time_out.restart();
     tt_team.restart();
     ct_team.restart();
-    map->restart();
     round_time.restart();
+    rounds++;
 }
 
 void World::sum_won_round(Team& team) {
     team.sum_won_round();
     start_round();
+    map->restart();
 }
 
 void World::update_rounds(float dt) {
@@ -64,6 +68,7 @@ void World::update(float dt) {
         tt_team.update(dt);
         ct_team.update(dt);
         map->update(dt);
+        if (!started) continue;
         update_rounds(dt);
     }
 }
@@ -100,7 +105,9 @@ std::shared_ptr<SnapshotDTO> World::get_snapshot() {
     auto snapshot = std::make_shared<SnapshotDTO>();
     snapshot->round_finished = !round_ongoing;
     snapshot->game_finished = ended;
-    snapshot->initial_phase = true;  // ?
+    snapshot->initial_phase = round_ongoing;  // ?
+    snapshot->time_left = (uint8_t)(round_ongoing ? round_time.get_time_left()
+                                                  : time_out.get_time_left());
     snapshot->round_number = rounds;
     snapshot->terrorists_score = tt_team.get_won_rounds();
     snapshot->counter_terrorists_score = ct_team.get_won_rounds();

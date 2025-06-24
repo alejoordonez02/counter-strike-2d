@@ -29,12 +29,19 @@ struct GunsConfig {
     int secondary_ammo_price;
 };
 
+struct SFXConfig{
+    bool use_sound;
+    bool use_music;
+    int sound_volume;
+    int music_volume;
+};
 
 class GameConfig {
     private:
         void load_fov_config(const YAML::Node& config);
         void load_window_config(const YAML::Node& config);
         void load_guns_config(const YAML::Node& config);
+        void load_sfx_config(const YAML::Node& config);
 
     public:
         GameConfig(const std::string& path);
@@ -42,6 +49,7 @@ class GameConfig {
         WindowConfig window;
         FOVConfig fov;
         GunsConfig guns_config;
+        SFXConfig sfx;
 
 };
 

@@ -7,6 +7,8 @@ class CounterTerrorist: public Player {
 private:
     void teleport_to_spawn() override;
 
+    uint8_t get_team() const override { return 1; }
+
 public:
     CounterTerrorist(int id, std::shared_ptr<Weapon> primary,
                      std::shared_ptr<Weapon> secondary,
@@ -21,7 +23,17 @@ public:
 
     void start_defusing() override;
 
-    void give_bomb() override {}
+    void give_bomb() override {
+        /*
+         * papa caliente, la agarra y la suelta
+         * */
+        map.lock()->drop(std::make_unique<BombDrop>(pos));
+    }
+
+    void drop_bomb() override {}
+
+    bool has_bomb() const override { return false; }
+
     void start_planting() override {}
 };
 

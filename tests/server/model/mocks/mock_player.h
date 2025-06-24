@@ -22,9 +22,9 @@ private:
 
     static inline std::shared_ptr<Map> get_default_map() {
         return std::make_shared<Map>(
-            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Drop>{},
-            std::vector<Structure>{}, std::vector<Position>{},
-            std::vector<Position>{});
+            std::vector<std::shared_ptr<Hitbox>>{},
+            std::vector<std::unique_ptr<Drop>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
     }
 
     /* Weapon(WeaponName name, WeaponType type, float damage, float accuracy,
@@ -65,7 +65,7 @@ public:
     MOCK_METHOD(void, switch_side, (), (override));
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
-    MOCK_METHOD(void, get_attacked, (int damage), (override));
+    MOCK_METHOD(bool, get_attacked, (int damage), (override));
     MOCK_METHOD(void, use_primary, (), ());
     MOCK_METHOD(void, use_secondary, (), ());
     MOCK_METHOD(void, use_knife, (), ());
@@ -78,6 +78,9 @@ public:
     MOCK_METHOD(void, start_defusing, (), (override));
     MOCK_METHOD(void, give_bomb, (), (override));
     MOCK_METHOD(void, restart, (), (override));
+    MOCK_METHOD(void, drop_bomb, (), (override));
+    MOCK_METHOD(bool, has_bomb, (), (const, override));
+    MOCK_METHOD(uint8_t, get_team, (), (const, override));
 
     virtual ~MockPlayer() = default;
 };

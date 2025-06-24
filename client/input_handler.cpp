@@ -6,6 +6,9 @@
 #include <memory>
 #include <string>
 
+#include "drop_bomb_dto.h"
+#include "drop_current_dto.h"
+#include "pickup_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -190,25 +193,41 @@ void InputHandler::send_reload() {
 }
 
 void InputHandler::send_buy_weapon() {
-    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las teclas para comprar
+    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las
+    // teclas para comprar
     if (key_states[SDLK_5]) {
-        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::GLOCK));
+        commands_queue.try_push(
+            std::make_shared<BuyWeaponDTO>(WeaponName::GLOCK));
     } else if (key_states[SDLK_6]) {
-        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::AK47));
+        commands_queue.try_push(
+            std::make_shared<BuyWeaponDTO>(WeaponName::AK47));
     } else if (key_states[SDLK_7]) {
         commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::M3));
     } else if (key_states[SDLK_8]) {
-        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::AWP));
+        commands_queue.try_push(
+            std::make_shared<BuyWeaponDTO>(WeaponName::AWP));
     }
 }
 
 void InputHandler::send_buy_ammo() {
-    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las teclas para comprar
+    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las
+    // teclas para comprar
     if (key_states[SDLK_9]) {
-        commands_queue.try_push(std::make_shared<BuyAmmoDTO>(WeaponType::PRIMARY, 1));
+        commands_queue.try_push(
+            std::make_shared<BuyAmmoDTO>(WeaponType::PRIMARY, 10));
     } else if (key_states[SDLK_0]) {
-        commands_queue.try_push(std::make_shared<BuyAmmoDTO>(WeaponType::SECONDARY, 1));
+        commands_queue.try_push(
+            std::make_shared<BuyAmmoDTO>(WeaponType::SECONDARY, 10));
     }
+}
+
+void InputHandler::send_drops() {
+    if (key_states[SDLK_f])
+        commands_queue.try_push(std::make_shared<PickupDTO>());
+    else if (key_states[SDLK_g])
+        commands_queue.try_push(std::make_shared<DropCurrentDTO>());
+    else if (key_states[SDLK_b])
+        commands_queue.try_push(std::make_shared<DropBombDTO>());
 }
 
 // Nueva función para procesar el movimiento:
@@ -221,6 +240,7 @@ void InputHandler::process_movement() {
     send_reload();
     send_buy_weapon();
     send_buy_ammo();
+    send_drops();
     // send_states();
 }
 

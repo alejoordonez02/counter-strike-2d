@@ -42,6 +42,9 @@ public:
     MOCK_METHOD(void, start_defusing, (), (override));
     MOCK_METHOD(void, give_bomb, (), (override));
     MOCK_METHOD(void, restart, (), (override));
+    MOCK_METHOD(void, drop_bomb, (), (override));
+    MOCK_METHOD(bool, has_bomb, (), (const, override));
+    MOCK_METHOD(uint8_t, get_team, (), (const, override));
 };
 
 #endif

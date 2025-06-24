@@ -16,22 +16,24 @@ Weapon::Weapon(WeaponName name, WeaponType type, float damage, float accuracy,
     loaded_ammo(ammo_capacity), ammo(starting_ammo - ammo_capacity), cost(cost),
     ammo_cost(ammo_cost) {}
 
-void Weapon::attack(Position origin, Direction direction,
+bool Weapon::attack(Position origin, Direction direction,
                     std::vector<std::shared_ptr<Hitbox>>& collidables,
                     const std::vector<size_t>& sorted_idx) {
-    if (loaded_ammo <= 0 || !fire_delay.is_done()) return;
+    if (loaded_ammo <= 0 || !fire_delay.is_done()) return false;
 
+    bool kill = false;
     Trajectory t(origin, origin + direction * range, bullet_size);
     for (auto i : sorted_idx) {
         auto coll = collidables[i];
         if (coll->intersect(t)) {
-            if (Random::get() < accuracy) coll->get_attacked(damage);
+            if (Random::get() < accuracy) kill = coll->get_attacked(damage);
             break;
         }
     }
 
     loaded_ammo--;
     fire_delay.restart();
+    return kill;
 }
 
 void Weapon::reload() {

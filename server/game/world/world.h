@@ -31,6 +31,7 @@ private:
     Timer round_time;
     Timer time_out;
     bool round_ongoing;
+    bool started;
     bool ended;
 
     PlayerFactory player_factory;
@@ -49,6 +50,8 @@ public:
           std::shared_ptr<WeaponFactory> weapon_factory);
 
     void update(float dt);
+
+    void start() { started = true; }
 
     std::shared_ptr<Player> add_player(TeamName team);
 

@@ -23,6 +23,8 @@ public:
     }
 
     bool is_done() const { return done; }
+
+    float get_time_left() { return time_left; }
 };
 
 #endif

@@ -44,8 +44,10 @@ private:
 
     bool pay(const int& cost);
     std::shared_ptr<Weapon> get_weapon(WeaponType type);
+    void drop(std::shared_ptr<Weapon> weapon);
 
     virtual void teleport_to_spawn() = 0;
+    virtual uint8_t get_team() const = 0;
 
     std::shared_ptr<WeaponFactory> weapon_factory;
 
@@ -65,7 +67,7 @@ public:
      * Hitbox interface
      * */
     std::optional<Position> intersect(const Trajectory& t) const override;
-    void get_attacked(int damage) override;
+    bool get_attacked(int damage) override;
 
     /*
      * Pasive commands: change what the player **is** doing
@@ -86,6 +88,9 @@ public:
     void aim(Direction dir);
 
     void pickup();
+    void drop();
+
+    virtual void drop_bomb() = 0;
 
     void use_weapon(const WeaponType& type);
 
@@ -99,6 +104,7 @@ public:
      * */
     void set_weapon(std::shared_ptr<Weapon> weapon) { current = weapon; }
     bool is_alive();
+    virtual bool has_bomb() const = 0;
 
     /*
      * DTOs
