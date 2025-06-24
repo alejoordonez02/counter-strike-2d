@@ -8,17 +8,21 @@ private:
     void teleport_to_spawn() override;
 
 public:
-    CounterTerrorist(int id, std::weak_ptr<Map> map, float max_velocity,
-                     float acceleration, float radius, int money, int health);
+    CounterTerrorist(int id, std::shared_ptr<Weapon> primary,
+                     std::shared_ptr<Weapon> secondary,
+                     std::shared_ptr<Weapon> knife, std::weak_ptr<Map> map,
+                     float max_velocity, float acceleration, float radius,
+                     int money, int health,
+                     std::shared_ptr<WeaponFactory> weapon_factory);
 
     void switch_side() override {}
 
     void restart() override;
 
-    void defuse_bomb() override;
+    void start_defusing() override;
 
     void give_bomb() override {}
-    void plant_bomb() override {}
+    void start_planting() override {}
 };
 
 #endif

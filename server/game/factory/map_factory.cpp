@@ -5,6 +5,10 @@
 
 std::shared_ptr<Map> MapFactory::create(const MapData& config) {
     std::vector<std::shared_ptr<Hitbox>> collidables;
+    /*
+     * TODO: levantar los drops
+     * */
+    std::vector<Drop> drops;
     std::vector<Structure> bomb_site;
     std::vector<Position> tt_spawn;
     std::vector<Position> ct_spawn;
@@ -20,5 +24,6 @@ std::shared_ptr<Map> MapFactory::create(const MapData& config) {
             ct_spawn.push_back(Position(block.x, block.y));
     }
 
-    return std::make_shared<Map>(collidables, bomb_site, tt_spawn, ct_spawn);
+    return std::make_shared<Map>(collidables, drops, bomb_site, tt_spawn,
+                                 ct_spawn);
 }

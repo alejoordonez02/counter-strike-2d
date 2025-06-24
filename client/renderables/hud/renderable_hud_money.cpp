@@ -15,10 +15,10 @@ std::string RenderableHUDMoney::get_icon_name() const {
 
 Position RenderableHUDMoney::get_icon_position(const Position& screen_size, const Position& icon_size) const {
     int spacing_between = icon_size.x / 4;
-    int MAX_NUMBERS = 6;
+    int MAX_DIGITS = 6;
     // esquina inferior derecha
-    int x = screen_size.x - icon_size.x * MAX_NUMBERS - spacing_between;
-    int y = screen_size.y - icon_size.y - spacing_between;
+    int x = screen_size.x - icon_size.x * MAX_DIGITS - spacing_between;
+    int y = screen_size.y - (icon_size.y + spacing_between) * 2;    // para dejar espacio al ammo
     return Position(x, y);
 }
 

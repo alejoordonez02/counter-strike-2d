@@ -10,6 +10,7 @@
 #include "common/maploader.h"
 #include "loop_config.h"
 #include "player_config.h"
+#include "snapshot_dto.h"
 #include "weapon_config.h"
 #include "world_config.h"
 
@@ -19,7 +20,7 @@ private:
     MapData load_map_config(MapName map_name);
     void load_world_config(YAML::Node config, MapName map);
     PlayerConfig load_player_config(YAML::Node config);
-    std::map<std::string, WeaponConfig> load_weapon_configs(YAML::Node config);
+    std::map<WeaponName, WeaponConfig> load_weapon_configs(YAML::Node config);
 
 public:
     LoopConfig loop;

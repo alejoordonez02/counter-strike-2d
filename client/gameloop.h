@@ -9,10 +9,8 @@
 #include "common/network/dto.h"
 #include "common/network/dtos/snapshot_dto.h"
 #include "common/queue.h"
+#include "client/game_config.h"
 
-const static int FRAME_RATE = 70;
-// Va con milisegundos ya que utilizo el timer de SDL
-const static int RATE = 1000 / FRAME_RATE;
 
 class GameLoop {
 private:
@@ -25,16 +23,16 @@ private:
 
     InputHandler input_handler;
 
+    const int FRAME_RATE;
+    // Va con milisegundos ya que utilizo el timer de SDL
+    const int RATE = 1000 / FRAME_RATE;
+
 public:
     GameLoop(Queue<std::unique_ptr<DTO>>& snapshots,
-             Queue<std::shared_ptr<DTO>>& commands, const MapData& map_data);
+             Queue<std::shared_ptr<DTO>>& commands, const MapData& map_data, const GameConfig& game_config);
     void run();
 
-    void debug_get_fps(uint32_t& fps_timer, int& frame_count);
-
     void handle_frame_timing(uint32_t& t1);
-
-    // void handle_frame_timing(uint32_t& t1);
 
     void get_snapshot_from_queue(SnapshotDTO& last_snapshot, PrivatePlayerDTO& user_data);
 };

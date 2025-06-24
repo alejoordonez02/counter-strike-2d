@@ -7,6 +7,7 @@
 #include "client/input_handler.h"
 #include "common/network/receiver.h"
 #include "common/network/sender.h"
+#include "common/map_name.h"
 #include "common/queue.h"
 
 class Client {
@@ -20,7 +21,7 @@ private:
     Receiver receiver;
     InputHandler input_handler;
 
-    void lobby_phase(
+    MapName lobby_phase(
         int i = 0);  // i != 0 no abre la interfaz de lobby (para testear)
 
 public:

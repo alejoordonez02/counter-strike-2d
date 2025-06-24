@@ -5,7 +5,8 @@
 class RapidWeapon: public Weapon {
 public:
     RapidWeapon(float fire_rate):
-        Weapon(100, 100, 100, fire_rate, 0, 0, 100, 100, 0) {}
+        Weapon(WeaponName::NONE, WeaponType::NONE, 100, 100, 1000, 0, fire_rate,
+               0, 100, 100, 0, 0) {}
 };
 
 class FatHitbox: public Hitbox {

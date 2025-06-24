@@ -14,12 +14,12 @@ class Attack: public ActionStrategy {
 private:
     Position& pos;
     Direction& dir;
-    Weapon& weapon;
+    std::shared_ptr<Weapon> weapon;
     std::vector<std::shared_ptr<Hitbox>>& collidables;
     std::vector<size_t>& sorted_idx;
 
 public:
-    Attack(Position& pos, Direction& dir, Weapon& weapon,
+    Attack(Position& pos, Direction& dir, std::shared_ptr<Weapon> weapon,
            std::vector<std::shared_ptr<Hitbox>>& collidables,
            std::vector<size_t>& sorted_idx);
 

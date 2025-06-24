@@ -11,11 +11,12 @@
 #define BOMB_TIME 20
 
 Map::Map(const std::vector<std::shared_ptr<Hitbox>>& collidables,
+         const std::vector<Drop>& drops,
          const std::vector<Structure>& bomb_site,
          const std::vector<Position>& tt_spawn,
          const std::vector<Position>& ct_spawn):
-    collidables(collidables), bomb_site(bomb_site), tt_spawn(tt_spawn),
-    ct_spawn(ct_spawn), bomb(std::nullopt) {}
+    collidables(collidables), drops(drops), bomb_site(bomb_site),
+    tt_spawn(tt_spawn), ct_spawn(ct_spawn), bomb(std::nullopt) {}
 
 /*
  * Update

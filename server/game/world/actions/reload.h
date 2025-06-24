@@ -6,11 +6,11 @@
 
 class Reload: public ActionStrategy {
 private:
-    Weapon& weapon;
+    std::shared_ptr<Weapon> weapon;
     Timer reload_time;
 
 public:
-    Reload(Weapon& weapon);
+    Reload(std::shared_ptr<Weapon> weapon);
 
     void update(float dt) override;
 };

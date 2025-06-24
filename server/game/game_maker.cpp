@@ -16,7 +16,7 @@ void GameMaker::create(Connection&& con, const std::string& game_name,
     auto it = games.find(game_name);
     if (it != games.end()) throw GameAlreadyExists(game_name);
 
-    GameConfig config("server-config.yaml", map);
+    GameConfig config("config/server-config.yaml", map);
     auto game = game_factory.create(config);
     game->add_player(std::move(con), team);
     game->start();

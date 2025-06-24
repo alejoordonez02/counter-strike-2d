@@ -7,15 +7,18 @@
 #include "factory/player_factory.h"
 #include "map.h"
 #include "player.h"
+#include "weapon_factory.h"
 
 /*
  * Constructor
  * */
 World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
-             float time_out, const PlayerFactory& player_factory):
+             float time_out, const PlayerFactory& player_factory,
+             std::shared_ptr<WeaponFactory> weapon_factory):
     map(std::move(map)), id_gen(0), max_rounds(max_rounds),
     round_time(round_time), time_out(time_out), round_ongoing(false),
-    ended(false), player_factory(player_factory) {}
+    ended(false), player_factory(player_factory),
+    weapon_factory(weapon_factory) {}
 
 /*
  * Update rounds
@@ -104,16 +107,22 @@ std::shared_ptr<SnapshotDTO> World::get_snapshot() {
     tt_team.push_player_data(snapshot->players);
     ct_team.push_player_data(snapshot->players);
 
-    // TODO: Eliminar. Lo dejo asi para que se vea en el mapa y 
+    // TODO: Eliminar. Lo dejo asi para que se vea en el mapa y
     // se sepa que esta disponible para usar
     WeaponDTO w1;
-    w1.w_type = WeaponType::AK47; w1.x = 224; w1.y = 228;
+    w1.name = WeaponName::AK47;
+    w1.x = 224;
+    w1.y = 228;
     snapshot->weapons_on_floor.push_back(std::move(w1));
     WeaponDTO w2;
-    w2.w_type = WeaponType::Glock; w2.x = 128; w2.y = 96;
+    w2.name = WeaponName::GLOCK;
+    w2.x = 128;
+    w2.y = 96;
     snapshot->weapons_on_floor.push_back(std::move(w2));
     WeaponDTO w3;
-    w3.w_type = WeaponType::Bomb; w3.x = 100; w3.y = 196;
+    w3.name = WeaponName::BOMB;
+    w3.x = 100;
+    w3.y = 196;
     snapshot->weapons_on_floor.push_back(std::move(w3));
 
     snapshot->serialize();

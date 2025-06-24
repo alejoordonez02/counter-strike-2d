@@ -1,0 +1,77 @@
+loop:
+  tick_rate: 60
+  commands_per_tick: 30
+
+world:
+  rounds: 15
+  round_time: 600
+  time_out: 5
+
+  player:
+    max_velocity: 90
+    acceleration: 360
+    radius: 10
+    starting_money: 800
+    max_health: 100
+  
+  weapons:
+    Glock:
+      type: Secondary
+      damage: 20
+      accuracy: 1
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
+      ammo_cost: 1
+    Ak47:
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
+      ammo_cost: 1
+    M3:
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
+      ammo_cost: 1
+    Awp:
+      type: Primary
+      damage: 20
+      accuracy: 0.8
+      range: 960
+      bullet_size: 1
+      fire_rate: 2
+      reload_time: 2
+      ammo_capacity: 25
+      starting_ammo: 25
+      cost: 800
+      ammo_cost: 1
+    Knife:
+      type: Knife
+      damage: 25
+      accuracy: 1
+      range: 32
+      bullet_size: 1
+      fire_rate: 1
+      reload_time: 0
+      ammo_capacity: 1000
+      starting_ammo: 1000
+      cost: 0
+      ammo_cost: 0

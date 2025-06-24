@@ -1,17 +1,19 @@
 #include "client/field_of_view.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 
-#define FOV_CONE_RADIUS 90     // 0 a 360, el ángulo del cono de visión (en grados)
 
-FieldOfView::FieldOfView(SDL2pp::Renderer& renderer, uint32_t width, uint32_t height)
-    : stencil(
+FieldOfView::FieldOfView(SDL2pp::Renderer& renderer, const GameConfig& game_config)
+    : 
+    W_WIDTH(game_config.window.window_width), W_HEIGHT(game_config.window.window_height), 
+    FOV_CONE_RADIUS(game_config.fov.field_of_view_angle),
+    stencil(
         renderer, 
         SDL_PIXELFORMAT_RGBA8888, // formato de 32 bits: 8 bits por canal: R, G, B, A
         SDL_TEXTUREACCESS_TARGET, // permite dibujar sobre la textura (por default las texture son de solo lectura, en este caso permite hacer una de escritura)
-        width,
-        height
-    ),
-      width(width), height(height) {
+        W_WIDTH,
+        W_HEIGHT
+    )
+       {
     // inicializa textura negra vacía
     stencil
         .SetBlendMode(SDL_BLENDMODE_BLEND); // modo mezcla: permite transparencia
@@ -24,19 +26,19 @@ void FieldOfView::update(SDL2pp::Renderer& renderer) {
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
     // centro de la pantalla
-    int cx = width / 2;
-    int cy = height / 2;
+    int cx = W_WIDTH / 2;
+    int cy = W_HEIGHT / 2;
 
     // calcula dirección hacia el mouse
     float angle = atan2(mouse_y - cy, mouse_x - cx);
     
     // radio del cono de visión
-    float cone_radius = width * 2;
+    float cone_radius = W_WIDTH * 2;
     float cone_width_angle = FOV_CONE_RADIUS * M_PI / 180;
     cone_width_angle = cone_width_angle / 2; // dividir por 2 para que el cono sea simétrico
 
     // circulo de 1/4 de la pantalla en el centro
-    int circle_radius = width / 6;
+    int circle_radius = W_WIDTH / 6;
 
     // puntos del triángulo que representa el cono
     std::vector<short> vx, vy;
@@ -74,7 +76,7 @@ void FieldOfView::update(SDL2pp::Renderer& renderer) {
 
     // crear una Surface para aplicar color key (tomar un color como transparente, simil png)
     SDL2pp::Surface surface_temp(
-        0, width, height, 32, 
+        0, W_WIDTH, W_HEIGHT, 32, 
         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000
     );
 

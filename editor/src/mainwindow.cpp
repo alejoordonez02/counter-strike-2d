@@ -79,7 +79,7 @@ void MainWindow::on_LoadButton_clicked()
     if (!filePath.isEmpty()) {
         try {
             std::string filePathString = filePath.toStdString();
-            MapData data_struct = m_mapLoader.loadMapData(filePathString);
+            MapData data_struct = m_mapLoader.loadMapYaml(filePathString);
             MapDataEditor data = convertToMapData(data_struct);
             m_mapEditor->loadMapFromData(data);
             
