@@ -36,7 +36,7 @@ private:
     // Métodos privados para renderizado
     void setup_weapon_data();
     void render_background(SDL2pp::Renderer& renderer, const Position& screen_size);
-    void render_weapons(SDL2pp::Renderer& renderer, const Position& screen_size);
+    void render_weapons(SDL2pp::Renderer& renderer);
     void render_ammo(SDL2pp::Renderer& renderer, const Position& screen_size);
     void render_exit_option(SDL2pp::Renderer& renderer, const Position& screen_size);
     void render_key_number(SDL2pp::Renderer& renderer, const std::string& key, const Position& pos);
@@ -44,7 +44,6 @@ private:
                      const Position& pos, const SDL_Color& color);
     
     // Métodos auxiliares
-    std::string get_weapon_animation_name(const std::string& weapon_name);
     bool can_afford_weapon(const std::string& weapon_name);
 
 public:

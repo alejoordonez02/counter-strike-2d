@@ -45,7 +45,7 @@ void RenderableHUDBuyGuns::render(SDL2pp::Renderer& renderer) {
     render_background(renderer, screen_size);
     
     // Renderizar armas del lado izquierdo
-    render_weapons(renderer, screen_size);
+    render_weapons(renderer);
     
     // Renderizar municiones del lado derecho  
     render_ammo(renderer, screen_size);
@@ -71,7 +71,7 @@ void RenderableHUDBuyGuns::render_background(SDL2pp::Renderer& renderer, const P
     renderer.FillRect(background_rect);
 }
 
-void RenderableHUDBuyGuns::render_weapons(SDL2pp::Renderer& renderer, const Position& screen_size) {
+void RenderableHUDBuyGuns::render_weapons(SDL2pp::Renderer& renderer) {
     // empieza de la esquina superior izquierda dentro del rectangulo
     int start_x = padding + margin;
     int start_y = padding + margin;
@@ -113,17 +113,17 @@ void RenderableHUDBuyGuns::render_ammo(SDL2pp::Renderer& renderer, const Positio
     
     for (size_t i = 0; i < ammo_data.size(); ++i) {
         const auto& ammo = ammo_data[i];
-        int y_pos = start_y + (i * icon_size.y + i * 10);
+        int y_pos = start_y + (i * icon_size.y + i * padding);
         
         // Renderizar número de tecla
         render_key_number(renderer, ammo.key, Position(start_x, y_pos));
         
         // Renderizar nombre de munición (sin icono)
-        Position name_pos(start_x + icon_size.x, y_pos);
+        Position name_pos(start_x + icon_size.x, y_pos - padding+10);
         render_text(renderer, "Municion " + ammo.name, name_pos, SDL_Color{255, 255, 255, 255});
         
         // Renderizar precio de munición
-        Position price_pos(start_x + padding, y_pos + padding);
+        Position price_pos(start_x + padding, y_pos);
         render_text(renderer, ammo.price, price_pos, SDL_Color{0, 255, 0, 255});
     }
 }
@@ -169,13 +169,6 @@ void RenderableHUDBuyGuns::render_text(SDL2pp::Renderer& renderer, const std::st
     renderer.Copy(text_texture, SDL2pp::NullOpt, dst);
 }
 
-std::string RenderableHUDBuyGuns::get_weapon_animation_name(const std::string& weapon_name) {
-    if (weapon_name == "Glock") return "glock";
-    if (weapon_name == "AK47") return "ak47";
-    if (weapon_name == "M3") return "m3";
-    if (weapon_name == "AWP") return "awp";
-    return "glock"; // Default
-}
 
 bool RenderableHUDBuyGuns::can_afford_weapon(const std::string& weapon_name) {
     // Precios hardcodeados por ahora (deberían venir de configuración)
