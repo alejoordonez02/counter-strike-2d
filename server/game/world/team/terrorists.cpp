@@ -14,7 +14,7 @@ std::shared_ptr<Player> Terrorists::add_player(
 
 void Terrorists::restart() {
     restart_players();
-    int player_with_bomb = (int)Random::get() * players.size();
+    int player_with_bomb = (int)Random::get() * players.size() - 1;
     players[player_with_bomb]->give_bomb();
 }
 
