@@ -16,4 +16,9 @@ public:
         std::runtime_error("Game '" + game_name + "' does not exist\n") {}
 };
 
+class TeamIsFull: public std::runtime_error {
+public:
+    explicit TeamIsFull(): std::runtime_error("Team is full\n") {}
+};
+
 #endif

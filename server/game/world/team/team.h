@@ -5,6 +5,9 @@
 #include "server/game/world/player.h"
 
 class Team {
+private:
+    int max_players;
+
 protected:
     int won_rounds;
     std::vector<std::shared_ptr<Player>> players;
@@ -34,6 +37,8 @@ public:
     virtual bool lost_round(const BombState& bomb, const Timer& round_time) = 0;
 
     void switch_sides(Team& other);
+
+    bool is_full() const { return players.size() >= max_players; }
 
     void push_player_data(std::vector<PlayerDTO>& data);
 };
