@@ -17,7 +17,7 @@ public:
     explicit UseWeapon(std::unique_ptr<DTO>&& dto_p) {
         if (UseWeaponDTO* use_weapon_dto =
                 dynamic_cast<UseWeaponDTO*>(dto_p.get())) {
-            type = std::move(static_cast<WeaponType>(use_weapon_dto->type));
+            type = std::move(use_weapon_dto->weapon_type);
         } else {
             throw std::runtime_error("DTO is not of type UseWeaponDTO");
         }
