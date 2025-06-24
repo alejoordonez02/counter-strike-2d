@@ -115,3 +115,7 @@ std::shared_ptr<SnapshotDTO> World::get_snapshot() {
     snapshot->serialize();
     return snapshot;
 }
+
+int World::get_tt_count() { return tt_team.get_count(); }
+
+int World::get_ct_count() { return ct_team.get_count(); }

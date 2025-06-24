@@ -25,6 +25,7 @@ private:
         int i = 0);  // i != 0 no abre la interfaz de lobby (para testear)
 
 public:
+    void create_test_matches();
     Client(const std::string& hostname, const std::string& servname);
     void run(int i = 0);  // igual a arriba
 };

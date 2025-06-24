@@ -7,407 +7,407 @@ blocks:
   # Fila 0 (y=0)
   - x: 0
     y: 0
-    texture: "resources/tiles/purple.png"
+    texture: "purple"
     type: "Unknown"
   - x: 1
     y: 0
-    texture: "resources/tiles/solid1.png"
+    texture: "solid1"
     type: "Solid"
   - x: 2
     y: 0
-    texture: "resources/tiles/solid2.png"
+    texture: "solid2"
     type: "Solid"
   - x: 3
     y: 0
-    texture: "resources/tiles/solid3.png"
+    texture: "solid3"
     type: "Solid"
   - x: 4
     y: 0
-    texture: "resources/tiles/solid4.png"
+    texture: "solid4"
     type: "Solid"
   - x: 5
     y: 0
-    texture: "resources/tiles/solid5.png"
+    texture: "solid5"
     type: "Solid"
   - x: 6
     y: 0
-    texture: "resources/tiles/solid6.png"
+    texture: "solid6"
     type: "Solid"
   - x: 7
     y: 0
-    texture: "resources/tiles/solid7.png"
+    texture: "solid7"
     type: "Solid"
 
   # Fila 1 (y=1)
   - x: 0
     y: 1
-    texture: "resources/tiles/sand1.png"
+    texture: "sand1"
     type: "Common"
   - x: 1
     y: 1
-    texture: "resources/tiles/sand2.png"
+    texture: "sand2"
     type: "Common"
   - x: 2
     y: 1
-    texture: "resources/tiles/sand3.png"
+    texture: "sand3"
     type: "Common"
   - x: 3
     y: 1
-    texture: "resources/tiles/sand4.png"
+    texture: "sand4"
     type: "Common"
   - x: 4
     y: 1
-    texture: "resources/tiles/sand5.png"
+    texture: "sand5"
     type: "Common"
   - x: 5
     y: 1
-    texture: "resources/tiles/sand6.png"
+    texture: "sand6"
     type: "Common"
   - x: 6
     y: 1
-    texture: "resources/tiles/sand7.png"
+    texture: "sand7"
     type: "Common"
   - x: 7
     y: 1
-    texture: "resources/tiles/sand8.png"
+    texture: "sand8"
     type: "Common"
 
   # Fila 2 (y=2)
   - x: 0
     y: 2
-    texture: "resources/tiles/sand9.png"
+    texture: "sand9"
     type: "Common"
   - x: 1
     y: 2
-    texture: "resources/tiles/path1.png"
+    texture: "path1"
     type: "Common"
   - x: 2
     y: 2
-    texture: "resources/tiles/path2.png"
+    texture: "path2"
     type: "Common"
   - x: 3
     y: 2
-    texture: "resources/tiles/grass1.png"
+    texture: "grass1"
     type: "Common"
   - x: 4
     y: 2
-    texture: "resources/tiles/woodenbox1.png"
+    texture: "woodenbox1"
     type: "Solid"
   - x: 5
     y: 2
-    texture: "resources/tiles/solid8.png"
+    texture: "solid8"
     type: "Solid"
   - x: 6
     y: 2
-    texture: "resources/tiles/grass2.png"
+    texture: "grass2"
     type: "Common"
   - x: 7
     y: 2
-    texture: "resources/tiles/grass3.png"
+    texture: "grass3"
     type: "Common"
 
   # Fila 3 (y=3)
   - x: 0
     y: 3
-    texture: "resources/tiles/sandgrass1.png"
+    texture: "sandgrass1"
     type: "Common"
   - x: 1
     y: 3
-    texture: "resources/tiles/sandgrass2.png"
+    texture: "sandgrass2"
     type: "Common"
   - x: 2
     y: 3
-    texture: "resources/tiles/sandgrass3.png"
+    texture: "sandgrass3"
     type: "Common"
   - x: 3
     y: 3
-    texture: "resources/tiles/sandgrass4.png"
+    texture: "sandgrass4"
     type: "Common"
   - x: 4
     y: 3
-    texture: "resources/tiles/sandgravel1.png"
+    texture: "sandgravel1"
     type: "Common"
   - x: 5
     y: 3
-    texture: "resources/tiles/sandgravel2.png"
+    texture: "sandgravel2"
     type: "Common"
   - x: 6
     y: 3
-    texture: "resources/tiles/sandgravel3.png"
+    texture: "sandgravel3"
     type: "Common"
   - x: 7
     y: 3
-    texture: "resources/tiles/sandgravel4.png"
+    texture: "sandgravel4"
     type: "Common"
 
   # Fila 4 (y=4)
   - x: 0
     y: 4
-    texture: "resources/tiles/gravel1.png"
+    texture: "gravel1"
     type: "Common"
   - x: 1
     y: 4
-    texture: "resources/tiles/gravel2.png"
+    texture: "gravel2"
     type: "Common"
   - x: 2
     y: 4
-    texture: "resources/tiles/gravel3.png"
+    texture: "gravel3"
     type: "Common"
   - x: 3
     y: 4
-    texture: "resources/tiles/sand10.png"
+    texture: "sand10"
     type: "Common"
   - x: 4
     y: 4
-    texture: "resources/tiles/sand11.png"
+    texture: "sand11"
     type: "Common"
   - x: 5
     y: 4
-    texture: "resources/tiles/sand12.png"
+    texture: "sand12"
     type: "Common"
   - x: 6
     y: 4
-    texture: "resources/tiles/sand13.png"
+    texture: "sand13"
     type: "Common"
   - x: 7
     y: 4
-    texture: "resources/tiles/grass4.png"
+    texture: "grass4"
     type: "Common"
 
   # Fila 5 (y=5)
   - x: 0
     y: 5
-    texture: "resources/tiles/sandpath1.png"
+    texture: "sandpath1"
     type: "Common"
   - x: 1
     y: 5
-    texture: "resources/tiles/sandpath2.png"
+    texture: "sandpath2"
     type: "Common"
   - x: 2
     y: 5
-    texture: "resources/tiles/sandpath3.png"
+    texture: "sandpath3"
     type: "Common"
   - x: 3
     y: 5
-    texture: "resources/tiles/sandpath4.png"
+    texture: "sandpath4"
     type: "Common"
   - x: 4
     y: 5
-    texture: "resources/tiles/path3.png"
+    texture: "path3"
     type: "Common"
   - x: 5
     y: 5
-    texture: "resources/tiles/path4.png"
+    texture: "path4"
     type: "Common"
   - x: 6
     y: 5
-    texture: "resources/tiles/path5.png"
+    texture: "path5"
     type: "Common"
   - x: 7
     y: 5
-    texture: "resources/tiles/path6.png"
+    texture: "path6"
     type: "Common"
 
   # Fila 6 (y=6)
   - x: 0
     y: 6
-    texture: "resources/tiles/grass5.png"
+    texture: "grass5"
     type: "Common"
   - x: 1
     y: 6
-    texture: "resources/tiles/grass6.png"
+    texture: "grass6"
     type: "Common"
   - x: 2
     y: 6
-    texture: "resources/tiles/grass7.png"
+    texture: "grass7"
     type: "Common"
   - x: 3
     y: 6
-    texture: "resources/tiles/grass8.png"
+    texture: "grass8"
     type: "Common"
   - x: 4
     y: 6
-    texture: "resources/tiles/grass9.png"
+    texture: "grass9"
     type: "Common"
   - x: 5
     y: 6
-    texture: "resources/tiles/grass10.png"
+    texture: "grass10"
     type: "Common"
   - x: 6
     y: 6
-    texture: "resources/tiles/grass11.png"
+    texture: "grass11"
     type: "Common"
   - x: 7
     y: 6
-    texture: "resources/tiles/solid9.png"
+    texture: "solid9"
     type: "Solid"
 
   # Fila 7 (y=7)
   - x: 0
     y: 7
-    texture: "resources/tiles/sandgrass5.png"
+    texture: "sandgrass5"
     type: "Common"
   - x: 1
     y: 7
-    texture: "resources/tiles/grass12.png"
+    texture: "grass12"
     type: "Common"
   - x: 2
     y: 7
-    texture: "resources/tiles/woodenbox2.png"
+    texture: "woodenbox2"
     type: "Solid"
   - x: 3
     y: 7
-    texture: "resources/tiles/woodenbox3.png"
+    texture: "woodenbox3"
     type: "Solid"
   - x: 4
     y: 7
-    texture: "resources/tiles/grass13.png"
+    texture: "grass13"
     type: "Common"
   - x: 5
     y: 7
-    texture: "resources/tiles/grass14.png"
+    texture: "grass14"
     type: "Common"
   - x: 6
     y: 7
-    texture: "resources/tiles/path7.png"
+    texture: "path7"
     type: "Common"
   - x: 7
     y: 7
-    texture: "resources/tiles/plantspot2.png"
+    texture: "plantspot2"
     type: "Plantable"
 
   # Fila 8 (y=8)
   - x: 0
     y: 8
-    texture: "resources/tiles/woodenbox4.png"
+    texture: "woodenbox4"
     type: "Solid"
   - x: 1
     y: 8
-    texture: "resources/tiles/woodenbox5.png"
+    texture: "woodenbox5"
     type: "Solid"
   - x: 2
     y: 8
-    texture: "resources/tiles/woodenbox6.png"
+    texture: "woodenbox6"
     type: "Solid"
   - x: 3
     y: 8
-    texture: "resources/tiles/ctspawn.png"
+    texture: "ctspawn"
     type: "CtSpawn"
   - x: 4
     y: 8
-    texture: "resources/tiles/tspawn.png"
+    texture: "tspawn"
     type: "TSpawn"
   - x: 5
     y: 8
-    texture: "resources/tiles/plantspot1.png"
+    texture: "plantspot1"
     type: "Plantable"
   - x: 6
     y: 8
-    texture: "resources/tiles/sitea.png"
+    texture: "sitea"
     type: "Plantable"
   - x: 7
     y: 8
-    texture: "resources/tiles/siteb.png"
+    texture: "siteb"
     type: "Plantable"
 
   # Fila 9 (y=9)
   - x: 0
     y: 9
-    texture: "resources/tiles/floor1.png"
+    texture: "floor1"
     type: "Common"
   - x: 1
     y: 9
-    texture: "resources/tiles/floor2.png"
+    texture: "floor2"
     type: "Common"
   - x: 2
     y: 9
-    texture: "resources/tiles/floor3.png"
+    texture: "floor3"
     type: "Common"
   - x: 3
     y: 9
-    texture: "resources/tiles/floor4.png"
+    texture: "floor4"
     type: "Common"
   - x: 4
     y: 9
-    texture: "resources/tiles/floor5.png"
+    texture: "floor5"
     type: "Common"
   - x: 5
     y: 9
-    texture: "resources/tiles/floor6.png"
+    texture: "floor6"
     type: "Common"
   - x: 6
     y: 9
-    texture: "resources/tiles/floor7.png"
+    texture: "floor7"
     type: "Common"
   - x: 7
     y: 9
-    texture: "resources/tiles/none1.png"
+    texture: "none1"
     type: "Common"
 
   # Fila 10 (y=10)
   - x: 0
     y: 10
-    texture: "resources/tiles/floor8.png"
+    texture: "floor8"
     type: "Common"
   - x: 1
     y: 10
-    texture: "resources/tiles/floor9.png"
+    texture: "floor9"
     type: "Common"
   - x: 2
     y: 10
-    texture: "resources/tiles/floor10.png"
+    texture: "floor10"
     type: "Common"
   - x: 3
     y: 10
-    texture: "resources/tiles/floor11.png"
+    texture: "floor11"
     type: "Common"
   - x: 4
     y: 10
-    texture: "resources/tiles/floor12.png"
+    texture: "floor12"
     type: "Common"
   - x: 5
     y: 10
-    texture: "resources/tiles/floor13.png"
+    texture: "floor13"
     type: "Common"
   - x: 6
     y: 10
-    texture: "resources/tiles/floor14.png"
+    texture: "floor14"
     type: "Common"
   - x: 7
     y: 10
-    texture: "resources/tiles/floor15.png"
+    texture: "floor15"
     type: "Common"
 
   # Fila 11 (y=11)
   - x: 0
     y: 11
-    texture: "resources/tiles/none2.png"
+    texture: "none2"
     type: "Common"
   - x: 1
     y: 11
-    texture: "resources/tiles/floor16.png"
+    texture: "floor16"
     type: "Common"
   - x: 2
     y: 11
-    texture: "resources/tiles/floor17.png"
+    texture: "floor17"
     type: "Common"
   - x: 3
     y: 11
-    texture: "resources/tiles/floor18.png"
+    texture: "floor18"
     type: "Common"
   - x: 4
     y: 11
-    texture: "resources/tiles/floor19.png"
+    texture: "floor19"
     type: "Common"
   - x: 5
     y: 11
-    texture: "resources/tiles/floor20.png"
+    texture: "floor20"
     type: "Common"
   - x: 6
     y: 11
-    texture: "resources/tiles/floor21.png"
+    texture: "floor21"
     type: "Common"
   - x: 7
     y: 11
-    texture: "resources/tiles/floor22.png"
+    texture: "floor22"
     type: "Common"

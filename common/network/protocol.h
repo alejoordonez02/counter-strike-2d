@@ -18,6 +18,13 @@ enum : uint8_t {
 };
 };  // namespace MapSerial
 
+namespace GameSerial {
+enum : uint8_t {
+    TERRORIST,
+    COUNTER_TERRORIST
+};
+}; // namespace GameSerial
+
 namespace DTOSerial {
 constexpr uint8_t GAME_DETAILS = 0x47;    // G - 71
 constexpr uint8_t SNAPSHOT = 0x53;        // S - 83

@@ -53,11 +53,11 @@ void SheetEditor::mousePressEvent(QMouseEvent* event) {
             auto tileInfo = sheetdata.getTileInfo(tileX, tileY);
             m_selectedTilePos = QPoint(tileX, tileY);
     
-            emit tileSelected(tileInfo.texturePath, tileInfo.type);
+            emit tileSelected(tileInfo.texture, tileInfo.type);
             
             QByteArray itemData;
             QDataStream stream(&itemData, QIODevice::WriteOnly);
-            stream << tileInfo.texturePath << tileInfo.type;
+            stream << tileInfo.texture << tileInfo.type;
 
             QMimeData* mimeData = new QMimeData;
             mimeData->setData("application/x-tiledata", itemData);

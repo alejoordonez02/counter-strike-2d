@@ -26,6 +26,8 @@ private:
         _is_joinable = *in++;
     }
 
+    friend class QGameDetailsDTO;
+
 public:
     explicit GameDetailsDTO(std::vector<uint8_t>&& bytes):
             DTO(std::move(bytes)) {
@@ -51,6 +53,9 @@ public:
         out.push_back(static_cast<uint8_t>(map_name));
         out.push_back(_is_joinable);
     }
+
+    GameDetailsDTO(GameDetailsDTO&&) = default;
+    GameDetailsDTO& operator=(GameDetailsDTO&&) = default;
 
     ~GameDetailsDTO() = default;
 };
