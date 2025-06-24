@@ -56,9 +56,11 @@ std::optional<Position> Player::intersect(const Trajectory& t) const {
     return physics.intersect(t);
 }
 
-void Player::get_attacked(int damage) {
+bool Player::get_attacked(int damage) {
     health -= (1 - shield) * damage;
-    if (health <= 0) alive = false;
+    if (health > 0) return false;
+    alive = false;
+    return true;
 }
 
 void Player::start_moving(Direction dir) { physics.start_moving(dir); }
@@ -68,7 +70,7 @@ void Player::start_attacking() {
     std::cout << "Player: start_attacking\n";
     action = std::make_unique<Attack>(pos, dir, current,
                                       map.lock()->get_collidables(),
-                                      sorted_collidables_idx);
+                                      sorted_collidables_idx, kills, money);
 }
 
 void Player::aim(Direction dir) { this->dir = dir; }

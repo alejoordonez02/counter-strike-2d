@@ -26,6 +26,8 @@ public:
     void play();
 
     void send_snapshot(std::shared_ptr<SnapshotDTO> snapshot);
+
+    ~PlayerHandler() { con.destroy_socket(); }
 };
 
 #endif

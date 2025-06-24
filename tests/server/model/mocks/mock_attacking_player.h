@@ -37,7 +37,7 @@ public:
                    std::map<WeaponName, WeaponConfig>{})) {}
 
     MOCK_METHOD(void, teleport_to_spawn, (), (override));
-    MOCK_METHOD(void, get_attacked, (int damage), (override));
+    MOCK_METHOD(bool, get_attacked, (int damage), (override));
     MOCK_METHOD(void, switch_side, (), (override));
     MOCK_METHOD(void, start_planting, (), (override));
     MOCK_METHOD(void, start_defusing, (), (override));

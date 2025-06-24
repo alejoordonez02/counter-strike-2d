@@ -28,7 +28,10 @@ void Map::update(float dt) {
 /*
  * Restart
  * */
-void Map::restart() { bomb = std::nullopt; }
+void Map::restart() {
+    drops.clear();
+    bomb = std::nullopt;
+}
 
 /*
  * Sites TODO: WIP
