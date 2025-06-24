@@ -1,9 +1,9 @@
 #include "lobbywindow.h"
 #include "creatematchdialog.h"
 #include "teamselectiondialog.h"
-#include "common/network/dtos/game_details_dto.h"
 #include "ui_Lobby.h"
 #include <QMessageBox>
+#include <QSharedPointer>
 
 LobbyWindow::LobbyWindow(QWidget *parent) : 
     QMainWindow(parent),
@@ -11,7 +11,7 @@ LobbyWindow::LobbyWindow(QWidget *parent) :
     team_idx(0)
 {
     ui->setupUi(this);
-    populateMatchesList();
+    refreshMatchesListUI();
 }
 
 LobbyWindow::~LobbyWindow()
@@ -19,32 +19,43 @@ LobbyWindow::~LobbyWindow()
     delete ui;
 }
 
-void LobbyWindow::populateMatchesList() {
-    emit requestListGames();
+void LobbyWindow::setMatchesList(const QList<GameDetailsDTO>& newMatches) {
+    currentMatches.clear();
+    
+    for (const auto& match : newMatches) {
+        currentMatches.append(QSharedPointer<GameDetailsDTO>::create(match));
+    }
+    
+    refreshMatchesListUI();
+}
+
+void LobbyWindow::refreshMatchesListUI() {
     ui->matchesList->clear();
     
-    // Store matches as QSharedPointer
-    QList<QSharedPointer<GameDetailsDTO>> matches = {
-        QSharedPointer<GameDetailsDTO>::create("Dust", 1, 1, MapName::DUST, true),
-        QSharedPointer<GameDetailsDTO>::create("Headshot Only", 1, 1, MapName::AZTEC, true),
-        QSharedPointer<GameDetailsDTO>::create("Tournament", 5, 5, MapName::AZTEC, false),
-        QSharedPointer<GameDetailsDTO>::create("1v5", 1, 5, MapName::AZTEC, false),
-        QSharedPointer<GameDetailsDTO>::create("Nuke", 1, 0, MapName::NUKE, true)
-    };
-    
-    for (const auto& match : matches) {
-        QString matchText = QString("%1\nPlayers: %2/10")
-                          .arg(QString::fromStdString(match->getName()))
-                          .arg(match->getTtCount() + match->getCtCount());
+    for (const auto& match : currentMatches) {
+        QString name = QString::fromStdString(match->getName());
+        QString mapName = QString::fromStdString(mapNameToString(match->getMapName()));
+        
+        QString matchText = QString("%1\nPlayers: %2/%3 - %4")
+                          .arg(name)
+                          .arg(match->getTtCount() + match->getCtCount())
+                          .arg(MAX_PLAYERS)
+                          .arg(mapName);
         
         QListWidgetItem* item = new QListWidgetItem(matchText, ui->matchesList);
-        // Store the shared pointer in the item
         item->setData(Qt::UserRole, QVariant::fromValue(match));
         
         if (!match->isJoinable()) {
             item->setForeground(Qt::red);
-            item->setToolTip("Cannot join Match");
+            item->setToolTip(tr("Cannot join - Match in progress or full"));
+        } else if (match->getTtCount() + match->getCtCount() >= MAX_PLAYERS - 2) {
+            item->setForeground(Qt::darkYellow);
+            item->setToolTip(tr("Almost full"));
+        } else {
+            item->setForeground(Qt::darkGreen);
+            item->setToolTip(tr("click to select"));
         }
+
     }
 }
 
@@ -55,11 +66,10 @@ void LobbyWindow::on_joinMatchButton_clicked() {
         return;
     }
     
-    // Retrieve the shared pointer from the item
     auto matchInfo = selected->data(Qt::UserRole).value<QSharedPointer<GameDetailsDTO>>();
     
-    if (matchInfo->getTtCount() + matchInfo->getCtCount() >= 10) {
-        QMessageBox::warning(this, "Match Full", 
+    if (matchInfo->getTtCount() + matchInfo->getCtCount() >= 10 || !matchInfo->isJoinable()) {
+        QMessageBox::warning(this, "Cannot Join Match", 
             QString("%1\nPlayers: %2/10")
             .arg(QString::fromStdString(matchInfo->getName()))
             .arg(matchInfo->getTtCount() + matchInfo->getCtCount()));
@@ -122,5 +132,5 @@ void LobbyWindow::on_createMatchButton_clicked() {
 
 void LobbyWindow::on_refreshButton_clicked() {
     QMessageBox::information(this, "Refreshing", "Match list updated");
-    populateMatchesList();
+    refreshMatchesListUI();
 }

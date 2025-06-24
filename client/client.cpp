@@ -104,6 +104,8 @@ void Client::lobby_phase(int i) {
             QObject::connect(
                 lobbyWindow.get(), &LobbyWindow::requestListGames, [this]() {
                     commands.try_push(std::make_shared<ListGamesDTO>());
+                    //matches = LISTA DE GAMEDETAILS
+                    //lobbyWindow.setMatchesList(const QList<GameDetailsDTO>& newMatches)
                 });
 
         // Conexión para crear partida
@@ -147,7 +149,7 @@ void Client::run(int i) {
     // lobby: menu interactivo que envía dtos (create, join y list, más otros)
     // al servidor
     lobby_phase(i);
-    
+
     // TODO: El mapa se debe poner descargar del server supuestamente
     // std::cout << "LOG: Current working directory: " <<
     // std::filesystem::current_path() << std::endl;

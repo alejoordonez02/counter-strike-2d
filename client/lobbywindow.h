@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QList>
 #include "common/map_name.h"
+#include "common/network/dtos/game_details_dto.h"
+#define MAX_PLAYERS 10
 
 namespace Ui {
 class Lobby;
@@ -16,6 +19,8 @@ class LobbyWindow : public QMainWindow
 public:
     explicit LobbyWindow(QWidget *parent = nullptr);
     ~LobbyWindow();
+    void setMatchesList(const QList<GameDetailsDTO>& newMatches);
+
 signals:
     void requestJoinGame(const QString & name, int teamIdx);
     void requestCreateGame(const QString & name,const MapName & mapname, int teamIdx);
@@ -26,10 +31,10 @@ private slots:
     void on_joinMatchButton_clicked();
     void on_createMatchButton_clicked();
 private:
-    void populateMatchesList();
+    void refreshMatchesListUI();
     Ui::Lobby *ui;
-    QString username;
     int team_idx;
+    QList<QSharedPointer<GameDetailsDTO>> currentMatches;
 };
 
 #endif // LOBBYWINDOW_H
