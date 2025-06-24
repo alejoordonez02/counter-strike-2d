@@ -86,12 +86,12 @@ void Render::update(const SnapshotDTO& snapshot, PrivatePlayerDTO& user_data,
     auto now = std::chrono::high_resolution_clock::now();
     // Reportar cada 3 segundos
     if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_internal_report).count() > 3000) {
-        std::cout << "Render Update Breakdown (avg per call):" << std::endl;
-        std::cout << "  Map: " << (total_map_time / update_counter) << "μs" << std::endl;
-        std::cout << "  Players: " << (total_players_time / update_counter) << "μs" << std::endl;
-        std::cout << "  FOV: " << (total_fov_time / update_counter) << "μs" << std::endl;
-        std::cout << "  HUD: " << (total_hud_time / update_counter) << "μs" << std::endl;
-        std::cout << "  Active players: " << players_renderables.size() << std::endl;
+        // std::cout << "Render Update Breakdown (avg per call):" << std::endl;
+        // std::cout << "  Map: " << (total_map_time / update_counter) << "μs" << std::endl;
+        // std::cout << "  Players: " << (total_players_time / update_counter) << "μs" << std::endl;
+        // std::cout << "  FOV: " << (total_fov_time / update_counter) << "μs" << std::endl;
+        // std::cout << "  HUD: " << (total_hud_time / update_counter) << "μs" << std::endl;
+        // std::cout << "  Active players: " << players_renderables.size() << std::endl;
         
         // Reset
         total_map_time = total_players_time = total_fov_time = total_hud_time = 0;
@@ -167,17 +167,17 @@ void Render::render() {
     auto now = std::chrono::high_resolution_clock::now();
     // Reportar cada 3 segundos
     if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_render_report).count() > 3000) {
-        std::cout << "Render Breakdown (avg per call):" << std::endl;
-        std::cout << "  Clear: " << (total_clear_time / render_counter) << "μs" << std::endl;
-        std::cout << "  Map Render: " << (total_map_render_time / render_counter) << "μs" << std::endl;
-        std::cout << "  Players Render: " << (total_players_render_time / render_counter) << "μs" << std::endl;
-        std::cout << "  FOV Render: " << (total_fov_render_time / render_counter) << "μs" << std::endl;
-        std::cout << "  HUD Render: " << (total_hud_render_time / render_counter) << "μs" << std::endl;
-        std::cout << "  Present: " << (total_present_time / render_counter) << "μs" << std::endl;
-        double total_render_time = (total_clear_time + total_map_render_time + total_players_render_time + 
-                                   total_fov_render_time + total_hud_render_time + total_present_time) / render_counter;
-        std::cout << "  Total Render: " << total_render_time << "μs" << std::endl;
-        std::cout << "  Render calls: " << render_counter << std::endl;
+        // std::cout << "Render Breakdown (avg per call):" << std::endl;
+        // std::cout << "  Clear: " << (total_clear_time / render_counter) << "μs" << std::endl;
+        // std::cout << "  Map Render: " << (total_map_render_time / render_counter) << "μs" << std::endl;
+        // std::cout << "  Players Render: " << (total_players_render_time / render_counter) << "μs" << std::endl;
+        // std::cout << "  FOV Render: " << (total_fov_render_time / render_counter) << "μs" << std::endl;
+        // std::cout << "  HUD Render: " << (total_hud_render_time / render_counter) << "μs" << std::endl;
+        // std::cout << "  Present: " << (total_present_time / render_counter) << "μs" << std::endl;
+        // double total_render_time = (total_clear_time + total_map_render_time + total_players_render_time + 
+        //                            total_fov_render_time + total_hud_render_time + total_present_time) / render_counter;
+        // std::cout << "  Total Render: " << total_render_time << "μs" << std::endl;
+        // std::cout << "  Render calls: " << render_counter << std::endl;
         
         // Reset
         total_clear_time = total_map_render_time = total_players_render_time = 0;

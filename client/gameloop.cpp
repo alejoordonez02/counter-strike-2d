@@ -26,7 +26,7 @@ void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
     int discarded_private = 0;
     
     // Limitar el procesamiento a un máximo por frame para evitar bloqueo
-    const int MAX_PROCESS_PER_FRAME = 50;
+    const int MAX_PROCESS_PER_FRAME = 100;  // Aumentado de 50 a 100
     
     SnapshotDTO temp_snapshot;
     PrivatePlayerDTO temp_private;
@@ -34,28 +34,28 @@ void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
     bool has_new_private = false;
     
     // Procesar DTOs hasta el límite o hasta que se agote la cola
-    while (processed_count < MAX_PROCESS_PER_FRAME && snapshots_queue.try_pop(dto_p)) {
+    while (snapshots_queue.try_pop(dto_p)) {
         processed_count++;
         
         if (dto_p->get_type() == DTOSerial::SNAPSHOT) {
             if (has_new_snapshot) {
-                discarded_snapshots++;  
-            } else {
-                auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
-                temp_snapshot = std::move(*ptr);
-                snapshot_count++;
-                has_new_snapshot = true;
+                discarded_snapshots++;  // Contamos cuántos descartamos
             }
+            // SIEMPRE usar el más reciente (sobrescribir el anterior)
+            auto ptr = static_cast<SnapshotDTO*>(dto_p.get());
+            temp_snapshot = std::move(*ptr);
+            snapshot_count = 1;  // Solo contamos el que usamos
+            has_new_snapshot = true;
         }
         else if (dto_p->get_type() == DTOSerial::PLAYER_PRIVATE) {
             if (has_new_private) {
-                discarded_private++;  
-            } else {
-                auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
-                temp_private = std::move(*ptr);
-                private_count++;
-                has_new_private = true;
+                discarded_private++;  // Contamos cuántos descartamos
             }
+            // SIEMPRE usar el más reciente (sobrescribir el anterior)
+            auto ptr = static_cast<PrivatePlayerDTO*>(dto_p.get());
+            temp_private = std::move(*ptr);
+            private_count = 1;  // Solo contamos el que usamos
+            has_new_private = true;
         }
         dto_p.reset();
     }
@@ -79,18 +79,13 @@ void GameLoop::get_snapshot_from_queue(SnapshotDTO& last_snapshot,
         
         // Mostrar estadísticas cada segundo
         if (std::chrono::duration_cast<std::chrono::milliseconds>(end_time - last_stats_time).count() > 1000) {
-            // Verificar si hay más DTOs en cola
-            size_t remaining = 0;
-            std::unique_ptr<DTO> peek_dto;
-            while (snapshots_queue.try_pop(peek_dto)) {
-                remaining++;
-                if (remaining > 100) break; // Evitar contar infinitamente
-            }
+            // Mostrar warning si se está procesando el límite
+            std::string warning = (processed_count >= MAX_PROCESS_PER_FRAME) ? " [LIMIT REACHED]" : "";
             
             std::cout << "Queue Stats - Processed: " << processed_count 
                       << ", Used S: " << snapshot_count << "/" << (snapshot_count + discarded_snapshots)
                       << ", Used P: " << private_count << "/" << (private_count + discarded_private)
-                      << ", Remaining: " << remaining
+                      << warning
                       << ", Time: " << duration.count() << "μs"
                       << ", FPS: " << frame_counter << std::endl;
             frame_counter = 0;
@@ -160,14 +155,14 @@ void GameLoop::run() {
         auto now = std::chrono::high_resolution_clock::now();
         // Reportar estadísticas cada 2 segundos
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_perf_report).count() > 2000) {
-            std::cout << "Performance Report (avg per frame):" << std::endl;
-            std::cout << "  Queue: " << (total_queue_time / frame_count) << "μs" << std::endl;
-            std::cout << "  Update: " << (total_update_time / frame_count) << "μs" << std::endl;
-            std::cout << "  Render: " << (total_render_time / frame_count) << "μs" << std::endl;
-            std::cout << "  Total: " << ((total_queue_time + total_update_time + total_render_time) / frame_count) << "μs" << std::endl;
-            std::cout << "  Target: " << target_frame_time << "μs (" << RATE << "ms)" << std::endl;
-            std::cout << "  Slow frames: " << slow_frames << "/" << frame_count 
-                      << " (" << (100.0 * slow_frames / frame_count) << "%)" << std::endl;
+            // std::cout << "Performance Report (avg per frame):" << std::endl;
+            // std::cout << "  Queue: " << (total_queue_time / frame_count) << "μs" << std::endl;
+            // std::cout << "  Update: " << (total_update_time / frame_count) << "μs" << std::endl;
+            // std::cout << "  Render: " << (total_render_time / frame_count) << "μs" << std::endl;
+            // std::cout << "  Total: " << ((total_queue_time + total_update_time + total_render_time) / frame_count) << "μs" << std::endl;
+            // std::cout << "  Target: " << target_frame_time << "μs (" << RATE << "ms)" << std::endl;
+            // std::cout << "  Slow frames: " << slow_frames << "/" << frame_count 
+            //           << " (" << (100.0 * slow_frames / frame_count) << "%)" << std::endl;
             
             // Reset
             total_queue_time = total_update_time = total_render_time = 0;
