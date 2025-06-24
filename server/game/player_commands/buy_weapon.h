@@ -23,7 +23,7 @@ public:
         }
     }
 
-    void execute(Player& p) const override { p.use_weapon(name); }
+    void execute(Player& p) const override { p.buy_weapon(name); }
 
     ~BuyWeapon() = default;
 };
