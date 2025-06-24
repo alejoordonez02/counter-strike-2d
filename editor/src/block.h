@@ -6,7 +6,8 @@
 #include <QString>
 
 #define TEXTURE_PREFIX "resources/tiles/"
-#define TEXTURE_SUFFIX ".png"
+#define WEAPON_PREFIX "resources/weapons/"
+#define SUFFIX ".png"
 
 class Block {
 public:
@@ -24,7 +25,6 @@ public:
 
     Block();
     Block(const QPoint& position, const QString& texture, Type type);
-
     QPoint getPosition() const;
     QString getTexture() const;
     QString getTexturePath() const;
@@ -36,6 +36,7 @@ public:
     void setType(const QString& typeString);
     static Type stringToType(const QString& typeString);
 private:
+    bool isDroppedWeapon(Type type) const;
     QPoint m_position;
     QString m_texture;
     Type m_type;
