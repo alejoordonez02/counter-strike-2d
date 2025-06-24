@@ -47,6 +47,8 @@ public:
     /*
      * Getters
      * */
+    WeaponName get_name() const;
+
     WeaponType get_type() const;
 
     virtual int get_cost() const;

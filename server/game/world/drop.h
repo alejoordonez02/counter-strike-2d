@@ -1,41 +1,25 @@
 #ifndef SERVER_GAME_WORLD_DROP_H
 #define SERVER_GAME_WORLD_DROP_H
 
-class Drop {};
-/* #include "common/position.h"
+#include "common/position.h"
 #include "equipment/weapon.h"
+#include "snapshot_dto.h"
 // #include "player.h"
 
 class Player;
 
 class Drop {
 private:
+    std::shared_ptr<Weapon> weapon;
     Position pos;
 
 public:
-    Drop(const Position& pos): pos(pos) {}
+    Drop(std::shared_ptr<Weapon> weapon, Position pos):
+        weapon(std::move(weapon)), pos(pos) {}
 
-    Position get_position() const { return pos; }
-
-    virtual void pickup(Player& player) = 0;
+    void push_drop_data(std::vector<WeaponDTO>& snapshot) {
+        snapshot.push_back(WeaponDTO(weapon->get_name(), pos));
+    }
 };
-
-class WeaponDrop: public Drop {
-private:
-    Weapon weapon;
-
-public:
-    WeaponDrop(const Position& pos, Weapon weapon): Drop(pos), weapon(weapon)
-    {}
-
-    void pickup(Player& player) override {}
-};
-
-class BombDrop: public Drop {
-public:
-    BombDrop(const Position& pos): Drop(pos) {}
-
-    void pickup(Player& player) override { player.give_bomb(); }
-}; */
 
 #endif

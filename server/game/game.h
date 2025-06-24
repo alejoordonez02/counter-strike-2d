@@ -28,6 +28,8 @@ public:
     void run() override;
 
     void add_player(Connection&& con, TeamName team);
+
+    bool team_is_full(TeamName team) const { return world.team_is_full(team); }
 };
 
 #endif

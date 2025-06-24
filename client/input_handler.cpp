@@ -6,17 +6,6 @@
 #include <memory>
 #include <string>
 
-#include "client/camera.h"
-#include "common/direction.h"
-#include "common/network/dto.h"
-#include "common/network/dtos/aim_dto.h"
-#include "common/network/dtos/change_weapon_dto.h"
-#include "common/network/dtos/start_attacking_dto.h"
-#include "common/network/dtos/start_moving_dto.h"
-#include "common/network/dtos/start_planting_dto.h"
-#include "common/network/dtos/stop_action_dto.h"
-#include "common/network/dtos/stop_moving_dto.h"
-#include "start_reloading_dto.h"
 
 InputHandler::InputHandler(Queue<std::shared_ptr<DTO>>& commands_queue):
     commands_queue(commands_queue) {}
@@ -129,26 +118,21 @@ void InputHandler::send_attack() {
 void InputHandler::send_change_weapon() {
     // verifica si se apretó la tecla para cambiar entre arma primaria
     // secundaria, cuchillo o bomba
-    if (key_states[SDLK_b]) {
-        std::cout << "LOG: Enviando comando de cambio a arma bomba."
-                  << std::endl;
-        commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::BOMB));
-    } else if (key_states[SDLK_k]) {
+    if (key_states[SDLK_1]) {
         std::cout << "LOG: Enviando comando de cambio a arma cuchillo."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::KNIFE));
-    } else if (key_states[SDLK_1]) {
-        std::cout << "LOG: Enviando comando de cambio a arma primaria."
-                  << std::endl;
-        commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::PRIMARY));
+            std::make_shared<UseWeaponDTO>(WeaponType::KNIFE));
     } else if (key_states[SDLK_2]) {
         std::cout << "LOG: Enviando comando de cambio a arma secundaria."
                   << std::endl;
         commands_queue.try_push(
-            std::make_shared<ChangeWeaponDTO>(EquipmentType::SECONDARY));
+            std::make_shared<UseWeaponDTO>(WeaponType::SECONDARY));
+    } else if (key_states[SDLK_3]) {
+        std::cout << "LOG: Enviando comando de cambio a arma primaria."
+                  << std::endl;
+        commands_queue.try_push(
+            std::make_shared<UseWeaponDTO>(WeaponType::PRIMARY));
     }
 }
 
@@ -205,6 +189,28 @@ void InputHandler::send_reload() {
     prev = is_reloading;
 }
 
+void InputHandler::send_buy_weapon() {
+    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las teclas para comprar
+    if (key_states[SDLK_5]) {
+        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::GLOCK));
+    } else if (key_states[SDLK_6]) {
+        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::AK47));
+    } else if (key_states[SDLK_7]) {
+        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::M3));
+    } else if (key_states[SDLK_8]) {
+        commands_queue.try_push(std::make_shared<BuyWeaponDTO>(WeaponName::AWP));
+    }
+}
+
+void InputHandler::send_buy_ammo() {
+    // configurar tambien en renderable_hud_buy_guns si se desea cambiar las teclas para comprar
+    if (key_states[SDLK_9]) {
+        commands_queue.try_push(std::make_shared<BuyAmmoDTO>(WeaponType::PRIMARY, 1));
+    } else if (key_states[SDLK_0]) {
+        commands_queue.try_push(std::make_shared<BuyAmmoDTO>(WeaponType::SECONDARY, 1));
+    }
+}
+
 // Nueva función para procesar el movimiento:
 void InputHandler::process_movement() {
     send_direction();
@@ -213,6 +219,8 @@ void InputHandler::process_movement() {
     send_aim();
     send_plant_bomb();
     send_reload();
+    send_buy_weapon();
+    send_buy_ammo();
     // send_states();
 }
 

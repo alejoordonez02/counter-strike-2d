@@ -1030,6 +1030,7 @@ blocks:
     texture: solid1
   - x: 224
     y: 288
+    # TODO: typo: Dropped*
     type: DropedAk47
     texture: ak47
   - x: 128
