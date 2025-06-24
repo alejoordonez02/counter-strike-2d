@@ -67,7 +67,7 @@ public:
      * Hitbox interface
      * */
     std::optional<Position> intersect(const Trajectory& t) const override;
-    void get_attacked(int damage) override;
+    bool get_attacked(int damage) override;
 
     /*
      * Pasive commands: change what the player **is** doing

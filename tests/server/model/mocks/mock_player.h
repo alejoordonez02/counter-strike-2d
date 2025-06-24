@@ -65,7 +65,7 @@ public:
     MOCK_METHOD(void, switch_side, (), (override));
     MOCK_METHOD(void, start_moving, (Direction dir), (override));
     MOCK_METHOD(void, start_attacking, (), (override));
-    MOCK_METHOD(void, get_attacked, (int damage), (override));
+    MOCK_METHOD(bool, get_attacked, (int damage), (override));
     MOCK_METHOD(void, use_primary, (), ());
     MOCK_METHOD(void, use_secondary, (), ());
     MOCK_METHOD(void, use_knife, (), ());

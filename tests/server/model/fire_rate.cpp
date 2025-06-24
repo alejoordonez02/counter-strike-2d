@@ -16,7 +16,7 @@ private:
 public:
     FatHitbox(): Hitbox(dummy_pos) {}
 
-    MOCK_METHOD(void, get_attacked, (int), (override));
+    MOCK_METHOD(bool, get_attacked, (int), (override));
 
     std::optional<Position> intersect(
         const Trajectory& /* t */) const override {
