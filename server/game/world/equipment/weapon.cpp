@@ -11,9 +11,10 @@ Weapon::Weapon(WeaponName name, WeaponType type, float damage, float accuracy,
                float reload_time, int ammo_capacity, int starting_ammo,
                int cost, int ammo_cost):
     name(name), type(type), damage(damage), accuracy(accuracy), range(range),
-    fire_delay(1 / fire_rate), reload_time(reload_time),
-    ammo_capacity(ammo_capacity), loaded_ammo(ammo_capacity),
-    ammo(starting_ammo - ammo_capacity), cost(cost), ammo_cost(ammo_cost) {}
+    bullet_size(bullet_size), fire_delay(1 / fire_rate),
+    reload_time(reload_time), ammo_capacity(ammo_capacity),
+    loaded_ammo(ammo_capacity), ammo(starting_ammo - ammo_capacity), cost(cost),
+    ammo_cost(ammo_cost) {}
 
 void Weapon::attack(Position origin, Direction direction,
                     std::vector<std::shared_ptr<Hitbox>>& collidables,
