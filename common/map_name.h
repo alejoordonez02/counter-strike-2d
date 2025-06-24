@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <stdexcept>
 #include <unordered_map>
 #include "map_list.h"
 #include "common/network/protocol.h"
@@ -21,7 +22,7 @@ inline std::string mapNameToString(MapName map) {
             MAP_LIST
         #undef X
         default:
-            return "unknown";
+            throw std::runtime_error("MapName not found");
     }
 }
 
