@@ -4,19 +4,19 @@
 #include <string>
 #include <vector>
 #include <cstdint>
-#include <QMetaType>
+
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
 #include "common/map_name.h"
 
 class GameDetailsDTO: public DTO {
-    private:
+private:
     std::string name;
     uint8_t tt_count;
     uint8_t ct_count;
     MapName map_name;
     bool _is_joinable;
-    
+
     void deserialize_from(std::vector<uint8_t>::iterator& in) override {
         in++;  // skip 1st byte (DTO type)
         name = deserialize_string_from(in);
@@ -26,54 +26,25 @@ class GameDetailsDTO: public DTO {
         _is_joinable = *in++;
     }
 
-    public:
-    GameDetailsDTO() : DTO(DTOSerial::GAME_DETAILS) {}
-    GameDetailsDTO(const GameDetailsDTO& other) :
-        DTO(other.type),
-        name(other.name),
-        tt_count(other.tt_count),
-        ct_count(other.ct_count),
-        map_name(other.map_name),
-        _is_joinable(other._is_joinable) {}
+    friend class QGameDetailsDTO;
 
-    // Add copy assignment
-    GameDetailsDTO& operator=(const GameDetailsDTO& other) {
-        if (this != &other) {
-            type = other.type;
-            name = other.name;
-            tt_count = other.tt_count;
-            ct_count = other.ct_count;
-            map_name = other.map_name;
-            _is_joinable = other._is_joinable;
-        }
-        return *this;
-    }
-
-    GameDetailsDTO(GameDetailsDTO&&) = default;
-    GameDetailsDTO& operator=(GameDetailsDTO&&) = default;
-   
+public:
     explicit GameDetailsDTO(std::vector<uint8_t>&& bytes):
-    DTO(std::move(bytes)) {
+            DTO(std::move(bytes)) {
         auto payload_it = payload.begin();
         deserialize_from(payload_it);
     }
-    
+
     explicit GameDetailsDTO(std::vector<uint8_t>::iterator& in):
             DTO(DTOSerial::GAME_DETAILS) {
-                deserialize_from(in);
-            }
+        deserialize_from(in);
+    }
 
     GameDetailsDTO(const std::string& name, uint8_t tt_cnt, uint8_t ct_cnt,
         MapName mn, bool is_j):
-        DTO(DTOSerial::GAME_DETAILS), name(name), tt_count(tt_cnt),
+            DTO(DTOSerial::GAME_DETAILS), name(name), tt_count(tt_cnt),
             ct_count(ct_cnt), map_name(mn), _is_joinable(is_j) {}
 
-            const std::string& getName() const { return name; }
-    uint8_t getTtCount() const { return tt_count; }
-    uint8_t getCtCount() const { return ct_count; }
-    MapName getMapName() const { return map_name; }
-    bool isJoinable() const { return _is_joinable; }
-    
     void serialize_into(std::vector<uint8_t>& out) override {
         out.push_back(type);
         serialize_string_into(out, name);
@@ -83,9 +54,10 @@ class GameDetailsDTO: public DTO {
         out.push_back(_is_joinable);
     }
 
-    virtual ~GameDetailsDTO() = default;
+    GameDetailsDTO(GameDetailsDTO&&) = default;
+    GameDetailsDTO& operator=(GameDetailsDTO&&) = default;
+
+    ~GameDetailsDTO() = default;
 };
 
-Q_DECLARE_METATYPE(GameDetailsDTO)
-Q_DECLARE_METATYPE(QSharedPointer<GameDetailsDTO>)
 #endif
