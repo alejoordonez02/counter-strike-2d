@@ -15,7 +15,23 @@ QString Block::getTexture() const {
 }
 
 QString Block::getTexturePath() const {
-    return TEXTURE_PREFIX + m_texture + TEXTURE_SUFFIX;
+    if (isDroppedWeapon(m_type)) {
+        return WEAPON_PREFIX + m_texture.toLower() + SUFFIX;
+    }
+    
+    return TEXTURE_PREFIX + m_texture.toLower() + SUFFIX;
+}
+
+bool Block::isDroppedWeapon(Type type) const {
+    switch(type) {
+        case Type::DropedGlock:
+        case Type::DropedAk47:
+        case Type::DropedM4:
+        case Type::DropedAwp:
+            return true;
+        default:
+            return false;
+    }
 }
 
 Block::Type Block::getType() const {

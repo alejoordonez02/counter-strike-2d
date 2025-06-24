@@ -24,6 +24,7 @@
 #include "join_game_dto.h"
 #include "list_games_dto.h"
 #include "pickup_dto.h"
+#include "start_defusing_dto.h"
 #include "start_reloading_dto.h"
 #include "stop_action_dto.h"
 #include "use_weapon_dto.h"
@@ -85,6 +86,10 @@ public:
             {START_PLANTING,
              [](auto&& bytes) {
                  return std::make_unique<StartPlantingDTO>(std::move(bytes));
+             }},
+            {START_DEFUSING,
+             [](auto&& bytes) {
+                 return std::make_unique<StartDefusingDTO>(std::move(bytes));
              }},
             {START_RELOADING,
              [](auto&& bytes) {

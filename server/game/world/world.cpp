@@ -24,8 +24,6 @@ World::World(std::shared_ptr<Map>&& map, int max_rounds, float round_time,
  * Update rounds
  * */
 void World::start_round() {
-    printf("round number %d, total rounds %d\n", rounds, max_rounds);
-    printf("ended = %d\n", ended);
     if (rounds >= max_rounds) ended = true;
     time_out.restart();
     tt_team.restart();
