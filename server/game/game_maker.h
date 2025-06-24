@@ -10,13 +10,13 @@
 #include "common/team_name.h"
 #include "factory/game_factory.h"
 #include "game.h"
-
-class GameDetailsDTO;
+#include "common/network/dtos/game_details_dto.h"
 
 class GameMaker {
 private:
     std::mutex m;
     std::map<std::string, std::unique_ptr<Game>> games;
+    std::map<std::string, MapName> game_maps;
 
     GameFactory game_factory;
 
@@ -28,7 +28,7 @@ public:
 
     void join(Connection&& con, const std::string& game_name, TeamName team);
 
-    std::vector<std::unique_ptr<GameDetailsDTO>> list();
+    std::vector<GameDetailsDTO> list();
 };
 
 #endif

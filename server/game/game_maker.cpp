@@ -22,6 +22,7 @@ void GameMaker::create(Connection&& con, const std::string& game_name,
     game->add_player(std::move(con), team);
     game->start();
     games[game_name] = std::move(game);
+    game_maps[game_name] = map;
 }
 
 void GameMaker::join(Connection&& con, const std::string& game_name,
@@ -36,12 +37,17 @@ void GameMaker::join(Connection&& con, const std::string& game_name,
     game->add_player(std::move(con), team);
 }
 
-std::vector<std::string> GameMaker::list() {
+std::vector<GameDetailsDTO> GameMaker::list() {
     std::unique_lock<std::mutex> lck(m);
     
-    std::vector<std::unique_ptr<GameDetailsDTO>> list;
+    std::vector<GameDetailsDTO> list;
     for (const auto& [n, g]: games) {
-        list.push_back(g->get_details_dto());
+        GameDetailsDTO dto(n,
+                            g->get_tt_count(),
+                            g->get_ct_count(),
+                            game_maps[n],
+                            g->is_joinable());
+        list.push_back(std::move(dto));
     }
 
     return list;

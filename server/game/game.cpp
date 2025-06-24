@@ -63,3 +63,12 @@ void Game::run() {
         }
     }
 }
+
+int Game::get_tt_count() { return world.get_tt_count(); }
+
+int Game::get_ct_count() { return world.get_ct_count(); }
+
+bool Game::is_joinable() {
+    return !(world.team_is_full(TeamName::TERRORIST) &&
+            world.team_is_full(TeamName::COUNTER_TERRORIST));
+}
