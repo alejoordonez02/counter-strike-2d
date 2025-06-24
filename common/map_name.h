@@ -7,7 +7,7 @@
 #include "common/network/protocol.h"
 
 enum class MapName : uint8_t {
-    #define X(name) name = MapSerial::name,
+    #define X(name, lowercase) name = MapSerial::name,
         MAP_LIST
     #undef X
 };
