@@ -8,7 +8,7 @@
 class SheetData {
 public:
     struct TileInfo {
-        QString texturePath;
+        QString texture;
         QString type;
     };
 

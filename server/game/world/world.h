@@ -69,6 +69,10 @@ public:
     bool has_ended() const;
 
     std::shared_ptr<SnapshotDTO> get_snapshot();
+
+    int get_tt_count();
+
+    int get_ct_count();
 };
 
 #endif

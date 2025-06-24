@@ -3,6 +3,7 @@
 
 #include "client/client.h"
 #include "mainwindow.h"
+#include "client/q_game_details_dto.h"
 
 using namespace DTOSerial::LobbyCommands;
 
@@ -16,9 +17,10 @@ int main(int argc, char** argv) {
     }
 
     QApplication a(argc, argv);
+    qputenv("QT_LOGGING_RULES", "qt.qpa.wayland=false");
+    qRegisterMetaType<QGameDetailsDTO>();
     MainWindow mainWindow;
     mainWindow.show();
-    QEventLoop mainLoop;
 
     QObject::connect(&mainWindow, &MainWindow::connectToLobby,
                      [&](const QString& host, const QString& serv) {
@@ -27,6 +29,5 @@ int main(int argc, char** argv) {
                          client.run();
                      });
 
-    mainLoop.quit();
     return a.exec();
 }

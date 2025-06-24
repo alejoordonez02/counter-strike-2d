@@ -41,6 +41,8 @@ public:
     bool is_full() const { return players.size() >= max_players; }
 
     void push_player_data(std::vector<PlayerDTO>& data);
+
+    int get_count();
 };
 
 #endif

@@ -2,11 +2,8 @@
 #define CREATEMATCHDIALOG_H
 
 #include <QDialog>
-#include <QFileDialog>
-#include <QFileInfo>
-
-#define MIN_PLAYERS 1
-#define MAX_PLAYERS 20
+#include <QMap>
+#include "common/map_name.h" // Incluir el archivo con MapName
 
 namespace Ui {
 class CreateMatch;
@@ -17,23 +14,24 @@ class CreateMatchDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CreateMatchDialog(const QString& username, QWidget *parent = nullptr);
+    explicit CreateMatchDialog(QWidget *parent = nullptr);
     ~CreateMatchDialog();
 
     QString getMatchName() const;
-    QString getConfigPath() const;
-    QString getMapName() const;
-    int getMaxPlayers() const;
-    bool isValid() const;
+    MapName getSelectedMapName() const;
+    QString getSelectedMapDisplayName() const;
+    int getSelectedTeamIndex() const;
+    bool isTeamSelected() const;
 
 private slots:
-    void on_browseButton_clicked();
-    void on_createButton_clicked();
     void validateInputs();
 
 private:
     Ui::CreateMatch *ui;
-    QString username;
+    QMap<QString, MapName> mapNames;
+
+    void setupMaps();
+    bool isValid() const;
 };
 
 #endif // CREATEMATCHDIALOG_H

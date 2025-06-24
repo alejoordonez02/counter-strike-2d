@@ -23,7 +23,7 @@ public:
     };
 
     Block();
-    Block(const QPoint& position, const QString& texture, Type type = Common);
+    Block(const QPoint& position, const QString& texture, Type type);
 
     QPoint getPosition() const;
     QString getTexture() const;

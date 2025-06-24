@@ -51,5 +51,8 @@ void ClientHandler::handle_join(const std::string& game_name, TeamName team) {
 }
 
 void ClientHandler::handle_list() {
-    // game_maker.list();
+    auto list = game_maker.list();
+    con.send_single(list.size());
+    for (auto& d : list)
+        con.send_msg(d.serialize());
 }

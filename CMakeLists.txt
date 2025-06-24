@@ -77,6 +77,7 @@ if(CS2D_CLIENT OR CS2D_EDITOR)
         ${CMAKE_CURRENT_SOURCE_DIR}/client/ClientInterface.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/client/Lobby.ui
         ${CMAKE_CURRENT_SOURCE_DIR}/client/CreateMatch.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/client/TeamSelection.ui
         
     )
     qt5_add_resources(RESOURCES 

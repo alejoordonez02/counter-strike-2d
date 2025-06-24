@@ -30,6 +30,12 @@ public:
     void add_player(Connection&& con, TeamName team);
 
     bool team_is_full(TeamName team) const { return world.team_is_full(team); }
+
+    int get_tt_count();
+
+    int get_ct_count();
+
+    bool is_joinable();
 };
 
 #endif
