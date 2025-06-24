@@ -43,6 +43,7 @@ public:
     MOCK_METHOD(void, start_defusing, (), (override));
     MOCK_METHOD(void, give_bomb, (), (override));
     MOCK_METHOD(void, restart, (), (override));
+    MOCK_METHOD(void, drop_bomb, (), (override));
 };
 
 #endif

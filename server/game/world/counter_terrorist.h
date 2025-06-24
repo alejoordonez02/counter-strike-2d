@@ -21,7 +21,15 @@ public:
 
     void start_defusing() override;
 
-    void give_bomb() override {}
+    void give_bomb() override {
+        /*
+         * papa caliente, la agarra y la suelta
+         * */
+        map.lock()->drop(std::make_unique<BombDrop>(pos));
+    }
+
+    void drop_bomb() override {}
+
     void start_planting() override {}
 };
 

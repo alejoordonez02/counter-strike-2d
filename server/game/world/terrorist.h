@@ -22,6 +22,8 @@ public:
 
     void give_bomb() override;
 
+    void drop_bomb() override;
+
     void start_planting() override;
 
     void start_defusing() override {}

@@ -12,6 +12,9 @@
 #include "buy_weapon.h"
 #include "common/network/dto.h"
 #include "common/network/protocol.h"
+#include "drop.h"
+#include "drop_bomb.h"
+#include "pickup.h"
 #include "player_command.h"
 #include "start_attacking.h"
 #include "start_moving.h"
@@ -49,6 +52,14 @@ public:
              [](auto&& dto_p) {
                  return std::make_unique<BuyAmmo>(std::move(dto_p));
              }},
+            {DROP_CURRENT,
+             [](auto&& /* dto_p */) {
+                 return std::make_unique<DropCurrent>();
+             }},
+            {DROP_BOMB,
+             [](auto&& /* dto_p */) { return std::make_unique<DropBomb>(); }},
+            {PICKUP,
+             [](auto&& /* dto_p */) { return std::make_unique<Pickup>(); }},
             {START_MOVING,
              [](auto&& dto_p) {
                  return std::make_unique<StartMoving>(std::move(dto_p));

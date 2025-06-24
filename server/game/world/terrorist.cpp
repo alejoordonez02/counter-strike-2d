@@ -23,6 +23,12 @@ void Terrorist::restart() {
 
 void Terrorist::give_bomb() { has_bomb = true; }
 
+void Terrorist::drop_bomb() {
+    if (!has_bomb) return;
+    map.lock()->drop(std::make_unique<BombDrop>(pos));
+    has_bomb = false;
+}
+
 void Terrorist::start_planting() {
     if (!has_bomb) return;
     auto bomb_site = map.lock()->get_bomb_site();

@@ -30,9 +30,9 @@ protected:
 
     void SetUp() override {
         map = std::make_shared<Map>(
-            std::vector<std::shared_ptr<Hitbox>>{}, std::vector<Drop>{},
-            std::vector<Structure>{}, std::vector<Position>{},
-            std::vector<Position>{});
+            std::vector<std::shared_ptr<Hitbox>>{},
+            std::vector<std::unique_ptr<Drop>>{}, std::vector<Structure>{},
+            std::vector<Position>{}, std::vector<Position>{});
         map_weak_ptr = map;
 
         player =
