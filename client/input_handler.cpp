@@ -142,7 +142,7 @@ void InputHandler::send_change_weapon() {
 
 void InputHandler::send_aim() {
     // sensibilidad mínima para el aim
-    const int kAimThreshold = 90;
+    const int kAimThreshold = 10;
     static int aim_accum_x = 0, aim_accum_y = 0;
 
     static int last_dx = INT32_MAX, last_dy = INT32_MAX;
