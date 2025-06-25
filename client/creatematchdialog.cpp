@@ -59,7 +59,7 @@ QString CreateMatchDialog::getMatchName() const
 MapName CreateMatchDialog::getSelectedMapName() const
 {
     QString displayName = ui->mapBox->currentText();
-    return mapNames.value(displayName, MapName::DUST); 
+    return mapNames.value(displayName); 
 }
 
 QString CreateMatchDialog::getSelectedMapDisplayName() const
