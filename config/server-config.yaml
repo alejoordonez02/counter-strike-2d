@@ -3,8 +3,8 @@ loop:
   commands_per_tick: 30
 
 world:
-  rounds: 15
-  round_time: 600
+  rounds: 100
+  round_time: 10000
   time_out: 5
 
   player:
@@ -17,14 +17,14 @@ world:
   ammo:
     primary_ammo_price: 200
     secondary_ammo_price: 100
-  
+
   weapons:
     Glock:
       type: Secondary
       damage: 20
       accuracy: 1
       range: 960
-      bullet_size: 1
+      bullet_size: 2
       fire_rate: 2
       reload_time: 2
       ammo_capacity: 25
@@ -33,11 +33,11 @@ world:
       ammo_cost: 1
     Ak47:
       type: Primary
-      damage: 20
-      accuracy: 0.8
+      damage: 25
+      accuracy: 0.9
       range: 960
-      bullet_size: 1
-      fire_rate: 2
+      bullet_size: 0
+      fire_rate: 6
       reload_time: 2
       ammo_capacity: 25
       starting_ammo: 25
@@ -45,24 +45,24 @@ world:
       ammo_cost: 1
     M3:
       type: Primary
-      damage: 20
+      damage: 50
       accuracy: 0.8
-      range: 960
-      bullet_size: 1
-      fire_rate: 2
-      reload_time: 2
+      range: 250
+      bullet_size: 10
+      fire_rate: 1
+      reload_time: 3
       ammo_capacity: 25
       starting_ammo: 25
       cost: 800
       ammo_cost: 1
     Awp:
       type: Primary
-      damage: 20
+      damage: 100
       accuracy: 0.8
       range: 960
       bullet_size: 1
-      fire_rate: 2
-      reload_time: 2
+      fire_rate: 1
+      reload_time: 3
       ammo_capacity: 25
       starting_ammo: 25
       cost: 800
@@ -72,8 +72,8 @@ world:
       damage: 25
       accuracy: 1
       range: 32
-      bullet_size: 1
-      fire_rate: 1
+      bullet_size: 20
+      fire_rate: 2
       reload_time: 0
       ammo_capacity: 1000
       starting_ammo: 1000

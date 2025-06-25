@@ -60,6 +60,9 @@ bool Player::get_attacked(int damage) {
     health -= (1 - shield) * damage;
     if (health > 0) return false;
     alive = false;
+    drop(primary);
+    drop(secondary);
+    drop_bomb();
     return true;
 }
 
@@ -106,6 +109,7 @@ void Player::pickup() {
 }
 
 void Player::drop(std::shared_ptr<Weapon> weapon) {
+    if (!weapon) return;
     if (weapon->get_type() == WeaponType::KNIFE) return;
     switch (weapon->get_type()) {
         case WeaponType::PRIMARY:
@@ -167,15 +171,26 @@ bool Player::pay(const int& cost) {
 void Player::buy_weapon(WeaponName weapon_name) {
     auto weapon = weapon_factory->create(weapon_name);
     if (!pay(weapon->get_cost())) return;
-    auto slot = get_weapon(weapon->get_type());
-    slot = weapon;
+
+    switch (weapon->get_type()) {
+        case WeaponType::PRIMARY:
+            if (primary) drop(primary);
+            primary = weapon;
+            break;
+        case WeaponType::SECONDARY:
+            if (secondary) drop(secondary);
+            secondary = weapon;
+            break;
+        default:
+            break;
+    }
 }
 
 void Player::buy_ammo(WeaponType type, int count) {
     if (count <= 0 || type == WeaponType::KNIFE) return;
     auto weapon = get_weapon(type);
     if (!weapon) return;
-    if (!pay(current->get_ammo_cost() * count)) return;
+    if (!pay(weapon->get_ammo_cost() * count)) return;
     weapon->add_ammo(count);
 }
 
